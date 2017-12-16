@@ -1,0 +1,5 @@
+{
+  "automock": true,
+  "unmockedModulePathPatterns": ["/node_modules/"],
+  "collectCoverage": true
+}

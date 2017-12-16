@@ -1,0 +1,38 @@
+{
+  "name": "wootils",
+  "version": "0.0.1",
+  "description": "...",
+  "scripts": {
+    "install-hooks": "./utils/hooks/install",
+    "test": "./utils/scripts/test",
+    "lint": "./utils/scripts/lint-js",
+    "lint:full": "./utils/scripts/lint-js-full"
+  },
+  "repository": "homer0/wootils",
+  "keywords": [],
+  "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
+  "license": "MIT",
+  "engine-strict": true,
+  "engines": {
+    "node": ">=6.0.0",
+    "npm": ">=3.0.0"
+  },
+  "main": "src/index.js",
+  "dependencies": {
+    "jimple": "homer0/jimple",
+    "fs-extra": "5.0.0",
+    "colors": "1.1.2",
+    "urijs": "1.19.0",
+    "statuses": "1.4.0"
+  },
+  "devDependencies": {
+    "eslint": "4.13.1",
+    "eslint-config-airbnb-base": "12.1.0",
+    "eslint-plugin-import": "2.8.0",
+    "eslint-plugin-node": "5.2.1",
+    "jest-ex": "3.0.1",
+    "jest-cli": "21.2.1",
+    "jasmine-expect": "3.8.1",
+    "babel-preset-env": "1.6.1"
+  }
+}
