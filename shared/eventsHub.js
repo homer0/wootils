@@ -42,6 +42,34 @@ class EventsHub {
     toClean.forEach((subscriber) => this.off(event, subscriber));
   }
 
+  reduce(event, target) {
+    const subscribers = this.subscribers(event);
+    let result = target;
+    if (subscribers.length) {
+      const toClean = [];
+      let processed;
+      if (Array.isArray(target)) {
+        processed = target.slice();
+      } else if (typeof target === 'object') {
+        processed = Object.assign({}, target);
+      } else {
+        processed = target;
+      }
+
+      this.subscribers(event).forEach((subscriber) => {
+        processed = subscriber(processed);
+        if (subscriber.once) {
+          toClean.push(subscriber);
+        }
+      });
+
+      toClean.forEach((subscriber) => this.off(event, subscriber));
+      result = processed;
+    }
+
+    return result;
+  }
+
   subscribers(event) {
     if (!this._events[event]) {
       this._events[event] = [];
