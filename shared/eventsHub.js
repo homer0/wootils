@@ -42,7 +42,7 @@ class EventsHub {
     toClean.forEach((subscriber) => this.off(event, subscriber));
   }
 
-  reduce(event, target) {
+  reduce(event, target, ...args) {
     const subscribers = this.subscribers(event);
     let result = target;
     if (subscribers.length) {
@@ -57,7 +57,7 @@ class EventsHub {
       }
 
       this.subscribers(event).forEach((subscriber) => {
-        processed = subscriber(processed);
+        processed = subscriber(...[processed, ...args]);
         if (subscriber.once) {
           toClean.push(subscriber);
         }

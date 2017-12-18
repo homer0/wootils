@@ -188,4 +188,27 @@ describe('EventsHub', () => {
     // Then
     expect(result).toBe(target);
   });
+
+  it('should allow subscribers to receive multiple arguments for reduced events', () => {
+    // Given
+    const eventName = 'THE EVENT';
+    const targetInitialValue = 0;
+    const target = targetInitialValue;
+    const argOne = 1;
+    const argTwo = 2;
+    let result = null;
+    let unsubscribe = null;
+    const subscriber = jest.fn((toReduce, one, two) => (toReduce + one + two));
+    // When
+    const sut = new EventsHub();
+    unsubscribe = sut.on(eventName, subscriber);
+    result = sut.reduce(eventName, target, argOne, argTwo);
+    unsubscribe();
+    // Then
+    expect(unsubscribe).toBeFunction();
+    expect(subscriber).toHaveBeenCalledTimes(1);
+    expect(subscriber).toHaveBeenCalledWith(targetInitialValue, argOne, argTwo);
+    expect(result).toBe(targetInitialValue + argOne + argTwo);
+    expect(target).toBe(targetInitialValue);
+  });
 });
