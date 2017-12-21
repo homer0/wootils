@@ -29,6 +29,22 @@ describe('PathUtils', () => {
     expect(process.cwd).toHaveBeenCalledTimes(1);
   });
 
+  it('should have getters for the app and home locations', () => {
+    // Given
+    const home = '/some-folder/';
+    process.cwd = jest.fn(() => home);
+    let sut = null;
+    let homePath = null;
+    let appPath = null;
+    // When
+    sut = new PathUtils();
+    homePath = sut.home;
+    appPath = sut.app;
+    // Then
+    expect(homePath).toBe(home);
+    expect(appPath).toBe(home);
+  });
+
   it('should be able to be instantiated with a custom home/base ', () => {
     // Given
     const customHome = '/custom-folder/';
@@ -38,7 +54,8 @@ describe('PathUtils', () => {
     // When
     sut = new PathUtils(customHome);
     // Then
-    expect(sut.path).toBe(path.join(home, customHome));
+    expect(sut.path).toBe(home);
+    expect(sut.home).toBe(path.join(home, customHome));
     expect(process.cwd).toHaveBeenCalledTimes(1);
   });
 
@@ -55,6 +72,31 @@ describe('PathUtils', () => {
     result = sut.join(testPathOne, testPathTwo);
     // Then
     expect(result).toBe(path.join(home, testPathOne, testPathTwo));
+  });
+
+  it('should be able to add a custom location', () => {
+    // Given
+    const home = '/some-folder/';
+    const locationName = 'customLocation';
+    const locationPath = '/custom-location/';
+    process.cwd = jest.fn(() => home);
+    let sut = null;
+    let result = null;
+    // When
+    sut = new PathUtils();
+    sut.addLocation(locationName, locationPath);
+    result = sut.getLocation(locationName);
+    // Then
+    expect(result).toBe(path.join(home, locationPath));
+  });
+
+  it('should throw an error if a requested location doesn\'t exist', () => {
+    // Given
+    let sut = null;
+    // When
+    sut = new PathUtils();
+    // When-Then
+    expect(() => sut.getLocation('custom')).toThrow(/there's no location/i);
   });
 
   it('should have a Jimple provider to register the service', () => {
@@ -93,6 +135,7 @@ describe('PathUtils', () => {
     expect(container.set.mock.calls[0][1]).toBeFunction();
     sut = container.set.mock.calls[0][1]();
     expect(sut).toBeInstanceOf(PathUtils);
-    expect(sut.path).toBe(path.join(home, customHome));
+    expect(sut.path).toBe(home);
+    expect(sut.home).toBe(path.join(home, customHome));
   });
 });
