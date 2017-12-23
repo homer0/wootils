@@ -2,8 +2,9 @@ const colors = require('colors/safe');
 const { provider } = require('jimple');
 
 class Logger {
-  constructor(messagesPrefix = '') {
+  constructor(messagesPrefix = '', showTime = false) {
     this.messagesPrefix = messagesPrefix;
+    this.showTime = showTime;
   }
   /**
    * Logs a warning (yellow) message on the console.
@@ -24,9 +25,22 @@ class Logger {
    * @param {String} message.
    */
   error(message, exception = null) {
-    this.log(message, 'red');
-    if (exception) {
-      this.log(exception);
+    if (message instanceof Error) {
+      this.error(message.message, message);
+    } else {
+      this.log(message, 'red');
+      if (exception) {
+        if (exception.stack) {
+          const stack = exception.stack
+          .split('\n')
+          .map((line) => line.trim());
+
+          stack.splice(0, 1);
+          this.info(stack);
+        } else {
+          this.log(exception);
+        }
+      }
     }
   }
   /**
@@ -76,21 +90,23 @@ class Logger {
     lines.forEach((line) => console.log(line));
   }
 
-  prefix(text = '') {
-    let result;
+  prefix(text) {
+    const parts = [];
     if (this.messagesPrefix) {
-      if (text) {
-        result = `[${this.messagesPrefix}] ${text}`;
-      } else {
-        result = `[${this.messagesPrefix}]`;
-      }
-    } else if (text) {
-      result = text;
-    } else {
-      result = '';
+      parts.push(`[${this.messagesPrefix}]`);
     }
 
-    return result;
+    if (this.showTime) {
+      const time = new Date()
+      .toISOString()
+      .replace(/T/, ' ')
+      .replace(/\..+/, '');
+
+      parts.push(`[${time}]`);
+    }
+
+    parts.push(text);
+    return parts.join(' ').trim();
   }
   /**
    * Get a function to modify the color of a string. The reason for this _"proxy method"_ is that
@@ -105,20 +121,26 @@ class Logger {
   }
 }
 
-const logger = provider((app) => {
-  app.set('logger', () => new Logger());
+const loggerWithOptions = (messagesPrefix, showTime) => provider((app) => {
+  app.set('logger', () => new Logger(messagesPrefix, showTime));
 });
 
-const appLogger = provider((app) => {
+const logger = loggerWithOptions();
+
+const appLoggerWithOptions = (showTime) => provider((app) => {
   app.set('appLogger', () => {
     const packageInfo = app.get('packageInfo');
     const prefix = packageInfo.nameForCLI || packageInfo.name;
-    return new Logger(prefix);
+    return new Logger(prefix, showTime);
   });
 });
 
+const appLogger = appLoggerWithOptions();
+
 module.exports = {
   Logger,
+  loggerWithOptions,
   logger,
+  appLoggerWithOptions,
   appLogger,
 };

@@ -54,6 +54,18 @@ describe('Logger', () => {
     expect(sut.prefix(message)).toBe(`[${prefix}] ${message}`);
   });
 
+  it('should be able to be instantiated with the flag to log the times as prefix', () => {
+    // Given
+    const prefix = 'myApp';
+    const message = 'something';
+    let sut = null;
+    // When
+    sut = new Logger(prefix, true);
+    // Then
+    expect(sut.showTime).toBeTrue();
+    expect(sut.prefix(message)).toMatch(/\[\w+\] \[\d+-\d+-\d+ \d+:\d+:\d+] \w+/);
+  });
+
   it('should fallback to an empty string if a messages prefix is not set', () => {
     // Given
     const message = 'hello world';
@@ -239,6 +251,55 @@ describe('Logger', () => {
     expect(log).toHaveBeenCalledWith(exception);
     expect(colors[color]).toHaveBeenCalledTimes(1);
     expect(colors[color]).toHaveBeenCalledWith(message);
+  });
+
+  it('should log an error message (red) and include an error exception stack', () => {
+    // Given
+    const message = 'Something went terribly wrong';
+    const exception = new Error('ORDER 66');
+    const stack = exception.stack.split('\n').map((line) => line.trim());
+    stack.splice(0, 1);
+    const errorColor = 'red';
+    const stackColor = 'grey';
+    const log = jest.fn();
+    spyOn(console, 'log').and.callFake(log);
+    let sut = null;
+    // When
+    sut = new Logger();
+    sut.error(message, exception);
+    // Then
+    expect(log).toHaveBeenCalledTimes(stack.length + 1);
+    expect(log).toHaveBeenCalledWith(message);
+    stack.forEach((line) => {
+      expect(log).toHaveBeenCalledWith(line);
+    });
+
+    expect(colors[errorColor]).toHaveBeenCalledTimes(1);
+    expect(colors[stackColor]).toHaveBeenCalledTimes(stack.length);
+  });
+
+  it('should log an exception error and its stack', () => {
+    // Given
+    const exception = new Error('ORDER 66');
+    const stack = exception.stack.split('\n').map((line) => line.trim());
+    stack.splice(0, 1);
+    const errorColor = 'red';
+    const stackColor = 'grey';
+    const log = jest.fn();
+    spyOn(console, 'log').and.callFake(log);
+    let sut = null;
+    // When
+    sut = new Logger();
+    sut.error(exception);
+    // Then
+    expect(log).toHaveBeenCalledTimes(stack.length + 1);
+    expect(log).toHaveBeenCalledWith(exception.message);
+    stack.forEach((line) => {
+      expect(log).toHaveBeenCalledWith(line);
+    });
+
+    expect(colors[errorColor]).toHaveBeenCalledTimes(1);
+    expect(colors[stackColor]).toHaveBeenCalledTimes(stack.length);
   });
 
   it('should have a Jimple provider to register the service', () => {
