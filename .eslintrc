@@ -15,6 +15,7 @@
     "class-methods-use-this": "off",
     "arrow-parens": ["error", "always"],
     "import/no-unresolved": "off",
+    "import/no-extraneous-dependencies": "off",
     "no-plusplus": "off"
   }
 }
