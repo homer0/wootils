@@ -1,5 +1,3 @@
-/* eslint-disable no-process-env */
-
 jest.unmock('/node/errorHandler.js');
 jest.mock('jimple', () => ({ provider: jest.fn(() => 'provider') }));
 
