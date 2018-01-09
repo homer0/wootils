@@ -1,6 +1,6 @@
 {
   "name": "wootils",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "...",
   "scripts": {
     "install-hooks": "./utils/hooks/install",
