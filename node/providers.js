@@ -1,3 +1,4 @@
+const { appConfiguration } = require('./appConfiguration');
 const { environmentUtils } = require('./environmentUtils');
 const { errorHandler } = require('./errorHandler');
 const {
@@ -11,6 +12,7 @@ const { pathUtils, pathUtilsWithHome } = require('./pathUtils');
 const { rootRequireProvider } = require('./rootRequire');
 
 module.exports = {
+  appConfiguration,
   environmentUtils,
   errorHandler,
   loggerWithOptions,
