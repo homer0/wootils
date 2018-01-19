@@ -2,8 +2,6 @@ const path = require('path');
 const extend = require('extend');
 const { provider } = require('jimple');
 
-const defaultConfigurationName = 'default';
-
 class AppConfiguration {
   constructor(
     environmentUtils,
@@ -15,21 +13,22 @@ class AppConfiguration {
     this.environmentUtils = environmentUtils;
     this.rootRequire = rootRequire;
     this.options = extend(true, {
+      defaultConfigurationName: 'default',
       environmentVariable: 'APP_CONFIG',
       path: `./config/${appName}`,
       filenameFormat: `${appName}.[name].config.js`,
     }, options);
 
     this.configurations = {
-      [defaultConfigurationName]: defaultConfiguration,
+      [this.options.defaultConfigurationName]: defaultConfiguration,
     };
 
-    this.activeConfiguration = defaultConfigurationName;
+    this.activeConfiguration = this.options.defaultConfigurationName;
     this.allowConfigurationSwitch = !!this.get('allowConfigurationSwitch');
   }
 
   load(name, settings, switchTo = true) {
-    const extendsFrom = settings.extends || defaultConfigurationName;
+    const extendsFrom = settings.extends || this.options.defaultConfigurationName;
     const baseConfiguration = this.getConfig(extendsFrom);
     if (baseConfiguration) {
       this._addConfiguration(
@@ -56,7 +55,7 @@ class AppConfiguration {
       throw new Error(`The configuration file couldn't be loaded: ${filepath}`);
     }
 
-    const extendsFrom = settings.extends || defaultConfigurationName;
+    const extendsFrom = settings.extends || this.options.defaultConfigurationName;
     const baseConfiguration = this.getConfig(extendsFrom) || this.loadFromFile(extendsFrom, false);
     this._addConfiguration(
       name,

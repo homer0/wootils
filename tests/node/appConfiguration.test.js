@@ -11,6 +11,7 @@ const { provider } = require('jimple');
 describe('AppConfiguration', () => {
   const getExpectedDefaults = () => ({
     options: {
+      defaultConfigurationName: 'default',
       environmentVariable: 'APP_CONFIG',
       path: './config/app',
       filenameFormat: 'app.[name].config.js',
