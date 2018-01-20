@@ -1,28 +1,53 @@
 const colors = require('colors/safe');
 const { provider } = require('jimple');
-
+/**
+ * A utility service to log messages on the console.
+ */
 class Logger {
+  /**
+   * Class constructor.
+   * @param {String}  [messagesPrefix=''] A prefix to include in front of all the messages.
+   * @param {Boolean} [showTime=false]    Whether or not to show the time on each message.
+   */
   constructor(messagesPrefix = '', showTime = false) {
+    /**
+     * The prefix to include in front of all the messages.
+     * @type {String}
+     */
     this.messagesPrefix = messagesPrefix;
+    /**
+     * Whether or not to show the time on each message.
+     * @type {Boolean}
+     */
     this.showTime = showTime;
   }
   /**
-   * Logs a warning (yellow) message on the console.
-   * @param {String} message.
+   * Logs a warning (yellow) message or messages on the console.
+   * @param {String|Array} message A single message of a list of them. See the `log()` documentation
+   *                               to see all the supported properties for the `message` parameter.
    */
   warning(message) {
     this.log(message, 'yellow');
   }
   /**
-   * Logs a success (green) message on the console.
-   * @param {String} message.
+   * Logs a success (green) message or messages on the console.
+   * @param {String|Array} message A single message of a list of them. See the `log()` documentation
+   *                               to see all the supported properties for the `message` parameter.
    */
   success(message) {
     this.log(message, 'green');
   }
   /**
-   * Logs an error message (red) on the console.
-   * @param {String} message.
+   * Logs an error (red) message or messages on the console.
+   * @param {String|Array|Error} message          A single message of a list of them. See the
+   *                                              `log()` documentation to see all the supported
+   *                                              properties for the `message` parameter. Different
+   *                                              from the other log methods, you can use an
+   *                                              `Error` object and the method will take care of
+   *                                              extracting the message and the stack information.
+   * @param {Object}             [exception=null] If the exception has a `stack` property, the
+   *                                              method will log each of the stack calls using
+   *                                              `info()`.
    */
   error(message, exception = null) {
     if (message instanceof Error) {
@@ -44,8 +69,9 @@ class Logger {
     }
   }
   /**
-   * Logs an information message (grey) on the console.
-   * @param {String} message.
+   * Logs an information (gray) message or messages on the console.
+   * @param {String|Array} message A single message of a list of them. See the `log()` documentation
+   *                               to see all the supported properties for the `message` parameter.
    */
   info(message) {
     this.log(message, 'grey');
@@ -89,14 +115,22 @@ class Logger {
     // eslint-disable-next-line no-console
     lines.forEach((line) => console.log(line));
   }
-
+  /**
+   * Prefixes a message with the text sent to the constructor and, if enabled, the current time.
+   * @param {String} text The text that needs the prefix.
+   * @return {String}
+   */
   prefix(text) {
+    // Define the list of things that will compose the formatted text.
     const parts = [];
+    // If a prefix was set on the constructor...
     if (this.messagesPrefix) {
+      // ...add it as first element.
       parts.push(`[${this.messagesPrefix}]`);
     }
-
+    // If the `showTime` setting is enabled...
     if (this.showTime) {
+      // ...add the current time to the list.
       const time = new Date()
       .toISOString()
       .replace(/T/, ' ')
@@ -104,29 +138,57 @@ class Logger {
 
       parts.push(`[${time}]`);
     }
-
+    // Add the original text.
     parts.push(text);
+    // Join the list into a single text message.
     return parts.join(' ').trim();
   }
   /**
-   * Get a function to modify the color of a string. The reason for this _"proxy method"_ is that
+   * Gets a function to modify the color of a string. The reason for this _"proxy method"_ is that
    * the `colors` module doesn't have a `raw` option and the alternative would've been adding a few
    * `if`s on the `log` method.
-   *
    * @param {String} name The name of the color.
    * @return {Function} A function that receives a string and returns it colored.
+   * @ignore
+   * @access protected
    */
   _color(name) {
     return name === 'raw' ? ((str) => str) : colors[name];
   }
 }
-
+/**
+ * Generates a `Provider` with an already defined message prefix and time setting.
+ * @example
+ * // Generate the provider
+ * const provider = loggerWithOptions('my-prefix', true);
+ * // Register is on the container
+ * container.register(provider);
+ * // Getting access to the service instance
+ * const logger = container.get('logger');
+ * @param {String}  messagesPrefix A prefix to include in front of all the messages.
+ * @param {Boolean} showTime       Whether or not to show the time on each message.
+ * @return {Provider}
+ */
 const loggerWithOptions = (messagesPrefix, showTime) => provider((app) => {
   app.set('logger', () => new Logger(messagesPrefix, showTime));
 });
-
+/**
+ * The service provider that once registered on the app container will set an instance of
+ * `Logger` as the `logger` service.
+ * @example
+ * // Register is on the container
+ * container.register(logger);
+ * // Getting access to the service instance
+ * const logger = container.get('logger');
+ * @type {Provider}
+ */
 const logger = loggerWithOptions();
-
+/**
+ * Generates a `Provider` with an already defined time setting and that uses the `packageInfo`
+ * service in order to retrieve the name of the project and use it as messages prefix.
+ * @param {Boolean} showTime Whether or not to show the time on each message.
+ * @return {Provider}
+ */
 const appLoggerWithOptions = (showTime) => provider((app) => {
   app.set('appLogger', () => {
     const packageInfo = app.get('packageInfo');
@@ -134,7 +196,18 @@ const appLoggerWithOptions = (showTime) => provider((app) => {
     return new Logger(prefix, showTime);
   });
 });
-
+/**
+ * The service provider that once registered on the app container will set an instance of
+ * `Logger` as the `appLogger` service. The difference with the regular `logger` is that this one
+ * uses the `packageInfo` service in order to retrieve the name of the project and use it as
+ * messages prefix.
+ * @example
+ * // Register is on the container
+ * container.register(appLogger);
+ * // Getting access to the service instance
+ * const appLogger = container.get('appLogger');
+ * @type {Provider}
+ */
 const appLogger = appLoggerWithOptions();
 
 module.exports = {
