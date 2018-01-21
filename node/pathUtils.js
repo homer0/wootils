@@ -112,7 +112,7 @@ class PathUtils {
  * @example
  * // Generate the provider
  * const provider = pathUtilsWithHome('my-path');
- * // Register is on the container
+ * // Register it on the container
  * container.register(provider);
  * // Getting access to the service instance
  * const pathUtils = container.get('pathUtils');
@@ -125,7 +125,7 @@ const pathUtilsWithHome = (home) => provider((app) => {
  * The service provider that once registered on the app container will set an instance of
  * `PathUtils` as the `pathUtils` service.
  * @example
- * // Register is on the container
+ * // Register it on the container
  * container.register(pathUtils);
  * // Getting access to the service instance
  * const pathUtils = container.get('pathUtils');

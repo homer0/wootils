@@ -161,7 +161,7 @@ class Logger {
  * @example
  * // Generate the provider
  * const provider = loggerWithOptions('my-prefix', true);
- * // Register is on the container
+ * // Register it on the container
  * container.register(provider);
  * // Getting access to the service instance
  * const logger = container.get('logger');
@@ -176,7 +176,7 @@ const loggerWithOptions = (messagesPrefix, showTime) => provider((app) => {
  * The service provider that once registered on the app container will set an instance of
  * `Logger` as the `logger` service.
  * @example
- * // Register is on the container
+ * // Register it on the container
  * container.register(logger);
  * // Getting access to the service instance
  * const logger = container.get('logger');
@@ -202,7 +202,7 @@ const appLoggerWithOptions = (showTime) => provider((app) => {
  * uses the `packageInfo` service in order to retrieve the name of the project and use it as
  * messages prefix.
  * @example
- * // Register is on the container
+ * // Register it on the container
  * container.register(appLogger);
  * // Getting access to the service instance
  * const appLogger = container.get('appLogger');

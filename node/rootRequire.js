@@ -13,7 +13,7 @@ const rootRequire = (pathUtils) =>
  * The service provider that once registered on the app container will set the result of
  * `rootRequire(pathUtils)` as the `rootRequire` service.
  * @example
- * // Register is on the container
+ * // Register it on the container
  * container.register(rootRequireProvider);
  * // Getting access to the service instance
  * const rootRequire = container.get('rootRequire');

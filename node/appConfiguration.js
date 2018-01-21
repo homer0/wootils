@@ -291,7 +291,7 @@ class AppConfiguration {
  * const provider = appConfiguration('my-app', {
  *   birthday: '25-09-2015',
  * });
- * // Register is on the container
+ * // Register it on the container
  * container.register(provider);
  * // Getting access to the service instance
  * const appConfiguration = container.get('appConfiguration');

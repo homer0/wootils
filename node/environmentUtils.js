@@ -45,7 +45,7 @@ class EnvironmentUtils {
  * The service provider that once registered on the app container will set an instance of
  * `EnvironmentUtils` as the `environmentUtils` service.
  * @example
- * // Register is on the container
+ * // Register it on the container
  * container.register(environmentUtils);
  * // Getting access to the service instance
  * const environmentUtils = container.get('environmentUtils');

@@ -173,7 +173,7 @@ class APIClient {
     return this.post(url, body, Object.assign({}, options, { method: 'delete' }));
   }
   /**
-   * Generate an endpoint URL.
+   * Generates an endpoint URL.
    * @param {String} name            The name of the endpoint on the `endpoints` property.
    * @param {Object} [parameters={}] A dictionary of values that will replace placeholders on the
    *                                 endpoint definition.
@@ -238,7 +238,7 @@ class APIClient {
     return uri.toString();
   }
   /**
-   * Generate a dictionary of headers using the service `defaultHeaders` property as base.
+   * Generates a dictionary of headers using the service `defaultHeaders` property as base.
    * If the service has an `authorizationToken`, it will be included as the `Authorization`
    * header.
    * @param {Object} [overwrites={}] Extra headers to add.
@@ -253,7 +253,7 @@ class APIClient {
     return Object.assign({}, headers, overwrites);
   }
   /**
-   * Make a request.
+   * Makes a request.
    * @param {Object} options         The request options.
    * @param {String} options.url     The request URL.
    * @param {String} options.method  The request method. `GET` by default.
@@ -309,7 +309,7 @@ class APIClient {
     ));
   }
   /**
-   * Format a response error into a proper Error object.
+   * Formats an error response into a proper Error object.
    * @param {Object} response A received response from a request.
    * @return {Error}
    */

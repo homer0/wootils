@@ -10,7 +10,7 @@ const packageInfo = (pathUtils) => fs.readJsonSync(pathUtils.join('package.json'
  * The service provider that once registered on the app container will set the result of
  * `packageInfo()` as the `packageInfo` service.
  * @example
- * // Register is on the container
+ * // Register it on the container
  * container.register(packageInfoProvider);
  * // Getting access to the service value
  * const packageInfo = container.get('packageInfo');
