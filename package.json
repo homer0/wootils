@@ -39,6 +39,7 @@
     "esdoc": "1.0.4",
     "esdoc-standard-plugin": "1.0.0",
     "esdoc-node": "homer0/esdoc-node",
-    "leasot": "4.13.0"
+    "leasot": "4.13.0",
+    "coveralls": "3.0.0"
   }
 }
