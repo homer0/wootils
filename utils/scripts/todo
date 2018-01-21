@@ -1,0 +1,2 @@
+#!/bin/bash -e
+leasot node/**/*.js shared/**/*.js -x
