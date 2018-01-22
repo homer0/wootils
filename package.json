@@ -1,6 +1,6 @@
 {
   "name": "wootils",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A set of Javascript utilities for building Node and browser apps.",
   "scripts": {
     "install-hooks": "./utils/hooks/install",
