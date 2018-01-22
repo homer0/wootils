@@ -3,24 +3,66 @@ const urijs = require('urijs');
 /**
  * @typedef {Function:(string,Object):Promise<Object,Error>} FetchClient
  */
+
 /**
  * @typedef {Object} FetchOptions
  * @property {String} method  The request method.
  * @property {Object} headers The request headers.
  * @property {String} body    The request body.
  */
+
+/**
+ * @typedef {Object} APIClientEndpoint
+ * @property {String}  path  The path to the endpoint relative to the API entry point. It can
+ *                           include placeholders with the format `:placeholder-name` that are
+ *                           going to be replaced when the endpoint gets generated.
+ * @property {?Object} query A dictionary of query string parameters that will be added when the
+ *                           endpoint. If the value of a parameter is `null`, it won't be added.
+ */
+
+/**
+ * @typedef {Object} APIClientEndpoints
+ * @property {string|APIClientEndpoints|APIClientEndpoint} [endpointName] A name for the endpoint
+ *                                                                        that will be used to
+ *                                                                        reference it on the
+ *                                                                        `endpoint(...)` method.
+ * @example
+ * {
+ *   // Endpoint path as a string.
+ *   endpointOne: 'endpoint-one',
+ *   // Endpoint as {APIClientEndpoint}.
+ *   endpointTwo: {
+ *     path: 'endpoint-two',
+ *     query: {
+ *       count: 20,
+ *     },
+ *   },
+ *   // Endpoint as a dictionary of endpoints ({APIClientEndpoints}).
+ *   endpointThree: {
+ *     subEndpointThreeOne: 'sub-endpoint-three-one',
+ *     subEndpointThreeTwo: {
+ *       path: 'sub-endpoint-three-two',
+ *       query: {
+ *         count: 20,
+ *       },
+ *     },
+ *   },
+ * }
+ */
+
 /**
  * An API client with configurable endpoints.
  */
 class APIClient {
   /**
    * Class constructor.
-   * @param {String}      url                 The API entry point.
-   * @param {Object}      endpoints           A dictionary of named endpoints relative to the API
-   *                                          entry point.
-   * @param {FetchClient} fetchClient         The fetch function that makes the requests.
-   * @param {Object}      [defaultHeaders={}] A dictionary of default headers to include on every
-   *                                          request.
+   * @param {String}                  url                 The API entry point.
+   * @param {APIClientEndpoints}      endpoints           A dictionary of named endpoints relative
+   *                                                      to the API entry point.
+   * @param {FetchClient}             fetchClient         The fetch function that makes the
+   *                                                      requests.
+   * @param {Object}                  [defaultHeaders={}] A dictionary of default headers to
+   *                                                      include on every request.
    */
   constructor(url, endpoints, fetchClient, defaultHeaders = {}) {
     /**
@@ -31,6 +73,7 @@ class APIClient {
     /**
      * A dictionary of named endpoints relative to the API entry point.
      * @type {Object}
+     * @property {string|APIClientEndpoint} [endpointName] The name of the endpoint.
      */
     this.endpoints = this.flattenEndpoints(endpoints);
     /**
@@ -243,6 +286,7 @@ class APIClient {
    * header.
    * @param {Object} [overwrites={}] Extra headers to add.
    * @return {Object}
+   * @todo Bearer should be configurable when setting the token.
    */
   headers(overwrites = {}) {
     const headers = Object.assign({}, this.defaultHeaders);

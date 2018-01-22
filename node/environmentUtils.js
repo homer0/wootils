@@ -23,6 +23,7 @@ class EnvironmentUtils {
    * @param {String} name              The name of the variable.
    * @param {String} [defaultValue=''] A fallback value in case the variable is `undefined`
    * @return {String}
+   * @todo add a `require` parameter to throw an error if the variable is not preset.
    */
   get(name, defaultValue = '') {
     // eslint-disable-next-line no-process-env

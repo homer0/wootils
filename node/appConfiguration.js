@@ -2,32 +2,44 @@ const path = require('path');
 const extend = require('extend');
 const { provider } = require('jimple');
 /**
- * This is a service to manage applications configurations. It takes care of loading, activing,
+ * @typedef {Object} AppConfigurationOptions
+ * @property {String} [defaultConfigurationName='default']           The name of the default
+ *                                                                   configuration
+ * @property {String} [environmentVariable='APP_CONFIG']             The name of the variable it
+ *                                                                   will read in order to
+ *                                                                   determine which configuration
+ *                                                                   to load
+ * @property {String} [path='./config/[app-name]']                   The path to the configurations
+ *                                                                   directory, relative to the
+ *                                                                   project root path.
+ * @property {String} [filenameFormat='[app-name].[name].config.js'] The name format of the
+ *                                                                   configuration files. You
+ *                                                                   need to use the `[name]`
+ *                                                                   placeholder so the service
+ *                                                                   can replace it with the name
+ *                                                                   of the configuration.
+ */
+
+/**
+ * This is a service to manage applications configurations. It takes care of loading, activating,
  * switching and merging configuration files.
- * These are the supported options you can send on the `options` parameter:
- * - `defaultConfigurationName`: The name of the default configuration. The default value is
- * `default`.
- * - `environmentVariable`: The name of the variable it will read in order to determine which
- * configuration to load. The default value is `APP_CONFIG`.
- * - `path`: The path to the configurations directory. The default value is `./config/[app-name]`.
- * - `filenameFormat`:  The name format of the configuration files. The default value is
- * `[app-name].[name].config.js`. You need to use the `[name]` placeholder so the service can
- * replace it with the name of the configuration.
  */
 class AppConfiguration {
   /**
    * Class constructor.
-   * @param {EnvironmentUtils} environmentUtils          Required to read the environment variables
-   *                                                     and determine which configuration to use.
-   * @param {Function}         rootRequire               Necessary to be able to require the
-   *                                                     configuration files with paths relative
-   *                                                     to the app root directory.
-   * @param {String}           [appName='app']           The name of the app using this service.
-   *                                                     It's also used as part of the name of the
-   *                                                     configuration files.
-   * @param {Object}           [defaultConfiguration={}] The default configuration the others
-   *                                                     will extend.
-   * @param {Object}           [options={}]              Options to customize the service
+   * @param {EnvironmentUtils}        environmentUtils          Required to read the environment
+   *                                                            variables and determine which
+   *                                                            configuration to use.
+   * @param {Function}                rootRequire               Necessary to be able to require the
+   *                                                            configuration files with paths
+   *                                                            relative to the app root directory.
+   * @param {String}                  [appName='app']           The name of the app using this
+   *                                                            service.
+   *                                                            It's also used as part of the name
+   *                                                            of the configuration files.
+   * @param {Object}                  [defaultConfiguration={}] The default configuration the others
+   *                                                            will extend.
+   * @param {AppConfigurationOptions} [options={}]              Options to customize the service
    */
   constructor(
     environmentUtils,
@@ -49,12 +61,7 @@ class AppConfiguration {
     this.rootRequire = rootRequire;
     /**
      * The service customizable options.
-     * @type {Object}
-     * @property {String} defaultConfigurationName The name of the default configuration.
-     * @property {String} environmentVariable      The name of the variable it will read in order
-     *                                             to determine which configuration to load.
-     * @property {String} path                     The path to the configurations directory.
-     * @property {String} filenameFormat           The name format of the configuration files.
+     * @type {AppConfigurationOptions}
      */
     this.options = extend(true, {
       defaultConfigurationName: 'default',
