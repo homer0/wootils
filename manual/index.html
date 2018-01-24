@@ -259,7 +259,7 @@ console.log(appConfiguration.get(&apos;person&apos;));
  *   birthday: &apos;25-09-2015&apos;,
  * }
  */</code>
-</code></pre><h3>Switching configurations while the app is running</h3><p>There&apos;s a special rule behind this feature: The default configuration and/or the first configuration loaded needs to have a key name <code>allowConfigurationSwitch</code> set to <code>true</code> in order switch configurations. The reason of this rule is <strong>security</strong>: If you deployed to production and the you didn&apos;t turn off whatever you have that makes the service switch configurations, other people can use it. This way, you can have this enabled only on specifics configuration and disabled on others.</p><h2>Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://doc.esdoc.org/github.com/homer0/wootils/class/wootils/node/appConfiguration.js~AppConfiguration.html">online</a> or generate it yourself using:</p><pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
+</code></pre><h3>Switching configurations while the app is running</h3><p>There&apos;s a special rule behind this feature: The default configuration and/or the first configuration loaded needs to have a key name <code>allowConfigurationSwitch</code> set to <code>true</code> in order switch configurations. The reason of this rule is <strong>security</strong>: If you deployed to production and the you didn&apos;t turn off whatever you have that makes the service switch configurations, other people can use it. This way, you can have this enabled only on specifics configuration and disabled on others.</p><h2>Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://homer0.github.io/wootils/class/wootils/node/appConfiguration.js~AppConfiguration.html">online</a> or generate it yourself using:</p><pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
 npm run docs
 open ./docs/index.html</code>
 </code></pre></div>
@@ -299,7 +299,7 @@ if (envUtils.development()) {
 // The service allows you to set a default in case the variable is not defined.
 const name = envUtils.get(&apos;NAME&apos;, &apos;Rosario&apos;);
 console.log(`Hello ${name}`);</code>
-</code></pre><p>Done! Now you are not manually checking for <code>NODE_ENV</code> and all your variables are being read on a single place.</p><h2>Features</h2><h3>Reading variables</h3><p>This was demonstrated on the example above. You just need to <code>.get()</code> with the name of the variable you want to read.</p><h3>Checking the environment</h3><p>No more <code>if (process.env.NODE_ENV ...</code>, <code>EnvironmentUtils</code> does it once when you instantiate it and then gives you <code>production()</code> and <code>development()</code> for you to use.</p><h2>Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://doc.esdoc.org/github.com/homer0/wootils/class/wootils/node/environmentUtils.js~EnvironmentUtils.html">online</a> or generate it yourself using:</p><pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
+</code></pre><p>Done! Now you are not manually checking for <code>NODE_ENV</code> and all your variables are being read on a single place.</p><h2>Features</h2><h3>Reading variables</h3><p>This was demonstrated on the example above. You just need to <code>.get()</code> with the name of the variable you want to read.</p><h3>Checking the environment</h3><p>No more <code>if (process.env.NODE_ENV ...</code>, <code>EnvironmentUtils</code> does it once when you instantiate it and then gives you <code>production()</code> and <code>development()</code> for you to use.</p><h2>Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://homer0.github.io/wootils/class/wootils/node/environmentUtils.js~EnvironmentUtils.html">online</a> or generate it yourself using:</p><pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
 npm run docs
 open ./docs/index.html</code>
 </code></pre></div>
@@ -363,7 +363,7 @@ app.register(errorHandler);</code>
 [my-app] at startup (bootstrap_node.js:149:9)</code>
 </code></pre><blockquote>
 <p>The <code>[my-app]</code> is the name the <code>appLogger</code> service got from the <code>package.json</code>.</p>
-</blockquote><h2>Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://doc.esdoc.org/github.com/homer0/wootils/class/wootils/node/errorHandler.js~ErrorHandler.html">online</a> and generate it yourself using:</p><pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
+</blockquote><h2>Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://homer0.github.io/wootils/class/wootils/node/errorHandler.js~ErrorHandler.html">online</a> and generate it yourself using:</p><pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
 npm run docs
 open ./docs/index.html</code>
 </code></pre></div>
@@ -511,7 +511,7 @@ app.register(appLogger);
 
 app.get(&apos;appLogger&apos;).success(&apos;The instance was created!&apos;);
 // This will log `[skynet] The instance was created!` on green.</code>
-</code></pre><p>There&apos;s also <code>appLoggerWithOptions</code> that allows you to enable or disabled the date and time for the messages.</p><h2>Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://doc.esdoc.org/github.com/homer0/wootils/class/wootils/node/logger.js~Logger.html">online</a> or generate it yourself using:</p><pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
+</code></pre><p>There&apos;s also <code>appLoggerWithOptions</code> that allows you to enable or disabled the date and time for the messages.</p><h2>Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://homer0.github.io/wootils/class/wootils/node/logger.js~Logger.html">online</a> or generate it yourself using:</p><pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
 npm run docs
 open ./docs/index.html</code>
 </code></pre></div>
@@ -538,7 +538,7 @@ app.register(pathUtils);
 // Register the service
 app.register(packageInfo);</code>
 </code></pre><p>Now, to use it:</p><pre><code class="lang-js"><code class="source-code prettyprint">const packageJson = app.get(&apos;packageInfo&apos;);</code>
-</code></pre><p>Done, <code>packageJson</code> now has all the contents of your <code>package.json</code>, as an Object; and the file won&apos;t be read more than once.</p><h2>Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://doc.esdoc.org/github.com/homer0/wootils/function/index.html#static-function-packageInfo">online</a> or generate it yourself using:</p><pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
+</code></pre><p>Done, <code>packageJson</code> now has all the contents of your <code>package.json</code>, as an Object; and the file won&apos;t be read more than once.</p><h2>Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://homer0.github.io/wootils/function/index.html#static-function-packageInfo">online</a> or generate it yourself using:</p><pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
 npm run docs
 open ./docs/index.html</code>
 </code></pre></div>
@@ -582,7 +582,7 @@ app.register(pathUtils);</code>
 pathUtils.join(&apos;config/development.js&apos;);</code>
 </code></pre><h3>Multiple locations</h3><p>By default, <code>PathUtils</code> uses the <code>home</code> location, which is the project root directory, but it also has an <code>app</code> location and the ability to register new locations:</p><p>The <code>app</code> location is the directory where your app executable file is located, for the project tree used on the example above, the <code>app</code> location is <code>/app</code> on development, and <code>/dist/app</code> when builded/deployed.</p><p>To register new locations, you use the <code>addLocation</code> method:</p><pre><code class="lang-js"><code class="source-code prettyprint">pathUtils.addLocation(&apos;my-location&apos;, &apos;some-folder/some-sub-folder&apos;);</code>
 </code></pre><p>The new location path <strong>must</strong> be relative to your project root directory.</p><p>And finally, to use those locations, you use <code>joinFrom</code> instead of <code>join</code>:</p><pre><code class="lang-js"><code class="source-code prettyprint">const pathToFile = pathUtils.joinFrom(&apos;my-location&apos;, &apos;some-file.js&apos;);</code>
-</code></pre><h2>Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://doc.esdoc.org/github.com/homer0/wootils/class/wootils/node/pathUtils.js~PathUtils.html">online</a> or generate it yourself using:</p><pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
+</code></pre><h2>Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html">online</a> or generate it yourself using:</p><pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
 npm run docs
 open ./docs/index.html</code>
 </code></pre></div>
@@ -626,7 +626,7 @@ app.register(pathUtils);
 // Register the service
 app.register(rootRequire);</code>
 </code></pre><p>Now, to use it:</p><pre><code class="lang-js"><code class="source-code prettyprint">const config = app.get(&apos;rootRequire&apos;)(&apos;config/development&apos;);</code>
-</code></pre><p>Done, <code>config</code> now has the contents of <code>config/development</code>, and this will work no matter where the app file is located.</p><h2>Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://doc.esdoc.org/github.com/homer0/wootils/function/index.html#static-function-rootRequire">online</a> or generate it yourself using:</p><pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
+</code></pre><p>Done, <code>config</code> now has the contents of <code>config/development</code>, and this will work no matter where the app file is located.</p><h2>Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://homer0.github.io/wootils/function/index.html#static-function-rootRequire">online</a> or generate it yourself using:</p><pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
 npm run docs
 open ./docs/index.html</code>
 </code></pre></div>

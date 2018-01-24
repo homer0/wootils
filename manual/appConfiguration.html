@@ -296,7 +296,7 @@ console.log(appConfiguration.get(&apos;person&apos;));
  */</code>
 </code></pre>
 <h3 id="switching-configurations-while-the-app-is-running">Switching configurations while the app is running</h3><p>There&apos;s a special rule behind this feature: The default configuration and/or the first configuration loaded needs to have a key name <code>allowConfigurationSwitch</code> set to <code>true</code> in order switch configurations. The reason of this rule is <strong>security</strong>: If you deployed to production and the you didn&apos;t turn off whatever you have that makes the service switch configurations, other people can use it. This way, you can have this enabled only on specifics configuration and disabled on others.</p>
-<h2 id="technical-documentation">Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://doc.esdoc.org/github.com/homer0/wootils/class/wootils/node/appConfiguration.js~AppConfiguration.html">online</a> or generate it yourself using:</p>
+<h2 id="technical-documentation">Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://homer0.github.io/wootils/class/wootils/node/appConfiguration.js~AppConfiguration.html">online</a> or generate it yourself using:</p>
 <pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
 npm run docs
 open ./docs/index.html</code>
