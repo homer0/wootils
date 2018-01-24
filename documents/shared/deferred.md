@@ -58,7 +58,7 @@ I wanted to keep the example small, but on a real app, `getFileContents` is prob
 
 ## Technical documentation
 
-The code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://doc.esdoc.org/github.com/homer0/wootils/function/index.html#static-function-deferred) or generate it yourself using:
+The code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/function/index.html#static-function-deferred) or generate it yourself using:
 
 ```bash
 # You can either use npm or yarn, it doesn't matter

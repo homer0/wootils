@@ -162,7 +162,7 @@ Done, all the requests will include `Authorization: Bearer some-token`.
 
 ## Technical documentation
 
-The code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://doc.esdoc.org/github.com/homer0/wootils/class/wootils/shared/apiClient.js~APIClient.html) or generate it yourself using:
+The code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/class/wootils/shared/apiClient.js~APIClient.html) or generate it yourself using:
 
 ```bash
 # You can either use npm or yarn, it doesn't matter

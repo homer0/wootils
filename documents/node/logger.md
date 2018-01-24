@@ -245,7 +245,7 @@ There's also `appLoggerWithOptions` that allows you to enable or disabled the da
 
 ## Technical documentation
 
-The code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://doc.esdoc.org/github.com/homer0/wootils/class/wootils/node/logger.js~Logger.html) or generate it yourself using:
+The code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/class/wootils/node/logger.js~Logger.html) or generate it yourself using:
 
 ```bash
 # You can either use npm or yarn, it doesn't matter

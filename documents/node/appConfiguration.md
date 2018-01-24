@@ -85,7 +85,7 @@ Done, we first sent the required services and then set the custom options we nee
  - `filenameFormat`: The name format your files use. `[name]` will be replaced with the name of the configuration you want to use.
 
 Now, there's only one thing to do:
- 
+
 ```js
 appConfiguration.loadFromEnvironment();
 ```
@@ -143,9 +143,9 @@ Done, the service is registered in the container. Let's explain a little bit why
  - `environmentVariable`: The name of the variable the service will check to determine which configuration to use.
  - `path`: The location of your configuration files.
  - `filenameFormat`: The name format your files use. `[name]` will be replaced with the name of the configuration you want to use.
- 
+
 Now, there's only one thing to do:
- 
+
 ```js
 app.get('appConfiguration').loadFromEnvironment();
 ```
@@ -245,7 +245,7 @@ There's a special rule behind this feature: The default configuration and/or the
 
 ## Technical documentation
 
-The code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://doc.esdoc.org/github.com/homer0/wootils/class/wootils/node/appConfiguration.js~AppConfiguration.html) or generate it yourself using:
+The code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/class/wootils/node/appConfiguration.js~AppConfiguration.html) or generate it yourself using:
 
 ```bash
 # You can either use npm or yarn, it doesn't matter
