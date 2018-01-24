@@ -1,6 +1,6 @@
 {
   "name": "wootils",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A set of Javascript utilities for building Node and browser apps.",
   "homepage": "https://homer0.github.io/wootils/",
   "scripts": {
