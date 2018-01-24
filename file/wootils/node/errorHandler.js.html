@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">wootils/node/errorHandler.js | wootils</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="A set of Javascript utilities for building Node and browser apps."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="wootils"><meta property="twitter:description" content="A set of Javascript utilities for building Node and browser apps."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/homer0/wootils"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#node">node</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/appConfiguration.js~AppConfiguration.html">AppConfiguration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/environmentUtils.js~EnvironmentUtils.html">EnvironmentUtils</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/errorHandler.js~ErrorHandler.html">ErrorHandler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/logger.js~Logger.html">Logger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appConfiguration">appConfiguration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appLoggerWithOptions">appLoggerWithOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-loggerWithOptions">loggerWithOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-packageInfo">packageInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pathUtilsWithHome">pathUtilsWithHome</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-rootRequire">rootRequire</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-environmentUtils">environmentUtils</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-errorHandler">errorHandler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-appLogger">appLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-logger">logger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-packageInfoProvider">packageInfoProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pathUtils">pathUtils</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-rootRequireProvider">rootRequireProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-AppConfigurationOptions">AppConfigurationOptions</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#shared">shared</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/shared/apiClient.js~APIClient.html">APIClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/shared/eventsHub.js~EventsHub.html">EventsHub</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-deferred">deferred</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-APIClientEndpoint">APIClientEndpoint</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-APIClientEndpoints">APIClientEndpoints</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-FetchClient">FetchClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-FetchOptions">FetchOptions</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">wootils/node/errorHandler.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const { provider } = require(&apos;jimple&apos;);
+/**
+ * An error handler that captures uncaught exceptions and unhandled rejections in order to log
+ * them with detail.
+ * @todo The `process.exit` should be configurable.
+ */
+class ErrorHandler {
+  /**
+   * Class constructor.
+   * @param {Logger} appLogger To log the detail of the erros.
+   */
+  constructor(appLogger) {
+    /**
+     * A local reference for the `appLogger` service.
+     * @type {Logger}
+     */
+    this.appLogger = appLogger;
+  }
+  /**
+   * Starts listening for unhandled errors.
+   */
+  listen() {
+    const handler = this.handle.bind(this);
+    process.on(&apos;uncaughtException&apos;, handler);
+    process.on(&apos;unhandledRejection&apos;, handler);
+  }
+  /**
+   * This is called by the process listeners when an uncaught exception is thrown or a rejected
+   * promise is not handled. It logs the error on detail.
+   * The process exits when after logging an error.
+   * @param {Error} error The unhandled error.
+   */
+  handle(error) {
+    // If the logger is configured to show the time...
+    if (this.appLogger.showTime) {
+      // ...just send the error.
+      this.appLogger.error(error);
+    } else {
+      // ...otherwise, get the time on a readable format.
+      const time = new Date()
+      .toISOString()
+      .replace(/T/, &apos; &apos;)
+      .replace(/\..+/, &apos;&apos;);
+      // Build the error message with the time.
+      const message = `[${time}] ${error.message}`;
+      // Log the new message with the exception.
+      this.appLogger.error(message, error);
+    }
+    // Exit the process.
+    process.exit(1);
+  }
+}
+/**
+ * The service provider that once registered on the app container will set an instance of
+ * `ErrorHandler` as the `errorHandler` service.
+ * @example
+ * // Register it on the container
+ * container.register(errorHandler);
+ * // Getting access to the service instance
+ * const errorHandler = container.get(&apos;errorHandler&apos;);
+ * @type {Provider}
+ * @todo It should fallback to `appLogger` if `logger` is not registered.
+ */
+const errorHandler = provider((app) =&gt; {
+  app.set(&apos;errorHandler&apos;, () =&gt; new ErrorHandler(app.get(&apos;appLogger&apos;)));
+});
+
+module.exports = {
+  ErrorHandler,
+  errorHandler,
+};
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.4)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

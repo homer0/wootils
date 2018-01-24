@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">wootils/shared/eventsHub.js | wootils</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="A set of Javascript utilities for building Node and browser apps."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="wootils"><meta property="twitter:description" content="A set of Javascript utilities for building Node and browser apps."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/homer0/wootils"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#node">node</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/appConfiguration.js~AppConfiguration.html">AppConfiguration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/environmentUtils.js~EnvironmentUtils.html">EnvironmentUtils</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/errorHandler.js~ErrorHandler.html">ErrorHandler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/logger.js~Logger.html">Logger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appConfiguration">appConfiguration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appLoggerWithOptions">appLoggerWithOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-loggerWithOptions">loggerWithOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-packageInfo">packageInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pathUtilsWithHome">pathUtilsWithHome</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-rootRequire">rootRequire</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-environmentUtils">environmentUtils</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-errorHandler">errorHandler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-appLogger">appLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-logger">logger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-packageInfoProvider">packageInfoProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pathUtils">pathUtils</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-rootRequireProvider">rootRequireProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-AppConfigurationOptions">AppConfigurationOptions</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#shared">shared</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/shared/apiClient.js~APIClient.html">APIClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/shared/eventsHub.js~EventsHub.html">EventsHub</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-deferred">deferred</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-APIClientEndpoint">APIClientEndpoint</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-APIClientEndpoints">APIClientEndpoints</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-FetchClient">FetchClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-FetchOptions">FetchOptions</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">wootils/shared/eventsHub.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
+ * A minimal implementation of an events handler service.
+ */
+class EventsHub {
+  /**
+   * Class constructor.
+   * @ignore
+   */
+  constructor() {
+    /**
+     * A dictionary of the events and their listeners.
+     * @type {Object}
+     * @ignore
+     */
+    this._events = {};
+  }
+  /**
+   * Adds a new event listener.
+   * @param {String}   event The name of the event.
+   * @param {Function} fn    The listener function.
+   * @return {Function} An unsubscribe function to remove the listener.
+   */
+  on(event, fn) {
+    const subscribers = this.subscribers(event);
+    if (!subscribers.includes(fn)) {
+      subscribers.push(fn);
+    }
+
+    return () =&gt; this.off(event, fn);
+  }
+  /**
+   * Adds an event listener that will only be executed once.
+   * @param {String}   event The name of the event.
+   * @param {Function} fn    The listener function.
+   * @return {Function} An unsubscribe function to remove the listener.
+   */
+  once(event, fn) {
+    // eslint-disable-next-line no-param-reassign
+    fn.once = true;
+    return this.on(event, fn);
+  }
+  /**
+   * Removes an event listener.
+   * @param {String}   event The name of the event.
+   * @param {Function} fn    The listener function.
+   * @return {Boolean} Whether or not the listener was found and removed.
+   */
+  off(event, fn) {
+    const subscribers = this.subscribers(event);
+    const index = subscribers.indexOf(fn);
+    let result = false;
+    if (index &gt; -1) {
+      result = true;
+      subscribers.splice(index, 1);
+    }
+
+    return result;
+  }
+  /**
+   * Emits an event and call all its listeners.
+   * @param {String} event The name of the event.
+   * @param {Array}  args  A list of parameters to send to the listeners.
+   */
+  emit(event, ...args) {
+    const toClean = [];
+    this.subscribers(event).forEach((subscriber) =&gt; {
+      subscriber(...args);
+      if (subscriber.once) {
+        toClean.push(subscriber);
+      }
+    });
+
+    toClean.forEach((subscriber) =&gt; this.off(event, subscriber));
+  }
+  /**
+   * Reduce a target using an event. It&apos;s like emit, but the events listener return
+   * a modified (or not) version of the `target`.
+   * @param {String} event  The name of the event.
+   * @param {*}      target The variable to reduce with the listeners.
+   * @param {Array}  args   A list of parameters to send to the listeners.
+   * @return {*} A version of the `target` processed by the listeners.
+   */
+  reduce(event, target, ...args) {
+    const subscribers = this.subscribers(event);
+    let result = target;
+    if (subscribers.length) {
+      const toClean = [];
+      let processed;
+      if (Array.isArray(target)) {
+        processed = target.slice();
+      } else if (typeof target === &apos;object&apos;) {
+        processed = Object.assign({}, target);
+      } else {
+        processed = target;
+      }
+
+      this.subscribers(event).forEach((subscriber) =&gt; {
+        processed = subscriber(...[processed, ...args]);
+        if (subscriber.once) {
+          toClean.push(subscriber);
+        }
+      });
+
+      toClean.forEach((subscriber) =&gt; this.off(event, subscriber));
+      result = processed;
+    }
+
+    return result;
+  }
+  /**
+   * Get all the listeners for an event.
+   * @param {String} event The name of the event.
+   * @return {Array}
+   */
+  subscribers(event) {
+    if (!this._events[event]) {
+      this._events[event] = [];
+    }
+
+    return this._events[event];
+  }
+}
+
+module.exports = EventsHub;
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.4)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

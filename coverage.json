@@ -1,0 +1,57 @@
+{
+  "coverage": "100%",
+  "expectCount": 91,
+  "actualCount": 91,
+  "files": {
+    "wootils/node/appConfiguration.js": {
+      "expectCount": 18,
+      "actualCount": 18,
+      "undocumentLines": []
+    },
+    "wootils/node/environmentUtils.js": {
+      "expectCount": 7,
+      "actualCount": 7,
+      "undocumentLines": []
+    },
+    "wootils/node/errorHandler.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "wootils/node/logger.js": {
+      "expectCount": 15,
+      "actualCount": 15,
+      "undocumentLines": []
+    },
+    "wootils/node/packageInfo.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "wootils/node/pathUtils.js": {
+      "expectCount": 13,
+      "actualCount": 13,
+      "undocumentLines": []
+    },
+    "wootils/node/rootRequire.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "wootils/shared/apiClient.js": {
+      "expectCount": 18,
+      "actualCount": 18,
+      "undocumentLines": []
+    },
+    "wootils/shared/deferred.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "wootils/shared/eventsHub.js": {
+      "expectCount": 9,
+      "actualCount": 9,
+      "undocumentLines": []
+    }
+  }
+}

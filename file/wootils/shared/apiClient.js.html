@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">wootils/shared/apiClient.js | wootils</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="A set of Javascript utilities for building Node and browser apps."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="wootils"><meta property="twitter:description" content="A set of Javascript utilities for building Node and browser apps."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/homer0/wootils"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#node">node</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/appConfiguration.js~AppConfiguration.html">AppConfiguration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/environmentUtils.js~EnvironmentUtils.html">EnvironmentUtils</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/errorHandler.js~ErrorHandler.html">ErrorHandler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/logger.js~Logger.html">Logger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appConfiguration">appConfiguration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appLoggerWithOptions">appLoggerWithOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-loggerWithOptions">loggerWithOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-packageInfo">packageInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pathUtilsWithHome">pathUtilsWithHome</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-rootRequire">rootRequire</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-environmentUtils">environmentUtils</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-errorHandler">errorHandler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-appLogger">appLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-logger">logger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-packageInfoProvider">packageInfoProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pathUtils">pathUtils</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-rootRequireProvider">rootRequireProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-AppConfigurationOptions">AppConfigurationOptions</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#shared">shared</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/shared/apiClient.js~APIClient.html">APIClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/shared/eventsHub.js~EventsHub.html">EventsHub</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-deferred">deferred</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-APIClientEndpoint">APIClientEndpoint</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-APIClientEndpoints">APIClientEndpoints</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-FetchClient">FetchClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-FetchOptions">FetchOptions</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">wootils/shared/apiClient.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const statuses = require(&apos;statuses&apos;);
+const urijs = require(&apos;urijs&apos;);
+/**
+ * @typedef {Function:(string,Object):Promise&lt;Object,Error&gt;} FetchClient
+ */
+
+/**
+ * @typedef {Object} FetchOptions
+ * @property {String} method  The request method.
+ * @property {Object} headers The request headers.
+ * @property {String} body    The request body.
+ */
+
+/**
+ * @typedef {Object} APIClientEndpoint
+ * @property {String}  path  The path to the endpoint relative to the API entry point. It can
+ *                           include placeholders with the format `:placeholder-name` that are
+ *                           going to be replaced when the endpoint gets generated.
+ * @property {?Object} query A dictionary of query string parameters that will be added when the
+ *                           endpoint. If the value of a parameter is `null`, it won&apos;t be added.
+ */
+
+/**
+ * @typedef {Object} APIClientEndpoints
+ * @property {string|APIClientEndpoints|APIClientEndpoint} [endpointName] A name for the endpoint
+ *                                                                        that will be used to
+ *                                                                        reference it on the
+ *                                                                        `endpoint(...)` method.
+ * @example
+ * {
+ *   // Endpoint path as a string.
+ *   endpointOne: &apos;endpoint-one&apos;,
+ *   // Endpoint as {APIClientEndpoint}.
+ *   endpointTwo: {
+ *     path: &apos;endpoint-two&apos;,
+ *     query: {
+ *       count: 20,
+ *     },
+ *   },
+ *   // Endpoint as a dictionary of endpoints ({APIClientEndpoints}).
+ *   endpointThree: {
+ *     subEndpointThreeOne: &apos;sub-endpoint-three-one&apos;,
+ *     subEndpointThreeTwo: {
+ *       path: &apos;sub-endpoint-three-two&apos;,
+ *       query: {
+ *         count: 20,
+ *       },
+ *     },
+ *   },
+ * }
+ */
+
+/**
+ * An API client with configurable endpoints.
+ */
+class APIClient {
+  /**
+   * Class constructor.
+   * @param {String}                  url                 The API entry point.
+   * @param {APIClientEndpoints}      endpoints           A dictionary of named endpoints relative
+   *                                                      to the API entry point.
+   * @param {FetchClient}             fetchClient         The fetch function that makes the
+   *                                                      requests.
+   * @param {Object}                  [defaultHeaders={}] A dictionary of default headers to
+   *                                                      include on every request.
+   */
+  constructor(url, endpoints, fetchClient, defaultHeaders = {}) {
+    /**
+     * The API entry point.
+     * @type {String}
+     */
+    this.url = url;
+    /**
+     * A dictionary of named endpoints relative to the API entry point.
+     * @type {Object}
+     * @property {string|APIClientEndpoint} [endpointName] The name of the endpoint.
+     */
+    this.endpoints = this.flattenEndpoints(endpoints);
+    /**
+     * The fetch function that makes the requests.
+     * @type {FetchClient}
+     */
+    this.fetchClient = fetchClient;
+    /**
+     * A dictionary of default headers to include on every request.
+     * @type {Object}
+     */
+    this.defaultHeaders = defaultHeaders;
+    /**
+     * An authorization token to include on the requests.
+     * @type {String}
+     */
+    this.authorizationToken = &apos;&apos;;
+  }
+  /**
+   * Taks a dictionary of endpoints and flatten them on a single level.
+   * @example
+   * console.log(APIClient.flattenEndpoints({
+   *   endpointOne: &apos;endpoint-one&apos;,
+   *   endpointTwo: {
+   *     path: &apos;endpoint-two&apos;,
+   *     query: {
+   *       count: 20,
+   *     },
+   *   },
+   *   endpointThree: {
+   *     subEndpointThreeOne: &apos;sub-endpoint-three-one&apos;,
+   *     subEndpointThreeTwo: {
+   *       path: &apos;sub-endpoint-three-two&apos;,
+   *       query: {
+   *         count: 20,
+   *       },
+   *     },
+   *   },
+   * }));
+   * // Will output
+   * {
+   *   endpointOne: &apos;endpoint-one&apos;,
+   *   endpointTwo: {
+   *     path: &apos;endpoint-two&apos;,
+   *     query: {
+   *       count: 20,
+   *     },
+   *   },
+   *   &apos;endpointThree.subEndpointThreeOne&apos;: &apos;sub-endpoint-three-one&apos;,
+   *   &apos;endpointThree.subEndpointThreeTwo&apos;: {
+   *       path: &apos;sub-endpoint-three-two&apos;,
+   *       query: {
+   *         count: 20,
+   *       },
+   *     },
+   *   },
+   * }
+   * @param {Object} endpoints   A dictionary of named endpoints.
+   * @param {String} [parent=&apos;&apos;] The parent key of the received endpoints. This is used when the
+   *                             method is calling itself recursively.
+   * @return {Object}
+   */
+  flattenEndpoints(endpoints, parent = &apos;&apos;) {
+    const parentKey = parent ? `${parent}.` : &apos;&apos;;
+    let result = {};
+    Object.keys(endpoints).forEach((name) =&gt; {
+      const value = endpoints[name];
+      const key = `${parentKey}${name}`;
+      if (typeof value === &apos;string&apos; || value.path) {
+        result[key] = value;
+      } else {
+        result = Object.assign({}, result, this.flattenEndpoints(value, key));
+      }
+    });
+
+    return result;
+  }
+  /**
+   * Sets the authorization token for the requests.
+   * @param {String} [token=&apos;&apos;] The new authorization token. If the value is empty, it won&apos;t be
+   *                            included on the requests.
+   */
+  setAuthorizationToken(token = &apos;&apos;) {
+    this.authorizationToken = token;
+  }
+  /**
+   * Sets the default headers for the requests.
+   * @param {Object}  [headers={}]     The new default headers.
+   * @param {Boolean} [overwrite=true] If `false`, it will merge the new default headers with
+   *                                   the current ones.
+   */
+  setDefaultHeaders(headers = {}, overwrite = true) {
+    this.defaultHeaders = Object.assign(
+      {},
+      (overwrite ? {} : this.defaultHeaders),
+      headers
+    );
+  }
+  /**
+   * Makes a `GET` request.
+   * @param {String}       url          The request URL.
+   * @param {FetchOptions} [options={}] The request options.
+   * @return {Promise&lt;Object,Error&gt;}
+   */
+  get(url, options = {}) {
+    return this.fetch(Object.assign({ url }, options));
+  }
+  /**
+   * Makes a `POST` request.
+   * @param {String}       url          The request URL.
+   * @param {Object}       body         The request body.
+   * @param {FetchOptions} [options={}] The request options.
+   * @return {Promise&lt;Object,Error&gt;}
+   */
+  post(url, body, options = {}) {
+    return this.fetch(Object.assign({
+      url,
+      body,
+      method: &apos;post&apos;,
+    }, options));
+  }
+  /**
+   * Makes a `PUT` request.
+   * @param {String}       url          The request URL.
+   * @param {Object}       body         The request body.
+   * @param {FetchOptions} [options={}] The request options.
+   * @return {Promise&lt;Object,Error&gt;}
+   */
+  put(url, body, options = {}) {
+    return this.post(url, body, Object.assign({}, options, { method: &apos;put&apos; }));
+  }
+  /**
+   * Makes a `DELETE` request.
+   * @param {String}       url          The request URL.
+   * @param {Object}       body         The request body.
+   * @param {FetchOptions} [options={}] The request options.
+   * @return {Promise&lt;Object,Error&gt;}
+   */
+  delete(url, body = {}, options = {}) {
+    return this.post(url, body, Object.assign({}, options, { method: &apos;delete&apos; }));
+  }
+  /**
+   * Generates an endpoint URL.
+   * @param {String} name            The name of the endpoint on the `endpoints` property.
+   * @param {Object} [parameters={}] A dictionary of values that will replace placeholders on the
+   *                                 endpoint definition.
+   * @return {String}
+   * @throws {Error} If the endpoint doesn&apos;t exist on the `endpoints` property.
+   */
+  endpoint(name, parameters = {}) {
+    // Get the endpoint information.
+    const info = this.endpoints[name];
+    // Validate that the endpoint exists.
+    if (!info) {
+      throw new Error(`Trying to request unknown endpoint: ${name}`);
+    }
+    // Get a new reference for the parameters.
+    const params = Object.assign({}, parameters);
+    // If the endpoint is a string, format it into an object with `path`.
+    const endpoint = typeof info === &apos;string&apos; ? { path: info } : info;
+    // Define the object that will have the query string.
+    const query = {};
+    // If the endpoint has a `query` property...
+    if (endpoint.query) {
+      // ...Loog all the query parameters.
+      Object.keys(endpoint.query).forEach((queryName) =&gt; {
+        // Get the defined value of the parameter.
+        const queryValue = endpoint.query[queryName];
+        // If there&apos;s a value of this parameter on the received `parameters`...
+        if (typeof params[queryName] !== &apos;undefined&apos;) {
+          // ...add it to the query dictionary.
+          query[queryName] = params[queryName];
+          // Remove the used parameter.
+          delete params[queryName];
+        } else if (queryValue !== null) {
+          // If the default value of the parameter is not `null`, use it.
+          query[queryName] = queryValue;
+        }
+      });
+    }
+    // Get the endpoint path.
+    let { path } = endpoint;
+    // Loop all the received `parameters`...
+    Object.keys(params).forEach((parameter) =&gt; {
+      // Build how a placeholder for this parameter would look like.
+      const placeholder = `:${parameter}`;
+      // Get the parameter value.
+      const value = params[parameter];
+      // If the path has the placeholder...
+      if (path.includes(placeholder)) {
+        // ...replace the placeholder with the value.
+        path = path.replace(placeholder, value);
+      } else {
+        // ...otherwise, add it on the query string.
+        query[parameter] = value;
+      }
+    });
+    // Convert the URL into a `urijs` object.
+    const uri = urijs(`${this.url}/${path}`);
+    // Loop and add all the query string parameters.
+    Object.keys(query).forEach((queryName) =&gt; {
+      uri.addQuery(queryName, query[queryName]);
+    });
+    // Return the `urijs` object as a string.
+    return uri.toString();
+  }
+  /**
+   * Generates a dictionary of headers using the service `defaultHeaders` property as base.
+   * If the service has an `authorizationToken`, it will be included as the `Authorization`
+   * header.
+   * @param {Object} [overwrites={}] Extra headers to add.
+   * @return {Object}
+   * @todo Bearer should be configurable when setting the token.
+   */
+  headers(overwrites = {}) {
+    const headers = Object.assign({}, this.defaultHeaders);
+    if (this.authorizationToken) {
+      headers.Authorization = `Bearer ${this.authorizationToken}`;
+    }
+
+    return Object.assign({}, headers, overwrites);
+  }
+  /**
+   * Makes a request.
+   * @param {Object} options         The request options.
+   * @param {String} options.url     The request URL.
+   * @param {String} options.method  The request method. `GET` by default.
+   * @param {Object} options.body    A request body to send.
+   * @param {Object} options.headers The request headers.
+   * @return {Promise&lt;Object,Error&gt;}
+   * @todo Add support for a `string` `body`.
+   */
+  fetch(options) {
+    // Get a new reference of the request options.
+    const opts = Object.assign({}, options);
+    // Format the request method and check if it should use the default.
+    opts.method = opts.method ? opts.method.toUpperCase() : &apos;GET&apos;;
+    // Get the request headers.
+    const headers = this.headers(opts.headers);
+    // This check is to avoid pushing an empty object on the request options.
+    if (Object.keys(headers).length) {
+      opts.headers = headers;
+    }
+    // Get the request URL.
+    const { url } = opts;
+    // Remove the URL from the options in order to make it a valid FetchOptions object.
+    delete opts.url;
+    // If the options include a body...
+    if (opts.body) {
+      // ...encode it.
+      opts.body = JSON.stringify(opts.body);
+      // Push an empty object if there are no headers...
+      if (!opts.headers) {
+        opts.headers = {};
+      }
+      // ...in order to add the `Content-Type` header.
+      opts.headers[&apos;Content-Type&apos;] = &apos;application/json&apos;;
+    }
+
+    let responseStatus;
+    // Make the request.
+    return this.fetchClient(url, opts)
+    .then((response) =&gt; {
+      // Capture the response status.
+      responseStatus = response.status;
+      // If the response supports `json()`, decode it, otherwise return the same response.
+      return response.json ? response.json() : response;
+    })
+    .then((response) =&gt; (
+      /**
+       * If the response status is from an Error, format and return the error; otherwise, return
+       * the same response.
+       */
+      responseStatus &gt;= statuses[&apos;Bad Request&apos;] ?
+        Promise.reject(this.error(response, responseStatus)) :
+        response
+    ));
+  }
+  /**
+   * Formats an error response into a proper Error object.
+   * @param {Object} response A received response from a request.
+   * @return {Error}
+   */
+  error(response) {
+    return new Error(response.error);
+  }
+}
+
+module.exports = APIClient;
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.4)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

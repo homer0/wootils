@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">wootils/node/logger.js | wootils</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="A set of Javascript utilities for building Node and browser apps."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="wootils"><meta property="twitter:description" content="A set of Javascript utilities for building Node and browser apps."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/homer0/wootils"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#node">node</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/appConfiguration.js~AppConfiguration.html">AppConfiguration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/environmentUtils.js~EnvironmentUtils.html">EnvironmentUtils</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/errorHandler.js~ErrorHandler.html">ErrorHandler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/logger.js~Logger.html">Logger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appConfiguration">appConfiguration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appLoggerWithOptions">appLoggerWithOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-loggerWithOptions">loggerWithOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-packageInfo">packageInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pathUtilsWithHome">pathUtilsWithHome</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-rootRequire">rootRequire</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-environmentUtils">environmentUtils</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-errorHandler">errorHandler</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-appLogger">appLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-logger">logger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-packageInfoProvider">packageInfoProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pathUtils">pathUtils</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-rootRequireProvider">rootRequireProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-AppConfigurationOptions">AppConfigurationOptions</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#shared">shared</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/shared/apiClient.js~APIClient.html">APIClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/shared/eventsHub.js~EventsHub.html">EventsHub</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-deferred">deferred</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-APIClientEndpoint">APIClientEndpoint</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-APIClientEndpoints">APIClientEndpoints</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-FetchClient">FetchClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-FetchOptions">FetchOptions</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">wootils/node/logger.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const colors = require(&apos;colors/safe&apos;);
+const { provider } = require(&apos;jimple&apos;);
+/**
+ * A utility service to log messages on the console.
+ */
+class Logger {
+  /**
+   * Class constructor.
+   * @param {String}  [messagesPrefix=&apos;&apos;] A prefix to include in front of all the messages.
+   * @param {Boolean} [showTime=false]    Whether or not to show the time on each message.
+   */
+  constructor(messagesPrefix = &apos;&apos;, showTime = false) {
+    /**
+     * The prefix to include in front of all the messages.
+     * @type {String}
+     */
+    this.messagesPrefix = messagesPrefix;
+    /**
+     * Whether or not to show the time on each message.
+     * @type {Boolean}
+     */
+    this.showTime = showTime;
+  }
+  /**
+   * Logs a warning (yellow) message or messages on the console.
+   * @param {String|Array} message A single message of a list of them. See the `log()` documentation
+   *                               to see all the supported properties for the `message` parameter.
+   */
+  warning(message) {
+    this.log(message, &apos;yellow&apos;);
+  }
+  /**
+   * Logs a success (green) message or messages on the console.
+   * @param {String|Array} message A single message of a list of them. See the `log()` documentation
+   *                               to see all the supported properties for the `message` parameter.
+   */
+  success(message) {
+    this.log(message, &apos;green&apos;);
+  }
+  /**
+   * Logs an error (red) message or messages on the console.
+   * @param {String|Array|Error} message          A single message of a list of them. See the
+   *                                              `log()` documentation to see all the supported
+   *                                              properties for the `message` parameter. Different
+   *                                              from the other log methods, you can use an
+   *                                              `Error` object and the method will take care of
+   *                                              extracting the message and the stack information.
+   * @param {Object}             [exception=null] If the exception has a `stack` property, the
+   *                                              method will log each of the stack calls using
+   *                                              `info()`.
+   */
+  error(message, exception = null) {
+    if (message instanceof Error) {
+      this.error(message.message, message);
+    } else {
+      this.log(message, &apos;red&apos;);
+      if (exception) {
+        if (exception.stack) {
+          const stack = exception.stack
+          .split(&apos;\n&apos;)
+          .map((line) =&gt; line.trim());
+
+          stack.splice(0, 1);
+          this.info(stack);
+        } else {
+          this.log(exception);
+        }
+      }
+    }
+  }
+  /**
+   * Logs an information (gray) message or messages on the console.
+   * @param {String|Array} message A single message of a list of them. See the `log()` documentation
+   *                               to see all the supported properties for the `message` parameter.
+   */
+  info(message) {
+    this.log(message, &apos;grey&apos;);
+  }
+  /**
+   * Logs a message with an specific color on the console.
+   * @example
+   * // Simple
+   * CLILogger.log(&apos;hello world&apos;);
+   * // Custom color
+   * CLILogger.log(&apos;It was the shadow who did it&apos;, &apos;red&apos;);
+   * // A list of messages all the same color
+   * CLILogger.log([&apos;Ph\&apos;nglu&apos;, &apos;mglw\&apos;nafh&apos;], &apos;grey&apos;);
+   * // A list of messages with different colors per line
+   * CLILogger.log([
+   *     &apos;Ph\&apos;nglu&apos;,
+   *     &apos;mglw\&apos;nafh&apos;,
+   *     [&apos;Cthulhu&apos;, &apos;green&apos;],
+   *     [&apos;R\&apos;lyeh wgah\&apos;nagl fhtagn&apos;, &apos;red&apos;]
+   * ], &apos;grey&apos;);
+   *
+   * @param {String|Array} message A text message to log or a list of them.
+   * @param {String}       color   Optional. The color of the message (the default is &apos;white&apos;).
+   *                               This can be overwritten line by line when the message is an
+   *                               array, take a look at the example.
+   */
+  log(message, color = &apos;raw&apos;) {
+    const lines = [];
+    if (Array.isArray(message)) {
+      message.forEach((line) =&gt; {
+        if (Array.isArray(line)) {
+          lines.push(this._color(line[1])(this.prefix(line[0])));
+        } else {
+          lines.push(this._color(color)(this.prefix(line)));
+        }
+      });
+    } else {
+      lines.push(this._color(color)(this.prefix(message)));
+    }
+
+    // eslint-disable-next-line no-console
+    lines.forEach((line) =&gt; console.log(line));
+  }
+  /**
+   * Prefixes a message with the text sent to the constructor and, if enabled, the current time.
+   * @param {String} text The text that needs the prefix.
+   * @return {String}
+   */
+  prefix(text) {
+    // Define the list of things that will compose the formatted text.
+    const parts = [];
+    // If a prefix was set on the constructor...
+    if (this.messagesPrefix) {
+      // ...add it as first element.
+      parts.push(`[${this.messagesPrefix}]`);
+    }
+    // If the `showTime` setting is enabled...
+    if (this.showTime) {
+      // ...add the current time to the list.
+      const time = new Date()
+      .toISOString()
+      .replace(/T/, &apos; &apos;)
+      .replace(/\..+/, &apos;&apos;);
+
+      parts.push(`[${time}]`);
+    }
+    // Add the original text.
+    parts.push(text);
+    // Join the list into a single text message.
+    return parts.join(&apos; &apos;).trim();
+  }
+  /**
+   * Gets a function to modify the color of a string. The reason for this _&quot;proxy method&quot;_ is that
+   * the `colors` module doesn&apos;t have a `raw` option and the alternative would&apos;ve been adding a few
+   * `if`s on the `log` method.
+   * @param {String} name The name of the color.
+   * @return {Function} A function that receives a string and returns it colored.
+   * @ignore
+   * @access protected
+   */
+  _color(name) {
+    return name === &apos;raw&apos; ? ((str) =&gt; str) : colors[name];
+  }
+}
+/**
+ * Generates a `Provider` with an already defined message prefix and time setting.
+ * @example
+ * // Generate the provider
+ * const provider = loggerWithOptions(&apos;my-prefix&apos;, true);
+ * // Register it on the container
+ * container.register(provider);
+ * // Getting access to the service instance
+ * const logger = container.get(&apos;logger&apos;);
+ * @param {String}  messagesPrefix A prefix to include in front of all the messages.
+ * @param {Boolean} showTime       Whether or not to show the time on each message.
+ * @return {Provider}
+ */
+const loggerWithOptions = (messagesPrefix, showTime) =&gt; provider((app) =&gt; {
+  app.set(&apos;logger&apos;, () =&gt; new Logger(messagesPrefix, showTime));
+});
+/**
+ * The service provider that once registered on the app container will set an instance of
+ * `Logger` as the `logger` service.
+ * @example
+ * // Register it on the container
+ * container.register(logger);
+ * // Getting access to the service instance
+ * const logger = container.get(&apos;logger&apos;);
+ * @type {Provider}
+ */
+const logger = loggerWithOptions();
+/**
+ * Generates a `Provider` with an already defined time setting and that uses the `packageInfo`
+ * service in order to retrieve the name of the project and use it as messages prefix.
+ * @param {Boolean} showTime Whether or not to show the time on each message.
+ * @return {Provider}
+ */
+const appLoggerWithOptions = (showTime) =&gt; provider((app) =&gt; {
+  app.set(&apos;appLogger&apos;, () =&gt; {
+    const packageInfo = app.get(&apos;packageInfo&apos;);
+    const prefix = packageInfo.nameForCLI || packageInfo.name;
+    return new Logger(prefix, showTime);
+  });
+});
+/**
+ * The service provider that once registered on the app container will set an instance of
+ * `Logger` as the `appLogger` service. The difference with the regular `logger` is that this one
+ * uses the `packageInfo` service in order to retrieve the name of the project and use it as
+ * messages prefix.
+ * @example
+ * // Register it on the container
+ * container.register(appLogger);
+ * // Getting access to the service instance
+ * const appLogger = container.get(&apos;appLogger&apos;);
+ * @type {Provider}
+ */
+const appLogger = appLoggerWithOptions();
+
+module.exports = {
+  Logger,
+  loggerWithOptions,
+  logger,
+  appLoggerWithOptions,
+  appLogger,
+};
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.4)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
