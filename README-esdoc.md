@@ -15,7 +15,7 @@ There are two rules I followed when I had to decide what to put and what to keep
 
 | -            | -                                                                  |
 |--------------|--------------------------------------------------------------------|
-| Package      | wootiles                                                           |
+| Package      | wootils                                                            |
 | Description  | A set of Javascript utilities for building Node and browser apps.  |
 | Node Version | >= v6.10.0                                                         |
 
@@ -131,4 +131,4 @@ I use [ESDoc](http://esdoc.org) to generate HTML documentation for the project. 
 
 ### To-Dos
 
-I use `@todo` comments to write all the pending improvements and fixes and [Leasot](https://yarnpkg.com/en/package/leasot) to generate a report. The script that runs it is on `./utils/scripts/todo`.
+I use `@todo` comments to write all the pending improvements and fixes, and [Leasot](https://yarnpkg.com/en/package/leasot) to generate a report. The script that runs it is on `./utils/scripts/todo`.
