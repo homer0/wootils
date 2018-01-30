@@ -36,13 +36,16 @@ describe('PathUtils', () => {
     let sut = null;
     let homePath = null;
     let appPath = null;
+    // The `substr` is to remove the leading `/`
+    const thisfilePath = __dirname.substr(1);
+    const expectedAppPath = `${home}${thisfilePath}/`;
     // When
     sut = new PathUtils();
     homePath = sut.home;
     appPath = sut.app;
     // Then
     expect(homePath).toBe(home);
-    expect(appPath).toBe(home);
+    expect(appPath).toBe(expectedAppPath);
   });
 
   it('should be able to be instantiated with a custom home/base ', () => {

@@ -100,7 +100,10 @@ class PathUtils {
    */
   _addAppLocation() {
     let current = module;
-    while (current.parent) {
+    while (
+      current.parent &&
+      current.parent.filename !== current.filename
+    ) {
       current = current.parent;
     }
 
