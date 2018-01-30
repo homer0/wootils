@@ -720,6 +720,30 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "wootils/node/typedef.js",
+    "file/wootils/node/typedef.js.html",
+    "wootils/node/typedef.js",
+    "file"
+  ],
+  [
+    "wootils/node/typedef.js~jimple",
+    "https://yarnpkg.com/en/package/jimple",
+    "wootils/node/typedef.js~Jimple",
+    "external"
+  ],
+  [
+    "wootils/node/typedef.js~provider",
+    "typedef/index.html#static-typedef-Provider",
+    "wootils/node/typedef.js~Provider",
+    "typedef"
+  ],
+  [
+    "wootils/node/typedef.js~providerregistermethod",
+    "typedef/index.html#static-typedef-ProviderRegisterMethod",
+    "wootils/node/typedef.js~ProviderRegisterMethod",
+    "typedef"
+  ],
+  [
     "wootils/shared/apiclient.js",
     "file/wootils/shared/apiClient.js.html",
     "wootils/shared/apiClient.js",
