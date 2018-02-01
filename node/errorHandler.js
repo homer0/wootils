@@ -88,17 +88,19 @@ class ErrorHandler {
  * @return {Provider}
  */
 const errorHandlerWithOptions = (exitOnError) => provider((app) => {
-  let logger = null;
-  try {
-    logger = app.get('logger');
-  } catch (ignore) {
-    logger = app.get('appLogger');
-  }
+  app.set('errorHandler', () => {
+    let logger = null;
+    try {
+      logger = app.get('logger');
+    } catch (ignore) {
+      logger = app.get('appLogger');
+    }
 
-  app.set('errorHandler', () => new ErrorHandler(
-    logger,
-    exitOnError
-  ));
+    return new ErrorHandler(
+      logger,
+      exitOnError
+    );
+  });
 });
 /**
  * The service provider that once registered on the app container will set an instance of
