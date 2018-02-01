@@ -9,31 +9,65 @@ const {
 const { provider } = require('jimple');
 
 const originalProcessOn = process.on;
+const originalProcessRemoveListener = process.removeListener;
 const originalExit = process.exit;
 
 describe('ErrorHandler', () => {
   afterEach(() => {
     process.on = originalProcessOn;
+    process.removeListener = originalProcessRemoveListener;
     process.exit = originalExit;
   });
 
-  it('should add the listener for uncaught and rejected exceptions', () => {
+  it('should add the listeners for uncaught and rejected exceptions', () => {
     // Given
     const onMock = jest.fn();
     process.on = onMock;
-    let handler = null;
+    let sut = null;
     // When
-    handler = new ErrorHandler();
-    handler.listen();
+    sut = new ErrorHandler();
+    sut.listen();
     // Then
     expect(onMock).toHaveBeenCalledTimes(2);
     expect(onMock).toHaveBeenCalledWith(
       'uncaughtException',
-      expect.any(Function)
+      sut.handler
     );
     expect(onMock).toHaveBeenCalledWith(
       'unhandledRejection',
-      expect.any(Function)
+      sut.handler
+    );
+  });
+
+  it('should add and remove the listeners for uncaught and rejected exceptions', () => {
+    // Given
+    const onMock = jest.fn();
+    process.on = onMock;
+    const removeListenerMock = jest.fn();
+    process.removeListener = removeListenerMock;
+    let sut = null;
+    // When
+    sut = new ErrorHandler();
+    sut.listen();
+    sut.stopListening();
+    // Then
+    expect(onMock).toHaveBeenCalledTimes(2);
+    expect(onMock).toHaveBeenCalledWith(
+      'uncaughtException',
+      sut.handler
+    );
+    expect(onMock).toHaveBeenCalledWith(
+      'unhandledRejection',
+      sut.handler
+    );
+    expect(removeListenerMock).toHaveBeenCalledTimes(2);
+    expect(removeListenerMock).toHaveBeenCalledWith(
+      'uncaughtException',
+      sut.handler
+    );
+    expect(removeListenerMock).toHaveBeenCalledWith(
+      'unhandledRejection',
+      sut.handler
     );
   });
 
@@ -47,10 +81,10 @@ describe('ErrorHandler', () => {
       error: logMock,
     };
     const exception = new Error('ORDER 66');
-    let handler = null;
+    let sut = null;
     // When
-    handler = new ErrorHandler(appLogger);
-    handler.handle(exception);
+    sut = new ErrorHandler(appLogger);
+    sut.handle(exception);
     // Then
     expect(logMock).toHaveBeenCalledTimes(1);
     expect(logMock).toHaveBeenCalledWith(exception);
@@ -68,10 +102,10 @@ describe('ErrorHandler', () => {
       error: logMock,
     };
     const exception = new Error('ORDER 66');
-    let handler = null;
+    let sut = null;
     // When
-    handler = new ErrorHandler(appLogger);
-    handler.handle(exception);
+    sut = new ErrorHandler(appLogger);
+    sut.handle(exception);
     // Then
     expect(logMock).toHaveBeenCalledTimes(1);
     expect(logMock).toHaveBeenCalledWith(

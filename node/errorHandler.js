@@ -15,14 +15,35 @@ class ErrorHandler {
      * @type {Logger}
      */
     this.appLogger = appLogger;
+    /**
+     * The list of events this handler will listen for in order to catch errors.
+     * @type {Array}
+     */
+    this.eventsNames = [
+      'uncaughtException',
+      'unhandledRejection',
+    ];
+    /**
+     * Bind the handler method so it can be used on the calls to `process`.
+     * @ignore
+     */
+    this.handler = this.handle.bind(this);
   }
   /**
    * Starts listening for unhandled errors.
    */
   listen() {
-    const handler = this.handle.bind(this);
-    process.on('uncaughtException', handler);
-    process.on('unhandledRejection', handler);
+    this.eventsNames.forEach((eventName) => {
+      process.on(eventName, this.handler);
+    });
+  }
+  /**
+   * Stops listening for unhandled errors.
+   */
+  stopListening() {
+    this.eventsNames.forEach((eventName) => {
+      process.removeListener(eventName, this.handler);
+    });
   }
   /**
    * This is called by the process listeners when an uncaught exception is thrown or a rejected
