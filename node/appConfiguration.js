@@ -3,16 +3,16 @@ const extend = require('extend');
 const { provider } = require('jimple');
 /**
  * @typedef {Object} AppConfigurationOptions
- * @property {String} [defaultConfigurationName='default']           The name of the default
+ * @property {string} [defaultConfigurationName='default']           The name of the default
  *                                                                   configuration
- * @property {String} [environmentVariable='APP_CONFIG']             The name of the variable it
+ * @property {string} [environmentVariable='APP_CONFIG']             The name of the variable it
  *                                                                   will read in order to
  *                                                                   determine which configuration
  *                                                                   to load
- * @property {String} [path='./config/[app-name]']                   The path to the configurations
+ * @property {string} [path='./config/[app-name]']                   The path to the configurations
  *                                                                   directory, relative to the
  *                                                                   project root path.
- * @property {String} [filenameFormat='[app-name].[name].config.js'] The name format of the
+ * @property {string} [filenameFormat='[app-name].[name].config.js'] The name format of the
  *                                                                   configuration files. You
  *                                                                   need to use the `[name]`
  *                                                                   placeholder so the service
@@ -33,7 +33,7 @@ class AppConfiguration {
    * @param {Function}                rootRequire               Necessary to be able to require the
    *                                                            configuration files with paths
    *                                                            relative to the app root directory.
-   * @param {String}                  [appName='app']           The name of the app using this
+   * @param {string}                  [appName='app']           The name of the app using this
    *                                                            service.
    *                                                            It's also used as part of the name
    *                                                            of the configuration files.
@@ -79,20 +79,20 @@ class AppConfiguration {
     };
     /**
      * The name of the active configuration.
-     * @type {String}
+     * @type {string}
      */
     this.activeConfiguration = this.options.defaultConfigurationName;
     /**
      * Whether or not the configuration can be switched.
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.allowConfigurationSwitch = !!this.get('allowConfigurationSwitch');
   }
   /**
    * Load a new configuration.
-   * @param {String}  name            The configuration name.
+   * @param {string}  name            The configuration name.
    * @param {Object}  settings        The configuration settings.
-   * @param {Boolean} [switchTo=true] If the service should switch to the new configuration after
+   * @param {boolean} [switchTo=true] If the service should switch to the new configuration after
    *                                  adding it.
    * @return {Object} The settings of the new configuration.
    * @throws {Error} If the configuration tries to extend a configuration that doesn't exist.
@@ -120,10 +120,10 @@ class AppConfiguration {
   }
   /**
    * Load a configuration from a file.
-   * @param {String}  name                   The name of the configuration.
-   * @param {Boolean} [switchTo=true]        If the service should switch to the new configuration
+   * @param {string}  name                   The name of the configuration.
+   * @param {boolean} [switchTo=true]        If the service should switch to the new configuration
    *                                         after adding it.
-   * @param {Boolean} [checkSwitchFlag=true] If `true`, the service will update the value of
+   * @param {boolean} [checkSwitchFlag=true] If `true`, the service will update the value of
    *                                         `allowConfigurationSwitch` based on the loaded
    *                                         configuration setting.
    * @return {Object} The settings of the loaded configuration.
@@ -174,7 +174,7 @@ class AppConfiguration {
   /**
    * Get a configuration settings. If no name is specified, it will return the settings of the
    * default configuration.
-   * @param {String} [name=''] The name of the configuration.
+   * @param {string} [name=''] The name of the configuration.
    * @return {Object}
    */
   getConfig(name = '') {
@@ -187,7 +187,7 @@ class AppConfiguration {
    * const value = appConfiguration.get('some-setting');
    * // To get multiple values
    * const {settingOne, settingTwo} = appConfiguration.get(['settingOne', 'settingTwo']);
-   * @param {String|Array} setting The name of a setting or a list of them.
+   * @param {string|Array} setting The name of a setting or a list of them.
    * @return {*}
    */
   get(setting) {
@@ -217,7 +217,7 @@ class AppConfiguration {
    *   settingOne: 'valueOne',
    *   settingTwo: 'valueTwo',
    * })
-   * @param {String|Object} setting The name of the setting to update or a dictionary of settings
+   * @param {string|Object} setting The name of the setting to update or a dictionary of settings
    *                                and their values.
    * @param {*}             value   The value of the setting. This is only used when `setting` is
    *                                a string.
@@ -241,7 +241,7 @@ class AppConfiguration {
   }
   /**
    * Check whether the service can switch configurations or not.
-   * @return {Boolean}
+   * @return {boolean}
    */
   canSwitch() {
     return this.allowConfigurationSwitch;
@@ -249,8 +249,8 @@ class AppConfiguration {
   /**
    * Switch to a different configuration. If the configuration is not registered, it will try to
    * load from a file.
-   * @param {String}  name          The new of the configuration to switch to.
-   * @param {Boolean} [force=false] A way to force the service to switch even if the
+   * @param {string}  name          The new of the configuration to switch to.
+   * @param {boolean} [force=false] A way to force the service to switch even if the
    *                                `allowConfigurationSwitch` property if `false`.
    * @return {Object} The new active configuration.
    * @throws {Error} If `force` is `false` and the `allowConfigurationSwitch` property is `false`.
@@ -268,11 +268,11 @@ class AppConfiguration {
   }
   /**
    * Add a new configuration to the service.
-   * @param {String}  name            The name of the new configuration.
+   * @param {string}  name            The name of the new configuration.
    * @param {Object}  settings        The configuration settings.
-   * @param {Boolean} checkSwitchFlag Whether or not the `allowConfigurationSwitch` should be
+   * @param {boolean} checkSwitchFlag Whether or not the `allowConfigurationSwitch` should be
    *                                  updated with the value of this new configuration setting.
-   * @param {Boolean} switchTo        Whether or not to switch it to the active configuration
+   * @param {boolean} switchTo        Whether or not to switch it to the active configuration
    *                                  after adding it.
    * @ignore
    * @access protected
@@ -302,7 +302,7 @@ class AppConfiguration {
  * container.register(provider);
  * // Getting access to the service instance
  * const appConfiguration = container.get('appConfiguration');
- * @param {String} appName              The name of the app.
+ * @param {string} appName              The name of the app.
  * @param {Object} defaultConfiguration The service default configuration.
  * @param {Object} options              Options to customize the service.
  * @return {Provider}
