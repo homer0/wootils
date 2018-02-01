@@ -88,8 +88,15 @@ class ErrorHandler {
  * @return {Provider}
  */
 const errorHandlerWithOptions = (exitOnError) => provider((app) => {
+  let logger = null;
+  try {
+    logger = app.get('logger');
+  } catch (ignore) {
+    logger = app.get('appLogger');
+  }
+
   app.set('errorHandler', () => new ErrorHandler(
-    app.get('appLogger'),
+    logger,
     exitOnError
   ));
 });
@@ -102,7 +109,6 @@ const errorHandlerWithOptions = (exitOnError) => provider((app) => {
  * // Getting access to the service instance
  * const errorHandler = container.get('errorHandler');
  * @type {Provider}
- * @todo It should fallback to `appLogger` if `logger` is not registered.
  */
 const errorHandler = errorHandlerWithOptions();
 

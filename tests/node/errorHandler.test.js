@@ -159,6 +159,37 @@ describe('ErrorHandler', () => {
     expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(ErrorHandler);
     expect(container.get).toHaveBeenCalledTimes(1);
+    expect(container.get).toHaveBeenCalledWith('logger');
+  });
+
+  it('should fallback to the appLogger if logger is not available on the container', () => {
+    // Given
+    const container = {
+      set: jest.fn(),
+      get: jest.fn((dependency) => {
+        if (dependency === 'logger') {
+          throw new Error();
+        }
+
+        return dependency;
+      }),
+    };
+    let sut = null;
+    let serviceProvider = null;
+    let serviceName = null;
+    let serviceFn = null;
+    // When
+    [[serviceProvider]] = provider.mock.calls;
+    serviceProvider(container);
+    [[serviceName, serviceFn]] = container.set.mock.calls;
+    sut = serviceFn();
+    // Then
+    expect(errorHandler).toBe('provider');
+    expect(provider).toHaveBeenCalledTimes(1);
+    expect(serviceName).toBe('errorHandler');
+    expect(serviceFn).toBeFunction();
+    expect(sut).toBeInstanceOf(ErrorHandler);
+    expect(container.get).toHaveBeenCalledTimes(['logger', 'appLogger'].length);
     expect(container.get).toHaveBeenCalledWith('appLogger');
   });
 
@@ -191,6 +222,6 @@ describe('ErrorHandler', () => {
     expect(sut).toBeInstanceOf(ErrorHandler);
     expect(sut.exitOnError).toBe(exitOnError);
     expect(container.get).toHaveBeenCalledTimes(1);
-    expect(container.get).toHaveBeenCalledWith('appLogger');
+    expect(container.get).toHaveBeenCalledWith('logger');
   });
 });
