@@ -307,17 +307,21 @@ describe('Logger', () => {
     const container = {
       set: jest.fn(),
     };
+    let sut = null;
+    let serviceProvider = null;
+    let serviceName = null;
+    let serviceFn = null;
     // When
-    provider.mock.calls[0][0](container);
+    [[serviceProvider]] = provider.mock.calls;
+    serviceProvider(container);
+    [[serviceName, serviceFn]] = container.set.mock.calls;
+    sut = serviceFn();
     // Then
     expect(logger).toBe('provider');
-    // - `logger` and `appLogger`
-    const twice = 2;
-    expect(provider).toHaveBeenCalledTimes(twice);
-    expect(container.set).toHaveBeenCalledTimes(1);
-    expect(container.set.mock.calls[0][0]).toBe('logger');
-    expect(container.set.mock.calls[0][1]).toBeFunction();
-    expect(container.set.mock.calls[0][1]()).toBeInstanceOf(Logger);
+    expect(provider).toHaveBeenCalledTimes(['logger', 'appLogger'].length);
+    expect(serviceName).toBe('logger');
+    expect(serviceFn).toBeFunction();
+    expect(sut).toBeInstanceOf(Logger);
   });
 
   it('should have a Jimple provider to register app logger using the package name', () => {
@@ -328,16 +332,19 @@ describe('Logger', () => {
       get: jest.fn(() => ({ name: appName })),
     };
     let sut = null;
+    let serviceProvider = null;
+    let serviceName = null;
+    let serviceFn = null;
     // When
-    provider.mock.calls[1][0](container);
+    [, [serviceProvider]] = provider.mock.calls;
+    serviceProvider(container);
+    [[serviceName, serviceFn]] = container.set.mock.calls;
+    sut = serviceFn();
     // Then
     expect(appLogger).toBe('provider');
-    const twice = 2; // `logger` and `appLogger`
-    expect(provider).toHaveBeenCalledTimes(twice);
-    expect(container.set).toHaveBeenCalledTimes(1);
-    expect(container.set.mock.calls[0][0]).toBe('appLogger');
-    expect(container.set.mock.calls[0][1]).toBeFunction();
-    sut = container.set.mock.calls[0][1]();
+    expect(provider).toHaveBeenCalledTimes(['logger', 'appLogger'].length);
+    expect(serviceName).toBe('appLogger');
+    expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(Logger);
     expect(sut.messagesPrefix).toBe(appName);
   });
@@ -350,16 +357,19 @@ describe('Logger', () => {
       get: jest.fn(() => ({ name: 'appName', nameForCLI })),
     };
     let sut = null;
+    let serviceProvider = null;
+    let serviceName = null;
+    let serviceFn = null;
     // When
-    provider.mock.calls[1][0](container);
+    [, [serviceProvider]] = provider.mock.calls;
+    serviceProvider(container);
+    [[serviceName, serviceFn]] = container.set.mock.calls;
+    sut = serviceFn();
     // Then
     expect(appLogger).toBe('provider');
-    const twice = 2; // `logger` and `appLogger`
-    expect(provider).toHaveBeenCalledTimes(twice);
-    expect(container.set).toHaveBeenCalledTimes(1);
-    expect(container.set.mock.calls[0][0]).toBe('appLogger');
-    expect(container.set.mock.calls[0][1]).toBeFunction();
-    sut = container.set.mock.calls[0][1]();
+    expect(provider).toHaveBeenCalledTimes(['logger', 'appLogger'].length);
+    expect(serviceName).toBe('appLogger');
+    expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(Logger);
     expect(sut.messagesPrefix).toBe(nameForCLI);
   });

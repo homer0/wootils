@@ -32,20 +32,26 @@ describe('rootRequire', () => {
       get: jest.fn(() => pathUtils),
     };
     let sut = null;
+    let serviceProvider = null;
+    let serviceName = null;
+    let serviceFn = null;
     let result = null;
     // When
-    provider.mock.calls[0][0](container);
+    [[serviceProvider]] = provider.mock.calls;
+    serviceProvider(container);
+    [[serviceName, serviceFn]] = container.set.mock.calls;
+    sut = serviceFn();
+    result = sut('node/providers');
     // Then
     expect(rootRequireProvider).toBe('provider');
     expect(provider).toHaveBeenCalledTimes(1);
     expect(container.set).toHaveBeenCalledTimes(1);
-    expect(container.set.mock.calls[0][0]).toBe('rootRequire');
-    expect(container.set.mock.calls[0][1]).toBeFunction();
-    sut = container.set.mock.calls[0][1]();
+    expect(serviceName).toBe('rootRequire');
+    expect(serviceFn).toBeFunction();
     expect(sut).toBeFunction();
-    result = sut('node/providers');
     // eslint-disable-next-line global-require,import/no-dynamic-require
     expect(result).toEqual(require('/node/providers'));
     expect(container.get).toHaveBeenCalledTimes(1);
+    expect(container.get).toHaveBeenCalledWith('pathUtils');
   });
 });

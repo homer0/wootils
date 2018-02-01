@@ -84,7 +84,7 @@ class ErrorHandler {
 /**
  * Generates a `Provider` with an already defined flag to exit or not the process when after
  * handling an error.
- * @param {boolean} [showTime] Whether or not to exit the process after receiving an error.
+ * @param {boolean} [exitOnError] Whether or not to exit the process after receiving an error.
  * @return {Provider}
  */
 const errorHandlerWithOptions = (exitOnError) => provider((app) => {

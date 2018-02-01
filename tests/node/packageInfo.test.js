@@ -49,17 +49,22 @@ describe('packageInfo', () => {
       get: jest.fn(() => pathUtils),
     };
     let sut = null;
+    let serviceProvider = null;
+    let serviceName = null;
+    let serviceFn = null;
     fs.readJsonSync.mockReturnValueOnce(mockedPackage);
     // When
-    provider.mock.calls[0][0](container);
+    [[serviceProvider]] = provider.mock.calls;
+    serviceProvider(container);
+    [[serviceName, serviceFn]] = container.set.mock.calls;
+    sut = serviceFn();
     // Then
     expect(packageInfoProvider).toBe('provider');
     expect(provider).toHaveBeenCalledTimes(1);
-    expect(container.set).toHaveBeenCalledTimes(1);
-    expect(container.set.mock.calls[0][0]).toBe('packageInfo');
-    expect(container.set.mock.calls[0][1]).toBeFunction();
-    sut = container.set.mock.calls[0][1]();
+    expect(serviceName).toBe('packageInfo');
+    expect(serviceFn).toBeFunction();
     expect(sut).toEqual(mockedPackage);
     expect(container.get).toHaveBeenCalledTimes(1);
+    expect(container.get).toHaveBeenCalledWith('pathUtils');
   });
 });
