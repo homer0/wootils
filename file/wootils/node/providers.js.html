@@ -35,6 +35,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/logger.js~Logger.html">Logger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appConfiguration">appConfiguration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-errorHandlerWithOptions">errorHandlerWithOptions</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appLoggerWithOptions">appLoggerWithOptions</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-loggerWithOptions">loggerWithOptions</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-packageInfo">packageInfo</a></span></span></li>
@@ -65,7 +66,7 @@
 <div class="content" data-ice="content"><h1 data-ice="title">wootils/node/providers.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const { appConfiguration } = require(&apos;./appConfiguration&apos;);
 const { environmentUtils } = require(&apos;./environmentUtils&apos;);
-const { errorHandler } = require(&apos;./errorHandler&apos;);
+const { errorHandlerWithOptions, errorHandler } = require(&apos;./errorHandler&apos;);
 const {
   loggerWithOptions,
   logger,
@@ -79,6 +80,7 @@ const { rootRequireProvider } = require(&apos;./rootRequire&apos;);
 module.exports = {
   appConfiguration,
   environmentUtils,
+  errorHandlerWithOptions,
   errorHandler,
   loggerWithOptions,
   logger,

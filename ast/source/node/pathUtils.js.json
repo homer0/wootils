@@ -1,28 +1,28 @@
 {
   "type": "File",
   "start": 0,
-  "end": 4084,
+  "end": 4145,
   "loc": {
     "start": {
       "line": 1,
       "column": 0
     },
     "end": {
-      "line": 142,
+      "line": 143,
       "column": 0
     }
   },
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 4084,
+    "end": 4145,
     "loc": {
       "start": {
         "line": 1,
         "column": 0
       },
       "end": {
-        "line": 142,
+        "line": 143,
         "column": 0
       }
     },
@@ -507,7 +507,7 @@
                     "leadingComments": [
                       {
                         "type": "CommentBlock",
-                        "value": "*\n     * The root path from where the app is being executed.\n     * @type {String}\n     ",
+                        "value": "*\n     * The root path from where the app is being executed.\n     * @type {string}\n     ",
                         "start": 463,
                         "end": 555,
                         "loc": {
@@ -924,7 +924,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Class constructor.\n   * @param {String} [home=''] The location of the project's `home`(root) directory. By default\n   *                           it uses `process.cwd()`.\n   ",
+                  "value": "*\n   * Class constructor.\n   * @param {string} [home=''] The location of the project's `home`(root) directory. By default\n   *                           it uses `process.cwd()`.\n   ",
                   "start": 246,
                   "end": 431,
                   "loc": {
@@ -942,7 +942,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Add a new location.\n   * @param {String} name         The reference name.\n   * @param {String} locationPath The path of the location. It must be inside the path from the\n   *                              app is being executed.\n   ",
+                  "value": "*\n   * Add a new location.\n   * @param {string} name         The reference name.\n   * @param {string} locationPath The path of the location. It must be inside the path from the\n   *                              app is being executed.\n   ",
                   "start": 783,
                   "end": 1024,
                   "loc": {
@@ -2083,7 +2083,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Add a new location.\n   * @param {String} name         The reference name.\n   * @param {String} locationPath The path of the location. It must be inside the path from the\n   *                              app is being executed.\n   ",
+                  "value": "*\n   * Add a new location.\n   * @param {string} name         The reference name.\n   * @param {string} locationPath The path of the location. It must be inside the path from the\n   *                              app is being executed.\n   ",
                   "start": 783,
                   "end": 1024,
                   "loc": {
@@ -2101,7 +2101,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Get a location path by its name.\n   * @param {String} name The location name.\n   * @return {String}\n   * @throws {Error} If there location hasn't been added.\n   ",
+                  "value": "*\n   * Get a location path by its name.\n   * @param {string} name The location name.\n   * @return {string}\n   * @throws {Error} If there location hasn't been added.\n   ",
                   "start": 1598,
                   "end": 1770,
                   "loc": {
@@ -2556,7 +2556,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Get a location path by its name.\n   * @param {String} name The location name.\n   * @return {String}\n   * @throws {Error} If there location hasn't been added.\n   ",
+                  "value": "*\n   * Get a location path by its name.\n   * @param {string} name The location name.\n   * @return {string}\n   * @throws {Error} If there location hasn't been added.\n   ",
                   "start": 1598,
                   "end": 1770,
                   "loc": {
@@ -2574,7 +2574,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Build a path using a location path as base.\n   * @param {String} location The location name.\n   * @param {Array}  paths    The rest of the path components to join.\n   * @return {String}\n   ",
+                  "value": "*\n   * Build a path using a location path as base.\n   * @param {string} location The location name.\n   * @param {Array}  paths    The rest of the path components to join.\n   * @return {string}\n   ",
                   "start": 1970,
                   "end": 2170,
                   "loc": {
@@ -2965,7 +2965,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Build a path using a location path as base.\n   * @param {String} location The location name.\n   * @param {Array}  paths    The rest of the path components to join.\n   * @return {String}\n   ",
+                  "value": "*\n   * Build a path using a location path as base.\n   * @param {string} location The location name.\n   * @param {Array}  paths    The rest of the path components to join.\n   * @return {string}\n   ",
                   "start": 1970,
                   "end": 2170,
                   "loc": {
@@ -2983,7 +2983,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Alias to `joinFrom` that uses the `home` location by default.\n   * @param {Array} paths The rest of the path components to join.\n   * @return {String}\n   ",
+                  "value": "*\n   * Alias to `joinFrom` that uses the `home` location by default.\n   * @param {Array} paths The rest of the path components to join.\n   * @return {string}\n   ",
                   "start": 2309,
                   "end": 2474,
                   "loc": {
@@ -3226,7 +3226,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Alias to `joinFrom` that uses the `home` location by default.\n   * @param {Array} paths The rest of the path components to join.\n   * @return {String}\n   ",
+                  "value": "*\n   * Alias to `joinFrom` that uses the `home` location by default.\n   * @param {Array} paths The rest of the path components to join.\n   * @return {string}\n   ",
                   "start": 2309,
                   "end": 2474,
                   "loc": {
@@ -3244,7 +3244,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Get the project root path.\n   * @return {String}\n   ",
+                  "value": "*\n   * Get the project root path.\n   * @return {string}\n   ",
                   "start": 2544,
                   "end": 2607,
                   "loc": {
@@ -3421,7 +3421,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Get the project root path.\n   * @return {String}\n   ",
+                  "value": "*\n   * Get the project root path.\n   * @return {string}\n   ",
                   "start": 2544,
                   "end": 2607,
                   "loc": {
@@ -3439,7 +3439,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Get the path to the directory where the app executable is located.\n   * @return {String}\n   ",
+                  "value": "*\n   * Get the path to the directory where the app executable is located.\n   * @return {string}\n   ",
                   "start": 2666,
                   "end": 2769,
                   "loc": {
@@ -3616,7 +3616,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Get the path to the directory where the app executable is located.\n   * @return {String}\n   ",
+                  "value": "*\n   * Get the path to the directory where the app executable is located.\n   * @return {string}\n   ",
                   "start": 2666,
                   "end": 2769,
                   "loc": {
@@ -4366,44 +4366,44 @@
       },
       {
         "type": "Identifier",
-        "start": 3540,
-        "end": 3650,
+        "start": 3601,
+        "end": 3711,
         "loc": {
           "start": {
-            "line": 124,
+            "line": 125,
             "column": 0
           },
           "end": {
-            "line": 126,
+            "line": 127,
             "column": 3
           }
         },
         "declarations": [
           {
             "type": "VariableDeclarator",
-            "start": 3546,
-            "end": 3649,
+            "start": 3607,
+            "end": 3710,
             "loc": {
               "start": {
-                "line": 124,
+                "line": 125,
                 "column": 6
               },
               "end": {
-                "line": 126,
+                "line": 127,
                 "column": 2
               }
             },
             "id": {
               "type": "Identifier",
-              "start": 3546,
-              "end": 3563,
+              "start": 3607,
+              "end": 3624,
               "loc": {
                 "start": {
-                  "line": 124,
+                  "line": 125,
                   "column": 6
                 },
                 "end": {
-                  "line": 124,
+                  "line": 125,
                   "column": 23
                 },
                 "identifierName": "pathUtilsWithHome"
@@ -4413,15 +4413,15 @@
             },
             "init": {
               "type": "ArrowFunctionExpression",
-              "start": 3566,
-              "end": 3649,
+              "start": 3627,
+              "end": 3710,
               "loc": {
                 "start": {
-                  "line": 124,
+                  "line": 125,
                   "column": 26
                 },
                 "end": {
-                  "line": 126,
+                  "line": 127,
                   "column": 2
                 }
               },
@@ -4432,15 +4432,15 @@
               "params": [
                 {
                   "type": "Identifier",
-                  "start": 3567,
-                  "end": 3571,
+                  "start": 3628,
+                  "end": 3632,
                   "loc": {
                     "start": {
-                      "line": 124,
+                      "line": 125,
                       "column": 27
                     },
                     "end": {
-                      "line": 124,
+                      "line": 125,
                       "column": 31
                     },
                     "identifierName": "home"
@@ -4450,29 +4450,29 @@
               ],
               "body": {
                 "type": "CallExpression",
-                "start": 3576,
-                "end": 3649,
+                "start": 3637,
+                "end": 3710,
                 "loc": {
                   "start": {
-                    "line": 124,
+                    "line": 125,
                     "column": 36
                   },
                   "end": {
-                    "line": 126,
+                    "line": 127,
                     "column": 2
                   }
                 },
                 "callee": {
                   "type": "Identifier",
-                  "start": 3576,
-                  "end": 3584,
+                  "start": 3637,
+                  "end": 3645,
                   "loc": {
                     "start": {
-                      "line": 124,
+                      "line": 125,
                       "column": 36
                     },
                     "end": {
-                      "line": 124,
+                      "line": 125,
                       "column": 44
                     },
                     "identifierName": "provider"
@@ -4482,15 +4482,15 @@
                 "arguments": [
                   {
                     "type": "ArrowFunctionExpression",
-                    "start": 3585,
-                    "end": 3648,
+                    "start": 3646,
+                    "end": 3709,
                     "loc": {
                       "start": {
-                        "line": 124,
+                        "line": 125,
                         "column": 45
                       },
                       "end": {
-                        "line": 126,
+                        "line": 127,
                         "column": 1
                       }
                     },
@@ -4501,15 +4501,15 @@
                     "params": [
                       {
                         "type": "Identifier",
-                        "start": 3586,
-                        "end": 3589,
+                        "start": 3647,
+                        "end": 3650,
                         "loc": {
                           "start": {
-                            "line": 124,
+                            "line": 125,
                             "column": 46
                           },
                           "end": {
-                            "line": 124,
+                            "line": 125,
                             "column": 49
                           },
                           "identifierName": "app"
@@ -4519,72 +4519,72 @@
                     ],
                     "body": {
                       "type": "BlockStatement",
-                      "start": 3594,
-                      "end": 3648,
+                      "start": 3655,
+                      "end": 3709,
                       "loc": {
                         "start": {
-                          "line": 124,
+                          "line": 125,
                           "column": 54
                         },
                         "end": {
-                          "line": 126,
+                          "line": 127,
                           "column": 1
                         }
                       },
                       "body": [
                         {
                           "type": "ExpressionStatement",
-                          "start": 3598,
-                          "end": 3646,
+                          "start": 3659,
+                          "end": 3707,
                           "loc": {
                             "start": {
-                              "line": 125,
+                              "line": 126,
                               "column": 2
                             },
                             "end": {
-                              "line": 125,
+                              "line": 126,
                               "column": 50
                             }
                           },
                           "expression": {
                             "type": "CallExpression",
-                            "start": 3598,
-                            "end": 3645,
+                            "start": 3659,
+                            "end": 3706,
                             "loc": {
                               "start": {
-                                "line": 125,
+                                "line": 126,
                                 "column": 2
                               },
                               "end": {
-                                "line": 125,
+                                "line": 126,
                                 "column": 49
                               }
                             },
                             "callee": {
                               "type": "MemberExpression",
-                              "start": 3598,
-                              "end": 3605,
+                              "start": 3659,
+                              "end": 3666,
                               "loc": {
                                 "start": {
-                                  "line": 125,
+                                  "line": 126,
                                   "column": 2
                                 },
                                 "end": {
-                                  "line": 125,
+                                  "line": 126,
                                   "column": 9
                                 }
                               },
                               "object": {
                                 "type": "Identifier",
-                                "start": 3598,
-                                "end": 3601,
+                                "start": 3659,
+                                "end": 3662,
                                 "loc": {
                                   "start": {
-                                    "line": 125,
+                                    "line": 126,
                                     "column": 2
                                   },
                                   "end": {
-                                    "line": 125,
+                                    "line": 126,
                                     "column": 5
                                   },
                                   "identifierName": "app"
@@ -4593,15 +4593,15 @@
                               },
                               "property": {
                                 "type": "Identifier",
-                                "start": 3602,
-                                "end": 3605,
+                                "start": 3663,
+                                "end": 3666,
                                 "loc": {
                                   "start": {
-                                    "line": 125,
+                                    "line": 126,
                                     "column": 6
                                   },
                                   "end": {
-                                    "line": 125,
+                                    "line": 126,
                                     "column": 9
                                   },
                                   "identifierName": "set"
@@ -4613,15 +4613,15 @@
                             "arguments": [
                               {
                                 "type": "StringLiteral",
-                                "start": 3606,
-                                "end": 3617,
+                                "start": 3667,
+                                "end": 3678,
                                 "loc": {
                                   "start": {
-                                    "line": 125,
+                                    "line": 126,
                                     "column": 10
                                   },
                                   "end": {
-                                    "line": 125,
+                                    "line": 126,
                                     "column": 21
                                   }
                                 },
@@ -4633,15 +4633,15 @@
                               },
                               {
                                 "type": "ArrowFunctionExpression",
-                                "start": 3619,
-                                "end": 3644,
+                                "start": 3680,
+                                "end": 3705,
                                 "loc": {
                                   "start": {
-                                    "line": 125,
+                                    "line": 126,
                                     "column": 23
                                   },
                                   "end": {
-                                    "line": 125,
+                                    "line": 126,
                                     "column": 48
                                   }
                                 },
@@ -4652,29 +4652,29 @@
                                 "params": [],
                                 "body": {
                                   "type": "NewExpression",
-                                  "start": 3625,
-                                  "end": 3644,
+                                  "start": 3686,
+                                  "end": 3705,
                                   "loc": {
                                     "start": {
-                                      "line": 125,
+                                      "line": 126,
                                       "column": 29
                                     },
                                     "end": {
-                                      "line": 125,
+                                      "line": 126,
                                       "column": 48
                                     }
                                   },
                                   "callee": {
                                     "type": "Identifier",
-                                    "start": 3629,
-                                    "end": 3638,
+                                    "start": 3690,
+                                    "end": 3699,
                                     "loc": {
                                       "start": {
-                                        "line": 125,
+                                        "line": 126,
                                         "column": 33
                                       },
                                       "end": {
-                                        "line": 125,
+                                        "line": 126,
                                         "column": 42
                                       },
                                       "identifierName": "PathUtils"
@@ -4684,15 +4684,15 @@
                                   "arguments": [
                                     {
                                       "type": "Identifier",
-                                      "start": 3639,
-                                      "end": 3643,
+                                      "start": 3700,
+                                      "end": 3704,
                                       "loc": {
                                         "start": {
-                                          "line": 125,
+                                          "line": 126,
                                           "column": 43
                                         },
                                         "end": {
-                                          "line": 125,
+                                          "line": 126,
                                           "column": 47
                                         },
                                         "identifierName": "home"
@@ -4722,44 +4722,44 @@
       },
       {
         "type": "Identifier",
-        "start": 3987,
-        "end": 4025,
+        "start": 4048,
+        "end": 4086,
         "loc": {
           "start": {
-            "line": 137,
+            "line": 138,
             "column": 0
           },
           "end": {
-            "line": 137,
+            "line": 138,
             "column": 38
           }
         },
         "declarations": [
           {
             "type": "VariableDeclarator",
-            "start": 3993,
-            "end": 4024,
+            "start": 4054,
+            "end": 4085,
             "loc": {
               "start": {
-                "line": 137,
+                "line": 138,
                 "column": 6
               },
               "end": {
-                "line": 137,
+                "line": 138,
                 "column": 37
               }
             },
             "id": {
               "type": "Identifier",
-              "start": 3993,
-              "end": 4002,
+              "start": 4054,
+              "end": 4063,
               "loc": {
                 "start": {
-                  "line": 137,
+                  "line": 138,
                   "column": 6
                 },
                 "end": {
-                  "line": 137,
+                  "line": 138,
                   "column": 15
                 },
                 "identifierName": "pathUtils"
@@ -4769,29 +4769,29 @@
             },
             "init": {
               "type": "CallExpression",
-              "start": 4005,
-              "end": 4024,
+              "start": 4066,
+              "end": 4085,
               "loc": {
                 "start": {
-                  "line": 137,
+                  "line": 138,
                   "column": 18
                 },
                 "end": {
-                  "line": 137,
+                  "line": 138,
                   "column": 37
                 }
               },
               "callee": {
                 "type": "Identifier",
-                "start": 4005,
-                "end": 4022,
+                "start": 4066,
+                "end": 4083,
                 "loc": {
                   "start": {
-                    "line": 137,
+                    "line": 138,
                     "column": 18
                   },
                   "end": {
-                    "line": 137,
+                    "line": 138,
                     "column": 35
                   },
                   "identifierName": "pathUtilsWithHome"
@@ -4810,15 +4810,15 @@
       },
       {
         "type": "ExportNamedDeclaration",
-        "start": 4027,
-        "end": 4083,
+        "start": 4088,
+        "end": 4144,
         "loc": {
           "start": {
-            "line": 139,
+            "line": 140,
             "column": 0
           },
           "end": {
-            "line": 141,
+            "line": 142,
             "column": 23
           }
         },
@@ -4826,29 +4826,29 @@
         "specifiers": [
           {
             "type": "ExportSpecifier",
-            "start": 4036,
-            "end": 4045,
+            "start": 4097,
+            "end": 4106,
             "loc": {
               "start": {
-                "line": 139,
+                "line": 140,
                 "column": 9
               },
               "end": {
-                "line": 139,
+                "line": 140,
                 "column": 18
               }
             },
             "local": {
               "type": "Identifier",
-              "start": 4036,
-              "end": 4045,
+              "start": 4097,
+              "end": 4106,
               "loc": {
                 "start": {
-                  "line": 139,
+                  "line": 140,
                   "column": 9
                 },
                 "end": {
-                  "line": 139,
+                  "line": 140,
                   "column": 18
                 },
                 "identifierName": "PathUtils"
@@ -4857,15 +4857,15 @@
             },
             "exported": {
               "type": "Identifier",
-              "start": 4036,
-              "end": 4045,
+              "start": 4097,
+              "end": 4106,
               "loc": {
                 "start": {
-                  "line": 139,
+                  "line": 140,
                   "column": 9
                 },
                 "end": {
-                  "line": 139,
+                  "line": 140,
                   "column": 18
                 },
                 "identifierName": "PathUtils"
@@ -4875,29 +4875,29 @@
           },
           {
             "type": "ExportSpecifier",
-            "start": 4049,
-            "end": 4058,
+            "start": 4110,
+            "end": 4119,
             "loc": {
               "start": {
-                "line": 140,
+                "line": 141,
                 "column": 2
               },
               "end": {
-                "line": 140,
+                "line": 141,
                 "column": 11
               }
             },
             "local": {
               "type": "Identifier",
-              "start": 4049,
-              "end": 4058,
+              "start": 4110,
+              "end": 4119,
               "loc": {
                 "start": {
-                  "line": 140,
+                  "line": 141,
                   "column": 2
                 },
                 "end": {
-                  "line": 140,
+                  "line": 141,
                   "column": 11
                 },
                 "identifierName": "pathUtils"
@@ -4906,15 +4906,15 @@
             },
             "exported": {
               "type": "Identifier",
-              "start": 4049,
-              "end": 4058,
+              "start": 4110,
+              "end": 4119,
               "loc": {
                 "start": {
-                  "line": 140,
+                  "line": 141,
                   "column": 2
                 },
                 "end": {
-                  "line": 140,
+                  "line": 141,
                   "column": 11
                 },
                 "identifierName": "pathUtils"
@@ -4924,29 +4924,29 @@
           },
           {
             "type": "ExportSpecifier",
-            "start": 4062,
-            "end": 4079,
+            "start": 4123,
+            "end": 4140,
             "loc": {
               "start": {
-                "line": 141,
+                "line": 142,
                 "column": 2
               },
               "end": {
-                "line": 141,
+                "line": 142,
                 "column": 19
               }
             },
             "local": {
               "type": "Identifier",
-              "start": 4062,
-              "end": 4079,
+              "start": 4123,
+              "end": 4140,
               "loc": {
                 "start": {
-                  "line": 141,
+                  "line": 142,
                   "column": 2
                 },
                 "end": {
-                  "line": 141,
+                  "line": 142,
                   "column": 19
                 },
                 "identifierName": "pathUtilsWithHome"
@@ -4955,15 +4955,15 @@
             },
             "exported": {
               "type": "Identifier",
-              "start": 4062,
-              "end": 4079,
+              "start": 4123,
+              "end": 4140,
               "loc": {
                 "start": {
-                  "line": 141,
+                  "line": 142,
                   "column": 2
                 },
                 "end": {
-                  "line": 141,
+                  "line": 142,
                   "column": 19
                 },
                 "identifierName": "pathUtilsWithHome"
@@ -4976,15 +4976,15 @@
       },
       {
         "type": "ExportNamedDeclaration",
-        "start": 4027,
-        "end": 4083,
+        "start": 4088,
+        "end": 4144,
         "loc": {
           "start": {
-            "line": 139,
+            "line": 140,
             "column": 0
           },
           "end": {
-            "line": 141,
+            "line": 142,
             "column": 23
           }
         },
@@ -5294,7 +5294,7 @@
                       "leadingComments": [
                         {
                           "type": "CommentBlock",
-                          "value": "*\n     * The root path from where the app is being executed.\n     * @type {String}\n     ",
+                          "value": "*\n     * The root path from where the app is being executed.\n     * @type {string}\n     ",
                           "start": 463,
                           "end": 555,
                           "loc": {
@@ -5711,7 +5711,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Class constructor.\n   * @param {String} [home=''] The location of the project's `home`(root) directory. By default\n   *                           it uses `process.cwd()`.\n   ",
+                    "value": "*\n   * Class constructor.\n   * @param {string} [home=''] The location of the project's `home`(root) directory. By default\n   *                           it uses `process.cwd()`.\n   ",
                     "start": 246,
                     "end": 431,
                     "loc": {
@@ -5729,7 +5729,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Add a new location.\n   * @param {String} name         The reference name.\n   * @param {String} locationPath The path of the location. It must be inside the path from the\n   *                              app is being executed.\n   ",
+                    "value": "*\n   * Add a new location.\n   * @param {string} name         The reference name.\n   * @param {string} locationPath The path of the location. It must be inside the path from the\n   *                              app is being executed.\n   ",
                     "start": 783,
                     "end": 1024,
                     "loc": {
@@ -6870,7 +6870,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Add a new location.\n   * @param {String} name         The reference name.\n   * @param {String} locationPath The path of the location. It must be inside the path from the\n   *                              app is being executed.\n   ",
+                    "value": "*\n   * Add a new location.\n   * @param {string} name         The reference name.\n   * @param {string} locationPath The path of the location. It must be inside the path from the\n   *                              app is being executed.\n   ",
                     "start": 783,
                     "end": 1024,
                     "loc": {
@@ -6888,7 +6888,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Get a location path by its name.\n   * @param {String} name The location name.\n   * @return {String}\n   * @throws {Error} If there location hasn't been added.\n   ",
+                    "value": "*\n   * Get a location path by its name.\n   * @param {string} name The location name.\n   * @return {string}\n   * @throws {Error} If there location hasn't been added.\n   ",
                     "start": 1598,
                     "end": 1770,
                     "loc": {
@@ -7343,7 +7343,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Get a location path by its name.\n   * @param {String} name The location name.\n   * @return {String}\n   * @throws {Error} If there location hasn't been added.\n   ",
+                    "value": "*\n   * Get a location path by its name.\n   * @param {string} name The location name.\n   * @return {string}\n   * @throws {Error} If there location hasn't been added.\n   ",
                     "start": 1598,
                     "end": 1770,
                     "loc": {
@@ -7361,7 +7361,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Build a path using a location path as base.\n   * @param {String} location The location name.\n   * @param {Array}  paths    The rest of the path components to join.\n   * @return {String}\n   ",
+                    "value": "*\n   * Build a path using a location path as base.\n   * @param {string} location The location name.\n   * @param {Array}  paths    The rest of the path components to join.\n   * @return {string}\n   ",
                     "start": 1970,
                     "end": 2170,
                     "loc": {
@@ -7752,7 +7752,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Build a path using a location path as base.\n   * @param {String} location The location name.\n   * @param {Array}  paths    The rest of the path components to join.\n   * @return {String}\n   ",
+                    "value": "*\n   * Build a path using a location path as base.\n   * @param {string} location The location name.\n   * @param {Array}  paths    The rest of the path components to join.\n   * @return {string}\n   ",
                     "start": 1970,
                     "end": 2170,
                     "loc": {
@@ -7770,7 +7770,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Alias to `joinFrom` that uses the `home` location by default.\n   * @param {Array} paths The rest of the path components to join.\n   * @return {String}\n   ",
+                    "value": "*\n   * Alias to `joinFrom` that uses the `home` location by default.\n   * @param {Array} paths The rest of the path components to join.\n   * @return {string}\n   ",
                     "start": 2309,
                     "end": 2474,
                     "loc": {
@@ -8013,7 +8013,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Alias to `joinFrom` that uses the `home` location by default.\n   * @param {Array} paths The rest of the path components to join.\n   * @return {String}\n   ",
+                    "value": "*\n   * Alias to `joinFrom` that uses the `home` location by default.\n   * @param {Array} paths The rest of the path components to join.\n   * @return {string}\n   ",
                     "start": 2309,
                     "end": 2474,
                     "loc": {
@@ -8031,7 +8031,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Get the project root path.\n   * @return {String}\n   ",
+                    "value": "*\n   * Get the project root path.\n   * @return {string}\n   ",
                     "start": 2544,
                     "end": 2607,
                     "loc": {
@@ -8208,7 +8208,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Get the project root path.\n   * @return {String}\n   ",
+                    "value": "*\n   * Get the project root path.\n   * @return {string}\n   ",
                     "start": 2544,
                     "end": 2607,
                     "loc": {
@@ -8226,7 +8226,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Get the path to the directory where the app executable is located.\n   * @return {String}\n   ",
+                    "value": "*\n   * Get the path to the directory where the app executable is located.\n   * @return {string}\n   ",
                     "start": 2666,
                     "end": 2769,
                     "loc": {
@@ -8403,7 +8403,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Get the path to the directory where the app executable is located.\n   * @return {String}\n   ",
+                    "value": "*\n   * Get the path to the directory where the app executable is located.\n   * @return {string}\n   ",
                     "start": 2666,
                     "end": 2769,
                     "loc": {
@@ -9168,16 +9168,16 @@
           "trailingComments": [
             {
               "type": "CommentBlock",
-              "value": "*\n * Generates a `Provider` with an already defined `home` location.\n * @example\n * // Generate the provider\n * const provider = pathUtilsWithHome('my-path');\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const pathUtils = container.get('pathUtils');\n * @return {Provider}\n ",
+              "value": "*\n * Generates a `Provider` with an already defined `home` location.\n * @example\n * // Generate the provider\n * const provider = pathUtilsWithHome('my-path');\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const pathUtils = container.get('pathUtils');\n * @param {string} [home] The path to the new home location.\n * @return {Provider}\n ",
               "start": 3191,
-              "end": 3539,
+              "end": 3600,
               "loc": {
                 "start": {
                   "line": 113,
                   "column": 0
                 },
                 "end": {
-                  "line": 123,
+                  "line": 124,
                   "column": 3
                 }
               }
@@ -9191,58 +9191,58 @@
       },
       {
         "type": "ExportNamedDeclaration",
-        "start": 4027,
-        "end": 4083,
+        "start": 4088,
+        "end": 4144,
         "loc": {
           "start": {
-            "line": 139,
+            "line": 140,
             "column": 0
           },
           "end": {
-            "line": 141,
+            "line": 142,
             "column": 23
           }
         },
         "declaration": {
           "type": "VariableDeclaration",
-          "start": 3987,
-          "end": 4025,
+          "start": 4048,
+          "end": 4086,
           "loc": {
             "start": {
-              "line": 137,
+              "line": 138,
               "column": 0
             },
             "end": {
-              "line": 137,
+              "line": 138,
               "column": 38
             }
           },
           "declarations": [
             {
               "type": "VariableDeclarator",
-              "start": 3993,
-              "end": 4024,
+              "start": 4054,
+              "end": 4085,
               "loc": {
                 "start": {
-                  "line": 137,
+                  "line": 138,
                   "column": 6
                 },
                 "end": {
-                  "line": 137,
+                  "line": 138,
                   "column": 37
                 }
               },
               "id": {
                 "type": "Identifier",
-                "start": 3993,
-                "end": 4002,
+                "start": 4054,
+                "end": 4063,
                 "loc": {
                   "start": {
-                    "line": 137,
+                    "line": 138,
                     "column": 6
                   },
                   "end": {
-                    "line": 137,
+                    "line": 138,
                     "column": 15
                   },
                   "identifierName": "pathUtils"
@@ -9252,29 +9252,29 @@
               },
               "init": {
                 "type": "CallExpression",
-                "start": 4005,
-                "end": 4024,
+                "start": 4066,
+                "end": 4085,
                 "loc": {
                   "start": {
-                    "line": 137,
+                    "line": 138,
                     "column": 18
                   },
                   "end": {
-                    "line": 137,
+                    "line": 138,
                     "column": 37
                   }
                 },
                 "callee": {
                   "type": "Identifier",
-                  "start": 4005,
-                  "end": 4022,
+                  "start": 4066,
+                  "end": 4083,
                   "loc": {
                     "start": {
-                      "line": 137,
+                      "line": 138,
                       "column": 18
                     },
                     "end": {
-                      "line": 137,
+                      "line": 138,
                       "column": 35
                     },
                     "identifierName": "pathUtilsWithHome"
@@ -9291,15 +9291,15 @@
             {
               "type": "CommentBlock",
               "value": "*\n * The service provider that once registered on the app container will set an instance of\n * `PathUtils` as the `pathUtils` service.\n * @example\n * // Register it on the container\n * container.register(pathUtils);\n * // Getting access to the service instance\n * const pathUtils = container.get('pathUtils');\n * @type {Provider}\n ",
-              "start": 3651,
-              "end": 3986,
+              "start": 3712,
+              "end": 4047,
               "loc": {
                 "start": {
-                  "line": 127,
+                  "line": 128,
                   "column": 0
                 },
                 "end": {
-                  "line": 136,
+                  "line": 137,
                   "column": 3
                 }
               }
@@ -9313,58 +9313,58 @@
       },
       {
         "type": "ExportNamedDeclaration",
-        "start": 4027,
-        "end": 4083,
+        "start": 4088,
+        "end": 4144,
         "loc": {
           "start": {
-            "line": 139,
+            "line": 140,
             "column": 0
           },
           "end": {
-            "line": 141,
+            "line": 142,
             "column": 23
           }
         },
         "declaration": {
           "type": "VariableDeclaration",
-          "start": 3540,
-          "end": 3650,
+          "start": 3601,
+          "end": 3711,
           "loc": {
             "start": {
-              "line": 124,
+              "line": 125,
               "column": 0
             },
             "end": {
-              "line": 126,
+              "line": 127,
               "column": 3
             }
           },
           "declarations": [
             {
               "type": "VariableDeclarator",
-              "start": 3546,
-              "end": 3649,
+              "start": 3607,
+              "end": 3710,
               "loc": {
                 "start": {
-                  "line": 124,
+                  "line": 125,
                   "column": 6
                 },
                 "end": {
-                  "line": 126,
+                  "line": 127,
                   "column": 2
                 }
               },
               "id": {
                 "type": "Identifier",
-                "start": 3546,
-                "end": 3563,
+                "start": 3607,
+                "end": 3624,
                 "loc": {
                   "start": {
-                    "line": 124,
+                    "line": 125,
                     "column": 6
                   },
                   "end": {
-                    "line": 124,
+                    "line": 125,
                     "column": 23
                   },
                   "identifierName": "pathUtilsWithHome"
@@ -9374,29 +9374,29 @@
               },
               "init": {
                 "type": "ArrowFunctionExpression",
-                "start": 3566,
-                "end": 3649,
+                "start": 3627,
+                "end": 3710,
                 "loc": {
                   "start": {
-                    "line": 124,
+                    "line": 125,
                     "column": 26
                   },
                   "end": {
-                    "line": 126,
+                    "line": 127,
                     "column": 2
                   }
                 },
                 "id": {
                   "type": "Identifier",
-                  "start": 3546,
-                  "end": 3563,
+                  "start": 3607,
+                  "end": 3624,
                   "loc": {
                     "start": {
-                      "line": 124,
+                      "line": 125,
                       "column": 6
                     },
                     "end": {
-                      "line": 124,
+                      "line": 125,
                       "column": 23
                     },
                     "identifierName": "pathUtilsWithHome"
@@ -9410,15 +9410,15 @@
                 "params": [
                   {
                     "type": "Identifier",
-                    "start": 3567,
-                    "end": 3571,
+                    "start": 3628,
+                    "end": 3632,
                     "loc": {
                       "start": {
-                        "line": 124,
+                        "line": 125,
                         "column": 27
                       },
                       "end": {
-                        "line": 124,
+                        "line": 125,
                         "column": 31
                       },
                       "identifierName": "home"
@@ -9428,29 +9428,29 @@
                 ],
                 "body": {
                   "type": "CallExpression",
-                  "start": 3576,
-                  "end": 3649,
+                  "start": 3637,
+                  "end": 3710,
                   "loc": {
                     "start": {
-                      "line": 124,
+                      "line": 125,
                       "column": 36
                     },
                     "end": {
-                      "line": 126,
+                      "line": 127,
                       "column": 2
                     }
                   },
                   "callee": {
                     "type": "Identifier",
-                    "start": 3576,
-                    "end": 3584,
+                    "start": 3637,
+                    "end": 3645,
                     "loc": {
                       "start": {
-                        "line": 124,
+                        "line": 125,
                         "column": 36
                       },
                       "end": {
-                        "line": 124,
+                        "line": 125,
                         "column": 44
                       },
                       "identifierName": "provider"
@@ -9460,15 +9460,15 @@
                   "arguments": [
                     {
                       "type": "ArrowFunctionExpression",
-                      "start": 3585,
-                      "end": 3648,
+                      "start": 3646,
+                      "end": 3709,
                       "loc": {
                         "start": {
-                          "line": 124,
+                          "line": 125,
                           "column": 45
                         },
                         "end": {
-                          "line": 126,
+                          "line": 127,
                           "column": 1
                         }
                       },
@@ -9479,15 +9479,15 @@
                       "params": [
                         {
                           "type": "Identifier",
-                          "start": 3586,
-                          "end": 3589,
+                          "start": 3647,
+                          "end": 3650,
                           "loc": {
                             "start": {
-                              "line": 124,
+                              "line": 125,
                               "column": 46
                             },
                             "end": {
-                              "line": 124,
+                              "line": 125,
                               "column": 49
                             },
                             "identifierName": "app"
@@ -9497,72 +9497,72 @@
                       ],
                       "body": {
                         "type": "BlockStatement",
-                        "start": 3594,
-                        "end": 3648,
+                        "start": 3655,
+                        "end": 3709,
                         "loc": {
                           "start": {
-                            "line": 124,
+                            "line": 125,
                             "column": 54
                           },
                           "end": {
-                            "line": 126,
+                            "line": 127,
                             "column": 1
                           }
                         },
                         "body": [
                           {
                             "type": "ExpressionStatement",
-                            "start": 3598,
-                            "end": 3646,
+                            "start": 3659,
+                            "end": 3707,
                             "loc": {
                               "start": {
-                                "line": 125,
+                                "line": 126,
                                 "column": 2
                               },
                               "end": {
-                                "line": 125,
+                                "line": 126,
                                 "column": 50
                               }
                             },
                             "expression": {
                               "type": "CallExpression",
-                              "start": 3598,
-                              "end": 3645,
+                              "start": 3659,
+                              "end": 3706,
                               "loc": {
                                 "start": {
-                                  "line": 125,
+                                  "line": 126,
                                   "column": 2
                                 },
                                 "end": {
-                                  "line": 125,
+                                  "line": 126,
                                   "column": 49
                                 }
                               },
                               "callee": {
                                 "type": "MemberExpression",
-                                "start": 3598,
-                                "end": 3605,
+                                "start": 3659,
+                                "end": 3666,
                                 "loc": {
                                   "start": {
-                                    "line": 125,
+                                    "line": 126,
                                     "column": 2
                                   },
                                   "end": {
-                                    "line": 125,
+                                    "line": 126,
                                     "column": 9
                                   }
                                 },
                                 "object": {
                                   "type": "Identifier",
-                                  "start": 3598,
-                                  "end": 3601,
+                                  "start": 3659,
+                                  "end": 3662,
                                   "loc": {
                                     "start": {
-                                      "line": 125,
+                                      "line": 126,
                                       "column": 2
                                     },
                                     "end": {
-                                      "line": 125,
+                                      "line": 126,
                                       "column": 5
                                     },
                                     "identifierName": "app"
@@ -9571,15 +9571,15 @@
                                 },
                                 "property": {
                                   "type": "Identifier",
-                                  "start": 3602,
-                                  "end": 3605,
+                                  "start": 3663,
+                                  "end": 3666,
                                   "loc": {
                                     "start": {
-                                      "line": 125,
+                                      "line": 126,
                                       "column": 6
                                     },
                                     "end": {
-                                      "line": 125,
+                                      "line": 126,
                                       "column": 9
                                     },
                                     "identifierName": "set"
@@ -9591,15 +9591,15 @@
                               "arguments": [
                                 {
                                   "type": "StringLiteral",
-                                  "start": 3606,
-                                  "end": 3617,
+                                  "start": 3667,
+                                  "end": 3678,
                                   "loc": {
                                     "start": {
-                                      "line": 125,
+                                      "line": 126,
                                       "column": 10
                                     },
                                     "end": {
-                                      "line": 125,
+                                      "line": 126,
                                       "column": 21
                                     }
                                   },
@@ -9611,15 +9611,15 @@
                                 },
                                 {
                                   "type": "ArrowFunctionExpression",
-                                  "start": 3619,
-                                  "end": 3644,
+                                  "start": 3680,
+                                  "end": 3705,
                                   "loc": {
                                     "start": {
-                                      "line": 125,
+                                      "line": 126,
                                       "column": 23
                                     },
                                     "end": {
-                                      "line": 125,
+                                      "line": 126,
                                       "column": 48
                                     }
                                   },
@@ -9630,29 +9630,29 @@
                                   "params": [],
                                   "body": {
                                     "type": "NewExpression",
-                                    "start": 3625,
-                                    "end": 3644,
+                                    "start": 3686,
+                                    "end": 3705,
                                     "loc": {
                                       "start": {
-                                        "line": 125,
+                                        "line": 126,
                                         "column": 29
                                       },
                                       "end": {
-                                        "line": 125,
+                                        "line": 126,
                                         "column": 48
                                       }
                                     },
                                     "callee": {
                                       "type": "Identifier",
-                                      "start": 3629,
-                                      "end": 3638,
+                                      "start": 3690,
+                                      "end": 3699,
                                       "loc": {
                                         "start": {
-                                          "line": 125,
+                                          "line": 126,
                                           "column": 33
                                         },
                                         "end": {
-                                          "line": 125,
+                                          "line": 126,
                                           "column": 42
                                         },
                                         "identifierName": "PathUtils"
@@ -9662,15 +9662,15 @@
                                     "arguments": [
                                       {
                                         "type": "Identifier",
-                                        "start": 3639,
-                                        "end": 3643,
+                                        "start": 3700,
+                                        "end": 3704,
                                         "loc": {
                                           "start": {
-                                            "line": 125,
+                                            "line": 126,
                                             "column": 43
                                           },
                                           "end": {
-                                            "line": 125,
+                                            "line": 126,
                                             "column": 47
                                           },
                                           "identifierName": "home"
@@ -9697,16 +9697,16 @@
           "leadingComments": [
             {
               "type": "CommentBlock",
-              "value": "*\n * Generates a `Provider` with an already defined `home` location.\n * @example\n * // Generate the provider\n * const provider = pathUtilsWithHome('my-path');\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const pathUtils = container.get('pathUtils');\n * @return {Provider}\n ",
+              "value": "*\n * Generates a `Provider` with an already defined `home` location.\n * @example\n * // Generate the provider\n * const provider = pathUtilsWithHome('my-path');\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const pathUtils = container.get('pathUtils');\n * @param {string} [home] The path to the new home location.\n * @return {Provider}\n ",
               "start": 3191,
-              "end": 3539,
+              "end": 3600,
               "loc": {
                 "start": {
                   "line": 113,
                   "column": 0
                 },
                 "end": {
-                  "line": 123,
+                  "line": 124,
                   "column": 3
                 }
               }
@@ -9716,15 +9716,15 @@
             {
               "type": "CommentBlock",
               "value": "*\n * The service provider that once registered on the app container will set an instance of\n * `PathUtils` as the `pathUtils` service.\n * @example\n * // Register it on the container\n * container.register(pathUtils);\n * // Getting access to the service instance\n * const pathUtils = container.get('pathUtils');\n * @type {Provider}\n ",
-              "start": 3651,
-              "end": 3986,
+              "start": 3712,
+              "end": 4047,
               "loc": {
                 "start": {
-                  "line": 127,
+                  "line": 128,
                   "column": 0
                 },
                 "end": {
-                  "line": 136,
+                  "line": 137,
                   "column": 3
                 }
               }
@@ -9757,7 +9757,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Class constructor.\n   * @param {String} [home=''] The location of the project's `home`(root) directory. By default\n   *                           it uses `process.cwd()`.\n   ",
+      "value": "*\n   * Class constructor.\n   * @param {string} [home=''] The location of the project's `home`(root) directory. By default\n   *                           it uses `process.cwd()`.\n   ",
       "start": 246,
       "end": 431,
       "loc": {
@@ -9773,7 +9773,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n     * The root path from where the app is being executed.\n     * @type {String}\n     ",
+      "value": "*\n     * The root path from where the app is being executed.\n     * @type {string}\n     ",
       "start": 463,
       "end": 555,
       "loc": {
@@ -9805,7 +9805,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Add a new location.\n   * @param {String} name         The reference name.\n   * @param {String} locationPath The path of the location. It must be inside the path from the\n   *                              app is being executed.\n   ",
+      "value": "*\n   * Add a new location.\n   * @param {string} name         The reference name.\n   * @param {string} locationPath The path of the location. It must be inside the path from the\n   *                              app is being executed.\n   ",
       "start": 783,
       "end": 1024,
       "loc": {
@@ -9869,7 +9869,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Get a location path by its name.\n   * @param {String} name The location name.\n   * @return {String}\n   * @throws {Error} If there location hasn't been added.\n   ",
+      "value": "*\n   * Get a location path by its name.\n   * @param {string} name The location name.\n   * @return {string}\n   * @throws {Error} If there location hasn't been added.\n   ",
       "start": 1598,
       "end": 1770,
       "loc": {
@@ -9885,7 +9885,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Build a path using a location path as base.\n   * @param {String} location The location name.\n   * @param {Array}  paths    The rest of the path components to join.\n   * @return {String}\n   ",
+      "value": "*\n   * Build a path using a location path as base.\n   * @param {string} location The location name.\n   * @param {Array}  paths    The rest of the path components to join.\n   * @return {string}\n   ",
       "start": 1970,
       "end": 2170,
       "loc": {
@@ -9901,7 +9901,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Alias to `joinFrom` that uses the `home` location by default.\n   * @param {Array} paths The rest of the path components to join.\n   * @return {String}\n   ",
+      "value": "*\n   * Alias to `joinFrom` that uses the `home` location by default.\n   * @param {Array} paths The rest of the path components to join.\n   * @return {string}\n   ",
       "start": 2309,
       "end": 2474,
       "loc": {
@@ -9917,7 +9917,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Get the project root path.\n   * @return {String}\n   ",
+      "value": "*\n   * Get the project root path.\n   * @return {string}\n   ",
       "start": 2544,
       "end": 2607,
       "loc": {
@@ -9933,7 +9933,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Get the path to the directory where the app executable is located.\n   * @return {String}\n   ",
+      "value": "*\n   * Get the path to the directory where the app executable is located.\n   * @return {string}\n   ",
       "start": 2666,
       "end": 2769,
       "loc": {
@@ -9965,16 +9965,16 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n * Generates a `Provider` with an already defined `home` location.\n * @example\n * // Generate the provider\n * const provider = pathUtilsWithHome('my-path');\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const pathUtils = container.get('pathUtils');\n * @return {Provider}\n ",
+      "value": "*\n * Generates a `Provider` with an already defined `home` location.\n * @example\n * // Generate the provider\n * const provider = pathUtilsWithHome('my-path');\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const pathUtils = container.get('pathUtils');\n * @param {string} [home] The path to the new home location.\n * @return {Provider}\n ",
       "start": 3191,
-      "end": 3539,
+      "end": 3600,
       "loc": {
         "start": {
           "line": 113,
           "column": 0
         },
         "end": {
-          "line": 123,
+          "line": 124,
           "column": 3
         }
       }
@@ -9982,15 +9982,15 @@
     {
       "type": "CommentBlock",
       "value": "*\n * The service provider that once registered on the app container will set an instance of\n * `PathUtils` as the `pathUtils` service.\n * @example\n * // Register it on the container\n * container.register(pathUtils);\n * // Getting access to the service instance\n * const pathUtils = container.get('pathUtils');\n * @type {Provider}\n ",
-      "start": 3651,
-      "end": 3986,
+      "start": 3712,
+      "end": 4047,
       "loc": {
         "start": {
-          "line": 127,
+          "line": 128,
           "column": 0
         },
         "end": {
-          "line": 136,
+          "line": 137,
           "column": 3
         }
       }
@@ -10410,7 +10410,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Class constructor.\n   * @param {String} [home=''] The location of the project's `home`(root) directory. By default\n   *                           it uses `process.cwd()`.\n   ",
+      "value": "*\n   * Class constructor.\n   * @param {string} [home=''] The location of the project's `home`(root) directory. By default\n   *                           it uses `process.cwd()`.\n   ",
       "start": 246,
       "end": 431,
       "loc": {
@@ -10607,7 +10607,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n     * The root path from where the app is being executed.\n     * @type {String}\n     ",
+      "value": "*\n     * The root path from where the app is being executed.\n     * @type {string}\n     ",
       "start": 463,
       "end": 555,
       "loc": {
@@ -11606,7 +11606,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Add a new location.\n   * @param {String} name         The reference name.\n   * @param {String} locationPath The path of the location. It must be inside the path from the\n   *                              app is being executed.\n   ",
+      "value": "*\n   * Add a new location.\n   * @param {string} name         The reference name.\n   * @param {string} locationPath The path of the location. It must be inside the path from the\n   *                              app is being executed.\n   ",
       "start": 783,
       "end": 1024,
       "loc": {
@@ -13675,7 +13675,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Get a location path by its name.\n   * @param {String} name The location name.\n   * @return {String}\n   * @throws {Error} If there location hasn't been added.\n   ",
+      "value": "*\n   * Get a location path by its name.\n   * @param {string} name The location name.\n   * @return {string}\n   * @throws {Error} If there location hasn't been added.\n   ",
       "start": 1598,
       "end": 1770,
       "loc": {
@@ -14707,7 +14707,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Build a path using a location path as base.\n   * @param {String} location The location name.\n   * @param {Array}  paths    The rest of the path components to join.\n   * @return {String}\n   ",
+      "value": "*\n   * Build a path using a location path as base.\n   * @param {string} location The location name.\n   * @param {Array}  paths    The rest of the path components to join.\n   * @return {string}\n   ",
       "start": 1970,
       "end": 2170,
       "loc": {
@@ -15502,7 +15502,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Alias to `joinFrom` that uses the `home` location by default.\n   * @param {Array} paths The rest of the path components to join.\n   * @return {String}\n   ",
+      "value": "*\n   * Alias to `joinFrom` that uses the `home` location by default.\n   * @param {Array} paths The rest of the path components to join.\n   * @return {string}\n   ",
       "start": 2309,
       "end": 2474,
       "loc": {
@@ -15985,7 +15985,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Get the project root path.\n   * @return {String}\n   ",
+      "value": "*\n   * Get the project root path.\n   * @return {string}\n   ",
       "start": 2544,
       "end": 2607,
       "loc": {
@@ -16364,7 +16364,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Get the path to the directory where the app executable is located.\n   * @return {String}\n   ",
+      "value": "*\n   * Get the path to the directory where the app executable is located.\n   * @return {string}\n   ",
       "start": 2666,
       "end": 2769,
       "loc": {
@@ -18083,16 +18083,16 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n * Generates a `Provider` with an already defined `home` location.\n * @example\n * // Generate the provider\n * const provider = pathUtilsWithHome('my-path');\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const pathUtils = container.get('pathUtils');\n * @return {Provider}\n ",
+      "value": "*\n * Generates a `Provider` with an already defined `home` location.\n * @example\n * // Generate the provider\n * const provider = pathUtilsWithHome('my-path');\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const pathUtils = container.get('pathUtils');\n * @param {string} [home] The path to the new home location.\n * @return {Provider}\n ",
       "start": 3191,
-      "end": 3539,
+      "end": 3600,
       "loc": {
         "start": {
           "line": 113,
           "column": 0
         },
         "end": {
-          "line": 123,
+          "line": 124,
           "column": 3
         }
       }
@@ -18112,15 +18112,15 @@
         "updateContext": null
       },
       "value": "const",
-      "start": 3540,
-      "end": 3545,
+      "start": 3601,
+      "end": 3606,
       "loc": {
         "start": {
-          "line": 124,
+          "line": 125,
           "column": 0
         },
         "end": {
-          "line": 124,
+          "line": 125,
           "column": 5
         }
       }
@@ -18138,15 +18138,15 @@
         "binop": null
       },
       "value": "pathUtilsWithHome",
-      "start": 3546,
-      "end": 3563,
+      "start": 3607,
+      "end": 3624,
       "loc": {
         "start": {
-          "line": 124,
+          "line": 125,
           "column": 6
         },
         "end": {
-          "line": 124,
+          "line": 125,
           "column": 23
         }
       }
@@ -18165,15 +18165,15 @@
         "updateContext": null
       },
       "value": "=",
-      "start": 3564,
-      "end": 3565,
+      "start": 3625,
+      "end": 3626,
       "loc": {
         "start": {
-          "line": 124,
+          "line": 125,
           "column": 24
         },
         "end": {
-          "line": 124,
+          "line": 125,
           "column": 25
         }
       }
@@ -18190,15 +18190,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3566,
-      "end": 3567,
+      "start": 3627,
+      "end": 3628,
       "loc": {
         "start": {
-          "line": 124,
+          "line": 125,
           "column": 26
         },
         "end": {
-          "line": 124,
+          "line": 125,
           "column": 27
         }
       }
@@ -18216,15 +18216,15 @@
         "binop": null
       },
       "value": "home",
-      "start": 3567,
-      "end": 3571,
+      "start": 3628,
+      "end": 3632,
       "loc": {
         "start": {
-          "line": 124,
+          "line": 125,
           "column": 27
         },
         "end": {
-          "line": 124,
+          "line": 125,
           "column": 31
         }
       }
@@ -18241,15 +18241,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3571,
-      "end": 3572,
+      "start": 3632,
+      "end": 3633,
       "loc": {
         "start": {
-          "line": 124,
+          "line": 125,
           "column": 31
         },
         "end": {
-          "line": 124,
+          "line": 125,
           "column": 32
         }
       }
@@ -18267,15 +18267,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 3573,
-      "end": 3575,
+      "start": 3634,
+      "end": 3636,
       "loc": {
         "start": {
-          "line": 124,
+          "line": 125,
           "column": 33
         },
         "end": {
-          "line": 124,
+          "line": 125,
           "column": 35
         }
       }
@@ -18293,15 +18293,15 @@
         "binop": null
       },
       "value": "provider",
-      "start": 3576,
-      "end": 3584,
+      "start": 3637,
+      "end": 3645,
       "loc": {
         "start": {
-          "line": 124,
+          "line": 125,
           "column": 36
         },
         "end": {
-          "line": 124,
+          "line": 125,
           "column": 44
         }
       }
@@ -18318,15 +18318,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3584,
-      "end": 3585,
+      "start": 3645,
+      "end": 3646,
       "loc": {
         "start": {
-          "line": 124,
+          "line": 125,
           "column": 44
         },
         "end": {
-          "line": 124,
+          "line": 125,
           "column": 45
         }
       }
@@ -18343,15 +18343,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3585,
-      "end": 3586,
+      "start": 3646,
+      "end": 3647,
       "loc": {
         "start": {
-          "line": 124,
+          "line": 125,
           "column": 45
         },
         "end": {
-          "line": 124,
+          "line": 125,
           "column": 46
         }
       }
@@ -18369,15 +18369,15 @@
         "binop": null
       },
       "value": "app",
-      "start": 3586,
-      "end": 3589,
+      "start": 3647,
+      "end": 3650,
       "loc": {
         "start": {
-          "line": 124,
+          "line": 125,
           "column": 46
         },
         "end": {
-          "line": 124,
+          "line": 125,
           "column": 49
         }
       }
@@ -18394,15 +18394,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3589,
-      "end": 3590,
+      "start": 3650,
+      "end": 3651,
       "loc": {
         "start": {
-          "line": 124,
+          "line": 125,
           "column": 49
         },
         "end": {
-          "line": 124,
+          "line": 125,
           "column": 50
         }
       }
@@ -18420,15 +18420,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 3591,
-      "end": 3593,
+      "start": 3652,
+      "end": 3654,
       "loc": {
         "start": {
-          "line": 124,
+          "line": 125,
           "column": 51
         },
         "end": {
-          "line": 124,
+          "line": 125,
           "column": 53
         }
       }
@@ -18445,15 +18445,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3594,
-      "end": 3595,
+      "start": 3655,
+      "end": 3656,
       "loc": {
         "start": {
-          "line": 124,
+          "line": 125,
           "column": 54
         },
         "end": {
-          "line": 124,
+          "line": 125,
           "column": 55
         }
       }
@@ -18471,15 +18471,15 @@
         "binop": null
       },
       "value": "app",
-      "start": 3598,
-      "end": 3601,
+      "start": 3659,
+      "end": 3662,
       "loc": {
         "start": {
-          "line": 125,
+          "line": 126,
           "column": 2
         },
         "end": {
-          "line": 125,
+          "line": 126,
           "column": 5
         }
       }
@@ -18497,15 +18497,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 3601,
-      "end": 3602,
+      "start": 3662,
+      "end": 3663,
       "loc": {
         "start": {
-          "line": 125,
+          "line": 126,
           "column": 5
         },
         "end": {
-          "line": 125,
+          "line": 126,
           "column": 6
         }
       }
@@ -18523,15 +18523,15 @@
         "binop": null
       },
       "value": "set",
-      "start": 3602,
-      "end": 3605,
+      "start": 3663,
+      "end": 3666,
       "loc": {
         "start": {
-          "line": 125,
+          "line": 126,
           "column": 6
         },
         "end": {
-          "line": 125,
+          "line": 126,
           "column": 9
         }
       }
@@ -18548,15 +18548,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3605,
-      "end": 3606,
+      "start": 3666,
+      "end": 3667,
       "loc": {
         "start": {
-          "line": 125,
+          "line": 126,
           "column": 9
         },
         "end": {
-          "line": 125,
+          "line": 126,
           "column": 10
         }
       }
@@ -18575,15 +18575,15 @@
         "updateContext": null
       },
       "value": "pathUtils",
-      "start": 3606,
-      "end": 3617,
+      "start": 3667,
+      "end": 3678,
       "loc": {
         "start": {
-          "line": 125,
+          "line": 126,
           "column": 10
         },
         "end": {
-          "line": 125,
+          "line": 126,
           "column": 21
         }
       }
@@ -18601,15 +18601,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 3617,
-      "end": 3618,
+      "start": 3678,
+      "end": 3679,
       "loc": {
         "start": {
-          "line": 125,
+          "line": 126,
           "column": 21
         },
         "end": {
-          "line": 125,
+          "line": 126,
           "column": 22
         }
       }
@@ -18626,15 +18626,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3619,
-      "end": 3620,
+      "start": 3680,
+      "end": 3681,
       "loc": {
         "start": {
-          "line": 125,
+          "line": 126,
           "column": 23
         },
         "end": {
-          "line": 125,
+          "line": 126,
           "column": 24
         }
       }
@@ -18651,15 +18651,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3620,
-      "end": 3621,
+      "start": 3681,
+      "end": 3682,
       "loc": {
         "start": {
-          "line": 125,
+          "line": 126,
           "column": 24
         },
         "end": {
-          "line": 125,
+          "line": 126,
           "column": 25
         }
       }
@@ -18677,15 +18677,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 3622,
-      "end": 3624,
+      "start": 3683,
+      "end": 3685,
       "loc": {
         "start": {
-          "line": 125,
+          "line": 126,
           "column": 26
         },
         "end": {
-          "line": 125,
+          "line": 126,
           "column": 28
         }
       }
@@ -18705,15 +18705,15 @@
         "updateContext": null
       },
       "value": "new",
-      "start": 3625,
-      "end": 3628,
+      "start": 3686,
+      "end": 3689,
       "loc": {
         "start": {
-          "line": 125,
+          "line": 126,
           "column": 29
         },
         "end": {
-          "line": 125,
+          "line": 126,
           "column": 32
         }
       }
@@ -18731,15 +18731,15 @@
         "binop": null
       },
       "value": "PathUtils",
-      "start": 3629,
-      "end": 3638,
+      "start": 3690,
+      "end": 3699,
       "loc": {
         "start": {
-          "line": 125,
+          "line": 126,
           "column": 33
         },
         "end": {
-          "line": 125,
+          "line": 126,
           "column": 42
         }
       }
@@ -18756,15 +18756,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3638,
-      "end": 3639,
+      "start": 3699,
+      "end": 3700,
       "loc": {
         "start": {
-          "line": 125,
+          "line": 126,
           "column": 42
         },
         "end": {
-          "line": 125,
+          "line": 126,
           "column": 43
         }
       }
@@ -18782,15 +18782,15 @@
         "binop": null
       },
       "value": "home",
-      "start": 3639,
-      "end": 3643,
+      "start": 3700,
+      "end": 3704,
       "loc": {
         "start": {
-          "line": 125,
+          "line": 126,
           "column": 43
         },
         "end": {
-          "line": 125,
+          "line": 126,
           "column": 47
         }
       }
@@ -18807,15 +18807,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3643,
-      "end": 3644,
+      "start": 3704,
+      "end": 3705,
       "loc": {
         "start": {
-          "line": 125,
+          "line": 126,
           "column": 47
         },
         "end": {
-          "line": 125,
+          "line": 126,
           "column": 48
         }
       }
@@ -18832,15 +18832,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3644,
-      "end": 3645,
+      "start": 3705,
+      "end": 3706,
       "loc": {
         "start": {
-          "line": 125,
+          "line": 126,
           "column": 48
         },
         "end": {
-          "line": 125,
+          "line": 126,
           "column": 49
         }
       }
@@ -18858,15 +18858,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 3645,
-      "end": 3646,
+      "start": 3706,
+      "end": 3707,
       "loc": {
         "start": {
-          "line": 125,
+          "line": 126,
           "column": 49
         },
         "end": {
-          "line": 125,
+          "line": 126,
           "column": 50
         }
       }
@@ -18883,15 +18883,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3647,
-      "end": 3648,
+      "start": 3708,
+      "end": 3709,
       "loc": {
         "start": {
-          "line": 126,
+          "line": 127,
           "column": 0
         },
         "end": {
-          "line": 126,
+          "line": 127,
           "column": 1
         }
       }
@@ -18908,15 +18908,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3648,
-      "end": 3649,
+      "start": 3709,
+      "end": 3710,
       "loc": {
         "start": {
-          "line": 126,
+          "line": 127,
           "column": 1
         },
         "end": {
-          "line": 126,
+          "line": 127,
           "column": 2
         }
       }
@@ -18934,15 +18934,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 3649,
-      "end": 3650,
+      "start": 3710,
+      "end": 3711,
       "loc": {
         "start": {
-          "line": 126,
+          "line": 127,
           "column": 2
         },
         "end": {
-          "line": 126,
+          "line": 127,
           "column": 3
         }
       }
@@ -18950,15 +18950,15 @@
     {
       "type": "CommentBlock",
       "value": "*\n * The service provider that once registered on the app container will set an instance of\n * `PathUtils` as the `pathUtils` service.\n * @example\n * // Register it on the container\n * container.register(pathUtils);\n * // Getting access to the service instance\n * const pathUtils = container.get('pathUtils');\n * @type {Provider}\n ",
-      "start": 3651,
-      "end": 3986,
+      "start": 3712,
+      "end": 4047,
       "loc": {
         "start": {
-          "line": 127,
+          "line": 128,
           "column": 0
         },
         "end": {
-          "line": 136,
+          "line": 137,
           "column": 3
         }
       }
@@ -18978,15 +18978,15 @@
         "updateContext": null
       },
       "value": "const",
-      "start": 3987,
-      "end": 3992,
+      "start": 4048,
+      "end": 4053,
       "loc": {
         "start": {
-          "line": 137,
+          "line": 138,
           "column": 0
         },
         "end": {
-          "line": 137,
+          "line": 138,
           "column": 5
         }
       }
@@ -19004,15 +19004,15 @@
         "binop": null
       },
       "value": "pathUtils",
-      "start": 3993,
-      "end": 4002,
+      "start": 4054,
+      "end": 4063,
       "loc": {
         "start": {
-          "line": 137,
+          "line": 138,
           "column": 6
         },
         "end": {
-          "line": 137,
+          "line": 138,
           "column": 15
         }
       }
@@ -19031,15 +19031,15 @@
         "updateContext": null
       },
       "value": "=",
-      "start": 4003,
-      "end": 4004,
+      "start": 4064,
+      "end": 4065,
       "loc": {
         "start": {
-          "line": 137,
+          "line": 138,
           "column": 16
         },
         "end": {
-          "line": 137,
+          "line": 138,
           "column": 17
         }
       }
@@ -19057,15 +19057,15 @@
         "binop": null
       },
       "value": "pathUtilsWithHome",
-      "start": 4005,
-      "end": 4022,
+      "start": 4066,
+      "end": 4083,
       "loc": {
         "start": {
-          "line": 137,
+          "line": 138,
           "column": 18
         },
         "end": {
-          "line": 137,
+          "line": 138,
           "column": 35
         }
       }
@@ -19082,15 +19082,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 4022,
-      "end": 4023,
+      "start": 4083,
+      "end": 4084,
       "loc": {
         "start": {
-          "line": 137,
+          "line": 138,
           "column": 35
         },
         "end": {
-          "line": 137,
+          "line": 138,
           "column": 36
         }
       }
@@ -19107,15 +19107,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 4023,
-      "end": 4024,
+      "start": 4084,
+      "end": 4085,
       "loc": {
         "start": {
-          "line": 137,
+          "line": 138,
           "column": 36
         },
         "end": {
-          "line": 137,
+          "line": 138,
           "column": 37
         }
       }
@@ -19133,15 +19133,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 4024,
-      "end": 4025,
+      "start": 4085,
+      "end": 4086,
       "loc": {
         "start": {
-          "line": 137,
+          "line": 138,
           "column": 37
         },
         "end": {
-          "line": 137,
+          "line": 138,
           "column": 38
         }
       }
@@ -19161,15 +19161,15 @@
         "updateContext": null
       },
       "value": "export",
-      "start": 4027,
-      "end": 4033,
+      "start": 4088,
+      "end": 4094,
       "loc": {
         "start": {
-          "line": 139,
+          "line": 140,
           "column": 0
         },
         "end": {
-          "line": 139,
+          "line": 140,
           "column": 6
         }
       }
@@ -19186,15 +19186,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 4034,
-      "end": 4035,
+      "start": 4095,
+      "end": 4096,
       "loc": {
         "start": {
-          "line": 139,
+          "line": 140,
           "column": 7
         },
         "end": {
-          "line": 139,
+          "line": 140,
           "column": 8
         }
       }
@@ -19212,15 +19212,15 @@
         "binop": null
       },
       "value": "PathUtils",
-      "start": 4036,
-      "end": 4045,
+      "start": 4097,
+      "end": 4106,
       "loc": {
         "start": {
-          "line": 139,
+          "line": 140,
           "column": 9
         },
         "end": {
-          "line": 139,
+          "line": 140,
           "column": 18
         }
       }
@@ -19238,15 +19238,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 4045,
-      "end": 4046,
+      "start": 4106,
+      "end": 4107,
       "loc": {
         "start": {
-          "line": 139,
+          "line": 140,
           "column": 18
         },
         "end": {
-          "line": 139,
+          "line": 140,
           "column": 19
         }
       }
@@ -19264,15 +19264,15 @@
         "binop": null
       },
       "value": "pathUtils",
-      "start": 4049,
-      "end": 4058,
+      "start": 4110,
+      "end": 4119,
       "loc": {
         "start": {
-          "line": 140,
+          "line": 141,
           "column": 2
         },
         "end": {
-          "line": 140,
+          "line": 141,
           "column": 11
         }
       }
@@ -19290,15 +19290,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 4058,
-      "end": 4059,
+      "start": 4119,
+      "end": 4120,
       "loc": {
         "start": {
-          "line": 140,
+          "line": 141,
           "column": 11
         },
         "end": {
-          "line": 140,
+          "line": 141,
           "column": 12
         }
       }
@@ -19316,15 +19316,15 @@
         "binop": null
       },
       "value": "pathUtilsWithHome",
-      "start": 4062,
-      "end": 4079,
+      "start": 4123,
+      "end": 4140,
       "loc": {
         "start": {
-          "line": 141,
+          "line": 142,
           "column": 2
         },
         "end": {
-          "line": 141,
+          "line": 142,
           "column": 19
         }
       }
@@ -19342,15 +19342,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 4079,
-      "end": 4080,
+      "start": 4140,
+      "end": 4141,
       "loc": {
         "start": {
-          "line": 141,
+          "line": 142,
           "column": 19
         },
         "end": {
-          "line": 141,
+          "line": 142,
           "column": 20
         }
       }
@@ -19367,15 +19367,15 @@
         "postfix": false,
         "binop": null
       },
-      "start": 4081,
-      "end": 4082,
+      "start": 4142,
+      "end": 4143,
       "loc": {
         "start": {
-          "line": 141,
+          "line": 142,
           "column": 21
         },
         "end": {
-          "line": 141,
+          "line": 142,
           "column": 22
         }
       }
@@ -19393,15 +19393,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 4082,
-      "end": 4083,
+      "start": 4143,
+      "end": 4144,
       "loc": {
         "start": {
-          "line": 141,
+          "line": 142,
           "column": 22
         },
         "end": {
-          "line": 141,
+          "line": 142,
           "column": 23
         }
       }
@@ -19419,15 +19419,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 4084,
-      "end": 4084,
+      "start": 4145,
+      "end": 4145,
       "loc": {
         "start": {
-          "line": 142,
+          "line": 143,
           "column": 0
         },
         "end": {
-          "line": 142,
+          "line": 143,
           "column": 0
         }
       }

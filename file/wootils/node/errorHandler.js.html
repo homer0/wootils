@@ -35,6 +35,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/logger.js~Logger.html">Logger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appConfiguration">appConfiguration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-errorHandlerWithOptions">errorHandlerWithOptions</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appLoggerWithOptions">appLoggerWithOptions</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-loggerWithOptions">loggerWithOptions</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-packageInfo">packageInfo</a></span></span></li>
@@ -72,22 +73,50 @@
 class ErrorHandler {
   /**
    * Class constructor.
-   * @param {Logger} appLogger To log the detail of the erros.
+   * @param {Logger}  appLogger          To log the detail of the erros.
+   * @param {boolean} [exitOnError=true] Whether or not to exit the process after receiving an
+   *                                     error.
    */
-  constructor(appLogger) {
+  constructor(appLogger, exitOnError = true) {
     /**
      * A local reference for the `appLogger` service.
      * @type {Logger}
      */
     this.appLogger = appLogger;
+    /**
+     * Whether or not to exit the process after receiving an error.
+     * @type {boolean}
+     */
+    this.exitOnError = exitOnError;
+    /**
+     * The list of events this handler will listen for in order to catch errors.
+     * @type {Array}
+     */
+    this.eventsNames = [
+      &apos;uncaughtException&apos;,
+      &apos;unhandledRejection&apos;,
+    ];
+    /**
+     * Bind the handler method so it can be used on the calls to `process`.
+     * @ignore
+     */
+    this.handler = this.handle.bind(this);
   }
   /**
    * Starts listening for unhandled errors.
    */
   listen() {
-    const handler = this.handle.bind(this);
-    process.on(&apos;uncaughtException&apos;, handler);
-    process.on(&apos;unhandledRejection&apos;, handler);
+    this.eventsNames.forEach((eventName) =&gt; {
+      process.on(eventName, this.handler);
+    });
+  }
+  /**
+   * Stops listening for unhandled errors.
+   */
+  stopListening() {
+    this.eventsNames.forEach((eventName) =&gt; {
+      process.removeListener(eventName, this.handler);
+    });
   }
   /**
    * This is called by the process listeners when an uncaught exception is thrown or a rejected
@@ -111,10 +140,32 @@ class ErrorHandler {
       // Log the new message with the exception.
       this.appLogger.error(message, error);
     }
-    // Exit the process.
-    process.exit(1);
+
+    // Check if it should exit the process.
+    if (this.exitOnError) {
+      process.exit(1);
+    }
   }
 }
+/**
+ * Generates a `Provider` with an already defined flag to exit or not the process when after
+ * handling an error.
+ * @param {boolean} [exitOnError] Whether or not to exit the process after receiving an error.
+ * @return {Provider}
+ */
+const errorHandlerWithOptions = (exitOnError) =&gt; provider((app) =&gt; {
+  let logger = null;
+  try {
+    logger = app.get(&apos;logger&apos;);
+  } catch (ignore) {
+    logger = app.get(&apos;appLogger&apos;);
+  }
+
+  app.set(&apos;errorHandler&apos;, () =&gt; new ErrorHandler(
+    logger,
+    exitOnError
+  ));
+});
 /**
  * The service provider that once registered on the app container will set an instance of
  * `ErrorHandler` as the `errorHandler` service.
@@ -124,14 +175,12 @@ class ErrorHandler {
  * // Getting access to the service instance
  * const errorHandler = container.get(&apos;errorHandler&apos;);
  * @type {Provider}
- * @todo It should fallback to `appLogger` if `logger` is not registered.
  */
-const errorHandler = provider((app) =&gt; {
-  app.set(&apos;errorHandler&apos;, () =&gt; new ErrorHandler(app.get(&apos;appLogger&apos;)));
-});
+const errorHandler = errorHandlerWithOptions();
 
 module.exports = {
   ErrorHandler,
+  errorHandlerWithOptions,
   errorHandler,
 };
 </code></pre>

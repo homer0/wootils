@@ -35,6 +35,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/logger.js~Logger.html">Logger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appConfiguration">appConfiguration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-errorHandlerWithOptions">errorHandlerWithOptions</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appLoggerWithOptions">appLoggerWithOptions</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-loggerWithOptions">loggerWithOptions</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-packageInfo">packageInfo</a></span></span></li>
@@ -123,7 +124,7 @@ them with detail.</p>
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/wootils/node/errorHandler.js~ErrorHandler.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">(appLogger: <span><a href="class/wootils/node/logger.js~Logger.html">Logger</a></span>)</span>
+          <span class="code" data-ice="name"><span><a href="class/wootils/node/errorHandler.js~ErrorHandler.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">(appLogger: <span><a href="class/wootils/node/logger.js~Logger.html">Logger</a></span>, exitOnError: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>)</span>
         </p>
       </div>
       <div>
@@ -166,6 +167,64 @@ them with detail.</p>
         
         
         <div data-ice="description"><p>A local reference for the <code>appLogger</code> service.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/wootils/node/errorHandler.js~ErrorHandler.html#instance-member-eventsNames">eventsNames</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>The list of events this handler will listen for in order to catch errors.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/wootils/node/errorHandler.js~ErrorHandler.html#instance-member-exitOnError">exitOnError</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Whether or not to exit the process after receiving an error.</p>
 </div>
       </div>
     </td>
@@ -240,6 +299,35 @@ promise is not handled.</p>
       
     </td>
   </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/wootils/node/errorHandler.js~ErrorHandler.html#instance-method-stopListening">stopListening</a></span></span><span class="code" data-ice="signature">()</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Stops listening for unhandled errors.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
 </tbody>
 </table>
 </div>
@@ -258,11 +346,11 @@ promise is not handled.</p>
     
     
     
-    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">(appLogger: <span><a href="class/wootils/node/logger.js~Logger.html">Logger</a></span>)</span>
+    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">(appLogger: <span><a href="class/wootils/node/logger.js~Logger.html">Logger</a></span>, exitOnError: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>)</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/wootils/node/errorHandler.js.html#lineNumber12">source</a></span></span>
+      <span data-ice="source"><span><a href="file/wootils/node/errorHandler.js.html#lineNumber14">source</a></span></span>
     </span>
   </h3>
 
@@ -287,6 +375,15 @@ promise is not handled.</p>
       <td data-ice="type" class="code"><span><a href="class/wootils/node/logger.js~Logger.html">Logger</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>To log the detail of the erros.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">exitOnError</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: true</li></ul></td>
+      <td data-ice="description"><p>Whether or not to exit the process after receiving an
+                                    error.</p>
 </td>
     </tr>
 </tbody>
@@ -326,7 +423,7 @@ promise is not handled.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/wootils/node/errorHandler.js.html#lineNumber17">source</a></span></span>
+      <span data-ice="source"><span><a href="file/wootils/node/errorHandler.js.html#lineNumber19">source</a></span></span>
     </span>
   </h3>
 
@@ -334,6 +431,94 @@ promise is not handled.</p>
   
   
   <div data-ice="description"><p>A local reference for the <code>appLogger</code> service.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-eventsNames">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">eventsNames</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/wootils/node/errorHandler.js.html#lineNumber29">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>The list of events this handler will listen for in order to catch errors.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-exitOnError">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">exitOnError</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/wootils/node/errorHandler.js.html#lineNumber24">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Whether or not to exit the process after receiving an error.</p>
 </div>
 
   
@@ -373,7 +558,7 @@ promise is not handled.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/wootils/node/errorHandler.js.html#lineNumber33">source</a></span></span>
+      <span data-ice="source"><span><a href="file/wootils/node/errorHandler.js.html#lineNumber61">source</a></span></span>
     </span>
   </h3>
 
@@ -436,7 +621,7 @@ The process exits when after logging an error.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/wootils/node/errorHandler.js.html#lineNumber22">source</a></span></span>
+      <span data-ice="source"><span><a href="file/wootils/node/errorHandler.js.html#lineNumber42">source</a></span></span>
     </span>
   </h3>
 
@@ -444,6 +629,50 @@ The process exits when after logging an error.</p>
   
   
   <div data-ice="description"><p>Starts listening for unhandled errors.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-stopListening">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">stopListening</span><span class="code" data-ice="signature">()</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/wootils/node/errorHandler.js.html#lineNumber50">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Stops listening for unhandled errors.</p>
 </div>
 
   

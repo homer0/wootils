@@ -424,7 +424,7 @@
                     "leadingComments": [
                       {
                         "type": "CommentBlock",
-                        "value": "*\n     * The current `NODE_ENV`. If the variable is empty, the value will be `development`.\n     * @type {String}\n     ",
+                        "value": "*\n     * The current `NODE_ENV`. If the variable is empty, the value will be `development`.\n     * @type {string}\n     ",
                         "start": 208,
                         "end": 331,
                         "loc": {
@@ -442,7 +442,7 @@
                     "trailingComments": [
                       {
                         "type": "CommentBlock",
-                        "value": "*\n     * Whether or not the environment is production.\n     * @type {Boolean}\n     ",
+                        "value": "*\n     * Whether or not the environment is production.\n     * @type {boolean}\n     ",
                         "start": 388,
                         "end": 475,
                         "loc": {
@@ -626,7 +626,7 @@
                     "leadingComments": [
                       {
                         "type": "CommentBlock",
-                        "value": "*\n     * Whether or not the environment is production.\n     * @type {Boolean}\n     ",
+                        "value": "*\n     * Whether or not the environment is production.\n     * @type {boolean}\n     ",
                         "start": 388,
                         "end": 475,
                         "loc": {
@@ -667,7 +667,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Get the value of an environment variable.\n   * @param {String} name              The name of the variable.\n   * @param {String} [defaultValue=''] A fallback value in case the variable is `undefined`\n   * @return {String}\n   * @todo add a `require` parameter to throw an error if the variable is not preset.\n   ",
+                  "value": "*\n   * Get the value of an environment variable.\n   * @param {string} name              The name of the variable.\n   * @param {string} [defaultValue=''] A fallback value in case the variable is `undefined`\n   * @return {string}\n   * @todo add a `require` parameter to throw an error if the variable is not preset.\n   ",
                   "start": 531,
                   "end": 852,
                   "loc": {
@@ -1172,7 +1172,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Get the value of an environment variable.\n   * @param {String} name              The name of the variable.\n   * @param {String} [defaultValue=''] A fallback value in case the variable is `undefined`\n   * @return {String}\n   * @todo add a `require` parameter to throw an error if the variable is not preset.\n   ",
+                  "value": "*\n   * Get the value of an environment variable.\n   * @param {string} name              The name of the variable.\n   * @param {string} [defaultValue=''] A fallback value in case the variable is `undefined`\n   * @return {string}\n   * @todo add a `require` parameter to throw an error if the variable is not preset.\n   ",
                   "start": 531,
                   "end": 852,
                   "loc": {
@@ -1190,7 +1190,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Check whether or not the environment is for development.\n   * @return {Boolean}\n   ",
+                  "value": "*\n   * Check whether or not the environment is for development.\n   * @return {boolean}\n   ",
                   "start": 1067,
                   "end": 1161,
                   "loc": {
@@ -1349,7 +1349,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Check whether or not the environment is for development.\n   * @return {Boolean}\n   ",
+                  "value": "*\n   * Check whether or not the environment is for development.\n   * @return {boolean}\n   ",
                   "start": 1067,
                   "end": 1161,
                   "loc": {
@@ -2095,7 +2095,7 @@
                       "leadingComments": [
                         {
                           "type": "CommentBlock",
-                          "value": "*\n     * The current `NODE_ENV`. If the variable is empty, the value will be `development`.\n     * @type {String}\n     ",
+                          "value": "*\n     * The current `NODE_ENV`. If the variable is empty, the value will be `development`.\n     * @type {string}\n     ",
                           "start": 208,
                           "end": 331,
                           "loc": {
@@ -2113,7 +2113,7 @@
                       "trailingComments": [
                         {
                           "type": "CommentBlock",
-                          "value": "*\n     * Whether or not the environment is production.\n     * @type {Boolean}\n     ",
+                          "value": "*\n     * Whether or not the environment is production.\n     * @type {boolean}\n     ",
                           "start": 388,
                           "end": 475,
                           "loc": {
@@ -2297,7 +2297,7 @@
                       "leadingComments": [
                         {
                           "type": "CommentBlock",
-                          "value": "*\n     * Whether or not the environment is production.\n     * @type {Boolean}\n     ",
+                          "value": "*\n     * Whether or not the environment is production.\n     * @type {boolean}\n     ",
                           "start": 388,
                           "end": 475,
                           "loc": {
@@ -2338,7 +2338,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Get the value of an environment variable.\n   * @param {String} name              The name of the variable.\n   * @param {String} [defaultValue=''] A fallback value in case the variable is `undefined`\n   * @return {String}\n   * @todo add a `require` parameter to throw an error if the variable is not preset.\n   ",
+                    "value": "*\n   * Get the value of an environment variable.\n   * @param {string} name              The name of the variable.\n   * @param {string} [defaultValue=''] A fallback value in case the variable is `undefined`\n   * @return {string}\n   * @todo add a `require` parameter to throw an error if the variable is not preset.\n   ",
                     "start": 531,
                     "end": 852,
                     "loc": {
@@ -2843,7 +2843,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Get the value of an environment variable.\n   * @param {String} name              The name of the variable.\n   * @param {String} [defaultValue=''] A fallback value in case the variable is `undefined`\n   * @return {String}\n   * @todo add a `require` parameter to throw an error if the variable is not preset.\n   ",
+                    "value": "*\n   * Get the value of an environment variable.\n   * @param {string} name              The name of the variable.\n   * @param {string} [defaultValue=''] A fallback value in case the variable is `undefined`\n   * @return {string}\n   * @todo add a `require` parameter to throw an error if the variable is not preset.\n   ",
                     "start": 531,
                     "end": 852,
                     "loc": {
@@ -2861,7 +2861,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Check whether or not the environment is for development.\n   * @return {Boolean}\n   ",
+                    "value": "*\n   * Check whether or not the environment is for development.\n   * @return {boolean}\n   ",
                     "start": 1067,
                     "end": 1161,
                     "loc": {
@@ -3020,7 +3020,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Check whether or not the environment is for development.\n   * @return {Boolean}\n   ",
+                    "value": "*\n   * Check whether or not the environment is for development.\n   * @return {boolean}\n   ",
                     "start": 1067,
                     "end": 1161,
                     "loc": {
@@ -3453,7 +3453,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n     * The current `NODE_ENV`. If the variable is empty, the value will be `development`.\n     * @type {String}\n     ",
+      "value": "*\n     * The current `NODE_ENV`. If the variable is empty, the value will be `development`.\n     * @type {string}\n     ",
       "start": 208,
       "end": 331,
       "loc": {
@@ -3469,7 +3469,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n     * Whether or not the environment is production.\n     * @type {Boolean}\n     ",
+      "value": "*\n     * Whether or not the environment is production.\n     * @type {boolean}\n     ",
       "start": 388,
       "end": 475,
       "loc": {
@@ -3485,7 +3485,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Get the value of an environment variable.\n   * @param {String} name              The name of the variable.\n   * @param {String} [defaultValue=''] A fallback value in case the variable is `undefined`\n   * @return {String}\n   * @todo add a `require` parameter to throw an error if the variable is not preset.\n   ",
+      "value": "*\n   * Get the value of an environment variable.\n   * @param {string} name              The name of the variable.\n   * @param {string} [defaultValue=''] A fallback value in case the variable is `undefined`\n   * @return {string}\n   * @todo add a `require` parameter to throw an error if the variable is not preset.\n   ",
       "start": 531,
       "end": 852,
       "loc": {
@@ -3517,7 +3517,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Check whether or not the environment is for development.\n   * @return {Boolean}\n   ",
+      "value": "*\n   * Check whether or not the environment is for development.\n   * @return {boolean}\n   ",
       "start": 1067,
       "end": 1161,
       "loc": {
@@ -3946,7 +3946,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n     * The current `NODE_ENV`. If the variable is empty, the value will be `development`.\n     * @type {String}\n     ",
+      "value": "*\n     * The current `NODE_ENV`. If the variable is empty, the value will be `development`.\n     * @type {string}\n     ",
       "start": 208,
       "end": 331,
       "loc": {
@@ -4305,7 +4305,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n     * Whether or not the environment is production.\n     * @type {Boolean}\n     ",
+      "value": "*\n     * Whether or not the environment is production.\n     * @type {boolean}\n     ",
       "start": 388,
       "end": 475,
       "loc": {
@@ -4613,7 +4613,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Get the value of an environment variable.\n   * @param {String} name              The name of the variable.\n   * @param {String} [defaultValue=''] A fallback value in case the variable is `undefined`\n   * @return {String}\n   * @todo add a `require` parameter to throw an error if the variable is not preset.\n   ",
+      "value": "*\n   * Get the value of an environment variable.\n   * @param {string} name              The name of the variable.\n   * @param {string} [defaultValue=''] A fallback value in case the variable is `undefined`\n   * @return {string}\n   * @todo add a `require` parameter to throw an error if the variable is not preset.\n   ",
       "start": 531,
       "end": 852,
       "loc": {
@@ -5587,7 +5587,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Check whether or not the environment is for development.\n   * @return {Boolean}\n   ",
+      "value": "*\n   * Check whether or not the environment is for development.\n   * @return {boolean}\n   ",
       "start": 1067,
       "end": 1161,
       "loc": {

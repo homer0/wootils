@@ -1,7 +1,7 @@
 {
   "coverage": "100%",
-  "expectCount": 91,
-  "actualCount": 91,
+  "expectCount": 96,
+  "actualCount": 96,
   "files": {
     "wootils/node/appConfiguration.js": {
       "expectCount": 18,
@@ -14,8 +14,8 @@
       "undocumentLines": []
     },
     "wootils/node/errorHandler.js": {
-      "expectCount": 6,
-      "actualCount": 6,
+      "expectCount": 11,
+      "actualCount": 11,
       "undocumentLines": []
     },
     "wootils/node/logger.js": {

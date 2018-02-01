@@ -78,6 +78,12 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
+    "wootils/wootils/node/errorhandler.js~errorhandlerwithoptions",
+    "function/index.html#static-function-errorHandlerWithOptions",
+    "<span>errorHandlerWithOptions</span> <span class=\"search-result-import-path\">wootils/wootils/node/errorHandler.js</span>",
+    "function"
+  ],
+  [
     "wootils/wootils/node/logger.js~logger",
     "variable/index.html#static-variable-logger",
     "<span>logger</span> <span class=\"search-result-import-path\">wootils/wootils/node/logger.js</span>",
@@ -564,6 +570,18 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "wootils/node/errorhandler.js~errorhandler#eventsnames",
+    "class/wootils/node/errorHandler.js~ErrorHandler.html#instance-member-eventsNames",
+    "wootils/node/errorHandler.js~ErrorHandler#eventsNames",
+    "member"
+  ],
+  [
+    "wootils/node/errorhandler.js~errorhandler#exitonerror",
+    "class/wootils/node/errorHandler.js~ErrorHandler.html#instance-member-exitOnError",
+    "wootils/node/errorHandler.js~ErrorHandler#exitOnError",
+    "member"
+  ],
+  [
     "wootils/node/errorhandler.js~errorhandler#handle",
     "class/wootils/node/errorHandler.js~ErrorHandler.html#instance-method-handle",
     "wootils/node/errorHandler.js~ErrorHandler#handle",
@@ -573,6 +591,12 @@ window.esdocSearchIndex = [
     "wootils/node/errorhandler.js~errorhandler#listen",
     "class/wootils/node/errorHandler.js~ErrorHandler.html#instance-method-listen",
     "wootils/node/errorHandler.js~ErrorHandler#listen",
+    "method"
+  ],
+  [
+    "wootils/node/errorhandler.js~errorhandler#stoplistening",
+    "class/wootils/node/errorHandler.js~ErrorHandler.html#instance-method-stopListening",
+    "wootils/node/errorHandler.js~ErrorHandler#stopListening",
     "method"
   ],
   [

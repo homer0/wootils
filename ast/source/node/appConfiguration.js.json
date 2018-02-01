@@ -1,7 +1,7 @@
 {
   "type": "File",
   "start": 0,
-  "end": 13241,
+  "end": 13247,
   "loc": {
     "start": {
       "line": 1,
@@ -15,7 +15,7 @@
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 13241,
+    "end": 13247,
     "loc": {
       "start": {
         "line": 1,
@@ -254,7 +254,7 @@
         "trailingComments": [
           {
             "type": "CommentBlock",
-            "value": "*\n * @typedef {Object} AppConfigurationOptions\n * @property {String} [defaultConfigurationName='default']           The name of the default\n *                                                                   configuration\n * @property {String} [environmentVariable='APP_CONFIG']             The name of the variable it\n *                                                                   will read in order to\n *                                                                   determine which configuration\n *                                                                   to load\n * @property {String} [path='./config/[app-name]']                   The path to the configurations\n *                                                                   directory, relative to the\n *                                                                   project root path.\n * @property {String} [filenameFormat='[app-name].[name].config.js'] The name format of the\n *                                                                   configuration files. You\n *                                                                   need to use the `[name]`\n *                                                                   placeholder so the service\n *                                                                   can replace it with the name\n *                                                                   of the configuration.\n ",
+            "value": "*\n * @typedef {Object} AppConfigurationOptions\n * @property {string} [defaultConfigurationName='default']           The name of the default\n *                                                                   configuration\n * @property {string} [environmentVariable='APP_CONFIG']             The name of the variable it\n *                                                                   will read in order to\n *                                                                   determine which configuration\n *                                                                   to load\n * @property {string} [path='./config/[app-name]']                   The path to the configurations\n *                                                                   directory, relative to the\n *                                                                   project root path.\n * @property {string} [filenameFormat='[app-name].[name].config.js'] The name format of the\n *                                                                   configuration files. You\n *                                                                   need to use the `[name]`\n *                                                                   placeholder so the service\n *                                                                   can replace it with the name\n *                                                                   of the configuration.\n ",
             "start": 89,
             "end": 1530,
             "loc": {
@@ -1611,7 +1611,7 @@
                     "trailingComments": [
                       {
                         "type": "CommentBlock",
-                        "value": "*\n     * The name of the active configuration.\n     * @type {String}\n     ",
+                        "value": "*\n     * The name of the active configuration.\n     * @type {string}\n     ",
                         "start": 4021,
                         "end": 4099,
                         "loc": {
@@ -1792,7 +1792,7 @@
                     "leadingComments": [
                       {
                         "type": "CommentBlock",
-                        "value": "*\n     * The name of the active configuration.\n     * @type {String}\n     ",
+                        "value": "*\n     * The name of the active configuration.\n     * @type {string}\n     ",
                         "start": 4021,
                         "end": 4099,
                         "loc": {
@@ -1810,7 +1810,7 @@
                     "trailingComments": [
                       {
                         "type": "CommentBlock",
-                        "value": "*\n     * Whether or not the configuration can be switched.\n     * @type {Boolean}\n     ",
+                        "value": "*\n     * Whether or not the configuration can be switched.\n     * @type {boolean}\n     ",
                         "start": 4174,
                         "end": 4265,
                         "loc": {
@@ -2035,7 +2035,7 @@
                     "leadingComments": [
                       {
                         "type": "CommentBlock",
-                        "value": "*\n     * Whether or not the configuration can be switched.\n     * @type {Boolean}\n     ",
+                        "value": "*\n     * Whether or not the configuration can be switched.\n     * @type {boolean}\n     ",
                         "start": 4174,
                         "end": 4265,
                         "loc": {
@@ -2058,7 +2058,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Class constructor.\n   * @param {EnvironmentUtils}        environmentUtils          Required to read the environment\n   *                                                            variables and determine which\n   *                                                            configuration to use.\n   * @param {Function}                rootRequire               Necessary to be able to require the\n   *                                                            configuration files with paths\n   *                                                            relative to the app root directory.\n   * @param {String}                  [appName='app']           The name of the app using this\n   *                                                            service.\n   *                                                            It's also used as part of the name\n   *                                                            of the configuration files.\n   * @param {Object}                  [defaultConfiguration={}] The default configuration the others\n   *                                                            will extend.\n   * @param {AppConfigurationOptions} [options={}]              Options to customize the service\n   ",
+                  "value": "*\n   * Class constructor.\n   * @param {EnvironmentUtils}        environmentUtils          Required to read the environment\n   *                                                            variables and determine which\n   *                                                            configuration to use.\n   * @param {Function}                rootRequire               Necessary to be able to require the\n   *                                                            configuration files with paths\n   *                                                            relative to the app root directory.\n   * @param {string}                  [appName='app']           The name of the app using this\n   *                                                            service.\n   *                                                            It's also used as part of the name\n   *                                                            of the configuration files.\n   * @param {Object}                  [defaultConfiguration={}] The default configuration the others\n   *                                                            will extend.\n   * @param {AppConfigurationOptions} [options={}]              Options to customize the service\n   ",
                   "start": 1711,
                   "end": 2950,
                   "loc": {
@@ -2076,7 +2076,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Load a new configuration.\n   * @param {String}  name            The configuration name.\n   * @param {Object}  settings        The configuration settings.\n   * @param {Boolean} [switchTo=true] If the service should switch to the new configuration after\n   *                                  adding it.\n   * @return {Object} The settings of the new configuration.\n   * @throws {Error} If the configuration tries to extend a configuration that doesn't exist.\n   ",
+                  "value": "*\n   * Load a new configuration.\n   * @param {string}  name            The configuration name.\n   * @param {Object}  settings        The configuration settings.\n   * @param {boolean} [switchTo=true] If the service should switch to the new configuration after\n   *                                  adding it.\n   * @return {Object} The settings of the new configuration.\n   * @throws {Error} If the configuration tries to extend a configuration that doesn't exist.\n   ",
                   "start": 4348,
                   "end": 4818,
                   "loc": {
@@ -3298,7 +3298,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Load a new configuration.\n   * @param {String}  name            The configuration name.\n   * @param {Object}  settings        The configuration settings.\n   * @param {Boolean} [switchTo=true] If the service should switch to the new configuration after\n   *                                  adding it.\n   * @return {Object} The settings of the new configuration.\n   * @throws {Error} If the configuration tries to extend a configuration that doesn't exist.\n   ",
+                  "value": "*\n   * Load a new configuration.\n   * @param {string}  name            The configuration name.\n   * @param {Object}  settings        The configuration settings.\n   * @param {boolean} [switchTo=true] If the service should switch to the new configuration after\n   *                                  adding it.\n   * @return {Object} The settings of the new configuration.\n   * @throws {Error} If the configuration tries to extend a configuration that doesn't exist.\n   ",
                   "start": 4348,
                   "end": 4818,
                   "loc": {
@@ -3316,7 +3316,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Load a configuration from a file.\n   * @param {String}  name                   The name of the configuration.\n   * @param {Boolean} [switchTo=true]        If the service should switch to the new configuration\n   *                                         after adding it.\n   * @param {Boolean} [checkSwitchFlag=true] If `true`, the service will update the value of\n   *                                         `allowConfigurationSwitch` based on the loaded\n   *                                         configuration setting.\n   * @return {Object} The settings of the loaded configuration.\n   * @throws {Error} If the configuration file can't be loaded.\n   ",
+                  "value": "*\n   * Load a configuration from a file.\n   * @param {string}  name                   The name of the configuration.\n   * @param {boolean} [switchTo=true]        If the service should switch to the new configuration\n   *                                         after adding it.\n   * @param {boolean} [checkSwitchFlag=true] If `true`, the service will update the value of\n   *                                         `allowConfigurationSwitch` based on the loaded\n   *                                         configuration setting.\n   * @return {Object} The settings of the loaded configuration.\n   * @throws {Error} If the configuration file can't be loaded.\n   ",
                   "start": 5623,
                   "end": 6289,
                   "loc": {
@@ -5372,7 +5372,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Load a configuration from a file.\n   * @param {String}  name                   The name of the configuration.\n   * @param {Boolean} [switchTo=true]        If the service should switch to the new configuration\n   *                                         after adding it.\n   * @param {Boolean} [checkSwitchFlag=true] If `true`, the service will update the value of\n   *                                         `allowConfigurationSwitch` based on the loaded\n   *                                         configuration setting.\n   * @return {Object} The settings of the loaded configuration.\n   * @throws {Error} If the configuration file can't be loaded.\n   ",
+                  "value": "*\n   * Load a configuration from a file.\n   * @param {string}  name                   The name of the configuration.\n   * @param {boolean} [switchTo=true]        If the service should switch to the new configuration\n   *                                         after adding it.\n   * @param {boolean} [checkSwitchFlag=true] If `true`, the service will update the value of\n   *                                         `allowConfigurationSwitch` based on the loaded\n   *                                         configuration setting.\n   * @return {Object} The settings of the loaded configuration.\n   * @throws {Error} If the configuration file can't be loaded.\n   ",
                   "start": 5623,
                   "end": 6289,
                   "loc": {
@@ -5994,7 +5994,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Get a configuration settings. If no name is specified, it will return the settings of the\n   * default configuration.\n   * @param {String} [name=''] The name of the configuration.\n   * @return {Object}\n   ",
+                  "value": "*\n   * Get a configuration settings. If no name is specified, it will return the settings of the\n   * default configuration.\n   * @param {string} [name=''] The name of the configuration.\n   * @return {Object}\n   ",
                   "start": 7850,
                   "end": 8066,
                   "loc": {
@@ -6289,7 +6289,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Get a configuration settings. If no name is specified, it will return the settings of the\n   * default configuration.\n   * @param {String} [name=''] The name of the configuration.\n   * @return {Object}\n   ",
+                  "value": "*\n   * Get a configuration settings. If no name is specified, it will return the settings of the\n   * default configuration.\n   * @param {string} [name=''] The name of the configuration.\n   * @return {Object}\n   ",
                   "start": 7850,
                   "end": 8066,
                   "loc": {
@@ -6307,7 +6307,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Get a setting or settings from the active configuration.\n   * @example\n   * // To get a single setting\n   * const value = appConfiguration.get('some-setting');\n   * // To get multiple values\n   * const {settingOne, settingTwo} = appConfiguration.get(['settingOne', 'settingTwo']);\n   * @param {String|Array} setting The name of a setting or a list of them.\n   * @return {*}\n   ",
+                  "value": "*\n   * Get a setting or settings from the active configuration.\n   * @example\n   * // To get a single setting\n   * const value = appConfiguration.get('some-setting');\n   * // To get multiple values\n   * const {settingOne, settingTwo} = appConfiguration.get(['settingOne', 'settingTwo']);\n   * @param {string|Array} setting The name of a setting or a list of them.\n   * @return {*}\n   ",
                   "start": 8166,
                   "end": 8554,
                   "loc": {
@@ -7313,7 +7313,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Get a setting or settings from the active configuration.\n   * @example\n   * // To get a single setting\n   * const value = appConfiguration.get('some-setting');\n   * // To get multiple values\n   * const {settingOne, settingTwo} = appConfiguration.get(['settingOne', 'settingTwo']);\n   * @param {String|Array} setting The name of a setting or a list of them.\n   * @return {*}\n   ",
+                  "value": "*\n   * Get a setting or settings from the active configuration.\n   * @example\n   * // To get a single setting\n   * const value = appConfiguration.get('some-setting');\n   * // To get multiple values\n   * const {settingOne, settingTwo} = appConfiguration.get(['settingOne', 'settingTwo']);\n   * @param {string|Array} setting The name of a setting or a list of them.\n   * @return {*}\n   ",
                   "start": 8166,
                   "end": 8554,
                   "loc": {
@@ -7331,7 +7331,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Set the value of a setting or settings from the active configuration.\n   * If both the current and the new value of a setting are objects, then instead of overwriting\n   * it, the method will merge them.\n   * @example\n   * // To set a single setting value\n   * appConfiguration.set('some-setting', 'some-setting-value');\n   * // To set the value of multiple settings\n   * appConfiguration.set({\n   *   settingOne: 'valueOne',\n   *   settingTwo: 'valueTwo',\n   * })\n   * @param {String|Object} setting The name of the setting to update or a dictionary of settings\n   *                                and their values.\n   * @param {*}             value   The value of the setting. This is only used when `setting` is\n   *                                a string.\n   ",
+                  "value": "*\n   * Set the value of a setting or settings from the active configuration.\n   * If both the current and the new value of a setting are objects, then instead of overwriting\n   * it, the method will merge them.\n   * @example\n   * // To set a single setting value\n   * appConfiguration.set('some-setting', 'some-setting-value');\n   * // To set the value of multiple settings\n   * appConfiguration.set({\n   *   settingOne: 'valueOne',\n   *   settingTwo: 'valueTwo',\n   * })\n   * @param {string|Object} setting The name of the setting to update or a dictionary of settings\n   *                                and their values.\n   * @param {*}             value   The value of the setting. This is only used when `setting` is\n   *                                a string.\n   ",
                   "start": 8889,
                   "end": 9664,
                   "loc": {
@@ -8783,7 +8783,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Set the value of a setting or settings from the active configuration.\n   * If both the current and the new value of a setting are objects, then instead of overwriting\n   * it, the method will merge them.\n   * @example\n   * // To set a single setting value\n   * appConfiguration.set('some-setting', 'some-setting-value');\n   * // To set the value of multiple settings\n   * appConfiguration.set({\n   *   settingOne: 'valueOne',\n   *   settingTwo: 'valueTwo',\n   * })\n   * @param {String|Object} setting The name of the setting to update or a dictionary of settings\n   *                                and their values.\n   * @param {*}             value   The value of the setting. This is only used when `setting` is\n   *                                a string.\n   ",
+                  "value": "*\n   * Set the value of a setting or settings from the active configuration.\n   * If both the current and the new value of a setting are objects, then instead of overwriting\n   * it, the method will merge them.\n   * @example\n   * // To set a single setting value\n   * appConfiguration.set('some-setting', 'some-setting-value');\n   * // To set the value of multiple settings\n   * appConfiguration.set({\n   *   settingOne: 'valueOne',\n   *   settingTwo: 'valueTwo',\n   * })\n   * @param {string|Object} setting The name of the setting to update or a dictionary of settings\n   *                                and their values.\n   * @param {*}             value   The value of the setting. This is only used when `setting` is\n   *                                a string.\n   ",
                   "start": 8889,
                   "end": 9664,
                   "loc": {
@@ -8801,7 +8801,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Check whether the service can switch configurations or not.\n   * @return {Boolean}\n   ",
+                  "value": "*\n   * Check whether the service can switch configurations or not.\n   * @return {boolean}\n   ",
                   "start": 10239,
                   "end": 10336,
                   "loc": {
@@ -8942,7 +8942,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Check whether the service can switch configurations or not.\n   * @return {Boolean}\n   ",
+                  "value": "*\n   * Check whether the service can switch configurations or not.\n   * @return {boolean}\n   ",
                   "start": 10239,
                   "end": 10336,
                   "loc": {
@@ -8960,7 +8960,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Switch to a different configuration. If the configuration is not registered, it will try to\n   * load from a file.\n   * @param {String}  name          The new of the configuration to switch to.\n   * @param {Boolean} [force=false] A way to force the service to switch even if the\n   *                                `allowConfigurationSwitch` property if `false`.\n   * @return {Object} The new active configuration.\n   * @throws {Error} If `force` is `false` and the `allowConfigurationSwitch` property is `false`.\n   ",
+                  "value": "*\n   * Switch to a different configuration. If the configuration is not registered, it will try to\n   * load from a file.\n   * @param {string}  name          The new of the configuration to switch to.\n   * @param {boolean} [force=false] A way to force the service to switch even if the\n   *                                `allowConfigurationSwitch` property if `false`.\n   * @return {Object} The new active configuration.\n   * @throws {Error} If `force` is `false` and the `allowConfigurationSwitch` property is `false`.\n   ",
                   "start": 10401,
                   "end": 10929,
                   "loc": {
@@ -9855,7 +9855,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Switch to a different configuration. If the configuration is not registered, it will try to\n   * load from a file.\n   * @param {String}  name          The new of the configuration to switch to.\n   * @param {Boolean} [force=false] A way to force the service to switch even if the\n   *                                `allowConfigurationSwitch` property if `false`.\n   * @return {Object} The new active configuration.\n   * @throws {Error} If `force` is `false` and the `allowConfigurationSwitch` property is `false`.\n   ",
+                  "value": "*\n   * Switch to a different configuration. If the configuration is not registered, it will try to\n   * load from a file.\n   * @param {string}  name          The new of the configuration to switch to.\n   * @param {boolean} [force=false] A way to force the service to switch even if the\n   *                                `allowConfigurationSwitch` property if `false`.\n   * @return {Object} The new active configuration.\n   * @throws {Error} If `force` is `false` and the `allowConfigurationSwitch` property is `false`.\n   ",
                   "start": 10401,
                   "end": 10929,
                   "loc": {
@@ -9873,7 +9873,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Add a new configuration to the service.\n   * @param {String}  name            The name of the new configuration.\n   * @param {Object}  settings        The configuration settings.\n   * @param {Boolean} checkSwitchFlag Whether or not the `allowConfigurationSwitch` should be\n   *                                  updated with the value of this new configuration setting.\n   * @param {Boolean} switchTo        Whether or not to switch it to the active configuration\n   *                                  after adding it.\n   * @ignore\n   * @access protected\n   ",
+                  "value": "*\n   * Add a new configuration to the service.\n   * @param {string}  name            The name of the new configuration.\n   * @param {Object}  settings        The configuration settings.\n   * @param {boolean} checkSwitchFlag Whether or not the `allowConfigurationSwitch` should be\n   *                                  updated with the value of this new configuration setting.\n   * @param {boolean} switchTo        Whether or not to switch it to the active configuration\n   *                                  after adding it.\n   * @ignore\n   * @access protected\n   ",
                   "start": 11283,
                   "end": 11851,
                   "loc": {
@@ -10832,7 +10832,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Add a new configuration to the service.\n   * @param {String}  name            The name of the new configuration.\n   * @param {Object}  settings        The configuration settings.\n   * @param {Boolean} checkSwitchFlag Whether or not the `allowConfigurationSwitch` should be\n   *                                  updated with the value of this new configuration setting.\n   * @param {Boolean} switchTo        Whether or not to switch it to the active configuration\n   *                                  after adding it.\n   * @ignore\n   * @access protected\n   ",
+                  "value": "*\n   * Add a new configuration to the service.\n   * @param {string}  name            The name of the new configuration.\n   * @param {Object}  settings        The configuration settings.\n   * @param {boolean} checkSwitchFlag Whether or not the `allowConfigurationSwitch` should be\n   *                                  updated with the value of this new configuration setting.\n   * @param {boolean} switchTo        Whether or not to switch it to the active configuration\n   *                                  after adding it.\n   * @ignore\n   * @access protected\n   ",
                   "start": 11283,
                   "end": 11851,
                   "loc": {
@@ -10857,8 +10857,8 @@
       },
       {
         "type": "Identifier",
-        "start": 12913,
-        "end": 13189,
+        "start": 12919,
+        "end": 13195,
         "loc": {
           "start": {
             "line": 310,
@@ -10872,8 +10872,8 @@
         "declarations": [
           {
             "type": "VariableDeclarator",
-            "start": 12919,
-            "end": 13188,
+            "start": 12925,
+            "end": 13194,
             "loc": {
               "start": {
                 "line": 310,
@@ -10886,8 +10886,8 @@
             },
             "id": {
               "type": "Identifier",
-              "start": 12919,
-              "end": 12935,
+              "start": 12925,
+              "end": 12941,
               "loc": {
                 "start": {
                   "line": 310,
@@ -10904,8 +10904,8 @@
             },
             "init": {
               "type": "ArrowFunctionExpression",
-              "start": 12938,
-              "end": 13188,
+              "start": 12944,
+              "end": 13194,
               "loc": {
                 "start": {
                   "line": 310,
@@ -10923,8 +10923,8 @@
               "params": [
                 {
                   "type": "Identifier",
-                  "start": 12942,
-                  "end": 12949,
+                  "start": 12948,
+                  "end": 12955,
                   "loc": {
                     "start": {
                       "line": 311,
@@ -10940,8 +10940,8 @@
                 },
                 {
                   "type": "Identifier",
-                  "start": 12953,
-                  "end": 12973,
+                  "start": 12959,
+                  "end": 12979,
                   "loc": {
                     "start": {
                       "line": 312,
@@ -10957,8 +10957,8 @@
                 },
                 {
                   "type": "Identifier",
-                  "start": 12977,
-                  "end": 12984,
+                  "start": 12983,
+                  "end": 12990,
                   "loc": {
                     "start": {
                       "line": 313,
@@ -10975,8 +10975,8 @@
               ],
               "body": {
                 "type": "CallExpression",
-                "start": 12990,
-                "end": 13188,
+                "start": 12996,
+                "end": 13194,
                 "loc": {
                   "start": {
                     "line": 314,
@@ -10989,8 +10989,8 @@
                 },
                 "callee": {
                   "type": "Identifier",
-                  "start": 12990,
-                  "end": 12998,
+                  "start": 12996,
+                  "end": 13004,
                   "loc": {
                     "start": {
                       "line": 314,
@@ -11007,8 +11007,8 @@
                 "arguments": [
                   {
                     "type": "ArrowFunctionExpression",
-                    "start": 12999,
-                    "end": 13187,
+                    "start": 13005,
+                    "end": 13193,
                     "loc": {
                       "start": {
                         "line": 314,
@@ -11026,8 +11026,8 @@
                     "params": [
                       {
                         "type": "Identifier",
-                        "start": 13000,
-                        "end": 13003,
+                        "start": 13006,
+                        "end": 13009,
                         "loc": {
                           "start": {
                             "line": 314,
@@ -11044,8 +11044,8 @@
                     ],
                     "body": {
                       "type": "BlockStatement",
-                      "start": 13008,
-                      "end": 13187,
+                      "start": 13014,
+                      "end": 13193,
                       "loc": {
                         "start": {
                           "line": 314,
@@ -11059,8 +11059,8 @@
                       "body": [
                         {
                           "type": "ExpressionStatement",
-                          "start": 13012,
-                          "end": 13185,
+                          "start": 13018,
+                          "end": 13191,
                           "loc": {
                             "start": {
                               "line": 315,
@@ -11073,8 +11073,8 @@
                           },
                           "expression": {
                             "type": "CallExpression",
-                            "start": 13012,
-                            "end": 13184,
+                            "start": 13018,
+                            "end": 13190,
                             "loc": {
                               "start": {
                                 "line": 315,
@@ -11087,8 +11087,8 @@
                             },
                             "callee": {
                               "type": "MemberExpression",
-                              "start": 13012,
-                              "end": 13019,
+                              "start": 13018,
+                              "end": 13025,
                               "loc": {
                                 "start": {
                                   "line": 315,
@@ -11101,8 +11101,8 @@
                               },
                               "object": {
                                 "type": "Identifier",
-                                "start": 13012,
-                                "end": 13015,
+                                "start": 13018,
+                                "end": 13021,
                                 "loc": {
                                   "start": {
                                     "line": 315,
@@ -11118,8 +11118,8 @@
                               },
                               "property": {
                                 "type": "Identifier",
-                                "start": 13016,
-                                "end": 13019,
+                                "start": 13022,
+                                "end": 13025,
                                 "loc": {
                                   "start": {
                                     "line": 315,
@@ -11138,8 +11138,8 @@
                             "arguments": [
                               {
                                 "type": "StringLiteral",
-                                "start": 13020,
-                                "end": 13038,
+                                "start": 13026,
+                                "end": 13044,
                                 "loc": {
                                   "start": {
                                     "line": 315,
@@ -11158,8 +11158,8 @@
                               },
                               {
                                 "type": "ArrowFunctionExpression",
-                                "start": 13040,
-                                "end": 13183,
+                                "start": 13046,
+                                "end": 13189,
                                 "loc": {
                                   "start": {
                                     "line": 315,
@@ -11177,8 +11177,8 @@
                                 "params": [],
                                 "body": {
                                   "type": "NewExpression",
-                                  "start": 13046,
-                                  "end": 13183,
+                                  "start": 13052,
+                                  "end": 13189,
                                   "loc": {
                                     "start": {
                                       "line": 315,
@@ -11191,8 +11191,8 @@
                                   },
                                   "callee": {
                                     "type": "Identifier",
-                                    "start": 13050,
-                                    "end": 13066,
+                                    "start": 13056,
+                                    "end": 13072,
                                     "loc": {
                                       "start": {
                                         "line": 315,
@@ -11209,8 +11209,8 @@
                                   "arguments": [
                                     {
                                       "type": "CallExpression",
-                                      "start": 13072,
-                                      "end": 13099,
+                                      "start": 13078,
+                                      "end": 13105,
                                       "loc": {
                                         "start": {
                                           "line": 316,
@@ -11223,8 +11223,8 @@
                                       },
                                       "callee": {
                                         "type": "MemberExpression",
-                                        "start": 13072,
-                                        "end": 13079,
+                                        "start": 13078,
+                                        "end": 13085,
                                         "loc": {
                                           "start": {
                                             "line": 316,
@@ -11237,8 +11237,8 @@
                                         },
                                         "object": {
                                           "type": "Identifier",
-                                          "start": 13072,
-                                          "end": 13075,
+                                          "start": 13078,
+                                          "end": 13081,
                                           "loc": {
                                             "start": {
                                               "line": 316,
@@ -11254,8 +11254,8 @@
                                         },
                                         "property": {
                                           "type": "Identifier",
-                                          "start": 13076,
-                                          "end": 13079,
+                                          "start": 13082,
+                                          "end": 13085,
                                           "loc": {
                                             "start": {
                                               "line": 316,
@@ -11274,8 +11274,8 @@
                                       "arguments": [
                                         {
                                           "type": "StringLiteral",
-                                          "start": 13080,
-                                          "end": 13098,
+                                          "start": 13086,
+                                          "end": 13104,
                                           "loc": {
                                             "start": {
                                               "line": 316,
@@ -11296,8 +11296,8 @@
                                     },
                                     {
                                       "type": "CallExpression",
-                                      "start": 13105,
-                                      "end": 13127,
+                                      "start": 13111,
+                                      "end": 13133,
                                       "loc": {
                                         "start": {
                                           "line": 317,
@@ -11310,8 +11310,8 @@
                                       },
                                       "callee": {
                                         "type": "MemberExpression",
-                                        "start": 13105,
-                                        "end": 13112,
+                                        "start": 13111,
+                                        "end": 13118,
                                         "loc": {
                                           "start": {
                                             "line": 317,
@@ -11324,8 +11324,8 @@
                                         },
                                         "object": {
                                           "type": "Identifier",
-                                          "start": 13105,
-                                          "end": 13108,
+                                          "start": 13111,
+                                          "end": 13114,
                                           "loc": {
                                             "start": {
                                               "line": 317,
@@ -11341,8 +11341,8 @@
                                         },
                                         "property": {
                                           "type": "Identifier",
-                                          "start": 13109,
-                                          "end": 13112,
+                                          "start": 13115,
+                                          "end": 13118,
                                           "loc": {
                                             "start": {
                                               "line": 317,
@@ -11361,8 +11361,8 @@
                                       "arguments": [
                                         {
                                           "type": "StringLiteral",
-                                          "start": 13113,
-                                          "end": 13126,
+                                          "start": 13119,
+                                          "end": 13132,
                                           "loc": {
                                             "start": {
                                               "line": 317,
@@ -11383,8 +11383,8 @@
                                     },
                                     {
                                       "type": "Identifier",
-                                      "start": 13133,
-                                      "end": 13140,
+                                      "start": 13139,
+                                      "end": 13146,
                                       "loc": {
                                         "start": {
                                           "line": 318,
@@ -11400,8 +11400,8 @@
                                     },
                                     {
                                       "type": "Identifier",
-                                      "start": 13146,
-                                      "end": 13166,
+                                      "start": 13152,
+                                      "end": 13172,
                                       "loc": {
                                         "start": {
                                           "line": 319,
@@ -11417,8 +11417,8 @@
                                     },
                                     {
                                       "type": "Identifier",
-                                      "start": 13172,
-                                      "end": 13179,
+                                      "start": 13178,
+                                      "end": 13185,
                                       "loc": {
                                         "start": {
                                           "line": 320,
@@ -11455,8 +11455,8 @@
       },
       {
         "type": "ExportNamedDeclaration",
-        "start": 13191,
-        "end": 13240,
+        "start": 13197,
+        "end": 13246,
         "loc": {
           "start": {
             "line": 324,
@@ -11471,8 +11471,8 @@
         "specifiers": [
           {
             "type": "ExportSpecifier",
-            "start": 13200,
-            "end": 13216,
+            "start": 13206,
+            "end": 13222,
             "loc": {
               "start": {
                 "line": 324,
@@ -11485,8 +11485,8 @@
             },
             "local": {
               "type": "Identifier",
-              "start": 13200,
-              "end": 13216,
+              "start": 13206,
+              "end": 13222,
               "loc": {
                 "start": {
                   "line": 324,
@@ -11502,8 +11502,8 @@
             },
             "exported": {
               "type": "Identifier",
-              "start": 13200,
-              "end": 13216,
+              "start": 13206,
+              "end": 13222,
               "loc": {
                 "start": {
                   "line": 324,
@@ -11520,8 +11520,8 @@
           },
           {
             "type": "ExportSpecifier",
-            "start": 13220,
-            "end": 13236,
+            "start": 13226,
+            "end": 13242,
             "loc": {
               "start": {
                 "line": 325,
@@ -11534,8 +11534,8 @@
             },
             "local": {
               "type": "Identifier",
-              "start": 13220,
-              "end": 13236,
+              "start": 13226,
+              "end": 13242,
               "loc": {
                 "start": {
                   "line": 325,
@@ -11551,8 +11551,8 @@
             },
             "exported": {
               "type": "Identifier",
-              "start": 13220,
-              "end": 13236,
+              "start": 13226,
+              "end": 13242,
               "loc": {
                 "start": {
                   "line": 325,
@@ -11572,8 +11572,8 @@
       },
       {
         "type": "ExportNamedDeclaration",
-        "start": 13191,
-        "end": 13240,
+        "start": 13197,
+        "end": 13246,
         "loc": {
           "start": {
             "line": 324,
@@ -12909,7 +12909,7 @@
                       "trailingComments": [
                         {
                           "type": "CommentBlock",
-                          "value": "*\n     * The name of the active configuration.\n     * @type {String}\n     ",
+                          "value": "*\n     * The name of the active configuration.\n     * @type {string}\n     ",
                           "start": 4021,
                           "end": 4099,
                           "loc": {
@@ -13090,7 +13090,7 @@
                       "leadingComments": [
                         {
                           "type": "CommentBlock",
-                          "value": "*\n     * The name of the active configuration.\n     * @type {String}\n     ",
+                          "value": "*\n     * The name of the active configuration.\n     * @type {string}\n     ",
                           "start": 4021,
                           "end": 4099,
                           "loc": {
@@ -13108,7 +13108,7 @@
                       "trailingComments": [
                         {
                           "type": "CommentBlock",
-                          "value": "*\n     * Whether or not the configuration can be switched.\n     * @type {Boolean}\n     ",
+                          "value": "*\n     * Whether or not the configuration can be switched.\n     * @type {boolean}\n     ",
                           "start": 4174,
                           "end": 4265,
                           "loc": {
@@ -13333,7 +13333,7 @@
                       "leadingComments": [
                         {
                           "type": "CommentBlock",
-                          "value": "*\n     * Whether or not the configuration can be switched.\n     * @type {Boolean}\n     ",
+                          "value": "*\n     * Whether or not the configuration can be switched.\n     * @type {boolean}\n     ",
                           "start": 4174,
                           "end": 4265,
                           "loc": {
@@ -13356,7 +13356,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Class constructor.\n   * @param {EnvironmentUtils}        environmentUtils          Required to read the environment\n   *                                                            variables and determine which\n   *                                                            configuration to use.\n   * @param {Function}                rootRequire               Necessary to be able to require the\n   *                                                            configuration files with paths\n   *                                                            relative to the app root directory.\n   * @param {String}                  [appName='app']           The name of the app using this\n   *                                                            service.\n   *                                                            It's also used as part of the name\n   *                                                            of the configuration files.\n   * @param {Object}                  [defaultConfiguration={}] The default configuration the others\n   *                                                            will extend.\n   * @param {AppConfigurationOptions} [options={}]              Options to customize the service\n   ",
+                    "value": "*\n   * Class constructor.\n   * @param {EnvironmentUtils}        environmentUtils          Required to read the environment\n   *                                                            variables and determine which\n   *                                                            configuration to use.\n   * @param {Function}                rootRequire               Necessary to be able to require the\n   *                                                            configuration files with paths\n   *                                                            relative to the app root directory.\n   * @param {string}                  [appName='app']           The name of the app using this\n   *                                                            service.\n   *                                                            It's also used as part of the name\n   *                                                            of the configuration files.\n   * @param {Object}                  [defaultConfiguration={}] The default configuration the others\n   *                                                            will extend.\n   * @param {AppConfigurationOptions} [options={}]              Options to customize the service\n   ",
                     "start": 1711,
                     "end": 2950,
                     "loc": {
@@ -13374,7 +13374,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Load a new configuration.\n   * @param {String}  name            The configuration name.\n   * @param {Object}  settings        The configuration settings.\n   * @param {Boolean} [switchTo=true] If the service should switch to the new configuration after\n   *                                  adding it.\n   * @return {Object} The settings of the new configuration.\n   * @throws {Error} If the configuration tries to extend a configuration that doesn't exist.\n   ",
+                    "value": "*\n   * Load a new configuration.\n   * @param {string}  name            The configuration name.\n   * @param {Object}  settings        The configuration settings.\n   * @param {boolean} [switchTo=true] If the service should switch to the new configuration after\n   *                                  adding it.\n   * @return {Object} The settings of the new configuration.\n   * @throws {Error} If the configuration tries to extend a configuration that doesn't exist.\n   ",
                     "start": 4348,
                     "end": 4818,
                     "loc": {
@@ -14596,7 +14596,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Load a new configuration.\n   * @param {String}  name            The configuration name.\n   * @param {Object}  settings        The configuration settings.\n   * @param {Boolean} [switchTo=true] If the service should switch to the new configuration after\n   *                                  adding it.\n   * @return {Object} The settings of the new configuration.\n   * @throws {Error} If the configuration tries to extend a configuration that doesn't exist.\n   ",
+                    "value": "*\n   * Load a new configuration.\n   * @param {string}  name            The configuration name.\n   * @param {Object}  settings        The configuration settings.\n   * @param {boolean} [switchTo=true] If the service should switch to the new configuration after\n   *                                  adding it.\n   * @return {Object} The settings of the new configuration.\n   * @throws {Error} If the configuration tries to extend a configuration that doesn't exist.\n   ",
                     "start": 4348,
                     "end": 4818,
                     "loc": {
@@ -14614,7 +14614,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Load a configuration from a file.\n   * @param {String}  name                   The name of the configuration.\n   * @param {Boolean} [switchTo=true]        If the service should switch to the new configuration\n   *                                         after adding it.\n   * @param {Boolean} [checkSwitchFlag=true] If `true`, the service will update the value of\n   *                                         `allowConfigurationSwitch` based on the loaded\n   *                                         configuration setting.\n   * @return {Object} The settings of the loaded configuration.\n   * @throws {Error} If the configuration file can't be loaded.\n   ",
+                    "value": "*\n   * Load a configuration from a file.\n   * @param {string}  name                   The name of the configuration.\n   * @param {boolean} [switchTo=true]        If the service should switch to the new configuration\n   *                                         after adding it.\n   * @param {boolean} [checkSwitchFlag=true] If `true`, the service will update the value of\n   *                                         `allowConfigurationSwitch` based on the loaded\n   *                                         configuration setting.\n   * @return {Object} The settings of the loaded configuration.\n   * @throws {Error} If the configuration file can't be loaded.\n   ",
                     "start": 5623,
                     "end": 6289,
                     "loc": {
@@ -16670,7 +16670,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Load a configuration from a file.\n   * @param {String}  name                   The name of the configuration.\n   * @param {Boolean} [switchTo=true]        If the service should switch to the new configuration\n   *                                         after adding it.\n   * @param {Boolean} [checkSwitchFlag=true] If `true`, the service will update the value of\n   *                                         `allowConfigurationSwitch` based on the loaded\n   *                                         configuration setting.\n   * @return {Object} The settings of the loaded configuration.\n   * @throws {Error} If the configuration file can't be loaded.\n   ",
+                    "value": "*\n   * Load a configuration from a file.\n   * @param {string}  name                   The name of the configuration.\n   * @param {boolean} [switchTo=true]        If the service should switch to the new configuration\n   *                                         after adding it.\n   * @param {boolean} [checkSwitchFlag=true] If `true`, the service will update the value of\n   *                                         `allowConfigurationSwitch` based on the loaded\n   *                                         configuration setting.\n   * @return {Object} The settings of the loaded configuration.\n   * @throws {Error} If the configuration file can't be loaded.\n   ",
                     "start": 5623,
                     "end": 6289,
                     "loc": {
@@ -17292,7 +17292,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Get a configuration settings. If no name is specified, it will return the settings of the\n   * default configuration.\n   * @param {String} [name=''] The name of the configuration.\n   * @return {Object}\n   ",
+                    "value": "*\n   * Get a configuration settings. If no name is specified, it will return the settings of the\n   * default configuration.\n   * @param {string} [name=''] The name of the configuration.\n   * @return {Object}\n   ",
                     "start": 7850,
                     "end": 8066,
                     "loc": {
@@ -17587,7 +17587,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Get a configuration settings. If no name is specified, it will return the settings of the\n   * default configuration.\n   * @param {String} [name=''] The name of the configuration.\n   * @return {Object}\n   ",
+                    "value": "*\n   * Get a configuration settings. If no name is specified, it will return the settings of the\n   * default configuration.\n   * @param {string} [name=''] The name of the configuration.\n   * @return {Object}\n   ",
                     "start": 7850,
                     "end": 8066,
                     "loc": {
@@ -17605,7 +17605,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Get a setting or settings from the active configuration.\n   * @example\n   * // To get a single setting\n   * const value = appConfiguration.get('some-setting');\n   * // To get multiple values\n   * const {settingOne, settingTwo} = appConfiguration.get(['settingOne', 'settingTwo']);\n   * @param {String|Array} setting The name of a setting or a list of them.\n   * @return {*}\n   ",
+                    "value": "*\n   * Get a setting or settings from the active configuration.\n   * @example\n   * // To get a single setting\n   * const value = appConfiguration.get('some-setting');\n   * // To get multiple values\n   * const {settingOne, settingTwo} = appConfiguration.get(['settingOne', 'settingTwo']);\n   * @param {string|Array} setting The name of a setting or a list of them.\n   * @return {*}\n   ",
                     "start": 8166,
                     "end": 8554,
                     "loc": {
@@ -18611,7 +18611,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Get a setting or settings from the active configuration.\n   * @example\n   * // To get a single setting\n   * const value = appConfiguration.get('some-setting');\n   * // To get multiple values\n   * const {settingOne, settingTwo} = appConfiguration.get(['settingOne', 'settingTwo']);\n   * @param {String|Array} setting The name of a setting or a list of them.\n   * @return {*}\n   ",
+                    "value": "*\n   * Get a setting or settings from the active configuration.\n   * @example\n   * // To get a single setting\n   * const value = appConfiguration.get('some-setting');\n   * // To get multiple values\n   * const {settingOne, settingTwo} = appConfiguration.get(['settingOne', 'settingTwo']);\n   * @param {string|Array} setting The name of a setting or a list of them.\n   * @return {*}\n   ",
                     "start": 8166,
                     "end": 8554,
                     "loc": {
@@ -18629,7 +18629,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Set the value of a setting or settings from the active configuration.\n   * If both the current and the new value of a setting are objects, then instead of overwriting\n   * it, the method will merge them.\n   * @example\n   * // To set a single setting value\n   * appConfiguration.set('some-setting', 'some-setting-value');\n   * // To set the value of multiple settings\n   * appConfiguration.set({\n   *   settingOne: 'valueOne',\n   *   settingTwo: 'valueTwo',\n   * })\n   * @param {String|Object} setting The name of the setting to update or a dictionary of settings\n   *                                and their values.\n   * @param {*}             value   The value of the setting. This is only used when `setting` is\n   *                                a string.\n   ",
+                    "value": "*\n   * Set the value of a setting or settings from the active configuration.\n   * If both the current and the new value of a setting are objects, then instead of overwriting\n   * it, the method will merge them.\n   * @example\n   * // To set a single setting value\n   * appConfiguration.set('some-setting', 'some-setting-value');\n   * // To set the value of multiple settings\n   * appConfiguration.set({\n   *   settingOne: 'valueOne',\n   *   settingTwo: 'valueTwo',\n   * })\n   * @param {string|Object} setting The name of the setting to update or a dictionary of settings\n   *                                and their values.\n   * @param {*}             value   The value of the setting. This is only used when `setting` is\n   *                                a string.\n   ",
                     "start": 8889,
                     "end": 9664,
                     "loc": {
@@ -20081,7 +20081,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Set the value of a setting or settings from the active configuration.\n   * If both the current and the new value of a setting are objects, then instead of overwriting\n   * it, the method will merge them.\n   * @example\n   * // To set a single setting value\n   * appConfiguration.set('some-setting', 'some-setting-value');\n   * // To set the value of multiple settings\n   * appConfiguration.set({\n   *   settingOne: 'valueOne',\n   *   settingTwo: 'valueTwo',\n   * })\n   * @param {String|Object} setting The name of the setting to update or a dictionary of settings\n   *                                and their values.\n   * @param {*}             value   The value of the setting. This is only used when `setting` is\n   *                                a string.\n   ",
+                    "value": "*\n   * Set the value of a setting or settings from the active configuration.\n   * If both the current and the new value of a setting are objects, then instead of overwriting\n   * it, the method will merge them.\n   * @example\n   * // To set a single setting value\n   * appConfiguration.set('some-setting', 'some-setting-value');\n   * // To set the value of multiple settings\n   * appConfiguration.set({\n   *   settingOne: 'valueOne',\n   *   settingTwo: 'valueTwo',\n   * })\n   * @param {string|Object} setting The name of the setting to update or a dictionary of settings\n   *                                and their values.\n   * @param {*}             value   The value of the setting. This is only used when `setting` is\n   *                                a string.\n   ",
                     "start": 8889,
                     "end": 9664,
                     "loc": {
@@ -20099,7 +20099,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Check whether the service can switch configurations or not.\n   * @return {Boolean}\n   ",
+                    "value": "*\n   * Check whether the service can switch configurations or not.\n   * @return {boolean}\n   ",
                     "start": 10239,
                     "end": 10336,
                     "loc": {
@@ -20240,7 +20240,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Check whether the service can switch configurations or not.\n   * @return {Boolean}\n   ",
+                    "value": "*\n   * Check whether the service can switch configurations or not.\n   * @return {boolean}\n   ",
                     "start": 10239,
                     "end": 10336,
                     "loc": {
@@ -20258,7 +20258,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Switch to a different configuration. If the configuration is not registered, it will try to\n   * load from a file.\n   * @param {String}  name          The new of the configuration to switch to.\n   * @param {Boolean} [force=false] A way to force the service to switch even if the\n   *                                `allowConfigurationSwitch` property if `false`.\n   * @return {Object} The new active configuration.\n   * @throws {Error} If `force` is `false` and the `allowConfigurationSwitch` property is `false`.\n   ",
+                    "value": "*\n   * Switch to a different configuration. If the configuration is not registered, it will try to\n   * load from a file.\n   * @param {string}  name          The new of the configuration to switch to.\n   * @param {boolean} [force=false] A way to force the service to switch even if the\n   *                                `allowConfigurationSwitch` property if `false`.\n   * @return {Object} The new active configuration.\n   * @throws {Error} If `force` is `false` and the `allowConfigurationSwitch` property is `false`.\n   ",
                     "start": 10401,
                     "end": 10929,
                     "loc": {
@@ -21153,7 +21153,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Switch to a different configuration. If the configuration is not registered, it will try to\n   * load from a file.\n   * @param {String}  name          The new of the configuration to switch to.\n   * @param {Boolean} [force=false] A way to force the service to switch even if the\n   *                                `allowConfigurationSwitch` property if `false`.\n   * @return {Object} The new active configuration.\n   * @throws {Error} If `force` is `false` and the `allowConfigurationSwitch` property is `false`.\n   ",
+                    "value": "*\n   * Switch to a different configuration. If the configuration is not registered, it will try to\n   * load from a file.\n   * @param {string}  name          The new of the configuration to switch to.\n   * @param {boolean} [force=false] A way to force the service to switch even if the\n   *                                `allowConfigurationSwitch` property if `false`.\n   * @return {Object} The new active configuration.\n   * @throws {Error} If `force` is `false` and the `allowConfigurationSwitch` property is `false`.\n   ",
                     "start": 10401,
                     "end": 10929,
                     "loc": {
@@ -21171,7 +21171,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Add a new configuration to the service.\n   * @param {String}  name            The name of the new configuration.\n   * @param {Object}  settings        The configuration settings.\n   * @param {Boolean} checkSwitchFlag Whether or not the `allowConfigurationSwitch` should be\n   *                                  updated with the value of this new configuration setting.\n   * @param {Boolean} switchTo        Whether or not to switch it to the active configuration\n   *                                  after adding it.\n   * @ignore\n   * @access protected\n   ",
+                    "value": "*\n   * Add a new configuration to the service.\n   * @param {string}  name            The name of the new configuration.\n   * @param {Object}  settings        The configuration settings.\n   * @param {boolean} checkSwitchFlag Whether or not the `allowConfigurationSwitch` should be\n   *                                  updated with the value of this new configuration setting.\n   * @param {boolean} switchTo        Whether or not to switch it to the active configuration\n   *                                  after adding it.\n   * @ignore\n   * @access protected\n   ",
                     "start": 11283,
                     "end": 11851,
                     "loc": {
@@ -22130,7 +22130,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Add a new configuration to the service.\n   * @param {String}  name            The name of the new configuration.\n   * @param {Object}  settings        The configuration settings.\n   * @param {Boolean} checkSwitchFlag Whether or not the `allowConfigurationSwitch` should be\n   *                                  updated with the value of this new configuration setting.\n   * @param {Boolean} switchTo        Whether or not to switch it to the active configuration\n   *                                  after adding it.\n   * @ignore\n   * @access protected\n   ",
+                    "value": "*\n   * Add a new configuration to the service.\n   * @param {string}  name            The name of the new configuration.\n   * @param {Object}  settings        The configuration settings.\n   * @param {boolean} checkSwitchFlag Whether or not the `allowConfigurationSwitch` should be\n   *                                  updated with the value of this new configuration setting.\n   * @param {boolean} switchTo        Whether or not to switch it to the active configuration\n   *                                  after adding it.\n   * @ignore\n   * @access protected\n   ",
                     "start": 11283,
                     "end": 11851,
                     "loc": {
@@ -22152,7 +22152,7 @@
           "leadingComments": [
             {
               "type": "CommentBlock",
-              "value": "*\n * @typedef {Object} AppConfigurationOptions\n * @property {String} [defaultConfigurationName='default']           The name of the default\n *                                                                   configuration\n * @property {String} [environmentVariable='APP_CONFIG']             The name of the variable it\n *                                                                   will read in order to\n *                                                                   determine which configuration\n *                                                                   to load\n * @property {String} [path='./config/[app-name]']                   The path to the configurations\n *                                                                   directory, relative to the\n *                                                                   project root path.\n * @property {String} [filenameFormat='[app-name].[name].config.js'] The name format of the\n *                                                                   configuration files. You\n *                                                                   need to use the `[name]`\n *                                                                   placeholder so the service\n *                                                                   can replace it with the name\n *                                                                   of the configuration.\n ",
+              "value": "*\n * @typedef {Object} AppConfigurationOptions\n * @property {string} [defaultConfigurationName='default']           The name of the default\n *                                                                   configuration\n * @property {string} [environmentVariable='APP_CONFIG']             The name of the variable it\n *                                                                   will read in order to\n *                                                                   determine which configuration\n *                                                                   to load\n * @property {string} [path='./config/[app-name]']                   The path to the configurations\n *                                                                   directory, relative to the\n *                                                                   project root path.\n * @property {string} [filenameFormat='[app-name].[name].config.js'] The name format of the\n *                                                                   configuration files. You\n *                                                                   need to use the `[name]`\n *                                                                   placeholder so the service\n *                                                                   can replace it with the name\n *                                                                   of the configuration.\n ",
               "start": 89,
               "end": 1530,
               "loc": {
@@ -22186,9 +22186,9 @@
           "trailingComments": [
             {
               "type": "CommentBlock",
-              "value": "*\n * Generates a `Provider` with an already defined name, default configuration and options.\n * @example\n * // Generate the provider\n * const provider = appConfiguration('my-app', {\n *   birthday: '25-09-2015',\n * });\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const appConfiguration = container.get('appConfiguration');\n * @param {String} appName              The name of the app.\n * @param {Object} defaultConfiguration The service default configuration.\n * @param {Object} options              Options to customize the service.\n * @return {Provider}\n ",
+              "value": "*\n * Generates a `Provider` with an already defined name, default configuration and options.\n * @example\n * // Generate the provider\n * const provider = appConfiguration('my-app', {\n *   birthday: '25-09-2015',\n * });\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const appConfiguration = container.get('appConfiguration');\n * @param {string} [appName]              The name of the app.\n * @param {Object} [defaultConfiguration] The service default configuration.\n * @param {Object} [options]              Options to customize the service.\n * @return {Provider}\n ",
               "start": 12281,
-              "end": 12912,
+              "end": 12918,
               "loc": {
                 "start": {
                   "line": 294,
@@ -22209,8 +22209,8 @@
       },
       {
         "type": "ExportNamedDeclaration",
-        "start": 13191,
-        "end": 13240,
+        "start": 13197,
+        "end": 13246,
         "loc": {
           "start": {
             "line": 324,
@@ -22223,8 +22223,8 @@
         },
         "declaration": {
           "type": "VariableDeclaration",
-          "start": 12913,
-          "end": 13189,
+          "start": 12919,
+          "end": 13195,
           "loc": {
             "start": {
               "line": 310,
@@ -22238,8 +22238,8 @@
           "declarations": [
             {
               "type": "VariableDeclarator",
-              "start": 12919,
-              "end": 13188,
+              "start": 12925,
+              "end": 13194,
               "loc": {
                 "start": {
                   "line": 310,
@@ -22252,8 +22252,8 @@
               },
               "id": {
                 "type": "Identifier",
-                "start": 12919,
-                "end": 12935,
+                "start": 12925,
+                "end": 12941,
                 "loc": {
                   "start": {
                     "line": 310,
@@ -22270,8 +22270,8 @@
               },
               "init": {
                 "type": "ArrowFunctionExpression",
-                "start": 12938,
-                "end": 13188,
+                "start": 12944,
+                "end": 13194,
                 "loc": {
                   "start": {
                     "line": 310,
@@ -22284,8 +22284,8 @@
                 },
                 "id": {
                   "type": "Identifier",
-                  "start": 12919,
-                  "end": 12935,
+                  "start": 12925,
+                  "end": 12941,
                   "loc": {
                     "start": {
                       "line": 310,
@@ -22306,8 +22306,8 @@
                 "params": [
                   {
                     "type": "Identifier",
-                    "start": 12942,
-                    "end": 12949,
+                    "start": 12948,
+                    "end": 12955,
                     "loc": {
                       "start": {
                         "line": 311,
@@ -22323,8 +22323,8 @@
                   },
                   {
                     "type": "Identifier",
-                    "start": 12953,
-                    "end": 12973,
+                    "start": 12959,
+                    "end": 12979,
                     "loc": {
                       "start": {
                         "line": 312,
@@ -22340,8 +22340,8 @@
                   },
                   {
                     "type": "Identifier",
-                    "start": 12977,
-                    "end": 12984,
+                    "start": 12983,
+                    "end": 12990,
                     "loc": {
                       "start": {
                         "line": 313,
@@ -22358,8 +22358,8 @@
                 ],
                 "body": {
                   "type": "CallExpression",
-                  "start": 12990,
-                  "end": 13188,
+                  "start": 12996,
+                  "end": 13194,
                   "loc": {
                     "start": {
                       "line": 314,
@@ -22372,8 +22372,8 @@
                   },
                   "callee": {
                     "type": "Identifier",
-                    "start": 12990,
-                    "end": 12998,
+                    "start": 12996,
+                    "end": 13004,
                     "loc": {
                       "start": {
                         "line": 314,
@@ -22390,8 +22390,8 @@
                   "arguments": [
                     {
                       "type": "ArrowFunctionExpression",
-                      "start": 12999,
-                      "end": 13187,
+                      "start": 13005,
+                      "end": 13193,
                       "loc": {
                         "start": {
                           "line": 314,
@@ -22409,8 +22409,8 @@
                       "params": [
                         {
                           "type": "Identifier",
-                          "start": 13000,
-                          "end": 13003,
+                          "start": 13006,
+                          "end": 13009,
                           "loc": {
                             "start": {
                               "line": 314,
@@ -22427,8 +22427,8 @@
                       ],
                       "body": {
                         "type": "BlockStatement",
-                        "start": 13008,
-                        "end": 13187,
+                        "start": 13014,
+                        "end": 13193,
                         "loc": {
                           "start": {
                             "line": 314,
@@ -22442,8 +22442,8 @@
                         "body": [
                           {
                             "type": "ExpressionStatement",
-                            "start": 13012,
-                            "end": 13185,
+                            "start": 13018,
+                            "end": 13191,
                             "loc": {
                               "start": {
                                 "line": 315,
@@ -22456,8 +22456,8 @@
                             },
                             "expression": {
                               "type": "CallExpression",
-                              "start": 13012,
-                              "end": 13184,
+                              "start": 13018,
+                              "end": 13190,
                               "loc": {
                                 "start": {
                                   "line": 315,
@@ -22470,8 +22470,8 @@
                               },
                               "callee": {
                                 "type": "MemberExpression",
-                                "start": 13012,
-                                "end": 13019,
+                                "start": 13018,
+                                "end": 13025,
                                 "loc": {
                                   "start": {
                                     "line": 315,
@@ -22484,8 +22484,8 @@
                                 },
                                 "object": {
                                   "type": "Identifier",
-                                  "start": 13012,
-                                  "end": 13015,
+                                  "start": 13018,
+                                  "end": 13021,
                                   "loc": {
                                     "start": {
                                       "line": 315,
@@ -22501,8 +22501,8 @@
                                 },
                                 "property": {
                                   "type": "Identifier",
-                                  "start": 13016,
-                                  "end": 13019,
+                                  "start": 13022,
+                                  "end": 13025,
                                   "loc": {
                                     "start": {
                                       "line": 315,
@@ -22521,8 +22521,8 @@
                               "arguments": [
                                 {
                                   "type": "StringLiteral",
-                                  "start": 13020,
-                                  "end": 13038,
+                                  "start": 13026,
+                                  "end": 13044,
                                   "loc": {
                                     "start": {
                                       "line": 315,
@@ -22541,8 +22541,8 @@
                                 },
                                 {
                                   "type": "ArrowFunctionExpression",
-                                  "start": 13040,
-                                  "end": 13183,
+                                  "start": 13046,
+                                  "end": 13189,
                                   "loc": {
                                     "start": {
                                       "line": 315,
@@ -22560,8 +22560,8 @@
                                   "params": [],
                                   "body": {
                                     "type": "NewExpression",
-                                    "start": 13046,
-                                    "end": 13183,
+                                    "start": 13052,
+                                    "end": 13189,
                                     "loc": {
                                       "start": {
                                         "line": 315,
@@ -22574,8 +22574,8 @@
                                     },
                                     "callee": {
                                       "type": "Identifier",
-                                      "start": 13050,
-                                      "end": 13066,
+                                      "start": 13056,
+                                      "end": 13072,
                                       "loc": {
                                         "start": {
                                           "line": 315,
@@ -22592,8 +22592,8 @@
                                     "arguments": [
                                       {
                                         "type": "CallExpression",
-                                        "start": 13072,
-                                        "end": 13099,
+                                        "start": 13078,
+                                        "end": 13105,
                                         "loc": {
                                           "start": {
                                             "line": 316,
@@ -22606,8 +22606,8 @@
                                         },
                                         "callee": {
                                           "type": "MemberExpression",
-                                          "start": 13072,
-                                          "end": 13079,
+                                          "start": 13078,
+                                          "end": 13085,
                                           "loc": {
                                             "start": {
                                               "line": 316,
@@ -22620,8 +22620,8 @@
                                           },
                                           "object": {
                                             "type": "Identifier",
-                                            "start": 13072,
-                                            "end": 13075,
+                                            "start": 13078,
+                                            "end": 13081,
                                             "loc": {
                                               "start": {
                                                 "line": 316,
@@ -22637,8 +22637,8 @@
                                           },
                                           "property": {
                                             "type": "Identifier",
-                                            "start": 13076,
-                                            "end": 13079,
+                                            "start": 13082,
+                                            "end": 13085,
                                             "loc": {
                                               "start": {
                                                 "line": 316,
@@ -22657,8 +22657,8 @@
                                         "arguments": [
                                           {
                                             "type": "StringLiteral",
-                                            "start": 13080,
-                                            "end": 13098,
+                                            "start": 13086,
+                                            "end": 13104,
                                             "loc": {
                                               "start": {
                                                 "line": 316,
@@ -22679,8 +22679,8 @@
                                       },
                                       {
                                         "type": "CallExpression",
-                                        "start": 13105,
-                                        "end": 13127,
+                                        "start": 13111,
+                                        "end": 13133,
                                         "loc": {
                                           "start": {
                                             "line": 317,
@@ -22693,8 +22693,8 @@
                                         },
                                         "callee": {
                                           "type": "MemberExpression",
-                                          "start": 13105,
-                                          "end": 13112,
+                                          "start": 13111,
+                                          "end": 13118,
                                           "loc": {
                                             "start": {
                                               "line": 317,
@@ -22707,8 +22707,8 @@
                                           },
                                           "object": {
                                             "type": "Identifier",
-                                            "start": 13105,
-                                            "end": 13108,
+                                            "start": 13111,
+                                            "end": 13114,
                                             "loc": {
                                               "start": {
                                                 "line": 317,
@@ -22724,8 +22724,8 @@
                                           },
                                           "property": {
                                             "type": "Identifier",
-                                            "start": 13109,
-                                            "end": 13112,
+                                            "start": 13115,
+                                            "end": 13118,
                                             "loc": {
                                               "start": {
                                                 "line": 317,
@@ -22744,8 +22744,8 @@
                                         "arguments": [
                                           {
                                             "type": "StringLiteral",
-                                            "start": 13113,
-                                            "end": 13126,
+                                            "start": 13119,
+                                            "end": 13132,
                                             "loc": {
                                               "start": {
                                                 "line": 317,
@@ -22766,8 +22766,8 @@
                                       },
                                       {
                                         "type": "Identifier",
-                                        "start": 13133,
-                                        "end": 13140,
+                                        "start": 13139,
+                                        "end": 13146,
                                         "loc": {
                                           "start": {
                                             "line": 318,
@@ -22783,8 +22783,8 @@
                                       },
                                       {
                                         "type": "Identifier",
-                                        "start": 13146,
-                                        "end": 13166,
+                                        "start": 13152,
+                                        "end": 13172,
                                         "loc": {
                                           "start": {
                                             "line": 319,
@@ -22800,8 +22800,8 @@
                                       },
                                       {
                                         "type": "Identifier",
-                                        "start": 13172,
-                                        "end": 13179,
+                                        "start": 13178,
+                                        "end": 13185,
                                         "loc": {
                                           "start": {
                                             "line": 320,
@@ -22835,9 +22835,9 @@
           "leadingComments": [
             {
               "type": "CommentBlock",
-              "value": "*\n * Generates a `Provider` with an already defined name, default configuration and options.\n * @example\n * // Generate the provider\n * const provider = appConfiguration('my-app', {\n *   birthday: '25-09-2015',\n * });\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const appConfiguration = container.get('appConfiguration');\n * @param {String} appName              The name of the app.\n * @param {Object} defaultConfiguration The service default configuration.\n * @param {Object} options              Options to customize the service.\n * @return {Provider}\n ",
+              "value": "*\n * Generates a `Provider` with an already defined name, default configuration and options.\n * @example\n * // Generate the provider\n * const provider = appConfiguration('my-app', {\n *   birthday: '25-09-2015',\n * });\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const appConfiguration = container.get('appConfiguration');\n * @param {string} [appName]              The name of the app.\n * @param {Object} [defaultConfiguration] The service default configuration.\n * @param {Object} [options]              Options to customize the service.\n * @return {Provider}\n ",
               "start": 12281,
-              "end": 12912,
+              "end": 12918,
               "loc": {
                 "start": {
                   "line": 294,
@@ -22862,7 +22862,7 @@
   "comments": [
     {
       "type": "CommentBlock",
-      "value": "*\n * @typedef {Object} AppConfigurationOptions\n * @property {String} [defaultConfigurationName='default']           The name of the default\n *                                                                   configuration\n * @property {String} [environmentVariable='APP_CONFIG']             The name of the variable it\n *                                                                   will read in order to\n *                                                                   determine which configuration\n *                                                                   to load\n * @property {String} [path='./config/[app-name]']                   The path to the configurations\n *                                                                   directory, relative to the\n *                                                                   project root path.\n * @property {String} [filenameFormat='[app-name].[name].config.js'] The name format of the\n *                                                                   configuration files. You\n *                                                                   need to use the `[name]`\n *                                                                   placeholder so the service\n *                                                                   can replace it with the name\n *                                                                   of the configuration.\n ",
+      "value": "*\n * @typedef {Object} AppConfigurationOptions\n * @property {string} [defaultConfigurationName='default']           The name of the default\n *                                                                   configuration\n * @property {string} [environmentVariable='APP_CONFIG']             The name of the variable it\n *                                                                   will read in order to\n *                                                                   determine which configuration\n *                                                                   to load\n * @property {string} [path='./config/[app-name]']                   The path to the configurations\n *                                                                   directory, relative to the\n *                                                                   project root path.\n * @property {string} [filenameFormat='[app-name].[name].config.js'] The name format of the\n *                                                                   configuration files. You\n *                                                                   need to use the `[name]`\n *                                                                   placeholder so the service\n *                                                                   can replace it with the name\n *                                                                   of the configuration.\n ",
       "start": 89,
       "end": 1530,
       "loc": {
@@ -22894,7 +22894,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Class constructor.\n   * @param {EnvironmentUtils}        environmentUtils          Required to read the environment\n   *                                                            variables and determine which\n   *                                                            configuration to use.\n   * @param {Function}                rootRequire               Necessary to be able to require the\n   *                                                            configuration files with paths\n   *                                                            relative to the app root directory.\n   * @param {String}                  [appName='app']           The name of the app using this\n   *                                                            service.\n   *                                                            It's also used as part of the name\n   *                                                            of the configuration files.\n   * @param {Object}                  [defaultConfiguration={}] The default configuration the others\n   *                                                            will extend.\n   * @param {AppConfigurationOptions} [options={}]              Options to customize the service\n   ",
+      "value": "*\n   * Class constructor.\n   * @param {EnvironmentUtils}        environmentUtils          Required to read the environment\n   *                                                            variables and determine which\n   *                                                            configuration to use.\n   * @param {Function}                rootRequire               Necessary to be able to require the\n   *                                                            configuration files with paths\n   *                                                            relative to the app root directory.\n   * @param {string}                  [appName='app']           The name of the app using this\n   *                                                            service.\n   *                                                            It's also used as part of the name\n   *                                                            of the configuration files.\n   * @param {Object}                  [defaultConfiguration={}] The default configuration the others\n   *                                                            will extend.\n   * @param {AppConfigurationOptions} [options={}]              Options to customize the service\n   ",
       "start": 1711,
       "end": 2950,
       "loc": {
@@ -22974,7 +22974,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n     * The name of the active configuration.\n     * @type {String}\n     ",
+      "value": "*\n     * The name of the active configuration.\n     * @type {string}\n     ",
       "start": 4021,
       "end": 4099,
       "loc": {
@@ -22990,7 +22990,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n     * Whether or not the configuration can be switched.\n     * @type {Boolean}\n     ",
+      "value": "*\n     * Whether or not the configuration can be switched.\n     * @type {boolean}\n     ",
       "start": 4174,
       "end": 4265,
       "loc": {
@@ -23006,7 +23006,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Load a new configuration.\n   * @param {String}  name            The configuration name.\n   * @param {Object}  settings        The configuration settings.\n   * @param {Boolean} [switchTo=true] If the service should switch to the new configuration after\n   *                                  adding it.\n   * @return {Object} The settings of the new configuration.\n   * @throws {Error} If the configuration tries to extend a configuration that doesn't exist.\n   ",
+      "value": "*\n   * Load a new configuration.\n   * @param {string}  name            The configuration name.\n   * @param {Object}  settings        The configuration settings.\n   * @param {boolean} [switchTo=true] If the service should switch to the new configuration after\n   *                                  adding it.\n   * @return {Object} The settings of the new configuration.\n   * @throws {Error} If the configuration tries to extend a configuration that doesn't exist.\n   ",
       "start": 4348,
       "end": 4818,
       "loc": {
@@ -23118,7 +23118,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Load a configuration from a file.\n   * @param {String}  name                   The name of the configuration.\n   * @param {Boolean} [switchTo=true]        If the service should switch to the new configuration\n   *                                         after adding it.\n   * @param {Boolean} [checkSwitchFlag=true] If `true`, the service will update the value of\n   *                                         `allowConfigurationSwitch` based on the loaded\n   *                                         configuration setting.\n   * @return {Object} The settings of the loaded configuration.\n   * @throws {Error} If the configuration file can't be loaded.\n   ",
+      "value": "*\n   * Load a configuration from a file.\n   * @param {string}  name                   The name of the configuration.\n   * @param {boolean} [switchTo=true]        If the service should switch to the new configuration\n   *                                         after adding it.\n   * @param {boolean} [checkSwitchFlag=true] If `true`, the service will update the value of\n   *                                         `allowConfigurationSwitch` based on the loaded\n   *                                         configuration setting.\n   * @return {Object} The settings of the loaded configuration.\n   * @throws {Error} If the configuration file can't be loaded.\n   ",
       "start": 5623,
       "end": 6289,
       "loc": {
@@ -23262,7 +23262,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Get a configuration settings. If no name is specified, it will return the settings of the\n   * default configuration.\n   * @param {String} [name=''] The name of the configuration.\n   * @return {Object}\n   ",
+      "value": "*\n   * Get a configuration settings. If no name is specified, it will return the settings of the\n   * default configuration.\n   * @param {string} [name=''] The name of the configuration.\n   * @return {Object}\n   ",
       "start": 7850,
       "end": 8066,
       "loc": {
@@ -23278,7 +23278,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Get a setting or settings from the active configuration.\n   * @example\n   * // To get a single setting\n   * const value = appConfiguration.get('some-setting');\n   * // To get multiple values\n   * const {settingOne, settingTwo} = appConfiguration.get(['settingOne', 'settingTwo']);\n   * @param {String|Array} setting The name of a setting or a list of them.\n   * @return {*}\n   ",
+      "value": "*\n   * Get a setting or settings from the active configuration.\n   * @example\n   * // To get a single setting\n   * const value = appConfiguration.get('some-setting');\n   * // To get multiple values\n   * const {settingOne, settingTwo} = appConfiguration.get(['settingOne', 'settingTwo']);\n   * @param {string|Array} setting The name of a setting or a list of them.\n   * @return {*}\n   ",
       "start": 8166,
       "end": 8554,
       "loc": {
@@ -23294,7 +23294,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Set the value of a setting or settings from the active configuration.\n   * If both the current and the new value of a setting are objects, then instead of overwriting\n   * it, the method will merge them.\n   * @example\n   * // To set a single setting value\n   * appConfiguration.set('some-setting', 'some-setting-value');\n   * // To set the value of multiple settings\n   * appConfiguration.set({\n   *   settingOne: 'valueOne',\n   *   settingTwo: 'valueTwo',\n   * })\n   * @param {String|Object} setting The name of the setting to update or a dictionary of settings\n   *                                and their values.\n   * @param {*}             value   The value of the setting. This is only used when `setting` is\n   *                                a string.\n   ",
+      "value": "*\n   * Set the value of a setting or settings from the active configuration.\n   * If both the current and the new value of a setting are objects, then instead of overwriting\n   * it, the method will merge them.\n   * @example\n   * // To set a single setting value\n   * appConfiguration.set('some-setting', 'some-setting-value');\n   * // To set the value of multiple settings\n   * appConfiguration.set({\n   *   settingOne: 'valueOne',\n   *   settingTwo: 'valueTwo',\n   * })\n   * @param {string|Object} setting The name of the setting to update or a dictionary of settings\n   *                                and their values.\n   * @param {*}             value   The value of the setting. This is only used when `setting` is\n   *                                a string.\n   ",
       "start": 8889,
       "end": 9664,
       "loc": {
@@ -23310,7 +23310,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Check whether the service can switch configurations or not.\n   * @return {Boolean}\n   ",
+      "value": "*\n   * Check whether the service can switch configurations or not.\n   * @return {boolean}\n   ",
       "start": 10239,
       "end": 10336,
       "loc": {
@@ -23326,7 +23326,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Switch to a different configuration. If the configuration is not registered, it will try to\n   * load from a file.\n   * @param {String}  name          The new of the configuration to switch to.\n   * @param {Boolean} [force=false] A way to force the service to switch even if the\n   *                                `allowConfigurationSwitch` property if `false`.\n   * @return {Object} The new active configuration.\n   * @throws {Error} If `force` is `false` and the `allowConfigurationSwitch` property is `false`.\n   ",
+      "value": "*\n   * Switch to a different configuration. If the configuration is not registered, it will try to\n   * load from a file.\n   * @param {string}  name          The new of the configuration to switch to.\n   * @param {boolean} [force=false] A way to force the service to switch even if the\n   *                                `allowConfigurationSwitch` property if `false`.\n   * @return {Object} The new active configuration.\n   * @throws {Error} If `force` is `false` and the `allowConfigurationSwitch` property is `false`.\n   ",
       "start": 10401,
       "end": 10929,
       "loc": {
@@ -23342,7 +23342,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Add a new configuration to the service.\n   * @param {String}  name            The name of the new configuration.\n   * @param {Object}  settings        The configuration settings.\n   * @param {Boolean} checkSwitchFlag Whether or not the `allowConfigurationSwitch` should be\n   *                                  updated with the value of this new configuration setting.\n   * @param {Boolean} switchTo        Whether or not to switch it to the active configuration\n   *                                  after adding it.\n   * @ignore\n   * @access protected\n   ",
+      "value": "*\n   * Add a new configuration to the service.\n   * @param {string}  name            The name of the new configuration.\n   * @param {Object}  settings        The configuration settings.\n   * @param {boolean} checkSwitchFlag Whether or not the `allowConfigurationSwitch` should be\n   *                                  updated with the value of this new configuration setting.\n   * @param {boolean} switchTo        Whether or not to switch it to the active configuration\n   *                                  after adding it.\n   * @ignore\n   * @access protected\n   ",
       "start": 11283,
       "end": 11851,
       "loc": {
@@ -23358,9 +23358,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n * Generates a `Provider` with an already defined name, default configuration and options.\n * @example\n * // Generate the provider\n * const provider = appConfiguration('my-app', {\n *   birthday: '25-09-2015',\n * });\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const appConfiguration = container.get('appConfiguration');\n * @param {String} appName              The name of the app.\n * @param {Object} defaultConfiguration The service default configuration.\n * @param {Object} options              Options to customize the service.\n * @return {Provider}\n ",
+      "value": "*\n * Generates a `Provider` with an already defined name, default configuration and options.\n * @example\n * // Generate the provider\n * const provider = appConfiguration('my-app', {\n *   birthday: '25-09-2015',\n * });\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const appConfiguration = container.get('appConfiguration');\n * @param {string} [appName]              The name of the app.\n * @param {Object} [defaultConfiguration] The service default configuration.\n * @param {Object} [options]              Options to customize the service.\n * @return {Provider}\n ",
       "start": 12281,
-      "end": 12912,
+      "end": 12918,
       "loc": {
         "start": {
           "line": 294,
@@ -23825,7 +23825,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n * @typedef {Object} AppConfigurationOptions\n * @property {String} [defaultConfigurationName='default']           The name of the default\n *                                                                   configuration\n * @property {String} [environmentVariable='APP_CONFIG']             The name of the variable it\n *                                                                   will read in order to\n *                                                                   determine which configuration\n *                                                                   to load\n * @property {String} [path='./config/[app-name]']                   The path to the configurations\n *                                                                   directory, relative to the\n *                                                                   project root path.\n * @property {String} [filenameFormat='[app-name].[name].config.js'] The name format of the\n *                                                                   configuration files. You\n *                                                                   need to use the `[name]`\n *                                                                   placeholder so the service\n *                                                                   can replace it with the name\n *                                                                   of the configuration.\n ",
+      "value": "*\n * @typedef {Object} AppConfigurationOptions\n * @property {string} [defaultConfigurationName='default']           The name of the default\n *                                                                   configuration\n * @property {string} [environmentVariable='APP_CONFIG']             The name of the variable it\n *                                                                   will read in order to\n *                                                                   determine which configuration\n *                                                                   to load\n * @property {string} [path='./config/[app-name]']                   The path to the configurations\n *                                                                   directory, relative to the\n *                                                                   project root path.\n * @property {string} [filenameFormat='[app-name].[name].config.js'] The name format of the\n *                                                                   configuration files. You\n *                                                                   need to use the `[name]`\n *                                                                   placeholder so the service\n *                                                                   can replace it with the name\n *                                                                   of the configuration.\n ",
       "start": 89,
       "end": 1530,
       "loc": {
@@ -23936,7 +23936,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Class constructor.\n   * @param {EnvironmentUtils}        environmentUtils          Required to read the environment\n   *                                                            variables and determine which\n   *                                                            configuration to use.\n   * @param {Function}                rootRequire               Necessary to be able to require the\n   *                                                            configuration files with paths\n   *                                                            relative to the app root directory.\n   * @param {String}                  [appName='app']           The name of the app using this\n   *                                                            service.\n   *                                                            It's also used as part of the name\n   *                                                            of the configuration files.\n   * @param {Object}                  [defaultConfiguration={}] The default configuration the others\n   *                                                            will extend.\n   * @param {AppConfigurationOptions} [options={}]              Options to customize the service\n   ",
+      "value": "*\n   * Class constructor.\n   * @param {EnvironmentUtils}        environmentUtils          Required to read the environment\n   *                                                            variables and determine which\n   *                                                            configuration to use.\n   * @param {Function}                rootRequire               Necessary to be able to require the\n   *                                                            configuration files with paths\n   *                                                            relative to the app root directory.\n   * @param {string}                  [appName='app']           The name of the app using this\n   *                                                            service.\n   *                                                            It's also used as part of the name\n   *                                                            of the configuration files.\n   * @param {Object}                  [defaultConfiguration={}] The default configuration the others\n   *                                                            will extend.\n   * @param {AppConfigurationOptions} [options={}]              Options to customize the service\n   ",
       "start": 1711,
       "end": 2950,
       "loc": {
@@ -26413,7 +26413,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n     * The name of the active configuration.\n     * @type {String}\n     ",
+      "value": "*\n     * The name of the active configuration.\n     * @type {string}\n     ",
       "start": 4021,
       "end": 4099,
       "loc": {
@@ -26694,7 +26694,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n     * Whether or not the configuration can be switched.\n     * @type {Boolean}\n     ",
+      "value": "*\n     * Whether or not the configuration can be switched.\n     * @type {boolean}\n     ",
       "start": 4174,
       "end": 4265,
       "loc": {
@@ -27079,7 +27079,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Load a new configuration.\n   * @param {String}  name            The configuration name.\n   * @param {Object}  settings        The configuration settings.\n   * @param {Boolean} [switchTo=true] If the service should switch to the new configuration after\n   *                                  adding it.\n   * @return {Object} The settings of the new configuration.\n   * @throws {Error} If the configuration tries to extend a configuration that doesn't exist.\n   ",
+      "value": "*\n   * Load a new configuration.\n   * @param {string}  name            The configuration name.\n   * @param {Object}  settings        The configuration settings.\n   * @param {boolean} [switchTo=true] If the service should switch to the new configuration after\n   *                                  adding it.\n   * @return {Object} The settings of the new configuration.\n   * @throws {Error} If the configuration tries to extend a configuration that doesn't exist.\n   ",
       "start": 4348,
       "end": 4818,
       "loc": {
@@ -29592,7 +29592,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Load a configuration from a file.\n   * @param {String}  name                   The name of the configuration.\n   * @param {Boolean} [switchTo=true]        If the service should switch to the new configuration\n   *                                         after adding it.\n   * @param {Boolean} [checkSwitchFlag=true] If `true`, the service will update the value of\n   *                                         `allowConfigurationSwitch` based on the loaded\n   *                                         configuration setting.\n   * @return {Object} The settings of the loaded configuration.\n   * @throws {Error} If the configuration file can't be loaded.\n   ",
+      "value": "*\n   * Load a configuration from a file.\n   * @param {string}  name                   The name of the configuration.\n   * @param {boolean} [switchTo=true]        If the service should switch to the new configuration\n   *                                         after adding it.\n   * @param {boolean} [checkSwitchFlag=true] If `true`, the service will update the value of\n   *                                         `allowConfigurationSwitch` based on the loaded\n   *                                         configuration setting.\n   * @return {Object} The settings of the loaded configuration.\n   * @throws {Error} If the configuration file can't be loaded.\n   ",
       "start": 5623,
       "end": 6289,
       "loc": {
@@ -34731,7 +34731,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Get a configuration settings. If no name is specified, it will return the settings of the\n   * default configuration.\n   * @param {String} [name=''] The name of the configuration.\n   * @return {Object}\n   ",
+      "value": "*\n   * Get a configuration settings. If no name is specified, it will return the settings of the\n   * default configuration.\n   * @param {string} [name=''] The name of the configuration.\n   * @return {Object}\n   ",
       "start": 7850,
       "end": 8066,
       "loc": {
@@ -35322,7 +35322,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Get a setting or settings from the active configuration.\n   * @example\n   * // To get a single setting\n   * const value = appConfiguration.get('some-setting');\n   * // To get multiple values\n   * const {settingOne, settingTwo} = appConfiguration.get(['settingOne', 'settingTwo']);\n   * @param {String|Array} setting The name of a setting or a list of them.\n   * @return {*}\n   ",
+      "value": "*\n   * Get a setting or settings from the active configuration.\n   * @example\n   * // To get a single setting\n   * const value = appConfiguration.get('some-setting');\n   * // To get multiple values\n   * const {settingOne, settingTwo} = appConfiguration.get(['settingOne', 'settingTwo']);\n   * @param {string|Array} setting The name of a setting or a list of them.\n   * @return {*}\n   ",
       "start": 8166,
       "end": 8554,
       "loc": {
@@ -37440,7 +37440,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Set the value of a setting or settings from the active configuration.\n   * If both the current and the new value of a setting are objects, then instead of overwriting\n   * it, the method will merge them.\n   * @example\n   * // To set a single setting value\n   * appConfiguration.set('some-setting', 'some-setting-value');\n   * // To set the value of multiple settings\n   * appConfiguration.set({\n   *   settingOne: 'valueOne',\n   *   settingTwo: 'valueTwo',\n   * })\n   * @param {String|Object} setting The name of the setting to update or a dictionary of settings\n   *                                and their values.\n   * @param {*}             value   The value of the setting. This is only used when `setting` is\n   *                                a string.\n   ",
+      "value": "*\n   * Set the value of a setting or settings from the active configuration.\n   * If both the current and the new value of a setting are objects, then instead of overwriting\n   * it, the method will merge them.\n   * @example\n   * // To set a single setting value\n   * appConfiguration.set('some-setting', 'some-setting-value');\n   * // To set the value of multiple settings\n   * appConfiguration.set({\n   *   settingOne: 'valueOne',\n   *   settingTwo: 'valueTwo',\n   * })\n   * @param {string|Object} setting The name of the setting to update or a dictionary of settings\n   *                                and their values.\n   * @param {*}             value   The value of the setting. This is only used when `setting` is\n   *                                a string.\n   ",
       "start": 8889,
       "end": 9664,
       "loc": {
@@ -40586,7 +40586,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Check whether the service can switch configurations or not.\n   * @return {Boolean}\n   ",
+      "value": "*\n   * Check whether the service can switch configurations or not.\n   * @return {boolean}\n   ",
       "start": 10239,
       "end": 10336,
       "loc": {
@@ -40862,7 +40862,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Switch to a different configuration. If the configuration is not registered, it will try to\n   * load from a file.\n   * @param {String}  name          The new of the configuration to switch to.\n   * @param {Boolean} [force=false] A way to force the service to switch even if the\n   *                                `allowConfigurationSwitch` property if `false`.\n   * @return {Object} The new active configuration.\n   * @throws {Error} If `force` is `false` and the `allowConfigurationSwitch` property is `false`.\n   ",
+      "value": "*\n   * Switch to a different configuration. If the configuration is not registered, it will try to\n   * load from a file.\n   * @param {string}  name          The new of the configuration to switch to.\n   * @param {boolean} [force=false] A way to force the service to switch even if the\n   *                                `allowConfigurationSwitch` property if `false`.\n   * @return {Object} The new active configuration.\n   * @throws {Error} If `force` is `false` and the `allowConfigurationSwitch` property is `false`.\n   ",
       "start": 10401,
       "end": 10929,
       "loc": {
@@ -42894,7 +42894,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Add a new configuration to the service.\n   * @param {String}  name            The name of the new configuration.\n   * @param {Object}  settings        The configuration settings.\n   * @param {Boolean} checkSwitchFlag Whether or not the `allowConfigurationSwitch` should be\n   *                                  updated with the value of this new configuration setting.\n   * @param {Boolean} switchTo        Whether or not to switch it to the active configuration\n   *                                  after adding it.\n   * @ignore\n   * @access protected\n   ",
+      "value": "*\n   * Add a new configuration to the service.\n   * @param {string}  name            The name of the new configuration.\n   * @param {Object}  settings        The configuration settings.\n   * @param {boolean} checkSwitchFlag Whether or not the `allowConfigurationSwitch` should be\n   *                                  updated with the value of this new configuration setting.\n   * @param {boolean} switchTo        Whether or not to switch it to the active configuration\n   *                                  after adding it.\n   * @ignore\n   * @access protected\n   ",
       "start": 11283,
       "end": 11851,
       "loc": {
@@ -44897,9 +44897,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n * Generates a `Provider` with an already defined name, default configuration and options.\n * @example\n * // Generate the provider\n * const provider = appConfiguration('my-app', {\n *   birthday: '25-09-2015',\n * });\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const appConfiguration = container.get('appConfiguration');\n * @param {String} appName              The name of the app.\n * @param {Object} defaultConfiguration The service default configuration.\n * @param {Object} options              Options to customize the service.\n * @return {Provider}\n ",
+      "value": "*\n * Generates a `Provider` with an already defined name, default configuration and options.\n * @example\n * // Generate the provider\n * const provider = appConfiguration('my-app', {\n *   birthday: '25-09-2015',\n * });\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const appConfiguration = container.get('appConfiguration');\n * @param {string} [appName]              The name of the app.\n * @param {Object} [defaultConfiguration] The service default configuration.\n * @param {Object} [options]              Options to customize the service.\n * @return {Provider}\n ",
       "start": 12281,
-      "end": 12912,
+      "end": 12918,
       "loc": {
         "start": {
           "line": 294,
@@ -44926,8 +44926,8 @@
         "updateContext": null
       },
       "value": "const",
-      "start": 12913,
-      "end": 12918,
+      "start": 12919,
+      "end": 12924,
       "loc": {
         "start": {
           "line": 310,
@@ -44952,8 +44952,8 @@
         "binop": null
       },
       "value": "appConfiguration",
-      "start": 12919,
-      "end": 12935,
+      "start": 12925,
+      "end": 12941,
       "loc": {
         "start": {
           "line": 310,
@@ -44979,8 +44979,8 @@
         "updateContext": null
       },
       "value": "=",
-      "start": 12936,
-      "end": 12937,
+      "start": 12942,
+      "end": 12943,
       "loc": {
         "start": {
           "line": 310,
@@ -45004,8 +45004,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 12938,
-      "end": 12939,
+      "start": 12944,
+      "end": 12945,
       "loc": {
         "start": {
           "line": 310,
@@ -45030,8 +45030,8 @@
         "binop": null
       },
       "value": "appName",
-      "start": 12942,
-      "end": 12949,
+      "start": 12948,
+      "end": 12955,
       "loc": {
         "start": {
           "line": 311,
@@ -45056,8 +45056,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 12949,
-      "end": 12950,
+      "start": 12955,
+      "end": 12956,
       "loc": {
         "start": {
           "line": 311,
@@ -45082,8 +45082,8 @@
         "binop": null
       },
       "value": "defaultConfiguration",
-      "start": 12953,
-      "end": 12973,
+      "start": 12959,
+      "end": 12979,
       "loc": {
         "start": {
           "line": 312,
@@ -45108,8 +45108,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 12973,
-      "end": 12974,
+      "start": 12979,
+      "end": 12980,
       "loc": {
         "start": {
           "line": 312,
@@ -45134,8 +45134,8 @@
         "binop": null
       },
       "value": "options",
-      "start": 12977,
-      "end": 12984,
+      "start": 12983,
+      "end": 12990,
       "loc": {
         "start": {
           "line": 313,
@@ -45159,8 +45159,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 12985,
-      "end": 12986,
+      "start": 12991,
+      "end": 12992,
       "loc": {
         "start": {
           "line": 314,
@@ -45185,8 +45185,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 12987,
-      "end": 12989,
+      "start": 12993,
+      "end": 12995,
       "loc": {
         "start": {
           "line": 314,
@@ -45211,8 +45211,8 @@
         "binop": null
       },
       "value": "provider",
-      "start": 12990,
-      "end": 12998,
+      "start": 12996,
+      "end": 13004,
       "loc": {
         "start": {
           "line": 314,
@@ -45236,8 +45236,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 12998,
-      "end": 12999,
+      "start": 13004,
+      "end": 13005,
       "loc": {
         "start": {
           "line": 314,
@@ -45261,8 +45261,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 12999,
-      "end": 13000,
+      "start": 13005,
+      "end": 13006,
       "loc": {
         "start": {
           "line": 314,
@@ -45287,8 +45287,8 @@
         "binop": null
       },
       "value": "app",
-      "start": 13000,
-      "end": 13003,
+      "start": 13006,
+      "end": 13009,
       "loc": {
         "start": {
           "line": 314,
@@ -45312,8 +45312,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 13003,
-      "end": 13004,
+      "start": 13009,
+      "end": 13010,
       "loc": {
         "start": {
           "line": 314,
@@ -45338,8 +45338,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 13005,
-      "end": 13007,
+      "start": 13011,
+      "end": 13013,
       "loc": {
         "start": {
           "line": 314,
@@ -45363,8 +45363,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 13008,
-      "end": 13009,
+      "start": 13014,
+      "end": 13015,
       "loc": {
         "start": {
           "line": 314,
@@ -45389,8 +45389,8 @@
         "binop": null
       },
       "value": "app",
-      "start": 13012,
-      "end": 13015,
+      "start": 13018,
+      "end": 13021,
       "loc": {
         "start": {
           "line": 315,
@@ -45415,8 +45415,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 13015,
-      "end": 13016,
+      "start": 13021,
+      "end": 13022,
       "loc": {
         "start": {
           "line": 315,
@@ -45441,8 +45441,8 @@
         "binop": null
       },
       "value": "set",
-      "start": 13016,
-      "end": 13019,
+      "start": 13022,
+      "end": 13025,
       "loc": {
         "start": {
           "line": 315,
@@ -45466,8 +45466,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 13019,
-      "end": 13020,
+      "start": 13025,
+      "end": 13026,
       "loc": {
         "start": {
           "line": 315,
@@ -45493,8 +45493,8 @@
         "updateContext": null
       },
       "value": "appConfiguration",
-      "start": 13020,
-      "end": 13038,
+      "start": 13026,
+      "end": 13044,
       "loc": {
         "start": {
           "line": 315,
@@ -45519,8 +45519,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 13038,
-      "end": 13039,
+      "start": 13044,
+      "end": 13045,
       "loc": {
         "start": {
           "line": 315,
@@ -45544,8 +45544,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 13040,
-      "end": 13041,
+      "start": 13046,
+      "end": 13047,
       "loc": {
         "start": {
           "line": 315,
@@ -45569,8 +45569,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 13041,
-      "end": 13042,
+      "start": 13047,
+      "end": 13048,
       "loc": {
         "start": {
           "line": 315,
@@ -45595,8 +45595,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 13043,
-      "end": 13045,
+      "start": 13049,
+      "end": 13051,
       "loc": {
         "start": {
           "line": 315,
@@ -45623,8 +45623,8 @@
         "updateContext": null
       },
       "value": "new",
-      "start": 13046,
-      "end": 13049,
+      "start": 13052,
+      "end": 13055,
       "loc": {
         "start": {
           "line": 315,
@@ -45649,8 +45649,8 @@
         "binop": null
       },
       "value": "AppConfiguration",
-      "start": 13050,
-      "end": 13066,
+      "start": 13056,
+      "end": 13072,
       "loc": {
         "start": {
           "line": 315,
@@ -45674,8 +45674,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 13066,
-      "end": 13067,
+      "start": 13072,
+      "end": 13073,
       "loc": {
         "start": {
           "line": 315,
@@ -45700,8 +45700,8 @@
         "binop": null
       },
       "value": "app",
-      "start": 13072,
-      "end": 13075,
+      "start": 13078,
+      "end": 13081,
       "loc": {
         "start": {
           "line": 316,
@@ -45726,8 +45726,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 13075,
-      "end": 13076,
+      "start": 13081,
+      "end": 13082,
       "loc": {
         "start": {
           "line": 316,
@@ -45752,8 +45752,8 @@
         "binop": null
       },
       "value": "get",
-      "start": 13076,
-      "end": 13079,
+      "start": 13082,
+      "end": 13085,
       "loc": {
         "start": {
           "line": 316,
@@ -45777,8 +45777,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 13079,
-      "end": 13080,
+      "start": 13085,
+      "end": 13086,
       "loc": {
         "start": {
           "line": 316,
@@ -45804,8 +45804,8 @@
         "updateContext": null
       },
       "value": "environmentUtils",
-      "start": 13080,
-      "end": 13098,
+      "start": 13086,
+      "end": 13104,
       "loc": {
         "start": {
           "line": 316,
@@ -45829,8 +45829,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 13098,
-      "end": 13099,
+      "start": 13104,
+      "end": 13105,
       "loc": {
         "start": {
           "line": 316,
@@ -45855,8 +45855,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 13099,
-      "end": 13100,
+      "start": 13105,
+      "end": 13106,
       "loc": {
         "start": {
           "line": 316,
@@ -45881,8 +45881,8 @@
         "binop": null
       },
       "value": "app",
-      "start": 13105,
-      "end": 13108,
+      "start": 13111,
+      "end": 13114,
       "loc": {
         "start": {
           "line": 317,
@@ -45907,8 +45907,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 13108,
-      "end": 13109,
+      "start": 13114,
+      "end": 13115,
       "loc": {
         "start": {
           "line": 317,
@@ -45933,8 +45933,8 @@
         "binop": null
       },
       "value": "get",
-      "start": 13109,
-      "end": 13112,
+      "start": 13115,
+      "end": 13118,
       "loc": {
         "start": {
           "line": 317,
@@ -45958,8 +45958,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 13112,
-      "end": 13113,
+      "start": 13118,
+      "end": 13119,
       "loc": {
         "start": {
           "line": 317,
@@ -45985,8 +45985,8 @@
         "updateContext": null
       },
       "value": "rootRequire",
-      "start": 13113,
-      "end": 13126,
+      "start": 13119,
+      "end": 13132,
       "loc": {
         "start": {
           "line": 317,
@@ -46010,8 +46010,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 13126,
-      "end": 13127,
+      "start": 13132,
+      "end": 13133,
       "loc": {
         "start": {
           "line": 317,
@@ -46036,8 +46036,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 13127,
-      "end": 13128,
+      "start": 13133,
+      "end": 13134,
       "loc": {
         "start": {
           "line": 317,
@@ -46062,8 +46062,8 @@
         "binop": null
       },
       "value": "appName",
-      "start": 13133,
-      "end": 13140,
+      "start": 13139,
+      "end": 13146,
       "loc": {
         "start": {
           "line": 318,
@@ -46088,8 +46088,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 13140,
-      "end": 13141,
+      "start": 13146,
+      "end": 13147,
       "loc": {
         "start": {
           "line": 318,
@@ -46114,8 +46114,8 @@
         "binop": null
       },
       "value": "defaultConfiguration",
-      "start": 13146,
-      "end": 13166,
+      "start": 13152,
+      "end": 13172,
       "loc": {
         "start": {
           "line": 319,
@@ -46140,8 +46140,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 13166,
-      "end": 13167,
+      "start": 13172,
+      "end": 13173,
       "loc": {
         "start": {
           "line": 319,
@@ -46166,8 +46166,8 @@
         "binop": null
       },
       "value": "options",
-      "start": 13172,
-      "end": 13179,
+      "start": 13178,
+      "end": 13185,
       "loc": {
         "start": {
           "line": 320,
@@ -46191,8 +46191,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 13182,
-      "end": 13183,
+      "start": 13188,
+      "end": 13189,
       "loc": {
         "start": {
           "line": 321,
@@ -46216,8 +46216,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 13183,
-      "end": 13184,
+      "start": 13189,
+      "end": 13190,
       "loc": {
         "start": {
           "line": 321,
@@ -46242,8 +46242,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 13184,
-      "end": 13185,
+      "start": 13190,
+      "end": 13191,
       "loc": {
         "start": {
           "line": 321,
@@ -46267,8 +46267,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 13186,
-      "end": 13187,
+      "start": 13192,
+      "end": 13193,
       "loc": {
         "start": {
           "line": 322,
@@ -46292,8 +46292,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 13187,
-      "end": 13188,
+      "start": 13193,
+      "end": 13194,
       "loc": {
         "start": {
           "line": 322,
@@ -46318,8 +46318,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 13188,
-      "end": 13189,
+      "start": 13194,
+      "end": 13195,
       "loc": {
         "start": {
           "line": 322,
@@ -46346,8 +46346,8 @@
         "updateContext": null
       },
       "value": "export",
-      "start": 13191,
-      "end": 13197,
+      "start": 13197,
+      "end": 13203,
       "loc": {
         "start": {
           "line": 324,
@@ -46371,8 +46371,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 13198,
-      "end": 13199,
+      "start": 13204,
+      "end": 13205,
       "loc": {
         "start": {
           "line": 324,
@@ -46397,8 +46397,8 @@
         "binop": null
       },
       "value": "AppConfiguration",
-      "start": 13200,
-      "end": 13216,
+      "start": 13206,
+      "end": 13222,
       "loc": {
         "start": {
           "line": 324,
@@ -46423,8 +46423,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 13216,
-      "end": 13217,
+      "start": 13222,
+      "end": 13223,
       "loc": {
         "start": {
           "line": 324,
@@ -46449,8 +46449,8 @@
         "binop": null
       },
       "value": "appConfiguration",
-      "start": 13220,
-      "end": 13236,
+      "start": 13226,
+      "end": 13242,
       "loc": {
         "start": {
           "line": 325,
@@ -46475,8 +46475,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 13236,
-      "end": 13237,
+      "start": 13242,
+      "end": 13243,
       "loc": {
         "start": {
           "line": 325,
@@ -46500,8 +46500,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 13238,
-      "end": 13239,
+      "start": 13244,
+      "end": 13245,
       "loc": {
         "start": {
           "line": 325,
@@ -46526,8 +46526,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 13239,
-      "end": 13240,
+      "start": 13245,
+      "end": 13246,
       "loc": {
         "start": {
           "line": 325,
@@ -46552,8 +46552,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 13241,
-      "end": 13241,
+      "start": 13247,
+      "end": 13247,
       "loc": {
         "start": {
           "line": 326,

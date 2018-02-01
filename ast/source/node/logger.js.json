@@ -1,7 +1,7 @@
 {
   "type": "File",
   "start": 0,
-  "end": 8001,
+  "end": 8007,
   "loc": {
     "start": {
       "line": 1,
@@ -15,7 +15,7 @@
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 8001,
+    "end": 8007,
     "loc": {
       "start": {
         "line": 1,
@@ -506,7 +506,7 @@
                     "leadingComments": [
                       {
                         "type": "CommentBlock",
-                        "value": "*\n     * The prefix to include in front of all the messages.\n     * @type {String}\n     ",
+                        "value": "*\n     * The prefix to include in front of all the messages.\n     * @type {string}\n     ",
                         "start": 423,
                         "end": 515,
                         "loc": {
@@ -524,7 +524,7 @@
                     "trailingComments": [
                       {
                         "type": "CommentBlock",
-                        "value": "*\n     * Whether or not to show the time on each message.\n     * @type {Boolean}\n     ",
+                        "value": "*\n     * Whether or not to show the time on each message.\n     * @type {boolean}\n     ",
                         "start": 562,
                         "end": 652,
                         "loc": {
@@ -641,7 +641,7 @@
                     "leadingComments": [
                       {
                         "type": "CommentBlock",
-                        "value": "*\n     * Whether or not to show the time on each message.\n     * @type {Boolean}\n     ",
+                        "value": "*\n     * Whether or not to show the time on each message.\n     * @type {boolean}\n     ",
                         "start": 562,
                         "end": 652,
                         "loc": {
@@ -664,7 +664,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Class constructor.\n   * @param {String}  [messagesPrefix=''] A prefix to include in front of all the messages.\n   * @param {Boolean} [showTime=false]    Whether or not to show the time on each message.\n   ",
+                  "value": "*\n   * Class constructor.\n   * @param {string}  [messagesPrefix=''] A prefix to include in front of all the messages.\n   * @param {boolean} [showTime=false]    Whether or not to show the time on each message.\n   ",
                   "start": 147,
                   "end": 363,
                   "loc": {
@@ -682,7 +682,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Logs a warning (yellow) message or messages on the console.\n   * @param {String|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
+                  "value": "*\n   * Logs a warning (yellow) message or messages on the console.\n   * @param {string|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
                   "start": 689,
                   "end": 964,
                   "loc": {
@@ -895,7 +895,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Logs a warning (yellow) message or messages on the console.\n   * @param {String|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
+                  "value": "*\n   * Logs a warning (yellow) message or messages on the console.\n   * @param {string|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
                   "start": 689,
                   "end": 964,
                   "loc": {
@@ -913,7 +913,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Logs a success (green) message or messages on the console.\n   * @param {String|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
+                  "value": "*\n   * Logs a success (green) message or messages on the console.\n   * @param {string|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
                   "start": 1025,
                   "end": 1299,
                   "loc": {
@@ -1126,7 +1126,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Logs a success (green) message or messages on the console.\n   * @param {String|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
+                  "value": "*\n   * Logs a success (green) message or messages on the console.\n   * @param {string|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
                   "start": 1025,
                   "end": 1299,
                   "loc": {
@@ -1144,7 +1144,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Logs an error (red) message or messages on the console.\n   * @param {String|Array|Error} message          A single message of a list of them. See the\n   *                                              `log()` documentation to see all the supported\n   *                                              properties for the `message` parameter. Different\n   *                                              from the other log methods, you can use an\n   *                                              `Error` object and the method will take care of\n   *                                              extracting the message and the stack information.\n   * @param {Object}             [exception=null] If the exception has a `stack` property, the\n   *                                              method will log each of the stack calls using\n   *                                              `info()`.\n   ",
+                  "value": "*\n   * Logs an error (red) message or messages on the console.\n   * @param {string|Array|Error} message          A single message of a list of them. See the\n   *                                              `log()` documentation to see all the supported\n   *                                              properties for the `message` parameter. Different\n   *                                              from the other log methods, you can use an\n   *                                              `Error` object and the method will take care of\n   *                                              extracting the message and the stack information.\n   * @param {Object}             [exception=null] If the exception has a `stack` property, the\n   *                                              method will log each of the stack calls using\n   *                                              `info()`.\n   ",
                   "start": 1359,
                   "end": 2262,
                   "loc": {
@@ -2444,7 +2444,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Logs an error (red) message or messages on the console.\n   * @param {String|Array|Error} message          A single message of a list of them. See the\n   *                                              `log()` documentation to see all the supported\n   *                                              properties for the `message` parameter. Different\n   *                                              from the other log methods, you can use an\n   *                                              `Error` object and the method will take care of\n   *                                              extracting the message and the stack information.\n   * @param {Object}             [exception=null] If the exception has a `stack` property, the\n   *                                              method will log each of the stack calls using\n   *                                              `info()`.\n   ",
+                  "value": "*\n   * Logs an error (red) message or messages on the console.\n   * @param {string|Array|Error} message          A single message of a list of them. See the\n   *                                              `log()` documentation to see all the supported\n   *                                              properties for the `message` parameter. Different\n   *                                              from the other log methods, you can use an\n   *                                              `Error` object and the method will take care of\n   *                                              extracting the message and the stack information.\n   * @param {Object}             [exception=null] If the exception has a `stack` property, the\n   *                                              method will log each of the stack calls using\n   *                                              `info()`.\n   ",
                   "start": 1359,
                   "end": 2262,
                   "loc": {
@@ -2462,7 +2462,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Logs an information (gray) message or messages on the console.\n   * @param {String|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
+                  "value": "*\n   * Logs an information (gray) message or messages on the console.\n   * @param {string|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
                   "start": 2718,
                   "end": 2996,
                   "loc": {
@@ -2675,7 +2675,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Logs an information (gray) message or messages on the console.\n   * @param {String|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
+                  "value": "*\n   * Logs an information (gray) message or messages on the console.\n   * @param {string|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
                   "start": 2718,
                   "end": 2996,
                   "loc": {
@@ -2693,7 +2693,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Logs a message with an specific color on the console.\n   * @example\n   * // Simple\n   * CLILogger.log('hello world');\n   * // Custom color\n   * CLILogger.log('It was the shadow who did it', 'red');\n   * // A list of messages all the same color\n   * CLILogger.log(['Ph\\'nglu', 'mglw\\'nafh'], 'grey');\n   * // A list of messages with different colors per line\n   * CLILogger.log([\n   *     'Ph\\'nglu',\n   *     'mglw\\'nafh',\n   *     ['Cthulhu', 'green'],\n   *     ['R\\'lyeh wgah\\'nagl fhtagn', 'red']\n   * ], 'grey');\n   *\n   * @param {String|Array} message A text message to log or a list of them.\n   * @param {String}       color   Optional. The color of the message (the default is 'white').\n   *                               This can be overwritten line by line when the message is an\n   *                               array, take a look at the example.\n   ",
+                  "value": "*\n   * Logs a message with an specific color on the console.\n   * @example\n   * // Simple\n   * CLILogger.log('hello world');\n   * // Custom color\n   * CLILogger.log('It was the shadow who did it', 'red');\n   * // A list of messages all the same color\n   * CLILogger.log(['Ph\\'nglu', 'mglw\\'nafh'], 'grey');\n   * // A list of messages with different colors per line\n   * CLILogger.log([\n   *     'Ph\\'nglu',\n   *     'mglw\\'nafh',\n   *     ['Cthulhu', 'green'],\n   *     ['R\\'lyeh wgah\\'nagl fhtagn', 'red']\n   * ], 'grey');\n   *\n   * @param {string|Array} message A text message to log or a list of them.\n   * @param {string}       color   Optional. The color of the message (the default is 'white').\n   *                               This can be overwritten line by line when the message is an\n   *                               array, take a look at the example.\n   ",
                   "start": 3052,
                   "end": 3925,
                   "loc": {
@@ -4420,7 +4420,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Logs a message with an specific color on the console.\n   * @example\n   * // Simple\n   * CLILogger.log('hello world');\n   * // Custom color\n   * CLILogger.log('It was the shadow who did it', 'red');\n   * // A list of messages all the same color\n   * CLILogger.log(['Ph\\'nglu', 'mglw\\'nafh'], 'grey');\n   * // A list of messages with different colors per line\n   * CLILogger.log([\n   *     'Ph\\'nglu',\n   *     'mglw\\'nafh',\n   *     ['Cthulhu', 'green'],\n   *     ['R\\'lyeh wgah\\'nagl fhtagn', 'red']\n   * ], 'grey');\n   *\n   * @param {String|Array} message A text message to log or a list of them.\n   * @param {String}       color   Optional. The color of the message (the default is 'white').\n   *                               This can be overwritten line by line when the message is an\n   *                               array, take a look at the example.\n   ",
+                  "value": "*\n   * Logs a message with an specific color on the console.\n   * @example\n   * // Simple\n   * CLILogger.log('hello world');\n   * // Custom color\n   * CLILogger.log('It was the shadow who did it', 'red');\n   * // A list of messages all the same color\n   * CLILogger.log(['Ph\\'nglu', 'mglw\\'nafh'], 'grey');\n   * // A list of messages with different colors per line\n   * CLILogger.log([\n   *     'Ph\\'nglu',\n   *     'mglw\\'nafh',\n   *     ['Cthulhu', 'green'],\n   *     ['R\\'lyeh wgah\\'nagl fhtagn', 'red']\n   * ], 'grey');\n   *\n   * @param {string|Array} message A text message to log or a list of them.\n   * @param {string}       color   Optional. The color of the message (the default is 'white').\n   *                               This can be overwritten line by line when the message is an\n   *                               array, take a look at the example.\n   ",
                   "start": 3052,
                   "end": 3925,
                   "loc": {
@@ -4438,7 +4438,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Prefixes a message with the text sent to the constructor and, if enabled, the current time.\n   * @param {String} text The text that needs the prefix.\n   * @return {String}\n   ",
+                  "value": "*\n   * Prefixes a message with the text sent to the constructor and, if enabled, the current time.\n   * @param {string} text The text that needs the prefix.\n   * @return {string}\n   ",
                   "start": 4424,
                   "end": 4610,
                   "loc": {
@@ -5892,7 +5892,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Prefixes a message with the text sent to the constructor and, if enabled, the current time.\n   * @param {String} text The text that needs the prefix.\n   * @return {String}\n   ",
+                  "value": "*\n   * Prefixes a message with the text sent to the constructor and, if enabled, the current time.\n   * @param {string} text The text that needs the prefix.\n   * @return {string}\n   ",
                   "start": 4424,
                   "end": 4610,
                   "loc": {
@@ -5910,7 +5910,7 @@
               "trailingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Gets a function to modify the color of a string. The reason for this _\"proxy method\"_ is that\n   * the `colors` module doesn't have a `raw` option and the alternative would've been adding a few\n   * `if`s on the `log` method.\n   * @param {String} name The name of the color.\n   * @return {Function} A function that receives a string and returns it colored.\n   * @ignore\n   * @access protected\n   ",
+                  "value": "*\n   * Gets a function to modify the color of a string. The reason for this _\"proxy method\"_ is that\n   * the `colors` module doesn't have a `raw` option and the alternative would've been adding a few\n   * `if`s on the `log` method.\n   * @param {string} name The name of the color.\n   * @return {Function} A function that receives a string and returns it colored.\n   * @ignore\n   * @access protected\n   ",
                   "start": 5292,
                   "end": 5699,
                   "loc": {
@@ -6197,7 +6197,7 @@
               "leadingComments": [
                 {
                   "type": "CommentBlock",
-                  "value": "*\n   * Gets a function to modify the color of a string. The reason for this _\"proxy method\"_ is that\n   * the `colors` module doesn't have a `raw` option and the alternative would've been adding a few\n   * `if`s on the `log` method.\n   * @param {String} name The name of the color.\n   * @return {Function} A function that receives a string and returns it colored.\n   * @ignore\n   * @access protected\n   ",
+                  "value": "*\n   * Gets a function to modify the color of a string. The reason for this _\"proxy method\"_ is that\n   * the `colors` module doesn't have a `raw` option and the alternative would've been adding a few\n   * `if`s on the `log` method.\n   * @param {string} name The name of the color.\n   * @return {Function} A function that receives a string and returns it colored.\n   * @ignore\n   * @access protected\n   ",
                   "start": 5292,
                   "end": 5699,
                   "loc": {
@@ -6222,8 +6222,8 @@
       },
       {
         "type": "Identifier",
-        "start": 6318,
-        "end": 6462,
+        "start": 6322,
+        "end": 6466,
         "loc": {
           "start": {
             "line": 172,
@@ -6237,8 +6237,8 @@
         "declarations": [
           {
             "type": "VariableDeclarator",
-            "start": 6324,
-            "end": 6461,
+            "start": 6328,
+            "end": 6465,
             "loc": {
               "start": {
                 "line": 172,
@@ -6251,8 +6251,8 @@
             },
             "id": {
               "type": "Identifier",
-              "start": 6324,
-              "end": 6341,
+              "start": 6328,
+              "end": 6345,
               "loc": {
                 "start": {
                   "line": 172,
@@ -6269,8 +6269,8 @@
             },
             "init": {
               "type": "ArrowFunctionExpression",
-              "start": 6344,
-              "end": 6461,
+              "start": 6348,
+              "end": 6465,
               "loc": {
                 "start": {
                   "line": 172,
@@ -6288,8 +6288,8 @@
               "params": [
                 {
                   "type": "Identifier",
-                  "start": 6345,
-                  "end": 6359,
+                  "start": 6349,
+                  "end": 6363,
                   "loc": {
                     "start": {
                       "line": 172,
@@ -6305,8 +6305,8 @@
                 },
                 {
                   "type": "Identifier",
-                  "start": 6361,
-                  "end": 6369,
+                  "start": 6365,
+                  "end": 6373,
                   "loc": {
                     "start": {
                       "line": 172,
@@ -6323,8 +6323,8 @@
               ],
               "body": {
                 "type": "CallExpression",
-                "start": 6374,
-                "end": 6461,
+                "start": 6378,
+                "end": 6465,
                 "loc": {
                   "start": {
                     "line": 172,
@@ -6337,8 +6337,8 @@
                 },
                 "callee": {
                   "type": "Identifier",
-                  "start": 6374,
-                  "end": 6382,
+                  "start": 6378,
+                  "end": 6386,
                   "loc": {
                     "start": {
                       "line": 172,
@@ -6355,8 +6355,8 @@
                 "arguments": [
                   {
                     "type": "ArrowFunctionExpression",
-                    "start": 6383,
-                    "end": 6460,
+                    "start": 6387,
+                    "end": 6464,
                     "loc": {
                       "start": {
                         "line": 172,
@@ -6374,8 +6374,8 @@
                     "params": [
                       {
                         "type": "Identifier",
-                        "start": 6384,
-                        "end": 6387,
+                        "start": 6388,
+                        "end": 6391,
                         "loc": {
                           "start": {
                             "line": 172,
@@ -6392,8 +6392,8 @@
                     ],
                     "body": {
                       "type": "BlockStatement",
-                      "start": 6392,
-                      "end": 6460,
+                      "start": 6396,
+                      "end": 6464,
                       "loc": {
                         "start": {
                           "line": 172,
@@ -6407,8 +6407,8 @@
                       "body": [
                         {
                           "type": "ExpressionStatement",
-                          "start": 6396,
-                          "end": 6458,
+                          "start": 6400,
+                          "end": 6462,
                           "loc": {
                             "start": {
                               "line": 173,
@@ -6421,8 +6421,8 @@
                           },
                           "expression": {
                             "type": "CallExpression",
-                            "start": 6396,
-                            "end": 6457,
+                            "start": 6400,
+                            "end": 6461,
                             "loc": {
                               "start": {
                                 "line": 173,
@@ -6435,8 +6435,8 @@
                             },
                             "callee": {
                               "type": "MemberExpression",
-                              "start": 6396,
-                              "end": 6403,
+                              "start": 6400,
+                              "end": 6407,
                               "loc": {
                                 "start": {
                                   "line": 173,
@@ -6449,8 +6449,8 @@
                               },
                               "object": {
                                 "type": "Identifier",
-                                "start": 6396,
-                                "end": 6399,
+                                "start": 6400,
+                                "end": 6403,
                                 "loc": {
                                   "start": {
                                     "line": 173,
@@ -6466,8 +6466,8 @@
                               },
                               "property": {
                                 "type": "Identifier",
-                                "start": 6400,
-                                "end": 6403,
+                                "start": 6404,
+                                "end": 6407,
                                 "loc": {
                                   "start": {
                                     "line": 173,
@@ -6486,8 +6486,8 @@
                             "arguments": [
                               {
                                 "type": "StringLiteral",
-                                "start": 6404,
-                                "end": 6412,
+                                "start": 6408,
+                                "end": 6416,
                                 "loc": {
                                   "start": {
                                     "line": 173,
@@ -6506,8 +6506,8 @@
                               },
                               {
                                 "type": "ArrowFunctionExpression",
-                                "start": 6414,
-                                "end": 6456,
+                                "start": 6418,
+                                "end": 6460,
                                 "loc": {
                                   "start": {
                                     "line": 173,
@@ -6525,8 +6525,8 @@
                                 "params": [],
                                 "body": {
                                   "type": "NewExpression",
-                                  "start": 6420,
-                                  "end": 6456,
+                                  "start": 6424,
+                                  "end": 6460,
                                   "loc": {
                                     "start": {
                                       "line": 173,
@@ -6539,8 +6539,8 @@
                                   },
                                   "callee": {
                                     "type": "Identifier",
-                                    "start": 6424,
-                                    "end": 6430,
+                                    "start": 6428,
+                                    "end": 6434,
                                     "loc": {
                                       "start": {
                                         "line": 173,
@@ -6557,8 +6557,8 @@
                                   "arguments": [
                                     {
                                       "type": "Identifier",
-                                      "start": 6431,
-                                      "end": 6445,
+                                      "start": 6435,
+                                      "end": 6449,
                                       "loc": {
                                         "start": {
                                           "line": 173,
@@ -6574,8 +6574,8 @@
                                     },
                                     {
                                       "type": "Identifier",
-                                      "start": 6447,
-                                      "end": 6455,
+                                      "start": 6451,
+                                      "end": 6459,
                                       "loc": {
                                         "start": {
                                           "line": 173,
@@ -6612,8 +6612,8 @@
       },
       {
         "type": "Identifier",
-        "start": 6784,
-        "end": 6819,
+        "start": 6788,
+        "end": 6823,
         "loc": {
           "start": {
             "line": 185,
@@ -6627,8 +6627,8 @@
         "declarations": [
           {
             "type": "VariableDeclarator",
-            "start": 6790,
-            "end": 6818,
+            "start": 6794,
+            "end": 6822,
             "loc": {
               "start": {
                 "line": 185,
@@ -6641,8 +6641,8 @@
             },
             "id": {
               "type": "Identifier",
-              "start": 6790,
-              "end": 6796,
+              "start": 6794,
+              "end": 6800,
               "loc": {
                 "start": {
                   "line": 185,
@@ -6659,8 +6659,8 @@
             },
             "init": {
               "type": "CallExpression",
-              "start": 6799,
-              "end": 6818,
+              "start": 6803,
+              "end": 6822,
               "loc": {
                 "start": {
                   "line": 185,
@@ -6673,8 +6673,8 @@
               },
               "callee": {
                 "type": "Identifier",
-                "start": 6799,
-                "end": 6816,
+                "start": 6803,
+                "end": 6820,
                 "loc": {
                   "start": {
                     "line": 185,
@@ -6700,8 +6700,8 @@
       },
       {
         "type": "Identifier",
-        "start": 7110,
-        "end": 7365,
+        "start": 7116,
+        "end": 7371,
         "loc": {
           "start": {
             "line": 192,
@@ -6715,8 +6715,8 @@
         "declarations": [
           {
             "type": "VariableDeclarator",
-            "start": 7116,
-            "end": 7364,
+            "start": 7122,
+            "end": 7370,
             "loc": {
               "start": {
                 "line": 192,
@@ -6729,8 +6729,8 @@
             },
             "id": {
               "type": "Identifier",
-              "start": 7116,
-              "end": 7136,
+              "start": 7122,
+              "end": 7142,
               "loc": {
                 "start": {
                   "line": 192,
@@ -6747,8 +6747,8 @@
             },
             "init": {
               "type": "ArrowFunctionExpression",
-              "start": 7139,
-              "end": 7364,
+              "start": 7145,
+              "end": 7370,
               "loc": {
                 "start": {
                   "line": 192,
@@ -6766,8 +6766,8 @@
               "params": [
                 {
                   "type": "Identifier",
-                  "start": 7140,
-                  "end": 7148,
+                  "start": 7146,
+                  "end": 7154,
                   "loc": {
                     "start": {
                       "line": 192,
@@ -6784,8 +6784,8 @@
               ],
               "body": {
                 "type": "CallExpression",
-                "start": 7153,
-                "end": 7364,
+                "start": 7159,
+                "end": 7370,
                 "loc": {
                   "start": {
                     "line": 192,
@@ -6798,8 +6798,8 @@
                 },
                 "callee": {
                   "type": "Identifier",
-                  "start": 7153,
-                  "end": 7161,
+                  "start": 7159,
+                  "end": 7167,
                   "loc": {
                     "start": {
                       "line": 192,
@@ -6816,8 +6816,8 @@
                 "arguments": [
                   {
                     "type": "ArrowFunctionExpression",
-                    "start": 7162,
-                    "end": 7363,
+                    "start": 7168,
+                    "end": 7369,
                     "loc": {
                       "start": {
                         "line": 192,
@@ -6835,8 +6835,8 @@
                     "params": [
                       {
                         "type": "Identifier",
-                        "start": 7163,
-                        "end": 7166,
+                        "start": 7169,
+                        "end": 7172,
                         "loc": {
                           "start": {
                             "line": 192,
@@ -6853,8 +6853,8 @@
                     ],
                     "body": {
                       "type": "BlockStatement",
-                      "start": 7171,
-                      "end": 7363,
+                      "start": 7177,
+                      "end": 7369,
                       "loc": {
                         "start": {
                           "line": 192,
@@ -6868,8 +6868,8 @@
                       "body": [
                         {
                           "type": "ExpressionStatement",
-                          "start": 7175,
-                          "end": 7361,
+                          "start": 7181,
+                          "end": 7367,
                           "loc": {
                             "start": {
                               "line": 193,
@@ -6882,8 +6882,8 @@
                           },
                           "expression": {
                             "type": "CallExpression",
-                            "start": 7175,
-                            "end": 7360,
+                            "start": 7181,
+                            "end": 7366,
                             "loc": {
                               "start": {
                                 "line": 193,
@@ -6896,8 +6896,8 @@
                             },
                             "callee": {
                               "type": "MemberExpression",
-                              "start": 7175,
-                              "end": 7182,
+                              "start": 7181,
+                              "end": 7188,
                               "loc": {
                                 "start": {
                                   "line": 193,
@@ -6910,8 +6910,8 @@
                               },
                               "object": {
                                 "type": "Identifier",
-                                "start": 7175,
-                                "end": 7178,
+                                "start": 7181,
+                                "end": 7184,
                                 "loc": {
                                   "start": {
                                     "line": 193,
@@ -6927,8 +6927,8 @@
                               },
                               "property": {
                                 "type": "Identifier",
-                                "start": 7179,
-                                "end": 7182,
+                                "start": 7185,
+                                "end": 7188,
                                 "loc": {
                                   "start": {
                                     "line": 193,
@@ -6947,8 +6947,8 @@
                             "arguments": [
                               {
                                 "type": "StringLiteral",
-                                "start": 7183,
-                                "end": 7194,
+                                "start": 7189,
+                                "end": 7200,
                                 "loc": {
                                   "start": {
                                     "line": 193,
@@ -6967,8 +6967,8 @@
                               },
                               {
                                 "type": "ArrowFunctionExpression",
-                                "start": 7196,
-                                "end": 7359,
+                                "start": 7202,
+                                "end": 7365,
                                 "loc": {
                                   "start": {
                                     "line": 193,
@@ -6986,8 +6986,8 @@
                                 "params": [],
                                 "body": {
                                   "type": "BlockStatement",
-                                  "start": 7202,
-                                  "end": 7359,
+                                  "start": 7208,
+                                  "end": 7365,
                                   "loc": {
                                     "start": {
                                       "line": 193,
@@ -7001,8 +7001,8 @@
                                   "body": [
                                     {
                                       "type": "VariableDeclaration",
-                                      "start": 7208,
-                                      "end": 7251,
+                                      "start": 7214,
+                                      "end": 7257,
                                       "loc": {
                                         "start": {
                                           "line": 194,
@@ -7016,8 +7016,8 @@
                                       "declarations": [
                                         {
                                           "type": "VariableDeclarator",
-                                          "start": 7214,
-                                          "end": 7250,
+                                          "start": 7220,
+                                          "end": 7256,
                                           "loc": {
                                             "start": {
                                               "line": 194,
@@ -7030,8 +7030,8 @@
                                           },
                                           "id": {
                                             "type": "Identifier",
-                                            "start": 7214,
-                                            "end": 7225,
+                                            "start": 7220,
+                                            "end": 7231,
                                             "loc": {
                                               "start": {
                                                 "line": 194,
@@ -7047,8 +7047,8 @@
                                           },
                                           "init": {
                                             "type": "CallExpression",
-                                            "start": 7228,
-                                            "end": 7250,
+                                            "start": 7234,
+                                            "end": 7256,
                                             "loc": {
                                               "start": {
                                                 "line": 194,
@@ -7061,8 +7061,8 @@
                                             },
                                             "callee": {
                                               "type": "MemberExpression",
-                                              "start": 7228,
-                                              "end": 7235,
+                                              "start": 7234,
+                                              "end": 7241,
                                               "loc": {
                                                 "start": {
                                                   "line": 194,
@@ -7075,8 +7075,8 @@
                                               },
                                               "object": {
                                                 "type": "Identifier",
-                                                "start": 7228,
-                                                "end": 7231,
+                                                "start": 7234,
+                                                "end": 7237,
                                                 "loc": {
                                                   "start": {
                                                     "line": 194,
@@ -7092,8 +7092,8 @@
                                               },
                                               "property": {
                                                 "type": "Identifier",
-                                                "start": 7232,
-                                                "end": 7235,
+                                                "start": 7238,
+                                                "end": 7241,
                                                 "loc": {
                                                   "start": {
                                                     "line": 194,
@@ -7112,8 +7112,8 @@
                                             "arguments": [
                                               {
                                                 "type": "StringLiteral",
-                                                "start": 7236,
-                                                "end": 7249,
+                                                "start": 7242,
+                                                "end": 7255,
                                                 "loc": {
                                                   "start": {
                                                     "line": 194,
@@ -7138,8 +7138,8 @@
                                     },
                                     {
                                       "type": "VariableDeclaration",
-                                      "start": 7256,
-                                      "end": 7314,
+                                      "start": 7262,
+                                      "end": 7320,
                                       "loc": {
                                         "start": {
                                           "line": 195,
@@ -7153,8 +7153,8 @@
                                       "declarations": [
                                         {
                                           "type": "VariableDeclarator",
-                                          "start": 7262,
-                                          "end": 7313,
+                                          "start": 7268,
+                                          "end": 7319,
                                           "loc": {
                                             "start": {
                                               "line": 195,
@@ -7167,8 +7167,8 @@
                                           },
                                           "id": {
                                             "type": "Identifier",
-                                            "start": 7262,
-                                            "end": 7268,
+                                            "start": 7268,
+                                            "end": 7274,
                                             "loc": {
                                               "start": {
                                                 "line": 195,
@@ -7184,8 +7184,8 @@
                                           },
                                           "init": {
                                             "type": "LogicalExpression",
-                                            "start": 7271,
-                                            "end": 7313,
+                                            "start": 7277,
+                                            "end": 7319,
                                             "loc": {
                                               "start": {
                                                 "line": 195,
@@ -7198,8 +7198,8 @@
                                             },
                                             "left": {
                                               "type": "MemberExpression",
-                                              "start": 7271,
-                                              "end": 7293,
+                                              "start": 7277,
+                                              "end": 7299,
                                               "loc": {
                                                 "start": {
                                                   "line": 195,
@@ -7212,8 +7212,8 @@
                                               },
                                               "object": {
                                                 "type": "Identifier",
-                                                "start": 7271,
-                                                "end": 7282,
+                                                "start": 7277,
+                                                "end": 7288,
                                                 "loc": {
                                                   "start": {
                                                     "line": 195,
@@ -7229,8 +7229,8 @@
                                               },
                                               "property": {
                                                 "type": "Identifier",
-                                                "start": 7283,
-                                                "end": 7293,
+                                                "start": 7289,
+                                                "end": 7299,
                                                 "loc": {
                                                   "start": {
                                                     "line": 195,
@@ -7249,8 +7249,8 @@
                                             "operator": "||",
                                             "right": {
                                               "type": "MemberExpression",
-                                              "start": 7297,
-                                              "end": 7313,
+                                              "start": 7303,
+                                              "end": 7319,
                                               "loc": {
                                                 "start": {
                                                   "line": 195,
@@ -7263,8 +7263,8 @@
                                               },
                                               "object": {
                                                 "type": "Identifier",
-                                                "start": 7297,
-                                                "end": 7308,
+                                                "start": 7303,
+                                                "end": 7314,
                                                 "loc": {
                                                   "start": {
                                                     "line": 195,
@@ -7280,8 +7280,8 @@
                                               },
                                               "property": {
                                                 "type": "Identifier",
-                                                "start": 7309,
-                                                "end": 7313,
+                                                "start": 7315,
+                                                "end": 7319,
                                                 "loc": {
                                                   "start": {
                                                     "line": 195,
@@ -7304,8 +7304,8 @@
                                     },
                                     {
                                       "type": "ReturnStatement",
-                                      "start": 7319,
-                                      "end": 7355,
+                                      "start": 7325,
+                                      "end": 7361,
                                       "loc": {
                                         "start": {
                                           "line": 196,
@@ -7318,8 +7318,8 @@
                                       },
                                       "argument": {
                                         "type": "NewExpression",
-                                        "start": 7326,
-                                        "end": 7354,
+                                        "start": 7332,
+                                        "end": 7360,
                                         "loc": {
                                           "start": {
                                             "line": 196,
@@ -7332,8 +7332,8 @@
                                         },
                                         "callee": {
                                           "type": "Identifier",
-                                          "start": 7330,
-                                          "end": 7336,
+                                          "start": 7336,
+                                          "end": 7342,
                                           "loc": {
                                             "start": {
                                               "line": 196,
@@ -7350,8 +7350,8 @@
                                         "arguments": [
                                           {
                                             "type": "Identifier",
-                                            "start": 7337,
-                                            "end": 7343,
+                                            "start": 7343,
+                                            "end": 7349,
                                             "loc": {
                                               "start": {
                                                 "line": 196,
@@ -7367,8 +7367,8 @@
                                           },
                                           {
                                             "type": "Identifier",
-                                            "start": 7345,
-                                            "end": 7353,
+                                            "start": 7351,
+                                            "end": 7359,
                                             "loc": {
                                               "start": {
                                                 "line": 196,
@@ -7409,8 +7409,8 @@
       },
       {
         "type": "Identifier",
-        "start": 7870,
-        "end": 7911,
+        "start": 7876,
+        "end": 7917,
         "loc": {
           "start": {
             "line": 211,
@@ -7424,8 +7424,8 @@
         "declarations": [
           {
             "type": "VariableDeclarator",
-            "start": 7876,
-            "end": 7910,
+            "start": 7882,
+            "end": 7916,
             "loc": {
               "start": {
                 "line": 211,
@@ -7438,8 +7438,8 @@
             },
             "id": {
               "type": "Identifier",
-              "start": 7876,
-              "end": 7885,
+              "start": 7882,
+              "end": 7891,
               "loc": {
                 "start": {
                   "line": 211,
@@ -7456,8 +7456,8 @@
             },
             "init": {
               "type": "CallExpression",
-              "start": 7888,
-              "end": 7910,
+              "start": 7894,
+              "end": 7916,
               "loc": {
                 "start": {
                   "line": 211,
@@ -7470,8 +7470,8 @@
               },
               "callee": {
                 "type": "Identifier",
-                "start": 7888,
-                "end": 7908,
+                "start": 7894,
+                "end": 7914,
                 "loc": {
                   "start": {
                     "line": 211,
@@ -7497,8 +7497,8 @@
       },
       {
         "type": "ExportNamedDeclaration",
-        "start": 7913,
-        "end": 8000,
+        "start": 7919,
+        "end": 8006,
         "loc": {
           "start": {
             "line": 213,
@@ -7513,8 +7513,8 @@
         "specifiers": [
           {
             "type": "ExportSpecifier",
-            "start": 7922,
-            "end": 7928,
+            "start": 7928,
+            "end": 7934,
             "loc": {
               "start": {
                 "line": 213,
@@ -7527,8 +7527,8 @@
             },
             "local": {
               "type": "Identifier",
-              "start": 7922,
-              "end": 7928,
+              "start": 7928,
+              "end": 7934,
               "loc": {
                 "start": {
                   "line": 213,
@@ -7544,8 +7544,8 @@
             },
             "exported": {
               "type": "Identifier",
-              "start": 7922,
-              "end": 7928,
+              "start": 7928,
+              "end": 7934,
               "loc": {
                 "start": {
                   "line": 213,
@@ -7562,8 +7562,8 @@
           },
           {
             "type": "ExportSpecifier",
-            "start": 7932,
-            "end": 7949,
+            "start": 7938,
+            "end": 7955,
             "loc": {
               "start": {
                 "line": 214,
@@ -7576,8 +7576,8 @@
             },
             "local": {
               "type": "Identifier",
-              "start": 7932,
-              "end": 7949,
+              "start": 7938,
+              "end": 7955,
               "loc": {
                 "start": {
                   "line": 214,
@@ -7593,8 +7593,8 @@
             },
             "exported": {
               "type": "Identifier",
-              "start": 7932,
-              "end": 7949,
+              "start": 7938,
+              "end": 7955,
               "loc": {
                 "start": {
                   "line": 214,
@@ -7611,8 +7611,8 @@
           },
           {
             "type": "ExportSpecifier",
-            "start": 7953,
-            "end": 7959,
+            "start": 7959,
+            "end": 7965,
             "loc": {
               "start": {
                 "line": 215,
@@ -7625,8 +7625,8 @@
             },
             "local": {
               "type": "Identifier",
-              "start": 7953,
-              "end": 7959,
+              "start": 7959,
+              "end": 7965,
               "loc": {
                 "start": {
                   "line": 215,
@@ -7642,8 +7642,8 @@
             },
             "exported": {
               "type": "Identifier",
-              "start": 7953,
-              "end": 7959,
+              "start": 7959,
+              "end": 7965,
               "loc": {
                 "start": {
                   "line": 215,
@@ -7660,8 +7660,8 @@
           },
           {
             "type": "ExportSpecifier",
-            "start": 7963,
-            "end": 7983,
+            "start": 7969,
+            "end": 7989,
             "loc": {
               "start": {
                 "line": 216,
@@ -7674,8 +7674,8 @@
             },
             "local": {
               "type": "Identifier",
-              "start": 7963,
-              "end": 7983,
+              "start": 7969,
+              "end": 7989,
               "loc": {
                 "start": {
                   "line": 216,
@@ -7691,8 +7691,8 @@
             },
             "exported": {
               "type": "Identifier",
-              "start": 7963,
-              "end": 7983,
+              "start": 7969,
+              "end": 7989,
               "loc": {
                 "start": {
                   "line": 216,
@@ -7709,8 +7709,8 @@
           },
           {
             "type": "ExportSpecifier",
-            "start": 7987,
-            "end": 7996,
+            "start": 7993,
+            "end": 8002,
             "loc": {
               "start": {
                 "line": 217,
@@ -7723,8 +7723,8 @@
             },
             "local": {
               "type": "Identifier",
-              "start": 7987,
-              "end": 7996,
+              "start": 7993,
+              "end": 8002,
               "loc": {
                 "start": {
                   "line": 217,
@@ -7740,8 +7740,8 @@
             },
             "exported": {
               "type": "Identifier",
-              "start": 7987,
-              "end": 7996,
+              "start": 7993,
+              "end": 8002,
               "loc": {
                 "start": {
                   "line": 217,
@@ -7761,8 +7761,8 @@
       },
       {
         "type": "ExportNamedDeclaration",
-        "start": 7913,
-        "end": 8000,
+        "start": 7919,
+        "end": 8006,
         "loc": {
           "start": {
             "line": 213,
@@ -8078,7 +8078,7 @@
                       "leadingComments": [
                         {
                           "type": "CommentBlock",
-                          "value": "*\n     * The prefix to include in front of all the messages.\n     * @type {String}\n     ",
+                          "value": "*\n     * The prefix to include in front of all the messages.\n     * @type {string}\n     ",
                           "start": 423,
                           "end": 515,
                           "loc": {
@@ -8096,7 +8096,7 @@
                       "trailingComments": [
                         {
                           "type": "CommentBlock",
-                          "value": "*\n     * Whether or not to show the time on each message.\n     * @type {Boolean}\n     ",
+                          "value": "*\n     * Whether or not to show the time on each message.\n     * @type {boolean}\n     ",
                           "start": 562,
                           "end": 652,
                           "loc": {
@@ -8213,7 +8213,7 @@
                       "leadingComments": [
                         {
                           "type": "CommentBlock",
-                          "value": "*\n     * Whether or not to show the time on each message.\n     * @type {Boolean}\n     ",
+                          "value": "*\n     * Whether or not to show the time on each message.\n     * @type {boolean}\n     ",
                           "start": 562,
                           "end": 652,
                           "loc": {
@@ -8236,7 +8236,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Class constructor.\n   * @param {String}  [messagesPrefix=''] A prefix to include in front of all the messages.\n   * @param {Boolean} [showTime=false]    Whether or not to show the time on each message.\n   ",
+                    "value": "*\n   * Class constructor.\n   * @param {string}  [messagesPrefix=''] A prefix to include in front of all the messages.\n   * @param {boolean} [showTime=false]    Whether or not to show the time on each message.\n   ",
                     "start": 147,
                     "end": 363,
                     "loc": {
@@ -8254,7 +8254,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Logs a warning (yellow) message or messages on the console.\n   * @param {String|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
+                    "value": "*\n   * Logs a warning (yellow) message or messages on the console.\n   * @param {string|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
                     "start": 689,
                     "end": 964,
                     "loc": {
@@ -8467,7 +8467,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Logs a warning (yellow) message or messages on the console.\n   * @param {String|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
+                    "value": "*\n   * Logs a warning (yellow) message or messages on the console.\n   * @param {string|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
                     "start": 689,
                     "end": 964,
                     "loc": {
@@ -8485,7 +8485,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Logs a success (green) message or messages on the console.\n   * @param {String|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
+                    "value": "*\n   * Logs a success (green) message or messages on the console.\n   * @param {string|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
                     "start": 1025,
                     "end": 1299,
                     "loc": {
@@ -8698,7 +8698,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Logs a success (green) message or messages on the console.\n   * @param {String|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
+                    "value": "*\n   * Logs a success (green) message or messages on the console.\n   * @param {string|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
                     "start": 1025,
                     "end": 1299,
                     "loc": {
@@ -8716,7 +8716,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Logs an error (red) message or messages on the console.\n   * @param {String|Array|Error} message          A single message of a list of them. See the\n   *                                              `log()` documentation to see all the supported\n   *                                              properties for the `message` parameter. Different\n   *                                              from the other log methods, you can use an\n   *                                              `Error` object and the method will take care of\n   *                                              extracting the message and the stack information.\n   * @param {Object}             [exception=null] If the exception has a `stack` property, the\n   *                                              method will log each of the stack calls using\n   *                                              `info()`.\n   ",
+                    "value": "*\n   * Logs an error (red) message or messages on the console.\n   * @param {string|Array|Error} message          A single message of a list of them. See the\n   *                                              `log()` documentation to see all the supported\n   *                                              properties for the `message` parameter. Different\n   *                                              from the other log methods, you can use an\n   *                                              `Error` object and the method will take care of\n   *                                              extracting the message and the stack information.\n   * @param {Object}             [exception=null] If the exception has a `stack` property, the\n   *                                              method will log each of the stack calls using\n   *                                              `info()`.\n   ",
                     "start": 1359,
                     "end": 2262,
                     "loc": {
@@ -10016,7 +10016,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Logs an error (red) message or messages on the console.\n   * @param {String|Array|Error} message          A single message of a list of them. See the\n   *                                              `log()` documentation to see all the supported\n   *                                              properties for the `message` parameter. Different\n   *                                              from the other log methods, you can use an\n   *                                              `Error` object and the method will take care of\n   *                                              extracting the message and the stack information.\n   * @param {Object}             [exception=null] If the exception has a `stack` property, the\n   *                                              method will log each of the stack calls using\n   *                                              `info()`.\n   ",
+                    "value": "*\n   * Logs an error (red) message or messages on the console.\n   * @param {string|Array|Error} message          A single message of a list of them. See the\n   *                                              `log()` documentation to see all the supported\n   *                                              properties for the `message` parameter. Different\n   *                                              from the other log methods, you can use an\n   *                                              `Error` object and the method will take care of\n   *                                              extracting the message and the stack information.\n   * @param {Object}             [exception=null] If the exception has a `stack` property, the\n   *                                              method will log each of the stack calls using\n   *                                              `info()`.\n   ",
                     "start": 1359,
                     "end": 2262,
                     "loc": {
@@ -10034,7 +10034,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Logs an information (gray) message or messages on the console.\n   * @param {String|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
+                    "value": "*\n   * Logs an information (gray) message or messages on the console.\n   * @param {string|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
                     "start": 2718,
                     "end": 2996,
                     "loc": {
@@ -10247,7 +10247,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Logs an information (gray) message or messages on the console.\n   * @param {String|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
+                    "value": "*\n   * Logs an information (gray) message or messages on the console.\n   * @param {string|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
                     "start": 2718,
                     "end": 2996,
                     "loc": {
@@ -10265,7 +10265,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Logs a message with an specific color on the console.\n   * @example\n   * // Simple\n   * CLILogger.log('hello world');\n   * // Custom color\n   * CLILogger.log('It was the shadow who did it', 'red');\n   * // A list of messages all the same color\n   * CLILogger.log(['Ph\\'nglu', 'mglw\\'nafh'], 'grey');\n   * // A list of messages with different colors per line\n   * CLILogger.log([\n   *     'Ph\\'nglu',\n   *     'mglw\\'nafh',\n   *     ['Cthulhu', 'green'],\n   *     ['R\\'lyeh wgah\\'nagl fhtagn', 'red']\n   * ], 'grey');\n   *\n   * @param {String|Array} message A text message to log or a list of them.\n   * @param {String}       color   Optional. The color of the message (the default is 'white').\n   *                               This can be overwritten line by line when the message is an\n   *                               array, take a look at the example.\n   ",
+                    "value": "*\n   * Logs a message with an specific color on the console.\n   * @example\n   * // Simple\n   * CLILogger.log('hello world');\n   * // Custom color\n   * CLILogger.log('It was the shadow who did it', 'red');\n   * // A list of messages all the same color\n   * CLILogger.log(['Ph\\'nglu', 'mglw\\'nafh'], 'grey');\n   * // A list of messages with different colors per line\n   * CLILogger.log([\n   *     'Ph\\'nglu',\n   *     'mglw\\'nafh',\n   *     ['Cthulhu', 'green'],\n   *     ['R\\'lyeh wgah\\'nagl fhtagn', 'red']\n   * ], 'grey');\n   *\n   * @param {string|Array} message A text message to log or a list of them.\n   * @param {string}       color   Optional. The color of the message (the default is 'white').\n   *                               This can be overwritten line by line when the message is an\n   *                               array, take a look at the example.\n   ",
                     "start": 3052,
                     "end": 3925,
                     "loc": {
@@ -11992,7 +11992,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Logs a message with an specific color on the console.\n   * @example\n   * // Simple\n   * CLILogger.log('hello world');\n   * // Custom color\n   * CLILogger.log('It was the shadow who did it', 'red');\n   * // A list of messages all the same color\n   * CLILogger.log(['Ph\\'nglu', 'mglw\\'nafh'], 'grey');\n   * // A list of messages with different colors per line\n   * CLILogger.log([\n   *     'Ph\\'nglu',\n   *     'mglw\\'nafh',\n   *     ['Cthulhu', 'green'],\n   *     ['R\\'lyeh wgah\\'nagl fhtagn', 'red']\n   * ], 'grey');\n   *\n   * @param {String|Array} message A text message to log or a list of them.\n   * @param {String}       color   Optional. The color of the message (the default is 'white').\n   *                               This can be overwritten line by line when the message is an\n   *                               array, take a look at the example.\n   ",
+                    "value": "*\n   * Logs a message with an specific color on the console.\n   * @example\n   * // Simple\n   * CLILogger.log('hello world');\n   * // Custom color\n   * CLILogger.log('It was the shadow who did it', 'red');\n   * // A list of messages all the same color\n   * CLILogger.log(['Ph\\'nglu', 'mglw\\'nafh'], 'grey');\n   * // A list of messages with different colors per line\n   * CLILogger.log([\n   *     'Ph\\'nglu',\n   *     'mglw\\'nafh',\n   *     ['Cthulhu', 'green'],\n   *     ['R\\'lyeh wgah\\'nagl fhtagn', 'red']\n   * ], 'grey');\n   *\n   * @param {string|Array} message A text message to log or a list of them.\n   * @param {string}       color   Optional. The color of the message (the default is 'white').\n   *                               This can be overwritten line by line when the message is an\n   *                               array, take a look at the example.\n   ",
                     "start": 3052,
                     "end": 3925,
                     "loc": {
@@ -12010,7 +12010,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Prefixes a message with the text sent to the constructor and, if enabled, the current time.\n   * @param {String} text The text that needs the prefix.\n   * @return {String}\n   ",
+                    "value": "*\n   * Prefixes a message with the text sent to the constructor and, if enabled, the current time.\n   * @param {string} text The text that needs the prefix.\n   * @return {string}\n   ",
                     "start": 4424,
                     "end": 4610,
                     "loc": {
@@ -13464,7 +13464,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Prefixes a message with the text sent to the constructor and, if enabled, the current time.\n   * @param {String} text The text that needs the prefix.\n   * @return {String}\n   ",
+                    "value": "*\n   * Prefixes a message with the text sent to the constructor and, if enabled, the current time.\n   * @param {string} text The text that needs the prefix.\n   * @return {string}\n   ",
                     "start": 4424,
                     "end": 4610,
                     "loc": {
@@ -13482,7 +13482,7 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Gets a function to modify the color of a string. The reason for this _\"proxy method\"_ is that\n   * the `colors` module doesn't have a `raw` option and the alternative would've been adding a few\n   * `if`s on the `log` method.\n   * @param {String} name The name of the color.\n   * @return {Function} A function that receives a string and returns it colored.\n   * @ignore\n   * @access protected\n   ",
+                    "value": "*\n   * Gets a function to modify the color of a string. The reason for this _\"proxy method\"_ is that\n   * the `colors` module doesn't have a `raw` option and the alternative would've been adding a few\n   * `if`s on the `log` method.\n   * @param {string} name The name of the color.\n   * @return {Function} A function that receives a string and returns it colored.\n   * @ignore\n   * @access protected\n   ",
                     "start": 5292,
                     "end": 5699,
                     "loc": {
@@ -13769,7 +13769,7 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * Gets a function to modify the color of a string. The reason for this _\"proxy method\"_ is that\n   * the `colors` module doesn't have a `raw` option and the alternative would've been adding a few\n   * `if`s on the `log` method.\n   * @param {String} name The name of the color.\n   * @return {Function} A function that receives a string and returns it colored.\n   * @ignore\n   * @access protected\n   ",
+                    "value": "*\n   * Gets a function to modify the color of a string. The reason for this _\"proxy method\"_ is that\n   * the `colors` module doesn't have a `raw` option and the alternative would've been adding a few\n   * `if`s on the `log` method.\n   * @param {string} name The name of the color.\n   * @return {Function} A function that receives a string and returns it colored.\n   * @ignore\n   * @access protected\n   ",
                     "start": 5292,
                     "end": 5699,
                     "loc": {
@@ -13809,9 +13809,9 @@
           "trailingComments": [
             {
               "type": "CommentBlock",
-              "value": "*\n * Generates a `Provider` with an already defined message prefix and time setting.\n * @example\n * // Generate the provider\n * const provider = loggerWithOptions('my-prefix', true);\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const logger = container.get('logger');\n * @param {String}  messagesPrefix A prefix to include in front of all the messages.\n * @param {Boolean} showTime       Whether or not to show the time on each message.\n * @return {Provider}\n ",
+              "value": "*\n * Generates a `Provider` with an already defined message prefix and time setting.\n * @example\n * // Generate the provider\n * const provider = loggerWithOptions('my-prefix', true);\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const logger = container.get('logger');\n * @param {string}  [messagesPrefix] A prefix to include in front of all the messages.\n * @param {boolean} [showTime]       Whether or not to show the time on each message.\n * @return {Provider}\n ",
               "start": 5782,
-              "end": 6317,
+              "end": 6321,
               "loc": {
                 "start": {
                   "line": 159,
@@ -13832,8 +13832,8 @@
       },
       {
         "type": "ExportNamedDeclaration",
-        "start": 7913,
-        "end": 8000,
+        "start": 7919,
+        "end": 8006,
         "loc": {
           "start": {
             "line": 213,
@@ -13846,8 +13846,8 @@
         },
         "declaration": {
           "type": "VariableDeclaration",
-          "start": 6318,
-          "end": 6462,
+          "start": 6322,
+          "end": 6466,
           "loc": {
             "start": {
               "line": 172,
@@ -13861,8 +13861,8 @@
           "declarations": [
             {
               "type": "VariableDeclarator",
-              "start": 6324,
-              "end": 6461,
+              "start": 6328,
+              "end": 6465,
               "loc": {
                 "start": {
                   "line": 172,
@@ -13875,8 +13875,8 @@
               },
               "id": {
                 "type": "Identifier",
-                "start": 6324,
-                "end": 6341,
+                "start": 6328,
+                "end": 6345,
                 "loc": {
                   "start": {
                     "line": 172,
@@ -13893,8 +13893,8 @@
               },
               "init": {
                 "type": "ArrowFunctionExpression",
-                "start": 6344,
-                "end": 6461,
+                "start": 6348,
+                "end": 6465,
                 "loc": {
                   "start": {
                     "line": 172,
@@ -13907,8 +13907,8 @@
                 },
                 "id": {
                   "type": "Identifier",
-                  "start": 6324,
-                  "end": 6341,
+                  "start": 6328,
+                  "end": 6345,
                   "loc": {
                     "start": {
                       "line": 172,
@@ -13929,8 +13929,8 @@
                 "params": [
                   {
                     "type": "Identifier",
-                    "start": 6345,
-                    "end": 6359,
+                    "start": 6349,
+                    "end": 6363,
                     "loc": {
                       "start": {
                         "line": 172,
@@ -13946,8 +13946,8 @@
                   },
                   {
                     "type": "Identifier",
-                    "start": 6361,
-                    "end": 6369,
+                    "start": 6365,
+                    "end": 6373,
                     "loc": {
                       "start": {
                         "line": 172,
@@ -13964,8 +13964,8 @@
                 ],
                 "body": {
                   "type": "CallExpression",
-                  "start": 6374,
-                  "end": 6461,
+                  "start": 6378,
+                  "end": 6465,
                   "loc": {
                     "start": {
                       "line": 172,
@@ -13978,8 +13978,8 @@
                   },
                   "callee": {
                     "type": "Identifier",
-                    "start": 6374,
-                    "end": 6382,
+                    "start": 6378,
+                    "end": 6386,
                     "loc": {
                       "start": {
                         "line": 172,
@@ -13996,8 +13996,8 @@
                   "arguments": [
                     {
                       "type": "ArrowFunctionExpression",
-                      "start": 6383,
-                      "end": 6460,
+                      "start": 6387,
+                      "end": 6464,
                       "loc": {
                         "start": {
                           "line": 172,
@@ -14015,8 +14015,8 @@
                       "params": [
                         {
                           "type": "Identifier",
-                          "start": 6384,
-                          "end": 6387,
+                          "start": 6388,
+                          "end": 6391,
                           "loc": {
                             "start": {
                               "line": 172,
@@ -14033,8 +14033,8 @@
                       ],
                       "body": {
                         "type": "BlockStatement",
-                        "start": 6392,
-                        "end": 6460,
+                        "start": 6396,
+                        "end": 6464,
                         "loc": {
                           "start": {
                             "line": 172,
@@ -14048,8 +14048,8 @@
                         "body": [
                           {
                             "type": "ExpressionStatement",
-                            "start": 6396,
-                            "end": 6458,
+                            "start": 6400,
+                            "end": 6462,
                             "loc": {
                               "start": {
                                 "line": 173,
@@ -14062,8 +14062,8 @@
                             },
                             "expression": {
                               "type": "CallExpression",
-                              "start": 6396,
-                              "end": 6457,
+                              "start": 6400,
+                              "end": 6461,
                               "loc": {
                                 "start": {
                                   "line": 173,
@@ -14076,8 +14076,8 @@
                               },
                               "callee": {
                                 "type": "MemberExpression",
-                                "start": 6396,
-                                "end": 6403,
+                                "start": 6400,
+                                "end": 6407,
                                 "loc": {
                                   "start": {
                                     "line": 173,
@@ -14090,8 +14090,8 @@
                                 },
                                 "object": {
                                   "type": "Identifier",
-                                  "start": 6396,
-                                  "end": 6399,
+                                  "start": 6400,
+                                  "end": 6403,
                                   "loc": {
                                     "start": {
                                       "line": 173,
@@ -14107,8 +14107,8 @@
                                 },
                                 "property": {
                                   "type": "Identifier",
-                                  "start": 6400,
-                                  "end": 6403,
+                                  "start": 6404,
+                                  "end": 6407,
                                   "loc": {
                                     "start": {
                                       "line": 173,
@@ -14127,8 +14127,8 @@
                               "arguments": [
                                 {
                                   "type": "StringLiteral",
-                                  "start": 6404,
-                                  "end": 6412,
+                                  "start": 6408,
+                                  "end": 6416,
                                   "loc": {
                                     "start": {
                                       "line": 173,
@@ -14147,8 +14147,8 @@
                                 },
                                 {
                                   "type": "ArrowFunctionExpression",
-                                  "start": 6414,
-                                  "end": 6456,
+                                  "start": 6418,
+                                  "end": 6460,
                                   "loc": {
                                     "start": {
                                       "line": 173,
@@ -14166,8 +14166,8 @@
                                   "params": [],
                                   "body": {
                                     "type": "NewExpression",
-                                    "start": 6420,
-                                    "end": 6456,
+                                    "start": 6424,
+                                    "end": 6460,
                                     "loc": {
                                       "start": {
                                         "line": 173,
@@ -14180,8 +14180,8 @@
                                     },
                                     "callee": {
                                       "type": "Identifier",
-                                      "start": 6424,
-                                      "end": 6430,
+                                      "start": 6428,
+                                      "end": 6434,
                                       "loc": {
                                         "start": {
                                           "line": 173,
@@ -14198,8 +14198,8 @@
                                     "arguments": [
                                       {
                                         "type": "Identifier",
-                                        "start": 6431,
-                                        "end": 6445,
+                                        "start": 6435,
+                                        "end": 6449,
                                         "loc": {
                                           "start": {
                                             "line": 173,
@@ -14215,8 +14215,8 @@
                                       },
                                       {
                                         "type": "Identifier",
-                                        "start": 6447,
-                                        "end": 6455,
+                                        "start": 6451,
+                                        "end": 6459,
                                         "loc": {
                                           "start": {
                                             "line": 173,
@@ -14250,9 +14250,9 @@
           "leadingComments": [
             {
               "type": "CommentBlock",
-              "value": "*\n * Generates a `Provider` with an already defined message prefix and time setting.\n * @example\n * // Generate the provider\n * const provider = loggerWithOptions('my-prefix', true);\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const logger = container.get('logger');\n * @param {String}  messagesPrefix A prefix to include in front of all the messages.\n * @param {Boolean} showTime       Whether or not to show the time on each message.\n * @return {Provider}\n ",
+              "value": "*\n * Generates a `Provider` with an already defined message prefix and time setting.\n * @example\n * // Generate the provider\n * const provider = loggerWithOptions('my-prefix', true);\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const logger = container.get('logger');\n * @param {string}  [messagesPrefix] A prefix to include in front of all the messages.\n * @param {boolean} [showTime]       Whether or not to show the time on each message.\n * @return {Provider}\n ",
               "start": 5782,
-              "end": 6317,
+              "end": 6321,
               "loc": {
                 "start": {
                   "line": 159,
@@ -14269,8 +14269,8 @@
             {
               "type": "CommentBlock",
               "value": "*\n * The service provider that once registered on the app container will set an instance of\n * `Logger` as the `logger` service.\n * @example\n * // Register it on the container\n * container.register(logger);\n * // Getting access to the service instance\n * const logger = container.get('logger');\n * @type {Provider}\n ",
-              "start": 6463,
-              "end": 6783,
+              "start": 6467,
+              "end": 6787,
               "loc": {
                 "start": {
                   "line": 175,
@@ -14290,8 +14290,8 @@
       },
       {
         "type": "ExportNamedDeclaration",
-        "start": 7913,
-        "end": 8000,
+        "start": 7919,
+        "end": 8006,
         "loc": {
           "start": {
             "line": 213,
@@ -14304,8 +14304,8 @@
         },
         "declaration": {
           "type": "VariableDeclaration",
-          "start": 6784,
-          "end": 6819,
+          "start": 6788,
+          "end": 6823,
           "loc": {
             "start": {
               "line": 185,
@@ -14319,8 +14319,8 @@
           "declarations": [
             {
               "type": "VariableDeclarator",
-              "start": 6790,
-              "end": 6818,
+              "start": 6794,
+              "end": 6822,
               "loc": {
                 "start": {
                   "line": 185,
@@ -14333,8 +14333,8 @@
               },
               "id": {
                 "type": "Identifier",
-                "start": 6790,
-                "end": 6796,
+                "start": 6794,
+                "end": 6800,
                 "loc": {
                   "start": {
                     "line": 185,
@@ -14351,8 +14351,8 @@
               },
               "init": {
                 "type": "CallExpression",
-                "start": 6799,
-                "end": 6818,
+                "start": 6803,
+                "end": 6822,
                 "loc": {
                   "start": {
                     "line": 185,
@@ -14365,8 +14365,8 @@
                 },
                 "callee": {
                   "type": "Identifier",
-                  "start": 6799,
-                  "end": 6816,
+                  "start": 6803,
+                  "end": 6820,
                   "loc": {
                     "start": {
                       "line": 185,
@@ -14390,8 +14390,8 @@
             {
               "type": "CommentBlock",
               "value": "*\n * The service provider that once registered on the app container will set an instance of\n * `Logger` as the `logger` service.\n * @example\n * // Register it on the container\n * container.register(logger);\n * // Getting access to the service instance\n * const logger = container.get('logger');\n * @type {Provider}\n ",
-              "start": 6463,
-              "end": 6783,
+              "start": 6467,
+              "end": 6787,
               "loc": {
                 "start": {
                   "line": 175,
@@ -14407,9 +14407,9 @@
           "trailingComments": [
             {
               "type": "CommentBlock",
-              "value": "*\n * Generates a `Provider` with an already defined time setting and that uses the `packageInfo`\n * service in order to retrieve the name of the project and use it as messages prefix.\n * @param {Boolean} showTime Whether or not to show the time on each message.\n * @return {Provider}\n ",
-              "start": 6820,
-              "end": 7109,
+              "value": "*\n * Generates a `Provider` with an already defined time setting and that uses the `packageInfo`\n * service in order to retrieve the name of the project and use it as messages prefix.\n * @param {boolean} [showTime] Whether or not to show the time on each message.\n * @return {Provider}\n ",
+              "start": 6824,
+              "end": 7115,
               "loc": {
                 "start": {
                   "line": 186,
@@ -14429,8 +14429,8 @@
       },
       {
         "type": "ExportNamedDeclaration",
-        "start": 7913,
-        "end": 8000,
+        "start": 7919,
+        "end": 8006,
         "loc": {
           "start": {
             "line": 213,
@@ -14443,8 +14443,8 @@
         },
         "declaration": {
           "type": "VariableDeclaration",
-          "start": 7110,
-          "end": 7365,
+          "start": 7116,
+          "end": 7371,
           "loc": {
             "start": {
               "line": 192,
@@ -14458,8 +14458,8 @@
           "declarations": [
             {
               "type": "VariableDeclarator",
-              "start": 7116,
-              "end": 7364,
+              "start": 7122,
+              "end": 7370,
               "loc": {
                 "start": {
                   "line": 192,
@@ -14472,8 +14472,8 @@
               },
               "id": {
                 "type": "Identifier",
-                "start": 7116,
-                "end": 7136,
+                "start": 7122,
+                "end": 7142,
                 "loc": {
                   "start": {
                     "line": 192,
@@ -14490,8 +14490,8 @@
               },
               "init": {
                 "type": "ArrowFunctionExpression",
-                "start": 7139,
-                "end": 7364,
+                "start": 7145,
+                "end": 7370,
                 "loc": {
                   "start": {
                     "line": 192,
@@ -14504,8 +14504,8 @@
                 },
                 "id": {
                   "type": "Identifier",
-                  "start": 7116,
-                  "end": 7136,
+                  "start": 7122,
+                  "end": 7142,
                   "loc": {
                     "start": {
                       "line": 192,
@@ -14526,8 +14526,8 @@
                 "params": [
                   {
                     "type": "Identifier",
-                    "start": 7140,
-                    "end": 7148,
+                    "start": 7146,
+                    "end": 7154,
                     "loc": {
                       "start": {
                         "line": 192,
@@ -14544,8 +14544,8 @@
                 ],
                 "body": {
                   "type": "CallExpression",
-                  "start": 7153,
-                  "end": 7364,
+                  "start": 7159,
+                  "end": 7370,
                   "loc": {
                     "start": {
                       "line": 192,
@@ -14558,8 +14558,8 @@
                   },
                   "callee": {
                     "type": "Identifier",
-                    "start": 7153,
-                    "end": 7161,
+                    "start": 7159,
+                    "end": 7167,
                     "loc": {
                       "start": {
                         "line": 192,
@@ -14576,8 +14576,8 @@
                   "arguments": [
                     {
                       "type": "ArrowFunctionExpression",
-                      "start": 7162,
-                      "end": 7363,
+                      "start": 7168,
+                      "end": 7369,
                       "loc": {
                         "start": {
                           "line": 192,
@@ -14595,8 +14595,8 @@
                       "params": [
                         {
                           "type": "Identifier",
-                          "start": 7163,
-                          "end": 7166,
+                          "start": 7169,
+                          "end": 7172,
                           "loc": {
                             "start": {
                               "line": 192,
@@ -14613,8 +14613,8 @@
                       ],
                       "body": {
                         "type": "BlockStatement",
-                        "start": 7171,
-                        "end": 7363,
+                        "start": 7177,
+                        "end": 7369,
                         "loc": {
                           "start": {
                             "line": 192,
@@ -14628,8 +14628,8 @@
                         "body": [
                           {
                             "type": "ExpressionStatement",
-                            "start": 7175,
-                            "end": 7361,
+                            "start": 7181,
+                            "end": 7367,
                             "loc": {
                               "start": {
                                 "line": 193,
@@ -14642,8 +14642,8 @@
                             },
                             "expression": {
                               "type": "CallExpression",
-                              "start": 7175,
-                              "end": 7360,
+                              "start": 7181,
+                              "end": 7366,
                               "loc": {
                                 "start": {
                                   "line": 193,
@@ -14656,8 +14656,8 @@
                               },
                               "callee": {
                                 "type": "MemberExpression",
-                                "start": 7175,
-                                "end": 7182,
+                                "start": 7181,
+                                "end": 7188,
                                 "loc": {
                                   "start": {
                                     "line": 193,
@@ -14670,8 +14670,8 @@
                                 },
                                 "object": {
                                   "type": "Identifier",
-                                  "start": 7175,
-                                  "end": 7178,
+                                  "start": 7181,
+                                  "end": 7184,
                                   "loc": {
                                     "start": {
                                       "line": 193,
@@ -14687,8 +14687,8 @@
                                 },
                                 "property": {
                                   "type": "Identifier",
-                                  "start": 7179,
-                                  "end": 7182,
+                                  "start": 7185,
+                                  "end": 7188,
                                   "loc": {
                                     "start": {
                                       "line": 193,
@@ -14707,8 +14707,8 @@
                               "arguments": [
                                 {
                                   "type": "StringLiteral",
-                                  "start": 7183,
-                                  "end": 7194,
+                                  "start": 7189,
+                                  "end": 7200,
                                   "loc": {
                                     "start": {
                                       "line": 193,
@@ -14727,8 +14727,8 @@
                                 },
                                 {
                                   "type": "ArrowFunctionExpression",
-                                  "start": 7196,
-                                  "end": 7359,
+                                  "start": 7202,
+                                  "end": 7365,
                                   "loc": {
                                     "start": {
                                       "line": 193,
@@ -14746,8 +14746,8 @@
                                   "params": [],
                                   "body": {
                                     "type": "BlockStatement",
-                                    "start": 7202,
-                                    "end": 7359,
+                                    "start": 7208,
+                                    "end": 7365,
                                     "loc": {
                                       "start": {
                                         "line": 193,
@@ -14761,8 +14761,8 @@
                                     "body": [
                                       {
                                         "type": "VariableDeclaration",
-                                        "start": 7208,
-                                        "end": 7251,
+                                        "start": 7214,
+                                        "end": 7257,
                                         "loc": {
                                           "start": {
                                             "line": 194,
@@ -14776,8 +14776,8 @@
                                         "declarations": [
                                           {
                                             "type": "VariableDeclarator",
-                                            "start": 7214,
-                                            "end": 7250,
+                                            "start": 7220,
+                                            "end": 7256,
                                             "loc": {
                                               "start": {
                                                 "line": 194,
@@ -14790,8 +14790,8 @@
                                             },
                                             "id": {
                                               "type": "Identifier",
-                                              "start": 7214,
-                                              "end": 7225,
+                                              "start": 7220,
+                                              "end": 7231,
                                               "loc": {
                                                 "start": {
                                                   "line": 194,
@@ -14807,8 +14807,8 @@
                                             },
                                             "init": {
                                               "type": "CallExpression",
-                                              "start": 7228,
-                                              "end": 7250,
+                                              "start": 7234,
+                                              "end": 7256,
                                               "loc": {
                                                 "start": {
                                                   "line": 194,
@@ -14821,8 +14821,8 @@
                                               },
                                               "callee": {
                                                 "type": "MemberExpression",
-                                                "start": 7228,
-                                                "end": 7235,
+                                                "start": 7234,
+                                                "end": 7241,
                                                 "loc": {
                                                   "start": {
                                                     "line": 194,
@@ -14835,8 +14835,8 @@
                                                 },
                                                 "object": {
                                                   "type": "Identifier",
-                                                  "start": 7228,
-                                                  "end": 7231,
+                                                  "start": 7234,
+                                                  "end": 7237,
                                                   "loc": {
                                                     "start": {
                                                       "line": 194,
@@ -14852,8 +14852,8 @@
                                                 },
                                                 "property": {
                                                   "type": "Identifier",
-                                                  "start": 7232,
-                                                  "end": 7235,
+                                                  "start": 7238,
+                                                  "end": 7241,
                                                   "loc": {
                                                     "start": {
                                                       "line": 194,
@@ -14872,8 +14872,8 @@
                                               "arguments": [
                                                 {
                                                   "type": "StringLiteral",
-                                                  "start": 7236,
-                                                  "end": 7249,
+                                                  "start": 7242,
+                                                  "end": 7255,
                                                   "loc": {
                                                     "start": {
                                                       "line": 194,
@@ -14898,8 +14898,8 @@
                                       },
                                       {
                                         "type": "VariableDeclaration",
-                                        "start": 7256,
-                                        "end": 7314,
+                                        "start": 7262,
+                                        "end": 7320,
                                         "loc": {
                                           "start": {
                                             "line": 195,
@@ -14913,8 +14913,8 @@
                                         "declarations": [
                                           {
                                             "type": "VariableDeclarator",
-                                            "start": 7262,
-                                            "end": 7313,
+                                            "start": 7268,
+                                            "end": 7319,
                                             "loc": {
                                               "start": {
                                                 "line": 195,
@@ -14927,8 +14927,8 @@
                                             },
                                             "id": {
                                               "type": "Identifier",
-                                              "start": 7262,
-                                              "end": 7268,
+                                              "start": 7268,
+                                              "end": 7274,
                                               "loc": {
                                                 "start": {
                                                   "line": 195,
@@ -14944,8 +14944,8 @@
                                             },
                                             "init": {
                                               "type": "LogicalExpression",
-                                              "start": 7271,
-                                              "end": 7313,
+                                              "start": 7277,
+                                              "end": 7319,
                                               "loc": {
                                                 "start": {
                                                   "line": 195,
@@ -14958,8 +14958,8 @@
                                               },
                                               "left": {
                                                 "type": "MemberExpression",
-                                                "start": 7271,
-                                                "end": 7293,
+                                                "start": 7277,
+                                                "end": 7299,
                                                 "loc": {
                                                   "start": {
                                                     "line": 195,
@@ -14972,8 +14972,8 @@
                                                 },
                                                 "object": {
                                                   "type": "Identifier",
-                                                  "start": 7271,
-                                                  "end": 7282,
+                                                  "start": 7277,
+                                                  "end": 7288,
                                                   "loc": {
                                                     "start": {
                                                       "line": 195,
@@ -14989,8 +14989,8 @@
                                                 },
                                                 "property": {
                                                   "type": "Identifier",
-                                                  "start": 7283,
-                                                  "end": 7293,
+                                                  "start": 7289,
+                                                  "end": 7299,
                                                   "loc": {
                                                     "start": {
                                                       "line": 195,
@@ -15009,8 +15009,8 @@
                                               "operator": "||",
                                               "right": {
                                                 "type": "MemberExpression",
-                                                "start": 7297,
-                                                "end": 7313,
+                                                "start": 7303,
+                                                "end": 7319,
                                                 "loc": {
                                                   "start": {
                                                     "line": 195,
@@ -15023,8 +15023,8 @@
                                                 },
                                                 "object": {
                                                   "type": "Identifier",
-                                                  "start": 7297,
-                                                  "end": 7308,
+                                                  "start": 7303,
+                                                  "end": 7314,
                                                   "loc": {
                                                     "start": {
                                                       "line": 195,
@@ -15040,8 +15040,8 @@
                                                 },
                                                 "property": {
                                                   "type": "Identifier",
-                                                  "start": 7309,
-                                                  "end": 7313,
+                                                  "start": 7315,
+                                                  "end": 7319,
                                                   "loc": {
                                                     "start": {
                                                       "line": 195,
@@ -15064,8 +15064,8 @@
                                       },
                                       {
                                         "type": "ReturnStatement",
-                                        "start": 7319,
-                                        "end": 7355,
+                                        "start": 7325,
+                                        "end": 7361,
                                         "loc": {
                                           "start": {
                                             "line": 196,
@@ -15078,8 +15078,8 @@
                                         },
                                         "argument": {
                                           "type": "NewExpression",
-                                          "start": 7326,
-                                          "end": 7354,
+                                          "start": 7332,
+                                          "end": 7360,
                                           "loc": {
                                             "start": {
                                               "line": 196,
@@ -15092,8 +15092,8 @@
                                           },
                                           "callee": {
                                             "type": "Identifier",
-                                            "start": 7330,
-                                            "end": 7336,
+                                            "start": 7336,
+                                            "end": 7342,
                                             "loc": {
                                               "start": {
                                                 "line": 196,
@@ -15110,8 +15110,8 @@
                                           "arguments": [
                                             {
                                               "type": "Identifier",
-                                              "start": 7337,
-                                              "end": 7343,
+                                              "start": 7343,
+                                              "end": 7349,
                                               "loc": {
                                                 "start": {
                                                   "line": 196,
@@ -15127,8 +15127,8 @@
                                             },
                                             {
                                               "type": "Identifier",
-                                              "start": 7345,
-                                              "end": 7353,
+                                              "start": 7351,
+                                              "end": 7359,
                                               "loc": {
                                                 "start": {
                                                   "line": 196,
@@ -15166,9 +15166,9 @@
           "leadingComments": [
             {
               "type": "CommentBlock",
-              "value": "*\n * Generates a `Provider` with an already defined time setting and that uses the `packageInfo`\n * service in order to retrieve the name of the project and use it as messages prefix.\n * @param {Boolean} showTime Whether or not to show the time on each message.\n * @return {Provider}\n ",
-              "start": 6820,
-              "end": 7109,
+              "value": "*\n * Generates a `Provider` with an already defined time setting and that uses the `packageInfo`\n * service in order to retrieve the name of the project and use it as messages prefix.\n * @param {boolean} [showTime] Whether or not to show the time on each message.\n * @return {Provider}\n ",
+              "start": 6824,
+              "end": 7115,
               "loc": {
                 "start": {
                   "line": 186,
@@ -15185,8 +15185,8 @@
             {
               "type": "CommentBlock",
               "value": "*\n * The service provider that once registered on the app container will set an instance of\n * `Logger` as the `appLogger` service. The difference with the regular `logger` is that this one\n * uses the `packageInfo` service in order to retrieve the name of the project and use it as\n * messages prefix.\n * @example\n * // Register it on the container\n * container.register(appLogger);\n * // Getting access to the service instance\n * const appLogger = container.get('appLogger');\n * @type {Provider}\n ",
-              "start": 7366,
-              "end": 7869,
+              "start": 7372,
+              "end": 7875,
               "loc": {
                 "start": {
                   "line": 199,
@@ -15206,8 +15206,8 @@
       },
       {
         "type": "ExportNamedDeclaration",
-        "start": 7913,
-        "end": 8000,
+        "start": 7919,
+        "end": 8006,
         "loc": {
           "start": {
             "line": 213,
@@ -15220,8 +15220,8 @@
         },
         "declaration": {
           "type": "VariableDeclaration",
-          "start": 7870,
-          "end": 7911,
+          "start": 7876,
+          "end": 7917,
           "loc": {
             "start": {
               "line": 211,
@@ -15235,8 +15235,8 @@
           "declarations": [
             {
               "type": "VariableDeclarator",
-              "start": 7876,
-              "end": 7910,
+              "start": 7882,
+              "end": 7916,
               "loc": {
                 "start": {
                   "line": 211,
@@ -15249,8 +15249,8 @@
               },
               "id": {
                 "type": "Identifier",
-                "start": 7876,
-                "end": 7885,
+                "start": 7882,
+                "end": 7891,
                 "loc": {
                   "start": {
                     "line": 211,
@@ -15267,8 +15267,8 @@
               },
               "init": {
                 "type": "CallExpression",
-                "start": 7888,
-                "end": 7910,
+                "start": 7894,
+                "end": 7916,
                 "loc": {
                   "start": {
                     "line": 211,
@@ -15281,8 +15281,8 @@
                 },
                 "callee": {
                   "type": "Identifier",
-                  "start": 7888,
-                  "end": 7908,
+                  "start": 7894,
+                  "end": 7914,
                   "loc": {
                     "start": {
                       "line": 211,
@@ -15306,8 +15306,8 @@
             {
               "type": "CommentBlock",
               "value": "*\n * The service provider that once registered on the app container will set an instance of\n * `Logger` as the `appLogger` service. The difference with the regular `logger` is that this one\n * uses the `packageInfo` service in order to retrieve the name of the project and use it as\n * messages prefix.\n * @example\n * // Register it on the container\n * container.register(appLogger);\n * // Getting access to the service instance\n * const appLogger = container.get('appLogger');\n * @type {Provider}\n ",
-              "start": 7366,
-              "end": 7869,
+              "start": 7372,
+              "end": 7875,
               "loc": {
                 "start": {
                   "line": 199,
@@ -15348,7 +15348,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Class constructor.\n   * @param {String}  [messagesPrefix=''] A prefix to include in front of all the messages.\n   * @param {Boolean} [showTime=false]    Whether or not to show the time on each message.\n   ",
+      "value": "*\n   * Class constructor.\n   * @param {string}  [messagesPrefix=''] A prefix to include in front of all the messages.\n   * @param {boolean} [showTime=false]    Whether or not to show the time on each message.\n   ",
       "start": 147,
       "end": 363,
       "loc": {
@@ -15364,7 +15364,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n     * The prefix to include in front of all the messages.\n     * @type {String}\n     ",
+      "value": "*\n     * The prefix to include in front of all the messages.\n     * @type {string}\n     ",
       "start": 423,
       "end": 515,
       "loc": {
@@ -15380,7 +15380,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n     * Whether or not to show the time on each message.\n     * @type {Boolean}\n     ",
+      "value": "*\n     * Whether or not to show the time on each message.\n     * @type {boolean}\n     ",
       "start": 562,
       "end": 652,
       "loc": {
@@ -15396,7 +15396,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Logs a warning (yellow) message or messages on the console.\n   * @param {String|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
+      "value": "*\n   * Logs a warning (yellow) message or messages on the console.\n   * @param {string|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
       "start": 689,
       "end": 964,
       "loc": {
@@ -15412,7 +15412,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Logs a success (green) message or messages on the console.\n   * @param {String|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
+      "value": "*\n   * Logs a success (green) message or messages on the console.\n   * @param {string|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
       "start": 1025,
       "end": 1299,
       "loc": {
@@ -15428,7 +15428,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Logs an error (red) message or messages on the console.\n   * @param {String|Array|Error} message          A single message of a list of them. See the\n   *                                              `log()` documentation to see all the supported\n   *                                              properties for the `message` parameter. Different\n   *                                              from the other log methods, you can use an\n   *                                              `Error` object and the method will take care of\n   *                                              extracting the message and the stack information.\n   * @param {Object}             [exception=null] If the exception has a `stack` property, the\n   *                                              method will log each of the stack calls using\n   *                                              `info()`.\n   ",
+      "value": "*\n   * Logs an error (red) message or messages on the console.\n   * @param {string|Array|Error} message          A single message of a list of them. See the\n   *                                              `log()` documentation to see all the supported\n   *                                              properties for the `message` parameter. Different\n   *                                              from the other log methods, you can use an\n   *                                              `Error` object and the method will take care of\n   *                                              extracting the message and the stack information.\n   * @param {Object}             [exception=null] If the exception has a `stack` property, the\n   *                                              method will log each of the stack calls using\n   *                                              `info()`.\n   ",
       "start": 1359,
       "end": 2262,
       "loc": {
@@ -15444,7 +15444,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Logs an information (gray) message or messages on the console.\n   * @param {String|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
+      "value": "*\n   * Logs an information (gray) message or messages on the console.\n   * @param {string|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
       "start": 2718,
       "end": 2996,
       "loc": {
@@ -15460,7 +15460,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Logs a message with an specific color on the console.\n   * @example\n   * // Simple\n   * CLILogger.log('hello world');\n   * // Custom color\n   * CLILogger.log('It was the shadow who did it', 'red');\n   * // A list of messages all the same color\n   * CLILogger.log(['Ph\\'nglu', 'mglw\\'nafh'], 'grey');\n   * // A list of messages with different colors per line\n   * CLILogger.log([\n   *     'Ph\\'nglu',\n   *     'mglw\\'nafh',\n   *     ['Cthulhu', 'green'],\n   *     ['R\\'lyeh wgah\\'nagl fhtagn', 'red']\n   * ], 'grey');\n   *\n   * @param {String|Array} message A text message to log or a list of them.\n   * @param {String}       color   Optional. The color of the message (the default is 'white').\n   *                               This can be overwritten line by line when the message is an\n   *                               array, take a look at the example.\n   ",
+      "value": "*\n   * Logs a message with an specific color on the console.\n   * @example\n   * // Simple\n   * CLILogger.log('hello world');\n   * // Custom color\n   * CLILogger.log('It was the shadow who did it', 'red');\n   * // A list of messages all the same color\n   * CLILogger.log(['Ph\\'nglu', 'mglw\\'nafh'], 'grey');\n   * // A list of messages with different colors per line\n   * CLILogger.log([\n   *     'Ph\\'nglu',\n   *     'mglw\\'nafh',\n   *     ['Cthulhu', 'green'],\n   *     ['R\\'lyeh wgah\\'nagl fhtagn', 'red']\n   * ], 'grey');\n   *\n   * @param {string|Array} message A text message to log or a list of them.\n   * @param {string}       color   Optional. The color of the message (the default is 'white').\n   *                               This can be overwritten line by line when the message is an\n   *                               array, take a look at the example.\n   ",
       "start": 3052,
       "end": 3925,
       "loc": {
@@ -15492,7 +15492,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Prefixes a message with the text sent to the constructor and, if enabled, the current time.\n   * @param {String} text The text that needs the prefix.\n   * @return {String}\n   ",
+      "value": "*\n   * Prefixes a message with the text sent to the constructor and, if enabled, the current time.\n   * @param {string} text The text that needs the prefix.\n   * @return {string}\n   ",
       "start": 4424,
       "end": 4610,
       "loc": {
@@ -15620,7 +15620,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Gets a function to modify the color of a string. The reason for this _\"proxy method\"_ is that\n   * the `colors` module doesn't have a `raw` option and the alternative would've been adding a few\n   * `if`s on the `log` method.\n   * @param {String} name The name of the color.\n   * @return {Function} A function that receives a string and returns it colored.\n   * @ignore\n   * @access protected\n   ",
+      "value": "*\n   * Gets a function to modify the color of a string. The reason for this _\"proxy method\"_ is that\n   * the `colors` module doesn't have a `raw` option and the alternative would've been adding a few\n   * `if`s on the `log` method.\n   * @param {string} name The name of the color.\n   * @return {Function} A function that receives a string and returns it colored.\n   * @ignore\n   * @access protected\n   ",
       "start": 5292,
       "end": 5699,
       "loc": {
@@ -15636,9 +15636,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n * Generates a `Provider` with an already defined message prefix and time setting.\n * @example\n * // Generate the provider\n * const provider = loggerWithOptions('my-prefix', true);\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const logger = container.get('logger');\n * @param {String}  messagesPrefix A prefix to include in front of all the messages.\n * @param {Boolean} showTime       Whether or not to show the time on each message.\n * @return {Provider}\n ",
+      "value": "*\n * Generates a `Provider` with an already defined message prefix and time setting.\n * @example\n * // Generate the provider\n * const provider = loggerWithOptions('my-prefix', true);\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const logger = container.get('logger');\n * @param {string}  [messagesPrefix] A prefix to include in front of all the messages.\n * @param {boolean} [showTime]       Whether or not to show the time on each message.\n * @return {Provider}\n ",
       "start": 5782,
-      "end": 6317,
+      "end": 6321,
       "loc": {
         "start": {
           "line": 159,
@@ -15653,8 +15653,8 @@
     {
       "type": "CommentBlock",
       "value": "*\n * The service provider that once registered on the app container will set an instance of\n * `Logger` as the `logger` service.\n * @example\n * // Register it on the container\n * container.register(logger);\n * // Getting access to the service instance\n * const logger = container.get('logger');\n * @type {Provider}\n ",
-      "start": 6463,
-      "end": 6783,
+      "start": 6467,
+      "end": 6787,
       "loc": {
         "start": {
           "line": 175,
@@ -15668,9 +15668,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n * Generates a `Provider` with an already defined time setting and that uses the `packageInfo`\n * service in order to retrieve the name of the project and use it as messages prefix.\n * @param {Boolean} showTime Whether or not to show the time on each message.\n * @return {Provider}\n ",
-      "start": 6820,
-      "end": 7109,
+      "value": "*\n * Generates a `Provider` with an already defined time setting and that uses the `packageInfo`\n * service in order to retrieve the name of the project and use it as messages prefix.\n * @param {boolean} [showTime] Whether or not to show the time on each message.\n * @return {Provider}\n ",
+      "start": 6824,
+      "end": 7115,
       "loc": {
         "start": {
           "line": 186,
@@ -15685,8 +15685,8 @@
     {
       "type": "CommentBlock",
       "value": "*\n * The service provider that once registered on the app container will set an instance of\n * `Logger` as the `appLogger` service. The difference with the regular `logger` is that this one\n * uses the `packageInfo` service in order to retrieve the name of the project and use it as\n * messages prefix.\n * @example\n * // Register it on the container\n * container.register(appLogger);\n * // Getting access to the service instance\n * const appLogger = container.get('appLogger');\n * @type {Provider}\n ",
-      "start": 7366,
-      "end": 7869,
+      "start": 7372,
+      "end": 7875,
       "loc": {
         "start": {
           "line": 199,
@@ -16113,7 +16113,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Class constructor.\n   * @param {String}  [messagesPrefix=''] A prefix to include in front of all the messages.\n   * @param {Boolean} [showTime=false]    Whether or not to show the time on each message.\n   ",
+      "value": "*\n   * Class constructor.\n   * @param {string}  [messagesPrefix=''] A prefix to include in front of all the messages.\n   * @param {boolean} [showTime=false]    Whether or not to show the time on each message.\n   ",
       "start": 147,
       "end": 363,
       "loc": {
@@ -16417,7 +16417,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n     * The prefix to include in front of all the messages.\n     * @type {String}\n     ",
+      "value": "*\n     * The prefix to include in front of all the messages.\n     * @type {string}\n     ",
       "start": 423,
       "end": 515,
       "loc": {
@@ -16592,7 +16592,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n     * Whether or not to show the time on each message.\n     * @type {Boolean}\n     ",
+      "value": "*\n     * Whether or not to show the time on each message.\n     * @type {boolean}\n     ",
       "start": 562,
       "end": 652,
       "loc": {
@@ -16792,7 +16792,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Logs a warning (yellow) message or messages on the console.\n   * @param {String|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
+      "value": "*\n   * Logs a warning (yellow) message or messages on the console.\n   * @param {string|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
       "start": 689,
       "end": 964,
       "loc": {
@@ -17195,7 +17195,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Logs a success (green) message or messages on the console.\n   * @param {String|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
+      "value": "*\n   * Logs a success (green) message or messages on the console.\n   * @param {string|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
       "start": 1025,
       "end": 1299,
       "loc": {
@@ -17598,7 +17598,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Logs an error (red) message or messages on the console.\n   * @param {String|Array|Error} message          A single message of a list of them. See the\n   *                                              `log()` documentation to see all the supported\n   *                                              properties for the `message` parameter. Different\n   *                                              from the other log methods, you can use an\n   *                                              `Error` object and the method will take care of\n   *                                              extracting the message and the stack information.\n   * @param {Object}             [exception=null] If the exception has a `stack` property, the\n   *                                              method will log each of the stack calls using\n   *                                              `info()`.\n   ",
+      "value": "*\n   * Logs an error (red) message or messages on the console.\n   * @param {string|Array|Error} message          A single message of a list of them. See the\n   *                                              `log()` documentation to see all the supported\n   *                                              properties for the `message` parameter. Different\n   *                                              from the other log methods, you can use an\n   *                                              `Error` object and the method will take care of\n   *                                              extracting the message and the stack information.\n   * @param {Object}             [exception=null] If the exception has a `stack` property, the\n   *                                              method will log each of the stack calls using\n   *                                              `info()`.\n   ",
       "start": 1359,
       "end": 2262,
       "loc": {
@@ -20362,7 +20362,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Logs an information (gray) message or messages on the console.\n   * @param {String|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
+      "value": "*\n   * Logs an information (gray) message or messages on the console.\n   * @param {string|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   ",
       "start": 2718,
       "end": 2996,
       "loc": {
@@ -20765,7 +20765,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Logs a message with an specific color on the console.\n   * @example\n   * // Simple\n   * CLILogger.log('hello world');\n   * // Custom color\n   * CLILogger.log('It was the shadow who did it', 'red');\n   * // A list of messages all the same color\n   * CLILogger.log(['Ph\\'nglu', 'mglw\\'nafh'], 'grey');\n   * // A list of messages with different colors per line\n   * CLILogger.log([\n   *     'Ph\\'nglu',\n   *     'mglw\\'nafh',\n   *     ['Cthulhu', 'green'],\n   *     ['R\\'lyeh wgah\\'nagl fhtagn', 'red']\n   * ], 'grey');\n   *\n   * @param {String|Array} message A text message to log or a list of them.\n   * @param {String}       color   Optional. The color of the message (the default is 'white').\n   *                               This can be overwritten line by line when the message is an\n   *                               array, take a look at the example.\n   ",
+      "value": "*\n   * Logs a message with an specific color on the console.\n   * @example\n   * // Simple\n   * CLILogger.log('hello world');\n   * // Custom color\n   * CLILogger.log('It was the shadow who did it', 'red');\n   * // A list of messages all the same color\n   * CLILogger.log(['Ph\\'nglu', 'mglw\\'nafh'], 'grey');\n   * // A list of messages with different colors per line\n   * CLILogger.log([\n   *     'Ph\\'nglu',\n   *     'mglw\\'nafh',\n   *     ['Cthulhu', 'green'],\n   *     ['R\\'lyeh wgah\\'nagl fhtagn', 'red']\n   * ], 'grey');\n   *\n   * @param {string|Array} message A text message to log or a list of them.\n   * @param {string}       color   Optional. The color of the message (the default is 'white').\n   *                               This can be overwritten line by line when the message is an\n   *                               array, take a look at the example.\n   ",
       "start": 3052,
       "end": 3925,
       "loc": {
@@ -24356,7 +24356,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Prefixes a message with the text sent to the constructor and, if enabled, the current time.\n   * @param {String} text The text that needs the prefix.\n   * @return {String}\n   ",
+      "value": "*\n   * Prefixes a message with the text sent to the constructor and, if enabled, the current time.\n   * @param {string} text The text that needs the prefix.\n   * @return {string}\n   ",
       "start": 4424,
       "end": 4610,
       "loc": {
@@ -27107,7 +27107,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * Gets a function to modify the color of a string. The reason for this _\"proxy method\"_ is that\n   * the `colors` module doesn't have a `raw` option and the alternative would've been adding a few\n   * `if`s on the `log` method.\n   * @param {String} name The name of the color.\n   * @return {Function} A function that receives a string and returns it colored.\n   * @ignore\n   * @access protected\n   ",
+      "value": "*\n   * Gets a function to modify the color of a string. The reason for this _\"proxy method\"_ is that\n   * the `colors` module doesn't have a `raw` option and the alternative would've been adding a few\n   * `if`s on the `log` method.\n   * @param {string} name The name of the color.\n   * @return {Function} A function that receives a string and returns it colored.\n   * @ignore\n   * @access protected\n   ",
       "start": 5292,
       "end": 5699,
       "loc": {
@@ -27768,9 +27768,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n * Generates a `Provider` with an already defined message prefix and time setting.\n * @example\n * // Generate the provider\n * const provider = loggerWithOptions('my-prefix', true);\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const logger = container.get('logger');\n * @param {String}  messagesPrefix A prefix to include in front of all the messages.\n * @param {Boolean} showTime       Whether or not to show the time on each message.\n * @return {Provider}\n ",
+      "value": "*\n * Generates a `Provider` with an already defined message prefix and time setting.\n * @example\n * // Generate the provider\n * const provider = loggerWithOptions('my-prefix', true);\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const logger = container.get('logger');\n * @param {string}  [messagesPrefix] A prefix to include in front of all the messages.\n * @param {boolean} [showTime]       Whether or not to show the time on each message.\n * @return {Provider}\n ",
       "start": 5782,
-      "end": 6317,
+      "end": 6321,
       "loc": {
         "start": {
           "line": 159,
@@ -27797,8 +27797,8 @@
         "updateContext": null
       },
       "value": "const",
-      "start": 6318,
-      "end": 6323,
+      "start": 6322,
+      "end": 6327,
       "loc": {
         "start": {
           "line": 172,
@@ -27823,8 +27823,8 @@
         "binop": null
       },
       "value": "loggerWithOptions",
-      "start": 6324,
-      "end": 6341,
+      "start": 6328,
+      "end": 6345,
       "loc": {
         "start": {
           "line": 172,
@@ -27850,8 +27850,8 @@
         "updateContext": null
       },
       "value": "=",
-      "start": 6342,
-      "end": 6343,
+      "start": 6346,
+      "end": 6347,
       "loc": {
         "start": {
           "line": 172,
@@ -27875,8 +27875,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6344,
-      "end": 6345,
+      "start": 6348,
+      "end": 6349,
       "loc": {
         "start": {
           "line": 172,
@@ -27901,8 +27901,8 @@
         "binop": null
       },
       "value": "messagesPrefix",
-      "start": 6345,
-      "end": 6359,
+      "start": 6349,
+      "end": 6363,
       "loc": {
         "start": {
           "line": 172,
@@ -27927,8 +27927,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6359,
-      "end": 6360,
+      "start": 6363,
+      "end": 6364,
       "loc": {
         "start": {
           "line": 172,
@@ -27953,8 +27953,8 @@
         "binop": null
       },
       "value": "showTime",
-      "start": 6361,
-      "end": 6369,
+      "start": 6365,
+      "end": 6373,
       "loc": {
         "start": {
           "line": 172,
@@ -27978,8 +27978,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6369,
-      "end": 6370,
+      "start": 6373,
+      "end": 6374,
       "loc": {
         "start": {
           "line": 172,
@@ -28004,8 +28004,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6371,
-      "end": 6373,
+      "start": 6375,
+      "end": 6377,
       "loc": {
         "start": {
           "line": 172,
@@ -28030,8 +28030,8 @@
         "binop": null
       },
       "value": "provider",
-      "start": 6374,
-      "end": 6382,
+      "start": 6378,
+      "end": 6386,
       "loc": {
         "start": {
           "line": 172,
@@ -28055,8 +28055,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6382,
-      "end": 6383,
+      "start": 6386,
+      "end": 6387,
       "loc": {
         "start": {
           "line": 172,
@@ -28080,8 +28080,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6383,
-      "end": 6384,
+      "start": 6387,
+      "end": 6388,
       "loc": {
         "start": {
           "line": 172,
@@ -28106,8 +28106,8 @@
         "binop": null
       },
       "value": "app",
-      "start": 6384,
-      "end": 6387,
+      "start": 6388,
+      "end": 6391,
       "loc": {
         "start": {
           "line": 172,
@@ -28131,8 +28131,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6387,
-      "end": 6388,
+      "start": 6391,
+      "end": 6392,
       "loc": {
         "start": {
           "line": 172,
@@ -28157,8 +28157,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6389,
-      "end": 6391,
+      "start": 6393,
+      "end": 6395,
       "loc": {
         "start": {
           "line": 172,
@@ -28182,8 +28182,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6392,
-      "end": 6393,
+      "start": 6396,
+      "end": 6397,
       "loc": {
         "start": {
           "line": 172,
@@ -28208,8 +28208,8 @@
         "binop": null
       },
       "value": "app",
-      "start": 6396,
-      "end": 6399,
+      "start": 6400,
+      "end": 6403,
       "loc": {
         "start": {
           "line": 173,
@@ -28234,8 +28234,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6399,
-      "end": 6400,
+      "start": 6403,
+      "end": 6404,
       "loc": {
         "start": {
           "line": 173,
@@ -28260,8 +28260,8 @@
         "binop": null
       },
       "value": "set",
-      "start": 6400,
-      "end": 6403,
+      "start": 6404,
+      "end": 6407,
       "loc": {
         "start": {
           "line": 173,
@@ -28285,8 +28285,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6403,
-      "end": 6404,
+      "start": 6407,
+      "end": 6408,
       "loc": {
         "start": {
           "line": 173,
@@ -28312,8 +28312,8 @@
         "updateContext": null
       },
       "value": "logger",
-      "start": 6404,
-      "end": 6412,
+      "start": 6408,
+      "end": 6416,
       "loc": {
         "start": {
           "line": 173,
@@ -28338,8 +28338,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6412,
-      "end": 6413,
+      "start": 6416,
+      "end": 6417,
       "loc": {
         "start": {
           "line": 173,
@@ -28363,8 +28363,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6414,
-      "end": 6415,
+      "start": 6418,
+      "end": 6419,
       "loc": {
         "start": {
           "line": 173,
@@ -28388,8 +28388,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6415,
-      "end": 6416,
+      "start": 6419,
+      "end": 6420,
       "loc": {
         "start": {
           "line": 173,
@@ -28414,8 +28414,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6417,
-      "end": 6419,
+      "start": 6421,
+      "end": 6423,
       "loc": {
         "start": {
           "line": 173,
@@ -28442,8 +28442,8 @@
         "updateContext": null
       },
       "value": "new",
-      "start": 6420,
-      "end": 6423,
+      "start": 6424,
+      "end": 6427,
       "loc": {
         "start": {
           "line": 173,
@@ -28468,8 +28468,8 @@
         "binop": null
       },
       "value": "Logger",
-      "start": 6424,
-      "end": 6430,
+      "start": 6428,
+      "end": 6434,
       "loc": {
         "start": {
           "line": 173,
@@ -28493,8 +28493,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6430,
-      "end": 6431,
+      "start": 6434,
+      "end": 6435,
       "loc": {
         "start": {
           "line": 173,
@@ -28519,8 +28519,8 @@
         "binop": null
       },
       "value": "messagesPrefix",
-      "start": 6431,
-      "end": 6445,
+      "start": 6435,
+      "end": 6449,
       "loc": {
         "start": {
           "line": 173,
@@ -28545,8 +28545,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6445,
-      "end": 6446,
+      "start": 6449,
+      "end": 6450,
       "loc": {
         "start": {
           "line": 173,
@@ -28571,8 +28571,8 @@
         "binop": null
       },
       "value": "showTime",
-      "start": 6447,
-      "end": 6455,
+      "start": 6451,
+      "end": 6459,
       "loc": {
         "start": {
           "line": 173,
@@ -28596,8 +28596,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6455,
-      "end": 6456,
+      "start": 6459,
+      "end": 6460,
       "loc": {
         "start": {
           "line": 173,
@@ -28621,8 +28621,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6456,
-      "end": 6457,
+      "start": 6460,
+      "end": 6461,
       "loc": {
         "start": {
           "line": 173,
@@ -28647,8 +28647,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6457,
-      "end": 6458,
+      "start": 6461,
+      "end": 6462,
       "loc": {
         "start": {
           "line": 173,
@@ -28672,8 +28672,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6459,
-      "end": 6460,
+      "start": 6463,
+      "end": 6464,
       "loc": {
         "start": {
           "line": 174,
@@ -28697,8 +28697,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6460,
-      "end": 6461,
+      "start": 6464,
+      "end": 6465,
       "loc": {
         "start": {
           "line": 174,
@@ -28723,8 +28723,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6461,
-      "end": 6462,
+      "start": 6465,
+      "end": 6466,
       "loc": {
         "start": {
           "line": 174,
@@ -28739,8 +28739,8 @@
     {
       "type": "CommentBlock",
       "value": "*\n * The service provider that once registered on the app container will set an instance of\n * `Logger` as the `logger` service.\n * @example\n * // Register it on the container\n * container.register(logger);\n * // Getting access to the service instance\n * const logger = container.get('logger');\n * @type {Provider}\n ",
-      "start": 6463,
-      "end": 6783,
+      "start": 6467,
+      "end": 6787,
       "loc": {
         "start": {
           "line": 175,
@@ -28767,8 +28767,8 @@
         "updateContext": null
       },
       "value": "const",
-      "start": 6784,
-      "end": 6789,
+      "start": 6788,
+      "end": 6793,
       "loc": {
         "start": {
           "line": 185,
@@ -28793,8 +28793,8 @@
         "binop": null
       },
       "value": "logger",
-      "start": 6790,
-      "end": 6796,
+      "start": 6794,
+      "end": 6800,
       "loc": {
         "start": {
           "line": 185,
@@ -28820,8 +28820,8 @@
         "updateContext": null
       },
       "value": "=",
-      "start": 6797,
-      "end": 6798,
+      "start": 6801,
+      "end": 6802,
       "loc": {
         "start": {
           "line": 185,
@@ -28846,8 +28846,8 @@
         "binop": null
       },
       "value": "loggerWithOptions",
-      "start": 6799,
-      "end": 6816,
+      "start": 6803,
+      "end": 6820,
       "loc": {
         "start": {
           "line": 185,
@@ -28871,8 +28871,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6816,
-      "end": 6817,
+      "start": 6820,
+      "end": 6821,
       "loc": {
         "start": {
           "line": 185,
@@ -28896,8 +28896,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6817,
-      "end": 6818,
+      "start": 6821,
+      "end": 6822,
       "loc": {
         "start": {
           "line": 185,
@@ -28922,8 +28922,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6818,
-      "end": 6819,
+      "start": 6822,
+      "end": 6823,
       "loc": {
         "start": {
           "line": 185,
@@ -28937,9 +28937,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n * Generates a `Provider` with an already defined time setting and that uses the `packageInfo`\n * service in order to retrieve the name of the project and use it as messages prefix.\n * @param {Boolean} showTime Whether or not to show the time on each message.\n * @return {Provider}\n ",
-      "start": 6820,
-      "end": 7109,
+      "value": "*\n * Generates a `Provider` with an already defined time setting and that uses the `packageInfo`\n * service in order to retrieve the name of the project and use it as messages prefix.\n * @param {boolean} [showTime] Whether or not to show the time on each message.\n * @return {Provider}\n ",
+      "start": 6824,
+      "end": 7115,
       "loc": {
         "start": {
           "line": 186,
@@ -28966,8 +28966,8 @@
         "updateContext": null
       },
       "value": "const",
-      "start": 7110,
-      "end": 7115,
+      "start": 7116,
+      "end": 7121,
       "loc": {
         "start": {
           "line": 192,
@@ -28992,8 +28992,8 @@
         "binop": null
       },
       "value": "appLoggerWithOptions",
-      "start": 7116,
-      "end": 7136,
+      "start": 7122,
+      "end": 7142,
       "loc": {
         "start": {
           "line": 192,
@@ -29019,8 +29019,8 @@
         "updateContext": null
       },
       "value": "=",
-      "start": 7137,
-      "end": 7138,
+      "start": 7143,
+      "end": 7144,
       "loc": {
         "start": {
           "line": 192,
@@ -29044,8 +29044,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7139,
-      "end": 7140,
+      "start": 7145,
+      "end": 7146,
       "loc": {
         "start": {
           "line": 192,
@@ -29070,8 +29070,8 @@
         "binop": null
       },
       "value": "showTime",
-      "start": 7140,
-      "end": 7148,
+      "start": 7146,
+      "end": 7154,
       "loc": {
         "start": {
           "line": 192,
@@ -29095,8 +29095,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7148,
-      "end": 7149,
+      "start": 7154,
+      "end": 7155,
       "loc": {
         "start": {
           "line": 192,
@@ -29121,8 +29121,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7150,
-      "end": 7152,
+      "start": 7156,
+      "end": 7158,
       "loc": {
         "start": {
           "line": 192,
@@ -29147,8 +29147,8 @@
         "binop": null
       },
       "value": "provider",
-      "start": 7153,
-      "end": 7161,
+      "start": 7159,
+      "end": 7167,
       "loc": {
         "start": {
           "line": 192,
@@ -29172,8 +29172,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7161,
-      "end": 7162,
+      "start": 7167,
+      "end": 7168,
       "loc": {
         "start": {
           "line": 192,
@@ -29197,8 +29197,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7162,
-      "end": 7163,
+      "start": 7168,
+      "end": 7169,
       "loc": {
         "start": {
           "line": 192,
@@ -29223,8 +29223,8 @@
         "binop": null
       },
       "value": "app",
-      "start": 7163,
-      "end": 7166,
+      "start": 7169,
+      "end": 7172,
       "loc": {
         "start": {
           "line": 192,
@@ -29248,8 +29248,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7166,
-      "end": 7167,
+      "start": 7172,
+      "end": 7173,
       "loc": {
         "start": {
           "line": 192,
@@ -29274,8 +29274,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7168,
-      "end": 7170,
+      "start": 7174,
+      "end": 7176,
       "loc": {
         "start": {
           "line": 192,
@@ -29299,8 +29299,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7171,
-      "end": 7172,
+      "start": 7177,
+      "end": 7178,
       "loc": {
         "start": {
           "line": 192,
@@ -29325,8 +29325,8 @@
         "binop": null
       },
       "value": "app",
-      "start": 7175,
-      "end": 7178,
+      "start": 7181,
+      "end": 7184,
       "loc": {
         "start": {
           "line": 193,
@@ -29351,8 +29351,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7178,
-      "end": 7179,
+      "start": 7184,
+      "end": 7185,
       "loc": {
         "start": {
           "line": 193,
@@ -29377,8 +29377,8 @@
         "binop": null
       },
       "value": "set",
-      "start": 7179,
-      "end": 7182,
+      "start": 7185,
+      "end": 7188,
       "loc": {
         "start": {
           "line": 193,
@@ -29402,8 +29402,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7182,
-      "end": 7183,
+      "start": 7188,
+      "end": 7189,
       "loc": {
         "start": {
           "line": 193,
@@ -29429,8 +29429,8 @@
         "updateContext": null
       },
       "value": "appLogger",
-      "start": 7183,
-      "end": 7194,
+      "start": 7189,
+      "end": 7200,
       "loc": {
         "start": {
           "line": 193,
@@ -29455,8 +29455,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7194,
-      "end": 7195,
+      "start": 7200,
+      "end": 7201,
       "loc": {
         "start": {
           "line": 193,
@@ -29480,8 +29480,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7196,
-      "end": 7197,
+      "start": 7202,
+      "end": 7203,
       "loc": {
         "start": {
           "line": 193,
@@ -29505,8 +29505,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7197,
-      "end": 7198,
+      "start": 7203,
+      "end": 7204,
       "loc": {
         "start": {
           "line": 193,
@@ -29531,8 +29531,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7199,
-      "end": 7201,
+      "start": 7205,
+      "end": 7207,
       "loc": {
         "start": {
           "line": 193,
@@ -29556,8 +29556,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7202,
-      "end": 7203,
+      "start": 7208,
+      "end": 7209,
       "loc": {
         "start": {
           "line": 193,
@@ -29584,8 +29584,8 @@
         "updateContext": null
       },
       "value": "const",
-      "start": 7208,
-      "end": 7213,
+      "start": 7214,
+      "end": 7219,
       "loc": {
         "start": {
           "line": 194,
@@ -29610,8 +29610,8 @@
         "binop": null
       },
       "value": "packageInfo",
-      "start": 7214,
-      "end": 7225,
+      "start": 7220,
+      "end": 7231,
       "loc": {
         "start": {
           "line": 194,
@@ -29637,8 +29637,8 @@
         "updateContext": null
       },
       "value": "=",
-      "start": 7226,
-      "end": 7227,
+      "start": 7232,
+      "end": 7233,
       "loc": {
         "start": {
           "line": 194,
@@ -29663,8 +29663,8 @@
         "binop": null
       },
       "value": "app",
-      "start": 7228,
-      "end": 7231,
+      "start": 7234,
+      "end": 7237,
       "loc": {
         "start": {
           "line": 194,
@@ -29689,8 +29689,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7231,
-      "end": 7232,
+      "start": 7237,
+      "end": 7238,
       "loc": {
         "start": {
           "line": 194,
@@ -29715,8 +29715,8 @@
         "binop": null
       },
       "value": "get",
-      "start": 7232,
-      "end": 7235,
+      "start": 7238,
+      "end": 7241,
       "loc": {
         "start": {
           "line": 194,
@@ -29740,8 +29740,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7235,
-      "end": 7236,
+      "start": 7241,
+      "end": 7242,
       "loc": {
         "start": {
           "line": 194,
@@ -29767,8 +29767,8 @@
         "updateContext": null
       },
       "value": "packageInfo",
-      "start": 7236,
-      "end": 7249,
+      "start": 7242,
+      "end": 7255,
       "loc": {
         "start": {
           "line": 194,
@@ -29792,8 +29792,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7249,
-      "end": 7250,
+      "start": 7255,
+      "end": 7256,
       "loc": {
         "start": {
           "line": 194,
@@ -29818,8 +29818,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7250,
-      "end": 7251,
+      "start": 7256,
+      "end": 7257,
       "loc": {
         "start": {
           "line": 194,
@@ -29846,8 +29846,8 @@
         "updateContext": null
       },
       "value": "const",
-      "start": 7256,
-      "end": 7261,
+      "start": 7262,
+      "end": 7267,
       "loc": {
         "start": {
           "line": 195,
@@ -29872,8 +29872,8 @@
         "binop": null
       },
       "value": "prefix",
-      "start": 7262,
-      "end": 7268,
+      "start": 7268,
+      "end": 7274,
       "loc": {
         "start": {
           "line": 195,
@@ -29899,8 +29899,8 @@
         "updateContext": null
       },
       "value": "=",
-      "start": 7269,
-      "end": 7270,
+      "start": 7275,
+      "end": 7276,
       "loc": {
         "start": {
           "line": 195,
@@ -29925,8 +29925,8 @@
         "binop": null
       },
       "value": "packageInfo",
-      "start": 7271,
-      "end": 7282,
+      "start": 7277,
+      "end": 7288,
       "loc": {
         "start": {
           "line": 195,
@@ -29951,8 +29951,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7282,
-      "end": 7283,
+      "start": 7288,
+      "end": 7289,
       "loc": {
         "start": {
           "line": 195,
@@ -29977,8 +29977,8 @@
         "binop": null
       },
       "value": "nameForCLI",
-      "start": 7283,
-      "end": 7293,
+      "start": 7289,
+      "end": 7299,
       "loc": {
         "start": {
           "line": 195,
@@ -30004,8 +30004,8 @@
         "updateContext": null
       },
       "value": "||",
-      "start": 7294,
-      "end": 7296,
+      "start": 7300,
+      "end": 7302,
       "loc": {
         "start": {
           "line": 195,
@@ -30030,8 +30030,8 @@
         "binop": null
       },
       "value": "packageInfo",
-      "start": 7297,
-      "end": 7308,
+      "start": 7303,
+      "end": 7314,
       "loc": {
         "start": {
           "line": 195,
@@ -30056,8 +30056,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7308,
-      "end": 7309,
+      "start": 7314,
+      "end": 7315,
       "loc": {
         "start": {
           "line": 195,
@@ -30082,8 +30082,8 @@
         "binop": null
       },
       "value": "name",
-      "start": 7309,
-      "end": 7313,
+      "start": 7315,
+      "end": 7319,
       "loc": {
         "start": {
           "line": 195,
@@ -30108,8 +30108,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7313,
-      "end": 7314,
+      "start": 7319,
+      "end": 7320,
       "loc": {
         "start": {
           "line": 195,
@@ -30136,8 +30136,8 @@
         "updateContext": null
       },
       "value": "return",
-      "start": 7319,
-      "end": 7325,
+      "start": 7325,
+      "end": 7331,
       "loc": {
         "start": {
           "line": 196,
@@ -30164,8 +30164,8 @@
         "updateContext": null
       },
       "value": "new",
-      "start": 7326,
-      "end": 7329,
+      "start": 7332,
+      "end": 7335,
       "loc": {
         "start": {
           "line": 196,
@@ -30190,8 +30190,8 @@
         "binop": null
       },
       "value": "Logger",
-      "start": 7330,
-      "end": 7336,
+      "start": 7336,
+      "end": 7342,
       "loc": {
         "start": {
           "line": 196,
@@ -30215,8 +30215,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7336,
-      "end": 7337,
+      "start": 7342,
+      "end": 7343,
       "loc": {
         "start": {
           "line": 196,
@@ -30241,8 +30241,8 @@
         "binop": null
       },
       "value": "prefix",
-      "start": 7337,
-      "end": 7343,
+      "start": 7343,
+      "end": 7349,
       "loc": {
         "start": {
           "line": 196,
@@ -30267,8 +30267,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7343,
-      "end": 7344,
+      "start": 7349,
+      "end": 7350,
       "loc": {
         "start": {
           "line": 196,
@@ -30293,8 +30293,8 @@
         "binop": null
       },
       "value": "showTime",
-      "start": 7345,
-      "end": 7353,
+      "start": 7351,
+      "end": 7359,
       "loc": {
         "start": {
           "line": 196,
@@ -30318,8 +30318,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7353,
-      "end": 7354,
+      "start": 7359,
+      "end": 7360,
       "loc": {
         "start": {
           "line": 196,
@@ -30344,8 +30344,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7354,
-      "end": 7355,
+      "start": 7360,
+      "end": 7361,
       "loc": {
         "start": {
           "line": 196,
@@ -30369,8 +30369,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7358,
-      "end": 7359,
+      "start": 7364,
+      "end": 7365,
       "loc": {
         "start": {
           "line": 197,
@@ -30394,8 +30394,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7359,
-      "end": 7360,
+      "start": 7365,
+      "end": 7366,
       "loc": {
         "start": {
           "line": 197,
@@ -30420,8 +30420,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7360,
-      "end": 7361,
+      "start": 7366,
+      "end": 7367,
       "loc": {
         "start": {
           "line": 197,
@@ -30445,8 +30445,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7362,
-      "end": 7363,
+      "start": 7368,
+      "end": 7369,
       "loc": {
         "start": {
           "line": 198,
@@ -30470,8 +30470,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7363,
-      "end": 7364,
+      "start": 7369,
+      "end": 7370,
       "loc": {
         "start": {
           "line": 198,
@@ -30496,8 +30496,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7364,
-      "end": 7365,
+      "start": 7370,
+      "end": 7371,
       "loc": {
         "start": {
           "line": 198,
@@ -30512,8 +30512,8 @@
     {
       "type": "CommentBlock",
       "value": "*\n * The service provider that once registered on the app container will set an instance of\n * `Logger` as the `appLogger` service. The difference with the regular `logger` is that this one\n * uses the `packageInfo` service in order to retrieve the name of the project and use it as\n * messages prefix.\n * @example\n * // Register it on the container\n * container.register(appLogger);\n * // Getting access to the service instance\n * const appLogger = container.get('appLogger');\n * @type {Provider}\n ",
-      "start": 7366,
-      "end": 7869,
+      "start": 7372,
+      "end": 7875,
       "loc": {
         "start": {
           "line": 199,
@@ -30540,8 +30540,8 @@
         "updateContext": null
       },
       "value": "const",
-      "start": 7870,
-      "end": 7875,
+      "start": 7876,
+      "end": 7881,
       "loc": {
         "start": {
           "line": 211,
@@ -30566,8 +30566,8 @@
         "binop": null
       },
       "value": "appLogger",
-      "start": 7876,
-      "end": 7885,
+      "start": 7882,
+      "end": 7891,
       "loc": {
         "start": {
           "line": 211,
@@ -30593,8 +30593,8 @@
         "updateContext": null
       },
       "value": "=",
-      "start": 7886,
-      "end": 7887,
+      "start": 7892,
+      "end": 7893,
       "loc": {
         "start": {
           "line": 211,
@@ -30619,8 +30619,8 @@
         "binop": null
       },
       "value": "appLoggerWithOptions",
-      "start": 7888,
-      "end": 7908,
+      "start": 7894,
+      "end": 7914,
       "loc": {
         "start": {
           "line": 211,
@@ -30644,8 +30644,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7908,
-      "end": 7909,
+      "start": 7914,
+      "end": 7915,
       "loc": {
         "start": {
           "line": 211,
@@ -30669,8 +30669,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7909,
-      "end": 7910,
+      "start": 7915,
+      "end": 7916,
       "loc": {
         "start": {
           "line": 211,
@@ -30695,8 +30695,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7910,
-      "end": 7911,
+      "start": 7916,
+      "end": 7917,
       "loc": {
         "start": {
           "line": 211,
@@ -30723,8 +30723,8 @@
         "updateContext": null
       },
       "value": "export",
-      "start": 7913,
-      "end": 7919,
+      "start": 7919,
+      "end": 7925,
       "loc": {
         "start": {
           "line": 213,
@@ -30748,8 +30748,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7920,
-      "end": 7921,
+      "start": 7926,
+      "end": 7927,
       "loc": {
         "start": {
           "line": 213,
@@ -30774,8 +30774,8 @@
         "binop": null
       },
       "value": "Logger",
-      "start": 7922,
-      "end": 7928,
+      "start": 7928,
+      "end": 7934,
       "loc": {
         "start": {
           "line": 213,
@@ -30800,8 +30800,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7928,
-      "end": 7929,
+      "start": 7934,
+      "end": 7935,
       "loc": {
         "start": {
           "line": 213,
@@ -30826,8 +30826,8 @@
         "binop": null
       },
       "value": "loggerWithOptions",
-      "start": 7932,
-      "end": 7949,
+      "start": 7938,
+      "end": 7955,
       "loc": {
         "start": {
           "line": 214,
@@ -30852,8 +30852,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7949,
-      "end": 7950,
+      "start": 7955,
+      "end": 7956,
       "loc": {
         "start": {
           "line": 214,
@@ -30878,8 +30878,8 @@
         "binop": null
       },
       "value": "logger",
-      "start": 7953,
-      "end": 7959,
+      "start": 7959,
+      "end": 7965,
       "loc": {
         "start": {
           "line": 215,
@@ -30904,8 +30904,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7959,
-      "end": 7960,
+      "start": 7965,
+      "end": 7966,
       "loc": {
         "start": {
           "line": 215,
@@ -30930,8 +30930,8 @@
         "binop": null
       },
       "value": "appLoggerWithOptions",
-      "start": 7963,
-      "end": 7983,
+      "start": 7969,
+      "end": 7989,
       "loc": {
         "start": {
           "line": 216,
@@ -30956,8 +30956,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7983,
-      "end": 7984,
+      "start": 7989,
+      "end": 7990,
       "loc": {
         "start": {
           "line": 216,
@@ -30982,8 +30982,8 @@
         "binop": null
       },
       "value": "appLogger",
-      "start": 7987,
-      "end": 7996,
+      "start": 7993,
+      "end": 8002,
       "loc": {
         "start": {
           "line": 217,
@@ -31008,8 +31008,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7996,
-      "end": 7997,
+      "start": 8002,
+      "end": 8003,
       "loc": {
         "start": {
           "line": 217,
@@ -31033,8 +31033,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7998,
-      "end": 7999,
+      "start": 8004,
+      "end": 8005,
       "loc": {
         "start": {
           "line": 217,
@@ -31059,8 +31059,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7999,
-      "end": 8000,
+      "start": 8005,
+      "end": 8006,
       "loc": {
         "start": {
           "line": 217,
@@ -31085,8 +31085,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 8001,
-      "end": 8001,
+      "start": 8007,
+      "end": 8007,
       "loc": {
         "start": {
           "line": 218,

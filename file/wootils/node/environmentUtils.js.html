@@ -35,6 +35,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/logger.js~Logger.html">Logger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appConfiguration">appConfiguration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-errorHandlerWithOptions">errorHandlerWithOptions</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appLoggerWithOptions">appLoggerWithOptions</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-loggerWithOptions">loggerWithOptions</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-packageInfo">packageInfo</a></span></span></li>
@@ -74,20 +75,20 @@ class EnvironmentUtils {
   constructor() {
     /**
      * The current `NODE_ENV`. If the variable is empty, the value will be `development`.
-     * @type {String}
+     * @type {string}
      */
     this.env = this.get(&apos;NODE_ENV&apos;, &apos;development&apos;);
     /**
      * Whether or not the environment is production.
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.production = this.env === &apos;production&apos;;
   }
   /**
    * Get the value of an environment variable.
-   * @param {String} name              The name of the variable.
-   * @param {String} [defaultValue=&apos;&apos;] A fallback value in case the variable is `undefined`
-   * @return {String}
+   * @param {string} name              The name of the variable.
+   * @param {string} [defaultValue=&apos;&apos;] A fallback value in case the variable is `undefined`
+   * @return {string}
    * @todo add a `require` parameter to throw an error if the variable is not preset.
    */
   get(name, defaultValue = &apos;&apos;) {
@@ -101,7 +102,7 @@ class EnvironmentUtils {
   }
   /**
    * Check whether or not the environment is for development.
-   * @return {Boolean}
+   * @return {boolean}
    */
   get development() {
     return !this.production;

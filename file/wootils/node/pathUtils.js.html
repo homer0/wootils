@@ -35,6 +35,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/logger.js~Logger.html">Logger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appConfiguration">appConfiguration</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-errorHandlerWithOptions">errorHandlerWithOptions</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appLoggerWithOptions">appLoggerWithOptions</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-loggerWithOptions">loggerWithOptions</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-packageInfo">packageInfo</a></span></span></li>
@@ -72,13 +73,13 @@ const { provider } = require(&apos;jimple&apos;);
 class PathUtils {
   /**
    * Class constructor.
-   * @param {String} [home=&apos;&apos;] The location of the project&apos;s `home`(root) directory. By default
+   * @param {string} [home=&apos;&apos;] The location of the project&apos;s `home`(root) directory. By default
    *                           it uses `process.cwd()`.
    */
   constructor(home = &apos;&apos;) {
     /**
      * The root path from where the app is being executed.
-     * @type {String}
+     * @type {string}
      */
     this.path = process.cwd();
     /**
@@ -92,8 +93,8 @@ class PathUtils {
   }
   /**
    * Add a new location.
-   * @param {String} name         The reference name.
-   * @param {String} locationPath The path of the location. It must be inside the path from the
+   * @param {string} name         The reference name.
+   * @param {string} locationPath The path of the location. It must be inside the path from the
    *                              app is being executed.
    */
   addLocation(name, locationPath) {
@@ -114,8 +115,8 @@ class PathUtils {
   }
   /**
    * Get a location path by its name.
-   * @param {String} name The location name.
-   * @return {String}
+   * @param {string} name The location name.
+   * @return {string}
    * @throws {Error} If there location hasn&apos;t been added.
    */
   getLocation(name) {
@@ -128,9 +129,9 @@ class PathUtils {
   }
   /**
    * Build a path using a location path as base.
-   * @param {String} location The location name.
+   * @param {string} location The location name.
    * @param {Array}  paths    The rest of the path components to join.
-   * @return {String}
+   * @return {string}
    */
   joinFrom(location, ...paths) {
     const locationPath = this.getLocation(location);
@@ -139,21 +140,21 @@ class PathUtils {
   /**
    * Alias to `joinFrom` that uses the `home` location by default.
    * @param {Array} paths The rest of the path components to join.
-   * @return {String}
+   * @return {string}
    */
   join(...paths) {
     return this.joinFrom(&apos;home&apos;, ...paths);
   }
   /**
    * Get the project root path.
-   * @return {String}
+   * @return {string}
    */
   get home() {
     return this.getLocation(&apos;home&apos;);
   }
   /**
    * Get the path to the directory where the app executable is located.
-   * @return {String}
+   * @return {string}
    */
   get app() {
     return this.getLocation(&apos;app&apos;);
@@ -184,6 +185,7 @@ class PathUtils {
  * container.register(provider);
  * // Getting access to the service instance
  * const pathUtils = container.get(&apos;pathUtils&apos;);
+ * @param {string} [home] The path to the new home location.
  * @return {Provider}
  */
 const pathUtilsWithHome = (home) =&gt; provider((app) =&gt; {
