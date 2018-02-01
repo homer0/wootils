@@ -6,24 +6,24 @@ const { provider } = require('jimple');
 class Logger {
   /**
    * Class constructor.
-   * @param {String}  [messagesPrefix=''] A prefix to include in front of all the messages.
-   * @param {Boolean} [showTime=false]    Whether or not to show the time on each message.
+   * @param {string}  [messagesPrefix=''] A prefix to include in front of all the messages.
+   * @param {boolean} [showTime=false]    Whether or not to show the time on each message.
    */
   constructor(messagesPrefix = '', showTime = false) {
     /**
      * The prefix to include in front of all the messages.
-     * @type {String}
+     * @type {string}
      */
     this.messagesPrefix = messagesPrefix;
     /**
      * Whether or not to show the time on each message.
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.showTime = showTime;
   }
   /**
    * Logs a warning (yellow) message or messages on the console.
-   * @param {String|Array} message A single message of a list of them. See the `log()` documentation
+   * @param {string|Array} message A single message of a list of them. See the `log()` documentation
    *                               to see all the supported properties for the `message` parameter.
    */
   warning(message) {
@@ -31,7 +31,7 @@ class Logger {
   }
   /**
    * Logs a success (green) message or messages on the console.
-   * @param {String|Array} message A single message of a list of them. See the `log()` documentation
+   * @param {string|Array} message A single message of a list of them. See the `log()` documentation
    *                               to see all the supported properties for the `message` parameter.
    */
   success(message) {
@@ -39,7 +39,7 @@ class Logger {
   }
   /**
    * Logs an error (red) message or messages on the console.
-   * @param {String|Array|Error} message          A single message of a list of them. See the
+   * @param {string|Array|Error} message          A single message of a list of them. See the
    *                                              `log()` documentation to see all the supported
    *                                              properties for the `message` parameter. Different
    *                                              from the other log methods, you can use an
@@ -70,7 +70,7 @@ class Logger {
   }
   /**
    * Logs an information (gray) message or messages on the console.
-   * @param {String|Array} message A single message of a list of them. See the `log()` documentation
+   * @param {string|Array} message A single message of a list of them. See the `log()` documentation
    *                               to see all the supported properties for the `message` parameter.
    */
   info(message) {
@@ -93,8 +93,8 @@ class Logger {
    *     ['R\'lyeh wgah\'nagl fhtagn', 'red']
    * ], 'grey');
    *
-   * @param {String|Array} message A text message to log or a list of them.
-   * @param {String}       color   Optional. The color of the message (the default is 'white').
+   * @param {string|Array} message A text message to log or a list of them.
+   * @param {string}       color   Optional. The color of the message (the default is 'white').
    *                               This can be overwritten line by line when the message is an
    *                               array, take a look at the example.
    */
@@ -117,8 +117,8 @@ class Logger {
   }
   /**
    * Prefixes a message with the text sent to the constructor and, if enabled, the current time.
-   * @param {String} text The text that needs the prefix.
-   * @return {String}
+   * @param {string} text The text that needs the prefix.
+   * @return {string}
    */
   prefix(text) {
     // Define the list of things that will compose the formatted text.
@@ -147,7 +147,7 @@ class Logger {
    * Gets a function to modify the color of a string. The reason for this _"proxy method"_ is that
    * the `colors` module doesn't have a `raw` option and the alternative would've been adding a few
    * `if`s on the `log` method.
-   * @param {String} name The name of the color.
+   * @param {string} name The name of the color.
    * @return {Function} A function that receives a string and returns it colored.
    * @ignore
    * @access protected
@@ -165,8 +165,8 @@ class Logger {
  * container.register(provider);
  * // Getting access to the service instance
  * const logger = container.get('logger');
- * @param {String}  messagesPrefix A prefix to include in front of all the messages.
- * @param {Boolean} showTime       Whether or not to show the time on each message.
+ * @param {string}  [messagesPrefix] A prefix to include in front of all the messages.
+ * @param {boolean} [showTime]       Whether or not to show the time on each message.
  * @return {Provider}
  */
 const loggerWithOptions = (messagesPrefix, showTime) => provider((app) => {
@@ -186,7 +186,7 @@ const logger = loggerWithOptions();
 /**
  * Generates a `Provider` with an already defined time setting and that uses the `packageInfo`
  * service in order to retrieve the name of the project and use it as messages prefix.
- * @param {Boolean} showTime Whether or not to show the time on each message.
+ * @param {boolean} [showTime] Whether or not to show the time on each message.
  * @return {Provider}
  */
 const appLoggerWithOptions = (showTime) => provider((app) => {

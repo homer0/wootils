@@ -9,20 +9,20 @@ class EnvironmentUtils {
   constructor() {
     /**
      * The current `NODE_ENV`. If the variable is empty, the value will be `development`.
-     * @type {String}
+     * @type {string}
      */
     this.env = this.get('NODE_ENV', 'development');
     /**
      * Whether or not the environment is production.
-     * @type {Boolean}
+     * @type {boolean}
      */
     this.production = this.env === 'production';
   }
   /**
    * Get the value of an environment variable.
-   * @param {String} name              The name of the variable.
-   * @param {String} [defaultValue=''] A fallback value in case the variable is `undefined`
-   * @return {String}
+   * @param {string} name              The name of the variable.
+   * @param {string} [defaultValue=''] A fallback value in case the variable is `undefined`
+   * @return {string}
    * @todo add a `require` parameter to throw an error if the variable is not preset.
    */
   get(name, defaultValue = '') {
@@ -36,7 +36,7 @@ class EnvironmentUtils {
   }
   /**
    * Check whether or not the environment is for development.
-   * @return {Boolean}
+   * @return {boolean}
    */
   get development() {
     return !this.production;

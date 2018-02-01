@@ -571,23 +571,24 @@ describe('AppConfiguration', () => {
 
   it('should include a provider for the DIC', () => {
     // Given
-    let sut = null;
     const container = {
       set: jest.fn(),
       get: jest.fn((service) => service),
     };
+    let sut = null;
+    let registerResult = null;
     let serviceProvider = null;
     let serviceName = null;
     let serviceFn = null;
     const expectedDefaults = getExpectedDefaults();
     // When
-    appConfiguration();
+    registerResult = appConfiguration();
     [[serviceProvider]] = provider.mock.calls;
     serviceProvider(container);
-    provider(container);
     [[serviceName, serviceFn]] = container.set.mock.calls;
     sut = serviceFn();
     // Then
+    expect(registerResult).toBe('provider');
     expect(serviceName).toBe('appConfiguration');
     expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(AppConfiguration);

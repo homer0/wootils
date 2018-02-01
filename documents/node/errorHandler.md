@@ -67,27 +67,26 @@ You get the date and time when it happened and the full stack trace of the error
 
 ### With Jimple
 
-When used with Jimple, instead of using the `logger` service, it uses the `appLogger` (for now), which includes the name of the app as a prefix of every message, and `appLogger` depends on `packageInfo`, so let's setup the dependency services first:
+When used with Jimple, instead of using the `logger` service, it uses the `logger` service:
+
+> It uses `logger` by default, but if the service is not available, it will try to fallback to `appLogger`, the alternative version of `logger` that prefixes all the messages with the project name.
 
 ```js
 // Import all the required modules
 const Jimple = require('jimple');
 const {
-  packageInfo,
-  appLogger,
+  logger,
   errorHandler,
 } = require('wootils/node/providers');
 // Create a dummy app
 const app = new Jimple();
-// Register the service that reads the app `package.json`.
-app.register(packageInfo);
 // Register the logger
-app.register(appLogger);
+app.register(logger);
 // Register the ErrorHandler
 app.register(errorHandler);
 ```
 Now, we should tell the service to start listening for errors:
- 
+
 ```js
 app.get('errorHandler').listen();
 ```
@@ -107,8 +106,6 @@ Done! If you run the same code now, this is the kind of logged information you'l
 [my-app] at run (bootstrap_node.js:383:7)
 [my-app] at startup (bootstrap_node.js:149:9)
 ```
-
-> The `[my-app]` is the name the `appLogger` service got from the `package.json`.
 
 ## Technical documentation
 

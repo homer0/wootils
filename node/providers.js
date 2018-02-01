@@ -1,6 +1,6 @@
 const { appConfiguration } = require('./appConfiguration');
 const { environmentUtils } = require('./environmentUtils');
-const { errorHandler } = require('./errorHandler');
+const { errorHandlerWithOptions, errorHandler } = require('./errorHandler');
 const {
   loggerWithOptions,
   logger,
@@ -14,6 +14,7 @@ const { rootRequireProvider } = require('./rootRequire');
 module.exports = {
   appConfiguration,
   environmentUtils,
+  errorHandlerWithOptions,
   errorHandler,
   loggerWithOptions,
   logger,

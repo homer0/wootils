@@ -68,14 +68,20 @@ describe('EnvironmentUtils', () => {
     const container = {
       set: jest.fn(),
     };
+    let sut = null;
+    let serviceProvider = null;
+    let serviceName = null;
+    let serviceFn = null;
     // When
-    provider.mock.calls[0][0](container);
+    [[serviceProvider]] = provider.mock.calls;
+    serviceProvider(container);
+    [[serviceName, serviceFn]] = container.set.mock.calls;
+    sut = serviceFn();
     // Then
     expect(environmentUtils).toBe('provider');
     expect(provider).toHaveBeenCalledTimes(1);
-    expect(container.set).toHaveBeenCalledTimes(1);
-    expect(container.set.mock.calls[0][0]).toBe('environmentUtils');
-    expect(container.set.mock.calls[0][1]).toBeFunction();
-    expect(container.set.mock.calls[0][1]()).toBeInstanceOf(EnvironmentUtils);
+    expect(serviceName).toBe('environmentUtils');
+    expect(serviceFn).toBeFunction();
+    expect(sut).toBeInstanceOf(EnvironmentUtils);
   });
 });
