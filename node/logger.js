@@ -165,8 +165,8 @@ class Logger {
  * container.register(provider);
  * // Getting access to the service instance
  * const logger = container.get('logger');
- * @param {string}  messagesPrefix A prefix to include in front of all the messages.
- * @param {boolean} showTime       Whether or not to show the time on each message.
+ * @param {string}  [messagesPrefix] A prefix to include in front of all the messages.
+ * @param {boolean} [showTime]       Whether or not to show the time on each message.
  * @return {Provider}
  */
 const loggerWithOptions = (messagesPrefix, showTime) => provider((app) => {
@@ -186,7 +186,7 @@ const logger = loggerWithOptions();
 /**
  * Generates a `Provider` with an already defined time setting and that uses the `packageInfo`
  * service in order to retrieve the name of the project and use it as messages prefix.
- * @param {boolean} showTime Whether or not to show the time on each message.
+ * @param {boolean} [showTime] Whether or not to show the time on each message.
  * @return {Provider}
  */
 const appLoggerWithOptions = (showTime) => provider((app) => {

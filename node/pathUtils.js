@@ -119,6 +119,7 @@ class PathUtils {
  * container.register(provider);
  * // Getting access to the service instance
  * const pathUtils = container.get('pathUtils');
+ * @param {string} [home] The path to the new home location.
  * @return {Provider}
  */
 const pathUtilsWithHome = (home) => provider((app) => {

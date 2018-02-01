@@ -302,9 +302,9 @@ class AppConfiguration {
  * container.register(provider);
  * // Getting access to the service instance
  * const appConfiguration = container.get('appConfiguration');
- * @param {string} appName              The name of the app.
- * @param {Object} defaultConfiguration The service default configuration.
- * @param {Object} options              Options to customize the service.
+ * @param {string} [appName]              The name of the app.
+ * @param {Object} [defaultConfiguration] The service default configuration.
+ * @param {Object} [options]              Options to customize the service.
  * @return {Provider}
  */
 const appConfiguration = (
