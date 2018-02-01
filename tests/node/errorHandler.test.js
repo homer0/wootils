@@ -4,6 +4,7 @@ jest.mock('jimple', () => ({ provider: jest.fn(() => 'provider') }));
 require('jasmine-expect');
 const {
   ErrorHandler,
+  errorHandlerWithOptions,
   errorHandler,
 } = require('/node/errorHandler');
 const { provider } = require('jimple');
@@ -116,6 +117,26 @@ describe('ErrorHandler', () => {
     expect(exitMock).toHaveBeenCalledWith(1);
   });
 
+  it('shouldn\'t exit the process when handling an error', () => {
+    // Given
+    const exitMock = jest.fn();
+    process.exit = exitMock;
+    const logMock = jest.fn();
+    const appLogger = {
+      showTime: true,
+      error: logMock,
+    };
+    const exception = new Error('ORDER 66');
+    let sut = null;
+    // When
+    sut = new ErrorHandler(appLogger, false);
+    sut.handle(exception);
+    // Then
+    expect(logMock).toHaveBeenCalledTimes(1);
+    expect(logMock).toHaveBeenCalledWith(exception);
+    expect(exitMock).toHaveBeenCalledTimes(0);
+  });
+
   it('should have a Jimple provider to register the service', () => {
     // Given
     const container = {
@@ -135,5 +156,25 @@ describe('ErrorHandler', () => {
     expect(container.get).toHaveBeenCalledTimes(1);
     expect(container.get).toHaveBeenCalledWith('appLogger');
     expect(service).toBeInstanceOf(ErrorHandler);
+  });
+
+  it('should have a customizable Jimple provider to disable the `process.exit`', () => {
+    // Given
+    const container = {
+      set: jest.fn(),
+      get: jest.fn((dependency) => dependency),
+    };
+    const exitOnError = false;
+    let sut = null;
+    // When
+    errorHandlerWithOptions(exitOnError);
+    provider.mock.calls[1][0](container);
+    // Then
+    expect(container.set).toHaveBeenCalledTimes(1);
+    expect(container.set.mock.calls[0][0]).toBe('errorHandler');
+    expect(container.set.mock.calls[0][1]).toBeFunction();
+    sut = container.set.mock.calls[0][1]();
+    expect(sut).toBeInstanceOf(ErrorHandler);
+    expect(sut.exitOnError).toBe(exitOnError);
   });
 });
