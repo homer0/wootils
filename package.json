@@ -1,10 +1,10 @@
 {
   "name": "wootils",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "A set of Javascript utilities for building Node and browser apps.",
   "homepage": "https://homer0.github.io/wootils/",
   "scripts": {
-    "install-hooks": "./utils/hooks/install",
+    "hooks": "./utils/hooks/install",
     "test": "./utils/scripts/test",
     "lint": "./utils/scripts/lint",
     "lint:full": "./utils/scripts/lint-full",
