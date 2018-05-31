@@ -142,7 +142,17 @@ class EventsHub {
 
     return this._events[event];
   }
-
+  /**
+   * Check whether a subscriber should be removed or not. When a function subscribes to be executed
+   * only `once` per event, it gets a property that tracks the events for which the function
+   * should be executed for, and if this method detects that all those executions where done,
+   * it return `true` so the method that called can remove it from the subscribers list.
+   * @param {string}   event      The name of the event the function was just executed for.
+   * @param {Function} subscriber The subscriber function.
+   * @return {boolean}            Whether or not the function should be removed.
+   * @access protected
+   * @ignore
+   */
   _shouldRemoveSubscriber(event, subscriber) {
     let should = false;
     if (subscriber.once) {
