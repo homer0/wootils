@@ -18,7 +18,7 @@ const events = new EventsHub();
 ```js
 // Add the listener
 events.on('my-event', () => {
-  console.log('The event listener was called!);
+  console.log('The event listener was called!');
 });
 // Emit the event
 events.emit('my-event');

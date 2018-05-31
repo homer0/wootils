@@ -117,8 +117,8 @@ describe('EventsHub', () => {
     // When
     const sut = new EventsHub();
     sut.once(eventNames, subscriber);
-    sut.emit(eventNames, subscriber);
-    sut.emit(eventNames, subscriber);
+    sut.emit(eventNames);
+    sut.emit(eventNames);
     // Then
     expect(subscriber).toHaveBeenCalledTimes(eventNames.length);
   });
@@ -132,8 +132,33 @@ describe('EventsHub', () => {
     // When
     const sut = new EventsHub();
     sut.once(eventNames, subscriber);
-    eventNames.forEach((eventName) => sut.emit(eventName, subscriber));
-    eventNames.forEach((eventName) => sut.emit(eventName, subscriber));
+    eventNames.forEach((eventName) => sut.emit(eventName));
+    eventNames.forEach((eventName) => sut.emit(eventName));
+    // Then
+    expect(subscriber).toHaveBeenCalledTimes(eventNames.length);
+  });
+
+  it('shouldn\'t unsubscribe a subscriber until it gets executed on all the events', () => {
+    // Given
+    const eventOneName = 'FIRST EVENT';
+    const eventTwoName = 'SECOND EVENT';
+    const eventNames = [eventOneName, eventTwoName];
+    const subscriber = jest.fn();
+    // When
+    const sut = new EventsHub();
+    sut.once(eventNames, subscriber);
+    sut.emit(eventOneName);
+    sut.emit(eventOneName);
+    sut.emit(eventOneName);
+    sut.emit(eventOneName);
+    sut.emit(eventOneName);
+    sut.emit(eventOneName);
+    sut.emit(eventTwoName);
+    sut.emit(eventNames);
+    sut.emit(eventTwoName);
+    sut.emit(eventTwoName);
+    sut.emit(eventTwoName);
+    sut.emit(eventOneName);
     // Then
     expect(subscriber).toHaveBeenCalledTimes(eventNames.length);
   });

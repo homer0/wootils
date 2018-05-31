@@ -38,14 +38,8 @@ class EventsHub {
    * @return {Function} An unsubscribe function to remove the listener.
    */
   once(event, fn) {
-    const events = Array.isArray(event) ? event : [event];
-    const once = {};
-    events.forEach((name) => {
-      once[name] = true;
-    });
-
     // eslint-disable-next-line no-param-reassign
-    fn.once = once;
+    fn.once = true;
     return this.on(event, fn);
   }
   /**
@@ -84,13 +78,16 @@ class EventsHub {
     events.forEach((name) => {
       this.subscribers(name).forEach((subscriber) => {
         subscriber(...args);
-        if (this._shouldRemoveSubscriber(name, subscriber) && !toClean.includes(subscriber)) {
-          toClean.push(subscriber);
+        if (subscriber.once) {
+          toClean.push({
+            event: name,
+            fn: subscriber,
+          });
         }
       });
     });
 
-    toClean.forEach((subscriber) => this.off(Object.keys(subscriber.once), subscriber));
+    toClean.forEach((info) => this.off(info.event, info.fn));
   }
   /**
    * Reduce a target using an event. It's like emit, but the events listener return
@@ -118,12 +115,15 @@ class EventsHub {
 
         subscribers.forEach((subscriber) => {
           processed = subscriber(...[processed, ...args]);
-          if (this._shouldRemoveSubscriber(name, subscriber)) {
-            toClean.push(subscriber);
+          if (subscriber.once) {
+            toClean.push({
+              event: name,
+              fn: subscriber,
+            });
           }
         });
 
-        toClean.forEach((subscriber) => this.off(Object.keys(subscriber.once), subscriber));
+        toClean.forEach((info) => this.off(info.event, info.fn));
         result = processed;
       }
     });
@@ -141,26 +141,6 @@ class EventsHub {
     }
 
     return this._events[event];
-  }
-  /**
-   * Check whether a subscriber should be removed or not. When a function subscribes to be executed
-   * only `once` per event, it gets a property that tracks the events for which the function
-   * should be executed for, and if this method detects that all those executions where done,
-   * it return `true` so the method that called can remove it from the subscribers list.
-   * @param {string}   event      The name of the event the function was just executed for.
-   * @param {Function} subscriber The subscriber function.
-   * @return {boolean}            Whether or not the function should be removed.
-   * @access protected
-   * @ignore
-   */
-  _shouldRemoveSubscriber(event, subscriber) {
-    let should = false;
-    if (subscriber.once) {
-      // eslint-disable-next-line no-param-reassign
-      subscriber.once[event] = false;
-      should = !Object.keys(subscriber.once).some((name) => subscriber.once[name]);
-    }
-    return should;
   }
 }
 
