@@ -18,7 +18,7 @@ const events = new EventsHub();
 ```js
 // Add the listener
 events.on('my-event', () => {
-  console.log('The event listener was called!);
+  console.log('The event listener was called!');
 });
 // Emit the event
 events.emit('my-event');
@@ -42,6 +42,29 @@ events.on('user-login', (username, password) => {
 
 events.emit('user-login', 'rosario', 'p4ssword');
 ```
+
+And you can even use the same listener for multiple events:
+
+```js
+// Add the listener
+events.on(['logout-route', 'unauthorized-request'], () => {
+  someAuthService.signout();
+});
+
+...
+
+events.emit('logout-route');
+// or
+someRequest()
+.then(() => ... )
+.catch((error) => {
+  if (error.code === 401) {
+    events.emit('unauthorized-request');
+  }
+})
+```
+
+> All methods that support an event name also support an `Array` with a list of them.
 
 ### Reduce a variable
 
