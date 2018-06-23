@@ -477,6 +477,77 @@ describe('APIClient', () => {
     });
   });
 
+  it('shouldn\'t overwrite the content type if it was already set', () => {
+    // Given
+    const requestURL = 'http://example.com';
+    const requestMethod = 'post';
+    const requestBody = {
+      prop: 'value',
+    };
+    const requestResponseData = {
+      message: 'hello-world',
+    };
+    const requestResponse = {
+      status: 200,
+      json: jest.fn(() => Promise.resolve(requestResponseData)),
+    };
+    const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
+    const headers = {
+      'Content-Type': 'application/charito',
+    };
+    let sut = null;
+    // When
+    sut = new APIClient('', '', fetchClient);
+    return sut.post(requestURL, requestBody, { headers })
+    .then((response) => {
+      // Then
+      expect(response).toEqual(requestResponseData);
+      expect(requestResponse.json).toHaveBeenCalledTimes(1);
+      expect(fetchClient).toHaveBeenCalledTimes(1);
+      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+        headers,
+        method: requestMethod.toUpperCase(),
+        body: JSON.stringify(requestBody),
+      });
+    })
+    .catch((error) => {
+      throw error;
+    });
+  });
+
+  it('shouldn\'t overwrite the content type nor encode the body if is not an object', () => {
+    // Given
+    const requestURL = 'http://example.com';
+    const requestMethod = 'post';
+    const requestBody = 'Hello Charito!';
+    const requestResponseData = {
+      message: 'hello-world',
+    };
+    const requestResponse = {
+      status: 200,
+      json: jest.fn(() => Promise.resolve(requestResponseData)),
+    };
+    const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
+    let sut = null;
+    // When
+    sut = new APIClient('', '', fetchClient);
+    return sut.post(requestURL, requestBody)
+    .then((response) => {
+      // Then
+      expect(response).toEqual(requestResponseData);
+      expect(requestResponse.json).toHaveBeenCalledTimes(1);
+      expect(fetchClient).toHaveBeenCalledTimes(1);
+      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+        headers: {},
+        method: requestMethod.toUpperCase(),
+        body: requestBody,
+      });
+    })
+    .catch((error) => {
+      throw error;
+    });
+  });
+
   it('should make a successfully PUT request using the shortcut method', () => {
     // Given
     const requestURL = 'http://example.com';

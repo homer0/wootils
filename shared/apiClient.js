@@ -333,14 +333,23 @@ class APIClient {
     delete opts.url;
     // If the options include a body...
     if (opts.body) {
-      // ...encode it.
-      opts.body = JSON.stringify(opts.body);
-      // Push an empty object if there are no headers...
-      if (!opts.headers) {
+      // Let's first check if there are headers and if a `Content-Type` has been set.
+      let hasContentType = false;
+      if (opts.headers) {
+        hasContentType = Object.keys(opts.headers)
+        .find((name) => name.toLowerCase() === 'content-type');
+      } else {
         opts.headers = {};
       }
-      // ...in order to add the `Content-Type` header.
-      opts.headers['Content-Type'] = 'application/json';
+      // If the body is an object...
+      if (typeof opts.body === 'object') {
+        // ...encode it.
+        opts.body = JSON.stringify(opts.body);
+        // And if no `Content-Type` was defined, let's assume is a JSON request.
+        if (!hasContentType) {
+          opts.headers['Content-Type'] = 'application/json';
+        }
+      }
     }
 
     let responseStatus;
