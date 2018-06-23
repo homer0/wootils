@@ -15,7 +15,10 @@
             "./documents/node/logger.md",
             "./documents/node/packageInfo.md",
             "./documents/node/pathUtils.md",
-            "./documents/node/rootRequire.md"
+            "./documents/node/rootRequire.md",
+            "./documents/shared/APIClient.md",
+            "./documents/shared/deferred.md",
+            "./documents/shared/eventsHub.md"
           ]
         }
       }
