@@ -110,7 +110,7 @@ yarn run hooks
 
 | Task                     | Description                         |
 |--------------------------|-------------------------------------|
-| `yarn run install-hooks` | Install the GIT repository hooks.   |
+| `yarn run hooks`         | Install the GIT repository hooks.   |
 | `yarn test`              | Run the project unit tests.         |
 | `yarn run lint`          | Lint the modified files.            |
 | `yarn run lint:full`     | Lint the project code.              |
