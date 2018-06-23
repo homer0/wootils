@@ -132,6 +132,7 @@ On the example above we saw only `.get` and `.post`, but the client comes with t
 - `.get(url, options = {})`
 - `.post(url, body, options = {})`
 - `.put(url, body, options = {})`
+- `.patch(url, body, options = {})`
 - `.delete(url, body = {}, options = {})`
 
 If you are wondering what `options` are, well, they are extra options for the `fetch` client call. It can include headers, another method, another body, etc. Everything that could send on the `fetch` call second parameter.
