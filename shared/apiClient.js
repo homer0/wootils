@@ -206,6 +206,16 @@ class APIClient {
     return this.post(url, body, Object.assign({}, options, { method: 'put' }));
   }
   /**
+   * Makes a `PATCH` request.
+   * @param {String}       url          The request URL.
+   * @param {Object}       body         The request body.
+   * @param {FetchOptions} [options={}] The request options.
+   * @return {Promise<Object,Error>}
+   */
+  patch(url, body, options = {}) {
+    return this.post(url, body, Object.assign({}, options, { method: 'patch' }));
+  }
+  /**
    * Makes a `DELETE` request.
    * @param {String}       url          The request URL.
    * @param {Object}       body         The request body.

@@ -514,6 +514,43 @@ describe('APIClient', () => {
     });
   });
 
+  it('should make a successfully PATCH request using the shortcut method', () => {
+    // Given
+    const requestURL = 'http://example.com';
+    const requestMethod = 'patch';
+    const requestBody = {
+      prop: 'value',
+    };
+    const requestResponseData = {
+      message: 'hello-world',
+    };
+    const requestResponse = {
+      status: 200,
+      json: jest.fn(() => Promise.resolve(requestResponseData)),
+    };
+    const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
+    let sut = null;
+    // When
+    sut = new APIClient('', '', fetchClient);
+    return sut.patch(requestURL, requestBody)
+    .then((response) => {
+      // Then
+      expect(response).toEqual(requestResponseData);
+      expect(requestResponse.json).toHaveBeenCalledTimes(1);
+      expect(fetchClient).toHaveBeenCalledTimes(1);
+      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: requestMethod.toUpperCase(),
+        body: JSON.stringify(requestBody),
+      });
+    })
+    .catch((error) => {
+      throw error;
+    });
+  });
+
   it('should make a successfully DELETE request using the shortcut method', () => {
     // Given
     const requestURL = 'http://example.com';
