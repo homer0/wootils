@@ -4,10 +4,9 @@ const { provider } = require('jimple');
  * @param {PathUtils} pathUtils To build the path to the files it will `require`.
  * @return {Function(string):*}
  */
-const rootRequire = (pathUtils) =>
-  (path) =>
-    // eslint-disable-next-line global-require,import/no-dynamic-require
-    require(pathUtils.join(path));
+const rootRequire = (pathUtils) => (path) =>
+  // eslint-disable-next-line global-require,import/no-dynamic-require,implicit-arrow-linebreak
+  require(pathUtils.join(path));
 
 /**
  * The service provider that once registered on the app container will set the result of
