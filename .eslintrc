@@ -16,6 +16,8 @@
     "arrow-parens": ["error", "always"],
     "import/no-unresolved": "off",
     "import/no-extraneous-dependencies": "off",
-    "no-plusplus": "off"
+    "no-plusplus": "off",
+    "lines-between-class-members": "off",
+    "operator-linebreak": ["error", "after"]
   }
 }
