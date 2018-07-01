@@ -122,6 +122,39 @@
 <li data-ice="manualNav" class="indent-h2" data-link="manual/rootRequire.html"><a href="manual/rootRequire.html#technical-documentation" data-ice="link">Technical documentation</a></li>
 </ul>
   </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/APIClient.html"><a href="manual/APIClient.html" data-ice="link">APIClient</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/APIClient.html"><a href="manual/APIClient.html#examples" data-ice="link">Examples</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/APIClient.html"><a href="manual/APIClient.html#features" data-ice="link">Features</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/APIClient.html"><a href="manual/APIClient.html#configurable-endpoints" data-ice="link">Configurable endpoints</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/APIClient.html"><a href="manual/APIClient.html#endpoint-objects" data-ice="link">Endpoint objects</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/APIClient.html"><a href="manual/APIClient.html#sub-collections-of-endpoints" data-ice="link">Sub collections of endpoints</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/APIClient.html"><a href="manual/APIClient.html#built-in-request-methods" data-ice="link">Built-in request methods</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/APIClient.html"><a href="manual/APIClient.html#default-headers" data-ice="link">Default headers</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/APIClient.html"><a href="manual/APIClient.html#authorization-token" data-ice="link">Authorization token</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/APIClient.html"><a href="manual/APIClient.html#technical-documentation" data-ice="link">Technical documentation</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/deferred.html"><a href="manual/deferred.html" data-ice="link">deferred</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/deferred.html"><a href="manual/deferred.html#example" data-ice="link">Example</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/deferred.html"><a href="manual/deferred.html#technical-documentation" data-ice="link">Technical documentation</a></li>
+</ul>
+  </div>
+<div data-ice="manual">
+    <ul class="manual-toc">
+      
+    <li data-ice="manualNav" class="indent-h1" data-link="manual/eventsHub.html"><a href="manual/eventsHub.html" data-ice="link">EventsHub</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/eventsHub.html"><a href="manual/eventsHub.html#examples" data-ice="link">Examples</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/eventsHub.html"><a href="manual/eventsHub.html#listen-and-emit" data-ice="link">Listen and emit</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/eventsHub.html"><a href="manual/eventsHub.html#reduce-a-variable" data-ice="link">Reduce a variable</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/eventsHub.html"><a href="manual/eventsHub.html#technical-documentation" data-ice="link">Technical documentation</a></li>
+</ul>
+  </div>
 </div>
 </nav>
 
@@ -630,12 +663,200 @@ open ./docs/index.html</code>
         <a data-ice="link" href="manual/rootRequire.html"></a>
       </div>
     </div>
+<div class="manual-card-wrap" data-ice="cards">
+      <div class="manual-card">
+        <div data-ice="card"><h1>APIClient</h1><p>A really basic client to work with an API endpoints requests.</p><p>Nowadays there&apos;s almost no app that doesn&apos;t make requests to one or more external APIs, that&apos;s why I built this service.</p><p>Now, the reason this is marked as <em>&apos;shared&apos;</em> it&apos;s because it basically organizes the API configuration and prepares the requests, but you have to give it a <code>fetch</code> client to make the request. It&apos;s <em>&apos;shared&apos;</em> because on a browser you can give it the native <code>fetch</code> function, and on Node, something like <code>node-fetch</code> or <code>axios</code>, but that supports the native <code>fetch</code> signature.</p><h2>Examples</h2><blockquote>
+<p>This example will be on Node, so I&apos;ll use <a href="https://yarnpkg.com/en/package/node-fetch"><code>node-fetch</code></a> as fetch client.</p>
+</blockquote><p>First, let&apos;s start by creating the configuration:</p><pre><code class="lang-js"><code class="source-code prettyprint">const url = &apos;https://my-api.com&apos;;
+const endpoints: {
+  login: &apos;auth/login&apos;,
+  profile: &apos;users/:userId&apos;,
+  users: &apos;users&apos;,
+};
+const fetchClient = require(&apos;node-fetch&apos;);</code>
+</code></pre><p>You need those three things to instantiate the client:</p><ol>
+<li>An entry point for your API.</li>
+<li>A dictionary of endpoints (Check the <strong>features</strong> section to see all the possible ways to define an endpoint).</li>
+<li>A fetch client to make the requests.</li>
+</ol><p>Now, to instantiate the client:</p><pre><code class="lang-js"><code class="source-code prettyprint">const { APIClient } = require(&apos;wootils/shared&apos;);
+
+const client = new APIClient(url, endpoints, fetchClient);</code>
+</code></pre><p>To make a request, you first need to generate an endpoint and use it to call the method of the type of request you want to make.</p><p>Let&apos;s say you want to authenticate a user, which is a <code>POST</code> request to the <code>login</code> endpoint with a body that includes <code>username</code> and <code>password</code>:</p><pre><code class="lang-js"><code class="source-code prettyprint">client.post(client.endpoint(&apos;login&apos;), {
+  username: &apos;Rosario&apos;,
+  password: &apos;charito&apos;,
+})
+.then((response) =&gt; {
+  // Do something...
+});</code>
+</code></pre><p>Ok, that one was easy, no extra options or parameters. Next will request some user information from the <code>profile</code> endpoint, a <code>GET</code> request that requires a <code>userId</code> parameter:</p><pre><code class="lang-js"><code class="source-code prettyprint">client.get(client.endpoint(&apos;profile&apos;, { userId: 2509 }), {
+  username: &apos;Rosario&apos;,
+  password: &apos;charito&apos;,
+})
+.then((response) =&gt; {
+  // Do something...
+});</code>
+</code></pre><p>Easy enough, right? Well, for the last example, we&apos;ll make a request to get the users directory to the <code>users</code> endpoint, a <code>GET</code> request and we&apos;ll include a query string parameter to <em>&quot;limit the number of returned users&quot;</em>:</p><pre><code class="lang-js"><code class="source-code prettyprint">client.get(client.endpoint(&apos;users&apos;, { count: 10 }), {
+  username: &apos;Rosario&apos;,
+  password: &apos;charito&apos;,
+})
+.then((response) =&gt; {
+  // Do something...
+});</code>
+</code></pre><p>Done! If the parameter doesn&apos;t have a placeholder on the endpoint path, it gets automatically added on the query string.</p><h2>Features</h2><h3>Configurable endpoints</h3><p>On the example above, all the endpoints were strings, but you can define them as objects to include default query string parameters, or even as sub collections of endpoints:</p><h4>Endpoint objects</h4><pre><code class="lang-js"><code class="source-code prettyprint">const endpoints = {
+  users: {
+    path: &apos;users&apos;,
+    query: {
+      count: 10,
+      offset: null,
+    },
+  },
+};</code>
+</code></pre><p>In that case, if <code>count</code> is not specified on <code>endpoint(...)</code>, it will have a default value of <code>10</code>.</p><p>And if <code>offset</code> is not specified, it won&apos;t be sent. The reason the configuration supports <em>&quot;nullable&quot;</em> parameters is so they can be used like some sort of documentation for the endpoint: <em>&quot;It&apos;s not used, but there&apos;s an optional parameter called ...&quot;</em>.</p><h4>Sub collections of endpoints</h4><pre><code class="lang-js"><code class="source-code prettyprint">const endpoints = {
+  login: &apos;auth/login&apos;,
+  users: {
+    profile: &apos;users/:userId&apos;,
+    directory: {
+      path: &apos;users&apos;,
+      query: {
+        count: 10,
+      },
+    },
+  },
+};</code>
+</code></pre><p>As you can see, both users related endpoints are now under <code>users</code>, and <code>login</code> is still on the top level. To access <em>&quot;sub endpoints&quot;</em> you use dot notation:</p><pre><code class="lang-js"><code class="source-code prettyprint">const endpointURL = client.endpoint(&apos;users.profile&apos;, { userId: 2509 });</code>
+</code></pre><p>This allows you to organize the scopes of your endpoints and make the configuration easier to read.</p><h4>Built-in request methods</h4><p>On the example above we saw only <code>.get</code> and <code>.post</code>, but the client comes with these already built-in request methods:</p><ul>
+<li><code>.get(url, options = {})</code></li>
+<li><code>.post(url, body, options = {})</code></li>
+<li><code>.put(url, body, options = {})</code></li>
+<li><code>.patch(url, body, options = {})</code></li>
+<li><code>.delete(url, body = {}, options = {})</code></li>
+</ul><p>If you are wondering what <code>options</code> are, well, they are extra options for the <code>fetch</code> client call. It can include headers, another method, another body, etc. Everything that could send on the <code>fetch</code> call second parameter.</p><h4>Default headers</h4><p>The client allows you to set a dictionary of default headers you want to include on every request.</p><p>For example, let&apos;s say you are on a development environment and you want all your request to go out with the header <code>x-development</code> set to <code>true</code>:</p><pre><code class="lang-js"><code class="source-code prettyprint">client.setDefaultHeaders({
+  &apos;x-development&apos;: true,
+});</code>
+</code></pre><p>Now, all the outgoing requests will include that header.</p><h4>Authorization token</h4><p>If you are working with an API that requires authorization on every requests, and that provides you with a bearer token when you authenticate, you could set it on the client and it will automatically include the <code>Authorization</code> header on every request and send the token:</p><pre><code class="lang-js"><code class="source-code prettyprint">client.setAuthorizationToken(&apos;some-token&apos;);</code>
+</code></pre><p>Done, all the requests will include <code>Authorization: Bearer some-token</code>.</p><h2>Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://homer0.github.io/wootils/class/wootils/shared/apiClient.js~APIClient.html">online</a> or generate it yourself using:</p><pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
+npm run docs
+open ./docs/index.html</code>
+</code></pre></div>
+        <a data-ice="link" href="manual/APIClient.html"></a>
+      </div>
+    </div>
+<div class="manual-card-wrap" data-ice="cards">
+      <div class="manual-card">
+        <div data-ice="card"><h1>deferred</h1><p>Create a deferred promise using the native <code>Promise</code> object.</p><h2>Example</h2><p>Using it is really simple, you call the <code>deferred()</code> function and get an object with <code>promise</code>, <code>resolve</code> and <code>reject</code>. You return the <code>promise</code> property and then call <code>resolve</code> or <code>reject</code> to either resolve the promise or reject it.</p><p>Now, a reason to use this is for when you have another service/function/something asking for something that your code hasn&apos;t even started to do:</p><blockquote>
+<p>I&apos;m using Node and <a href="https://yarnpkg.com/en/package/fs-extra"><code>fs-extra</code></a> because of the Promise based interface for <code>fs</code>.</p>
+</blockquote><pre><code class="lang-js"><code class="source-code prettyprint">const fs = require(&apos;fs-extra&apos;);
+const { deferred } = require(&apos;wootils/shared&apos;);
+
+class MyServiceThatLoadsAfile {
+  constructor() {
+    this._defer = deferred();
+    this._fileContents = null;
+  }
+
+  getFileContents() {
+    return this._fileContents ?
+      Promise.resolve(this._fileContents) :
+      this._defer.promise;
+  }
+
+  loadTheFile() {
+    return fs.readFile(&apos;some-path&apos;, &apos;utf-8&apos;)
+    .then((contents) =&gt; {
+      this._fileContents = contents;
+      this.defer.resolve(contents);
+    })
+    .catch((error) =&gt; {
+      this.defer.reject(error);
+    });
+  }
+}
+
+const myService = new MyServiceThatLoadsAfile();
+myService.getFileContents()
+.then((contents) =&gt; {
+  console.log(&apos;GOT IT&apos;, contents);
+});
+
+// ...
+myService.loadTheFile();</code>
+</code></pre><p>Ok, there&apos;s a lot going on this example, let&apos;s break it:</p><ol>
+<li><code>MyServiceThatLoadsAFile</code> creates a deferred promise on its constructor.</li>
+<li><code>getFileContents</code> should return the file contents, but because the file is not loaded yet (because <code>loadTheFile</code> has not been called), it returns the deferred promise.</li>
+<li>Eventually, <code>loadTheFile</code> gets called, it loads the file and either resolves or rejects the deferred promise, so the <code>getFileContents().then(...)</code> gets finally called.</li>
+</ol><p>I wanted to keep the example small, but on a real app, <code>getFileContents</code> is probably called by other service that has no idea the instance was just created or that <code>loadTheFile</code> hasn&apos;t been called yet.</p><h2>Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://homer0.github.io/wootils/function/index.html#static-function-deferred">online</a> or generate it yourself using:</p><pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
+npm run docs
+open ./docs/index.html</code>
+</code></pre></div>
+        <a data-ice="link" href="manual/deferred.html"></a>
+      </div>
+    </div>
+<div class="manual-card-wrap" data-ice="cards">
+      <div class="manual-card">
+        <div data-ice="card"><h1>EventsHub</h1><p>A small implementation of a pubsub service for handling events on an app.</p><p>It doesn&apos;t require any configuration or have customization options: You listen for an event with <code>on</code>, emit an event with <code>emit</code> and reduce a variable through an event with <code>reduce</code>.</p><h2>Examples</h2><p>First, let&apos;s create an instance of the hub:</p><pre><code class="lang-js"><code class="source-code prettyprint">const { EventsHub } = require(&apos;wootils/shared&apos;);
+const events = new EventsHub();</code>
+</code></pre><h3>Listen and emit</h3><pre><code class="lang-js"><code class="source-code prettyprint">// Add the listener
+events.on(&apos;my-event&apos;, () =&gt; {
+  console.log(&apos;The event listener was called!&apos;);
+});
+// Emit the event
+events.emit(&apos;my-event&apos;);</code>
+</code></pre><p>Quite simple, right? You can also send any number of parameters to the events:</p><pre><code class="lang-js"><code class="source-code prettyprint">// Add the listener
+events.on(&apos;user-login&apos;, (username, password) =&gt; {
+  someAuthService.login(username, password)
+  .then((userInfo) =&gt; {
+    events.emit(&apos;user-login-successfull&apos;, userInfo);
+  })
+  .catch((error) =&gt; {
+       events.emit(&apos;user-login-failed&apos;, error);
+  });
+});
+
+...
+
+events.emit(&apos;user-login&apos;, &apos;rosario&apos;, &apos;p4ssword&apos;);</code>
+</code></pre><p>And you can even use the same listener for multiple events:</p><pre><code class="lang-js"><code class="source-code prettyprint">// Add the listener
+events.on([&apos;logout-route&apos;, &apos;unauthorized-request&apos;], () =&gt; {
+  someAuthService.signout();
+});
+
+...
+
+events.emit(&apos;logout-route&apos;);
+// or
+someRequest()
+.then(() =&gt; ... )
+.catch((error) =&gt; {
+  if (error.code === 401) {
+    events.emit(&apos;unauthorized-request&apos;);
+  }
+})</code>
+</code></pre><blockquote>
+<p>All methods that support an event name also support an <code>Array</code> with a list of them.</p>
+</blockquote><h3>Reduce a variable</h3><p>It&apos;s basically the same as calling <code>emit</code>, but the first parameter may be modified by the listeners and it&apos;s returned after it went through all of them.</p><pre><code class="lang-js"><code class="source-code prettyprint">events.on(&apos;filter-users-list&apos;, (list) =&gt; {
+  list.splice(1, 1);
+  return list;
+});
+
+const usersList = [&apos;charito&apos;, &apos;Rosario&apos;];
+const newUsersList = events.reduce(&apos;filter-users-list&apos;, usersList);
+console.log(newUsersList);
+// Will log [&apos;charito&apos;]</code>
+</code></pre><blockquote>
+<p><code>reduce</code> also supports sending any number of parameters after the target variable.</p>
+</blockquote><h2>Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://homer0.github.io/wootils/class/wootils/shared/eventsHub.js~EventsHub.html">online</a> or generate it yourself using:</p><pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
+npm run docs
+open ./docs/index.html</code>
+</code></pre></div>
+        <a data-ice="link" href="manual/eventsHub.html"></a>
+      </div>
+    </div>
 </div>
 </div>
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.4)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
 </footer>
 
 <script src="script/search_index.js"></script>

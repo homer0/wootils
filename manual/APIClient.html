@@ -158,36 +158,112 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><div class="github-markdown" data-ice="content"><h1 id="packageinfo">packageInfo</h1><p>A tiny function that reads the contents of the app <code>package.json</code>. This is really useful on an Jimple application where you can register it, because the returned value gets cached and it&apos;s available as a service.</p>
-<h2 id="example">Example</h2><p>Even if the function is really small (one line to be exact), it has a dependency: <code>PathUtils</code>. It uses it to build the path to the <code>package.json</code> relative to the project root directory.</p>
-<h3 id="without-jimple">Without Jimple</h3><blockquote>
-<p>If you haven&apos;t tried <a href="https://github.com/fjorgemota/jimple">Jimple</a>, give it a try, it&apos;s excellent for organizing your app dependencies and services.</p>
+<div class="content" data-ice="content"><div class="github-markdown" data-ice="content"><h1 id="apiclient">APIClient</h1><p>A really basic client to work with an API endpoints requests.</p>
+<p>Nowadays there&apos;s almost no app that doesn&apos;t make requests to one or more external APIs, that&apos;s why I built this service.</p>
+<p>Now, the reason this is marked as <em>&apos;shared&apos;</em> it&apos;s because it basically organizes the API configuration and prepares the requests, but you have to give it a <code>fetch</code> client to make the request. It&apos;s <em>&apos;shared&apos;</em> because on a browser you can give it the native <code>fetch</code> function, and on Node, something like <code>node-fetch</code> or <code>axios</code>, but that supports the native <code>fetch</code> signature.</p>
+<h2 id="examples">Examples</h2><blockquote>
+<p>This example will be on Node, so I&apos;ll use <a href="https://yarnpkg.com/en/package/node-fetch"><code>node-fetch</code></a> as fetch client.</p>
 </blockquote>
-<p>Let&apos;s start with the setup:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">const { PathUtils, packageInfo } = require(&apos;wootils/node&apos;);
-// Create an instance of the dependency.
-const pathUtils = new PathUtils();
+<p>First, let&apos;s start by creating the configuration:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const url = &apos;https://my-api.com&apos;;
+const endpoints: {
+  login: &apos;auth/login&apos;,
+  profile: &apos;users/:userId&apos;,
+  users: &apos;users&apos;,
+};
+const fetchClient = require(&apos;node-fetch&apos;);</code>
+</code></pre>
+<p>You need those three things to instantiate the client:</p>
+<ol>
+<li>An entry point for your API.</li>
+<li>A dictionary of endpoints (Check the <strong>features</strong> section to see all the possible ways to define an endpoint).</li>
+<li>A fetch client to make the requests.</li>
+</ol>
+<p>Now, to instantiate the client:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const { APIClient } = require(&apos;wootils/shared&apos;);
 
-// Now, let&apos;s use the function
-const packageJson = packageInfo(pathUtils);</code>
+const client = new APIClient(url, endpoints, fetchClient);</code>
 </code></pre>
-<p>Done, <code>packageJson</code> now has all the contents of your <code>package.json</code>, as an Object.</p>
-<h3 id="with-jimple">With Jimple</h3><p>First, let&apos;s setup a dummy app and register the dependency and the service itself:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">// Import all the required modules
-const Jimple = require(&apos;jimple&apos;);
-const { pathUtils, packageInfo } = require(&apos;wootils/node/providers&apos;);
-// Create a dummy app
-const app = new Jimple();
-// Register the dependency
-app.register(pathUtils);
-// Register the service
-app.register(packageInfo);</code>
+<p>To make a request, you first need to generate an endpoint and use it to call the method of the type of request you want to make.</p>
+<p>Let&apos;s say you want to authenticate a user, which is a <code>POST</code> request to the <code>login</code> endpoint with a body that includes <code>username</code> and <code>password</code>:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">client.post(client.endpoint(&apos;login&apos;), {
+  username: &apos;Rosario&apos;,
+  password: &apos;charito&apos;,
+})
+.then((response) =&gt; {
+  // Do something...
+});</code>
 </code></pre>
-<p>Now, to use it:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">const packageJson = app.get(&apos;packageInfo&apos;);</code>
+<p>Ok, that one was easy, no extra options or parameters. Next will request some user information from the <code>profile</code> endpoint, a <code>GET</code> request that requires a <code>userId</code> parameter:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">client.get(client.endpoint(&apos;profile&apos;, { userId: 2509 }), {
+  username: &apos;Rosario&apos;,
+  password: &apos;charito&apos;,
+})
+.then((response) =&gt; {
+  // Do something...
+});</code>
 </code></pre>
-<p>Done, <code>packageJson</code> now has all the contents of your <code>package.json</code>, as an Object; and the file won&apos;t be read more than once.</p>
-<h2 id="technical-documentation">Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://homer0.github.io/wootils/function/index.html#static-function-packageInfo">online</a> or generate it yourself using:</p>
+<p>Easy enough, right? Well, for the last example, we&apos;ll make a request to get the users directory to the <code>users</code> endpoint, a <code>GET</code> request and we&apos;ll include a query string parameter to <em>&quot;limit the number of returned users&quot;</em>:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">client.get(client.endpoint(&apos;users&apos;, { count: 10 }), {
+  username: &apos;Rosario&apos;,
+  password: &apos;charito&apos;,
+})
+.then((response) =&gt; {
+  // Do something...
+});</code>
+</code></pre>
+<p>Done! If the parameter doesn&apos;t have a placeholder on the endpoint path, it gets automatically added on the query string.</p>
+<h2 id="features">Features</h2><h3 id="configurable-endpoints">Configurable endpoints</h3><p>On the example above, all the endpoints were strings, but you can define them as objects to include default query string parameters, or even as sub collections of endpoints:</p>
+<h4 id="endpoint-objects">Endpoint objects</h4><pre><code class="lang-js"><code class="source-code prettyprint">const endpoints = {
+  users: {
+    path: &apos;users&apos;,
+    query: {
+      count: 10,
+      offset: null,
+    },
+  },
+};</code>
+</code></pre>
+<p>In that case, if <code>count</code> is not specified on <code>endpoint(...)</code>, it will have a default value of <code>10</code>.</p>
+<p>And if <code>offset</code> is not specified, it won&apos;t be sent. The reason the configuration supports <em>&quot;nullable&quot;</em> parameters is so they can be used like some sort of documentation for the endpoint: <em>&quot;It&apos;s not used, but there&apos;s an optional parameter called ...&quot;</em>.</p>
+<h4 id="sub-collections-of-endpoints">Sub collections of endpoints</h4><pre><code class="lang-js"><code class="source-code prettyprint">const endpoints = {
+  login: &apos;auth/login&apos;,
+  users: {
+    profile: &apos;users/:userId&apos;,
+    directory: {
+      path: &apos;users&apos;,
+      query: {
+        count: 10,
+      },
+    },
+  },
+};</code>
+</code></pre>
+<p>As you can see, both users related endpoints are now under <code>users</code>, and <code>login</code> is still on the top level. To access <em>&quot;sub endpoints&quot;</em> you use dot notation:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const endpointURL = client.endpoint(&apos;users.profile&apos;, { userId: 2509 });</code>
+</code></pre>
+<p>This allows you to organize the scopes of your endpoints and make the configuration easier to read.</p>
+<h4 id="built-in-request-methods">Built-in request methods</h4><p>On the example above we saw only <code>.get</code> and <code>.post</code>, but the client comes with these already built-in request methods:</p>
+<ul>
+<li><code>.get(url, options = {})</code></li>
+<li><code>.post(url, body, options = {})</code></li>
+<li><code>.put(url, body, options = {})</code></li>
+<li><code>.patch(url, body, options = {})</code></li>
+<li><code>.delete(url, body = {}, options = {})</code></li>
+</ul>
+<p>If you are wondering what <code>options</code> are, well, they are extra options for the <code>fetch</code> client call. It can include headers, another method, another body, etc. Everything that could send on the <code>fetch</code> call second parameter.</p>
+<h4 id="default-headers">Default headers</h4><p>The client allows you to set a dictionary of default headers you want to include on every request.</p>
+<p>For example, let&apos;s say you are on a development environment and you want all your request to go out with the header <code>x-development</code> set to <code>true</code>:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">client.setDefaultHeaders({
+  &apos;x-development&apos;: true,
+});</code>
+</code></pre>
+<p>Now, all the outgoing requests will include that header.</p>
+<h4 id="authorization-token">Authorization token</h4><p>If you are working with an API that requires authorization on every requests, and that provides you with a bearer token when you authenticate, you could set it on the client and it will automatically include the <code>Authorization</code> header on every request and send the token:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">client.setAuthorizationToken(&apos;some-token&apos;);</code>
+</code></pre>
+<p>Done, all the requests will include <code>Authorization: Bearer some-token</code>.</p>
+<h2 id="technical-documentation">Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://homer0.github.io/wootils/class/wootils/shared/apiClient.js~APIClient.html">online</a> or generate it yourself using:</p>
 <pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
 npm run docs
 open ./docs/index.html</code>

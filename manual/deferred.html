@@ -158,36 +158,56 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><div class="github-markdown" data-ice="content"><h1 id="packageinfo">packageInfo</h1><p>A tiny function that reads the contents of the app <code>package.json</code>. This is really useful on an Jimple application where you can register it, because the returned value gets cached and it&apos;s available as a service.</p>
-<h2 id="example">Example</h2><p>Even if the function is really small (one line to be exact), it has a dependency: <code>PathUtils</code>. It uses it to build the path to the <code>package.json</code> relative to the project root directory.</p>
-<h3 id="without-jimple">Without Jimple</h3><blockquote>
-<p>If you haven&apos;t tried <a href="https://github.com/fjorgemota/jimple">Jimple</a>, give it a try, it&apos;s excellent for organizing your app dependencies and services.</p>
+<div class="content" data-ice="content"><div class="github-markdown" data-ice="content"><h1 id="deferred">deferred</h1><p>Create a deferred promise using the native <code>Promise</code> object.</p>
+<h2 id="example">Example</h2><p>Using it is really simple, you call the <code>deferred()</code> function and get an object with <code>promise</code>, <code>resolve</code> and <code>reject</code>. You return the <code>promise</code> property and then call <code>resolve</code> or <code>reject</code> to either resolve the promise or reject it.</p>
+<p>Now, a reason to use this is for when you have another service/function/something asking for something that your code hasn&apos;t even started to do:</p>
+<blockquote>
+<p>I&apos;m using Node and <a href="https://yarnpkg.com/en/package/fs-extra"><code>fs-extra</code></a> because of the Promise based interface for <code>fs</code>.</p>
 </blockquote>
-<p>Let&apos;s start with the setup:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">const { PathUtils, packageInfo } = require(&apos;wootils/node&apos;);
-// Create an instance of the dependency.
-const pathUtils = new PathUtils();
+<pre><code class="lang-js"><code class="source-code prettyprint">const fs = require(&apos;fs-extra&apos;);
+const { deferred } = require(&apos;wootils/shared&apos;);
 
-// Now, let&apos;s use the function
-const packageJson = packageInfo(pathUtils);</code>
+class MyServiceThatLoadsAfile {
+  constructor() {
+    this._defer = deferred();
+    this._fileContents = null;
+  }
+
+  getFileContents() {
+    return this._fileContents ?
+      Promise.resolve(this._fileContents) :
+      this._defer.promise;
+  }
+
+  loadTheFile() {
+    return fs.readFile(&apos;some-path&apos;, &apos;utf-8&apos;)
+    .then((contents) =&gt; {
+      this._fileContents = contents;
+      this.defer.resolve(contents);
+    })
+    .catch((error) =&gt; {
+      this.defer.reject(error);
+    });
+  }
+}
+
+const myService = new MyServiceThatLoadsAfile();
+myService.getFileContents()
+.then((contents) =&gt; {
+  console.log(&apos;GOT IT&apos;, contents);
+});
+
+// ...
+myService.loadTheFile();</code>
 </code></pre>
-<p>Done, <code>packageJson</code> now has all the contents of your <code>package.json</code>, as an Object.</p>
-<h3 id="with-jimple">With Jimple</h3><p>First, let&apos;s setup a dummy app and register the dependency and the service itself:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">// Import all the required modules
-const Jimple = require(&apos;jimple&apos;);
-const { pathUtils, packageInfo } = require(&apos;wootils/node/providers&apos;);
-// Create a dummy app
-const app = new Jimple();
-// Register the dependency
-app.register(pathUtils);
-// Register the service
-app.register(packageInfo);</code>
-</code></pre>
-<p>Now, to use it:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">const packageJson = app.get(&apos;packageInfo&apos;);</code>
-</code></pre>
-<p>Done, <code>packageJson</code> now has all the contents of your <code>package.json</code>, as an Object; and the file won&apos;t be read more than once.</p>
-<h2 id="technical-documentation">Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://homer0.github.io/wootils/function/index.html#static-function-packageInfo">online</a> or generate it yourself using:</p>
+<p>Ok, there&apos;s a lot going on this example, let&apos;s break it:</p>
+<ol>
+<li><code>MyServiceThatLoadsAFile</code> creates a deferred promise on its constructor.</li>
+<li><code>getFileContents</code> should return the file contents, but because the file is not loaded yet (because <code>loadTheFile</code> has not been called), it returns the deferred promise.</li>
+<li>Eventually, <code>loadTheFile</code> gets called, it loads the file and either resolves or rejects the deferred promise, so the <code>getFileContents().then(...)</code> gets finally called.</li>
+</ol>
+<p>I wanted to keep the example small, but on a real app, <code>getFileContents</code> is probably called by other service that has no idea the instance was just created or that <code>loadTheFile</code> hasn&apos;t been called yet.</p>
+<h2 id="technical-documentation">Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://homer0.github.io/wootils/function/index.html#static-function-deferred">online</a> or generate it yourself using:</p>
 <pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
 npm run docs
 open ./docs/index.html</code>

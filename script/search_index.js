@@ -846,6 +846,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "wootils/shared/apiclient.js~apiclient#patch",
+    "class/wootils/shared/apiClient.js~APIClient.html#instance-method-patch",
+    "wootils/shared/apiClient.js~APIClient#patch",
+    "method"
+  ],
+  [
     "wootils/shared/apiclient.js~apiclient#post",
     "class/wootils/shared/apiClient.js~APIClient.html#instance-method-post",
     "wootils/shared/apiClient.js~APIClient#post",
