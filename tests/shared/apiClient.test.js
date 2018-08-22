@@ -655,4 +655,28 @@ describe('APIClient', () => {
       throw error;
     });
   });
+  
+  it('should make a successfully HEAD request using the shortcut method', () => {
+    // Given
+    const requestURL = 'http://example.com';
+    const requestMethod = 'head';
+    const requestResponse = {
+      status: 200,
+    };
+    const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
+    let sut = null;
+    // When
+    sut = new APIClient('', '', fetchClient);
+    return sut.head(requestURL)
+    .then(() => {
+      // Then
+      expect(fetchClient).toHaveBeenCalledTimes(1);
+      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+        method: requestMethod.toUpperCase(),
+      });
+    })
+    .catch((error) => {
+      throw error;
+    });
+  });
 });
