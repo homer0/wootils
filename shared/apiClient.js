@@ -182,6 +182,15 @@ class APIClient {
     return this.fetch(Object.assign({ url }, options));
   }
   /**
+   * Makes a `HEAD` request.
+   * @param {String}       url          The request URL.
+   * @param {FetchOptions} [options={}] The request options.
+   * @return {Promise<Object,Error>}
+   */
+  head(url, options = {}) {
+    return this.get(url, Object.assign({}, options, { method: 'head' }));
+  }
+  /**
    * Makes a `POST` request.
    * @param {String}       url          The request URL.
    * @param {Object}       body         The request body.
