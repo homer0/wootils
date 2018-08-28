@@ -272,7 +272,7 @@ describe('APIClient', () => {
     });
   });
 
-  it('should make a successfully GET request with a client that doesn\'t support json()', () => {
+  it('should make a successfully GET request with a response that doesn\'t support json()', () => {
     // Given
     const requestURL = 'http://example.com';
     const requestResponseData = {
@@ -290,6 +290,32 @@ describe('APIClient', () => {
     .then((response) => {
       // Then
       expect(response.data).toEqual(requestResponseData);
+    })
+    .catch((error) => {
+      throw error;
+    });
+  });
+
+  it('should make a successfully GET request without decoding the response', () => {
+    // Given
+    const requestURL = 'http://example.com';
+    const requestResponse = {
+      status: 200,
+      json: jest.fn(),
+    };
+    const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
+    let sut = null;
+    // When
+    sut = new APIClient('', '', fetchClient);
+    return sut.fetch({ url: requestURL, json: false })
+    .then((response) => {
+      // Then
+      expect(response).toEqual(requestResponse);
+      expect(requestResponse.json).toHaveBeenCalledTimes(0);
+      expect(fetchClient).toHaveBeenCalledTimes(1);
+      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+        method: 'GET',
+      });
     })
     .catch((error) => {
       throw error;
@@ -655,7 +681,7 @@ describe('APIClient', () => {
       throw error;
     });
   });
-  
+
   it('should make a successfully HEAD request using the shortcut method', () => {
     // Given
     const requestURL = 'http://example.com';
