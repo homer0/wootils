@@ -130,6 +130,7 @@ This allows you to organize the scopes of your endpoints and make the configurat
 On the example above we saw only `.get` and `.post`, but the client comes with these already built-in request methods:
 
 - `.get(url, options = {})`
+- `.head(url, options = {})`
 - `.post(url, body, options = {})`
 - `.put(url, body, options = {})`
 - `.patch(url, body, options = {})`

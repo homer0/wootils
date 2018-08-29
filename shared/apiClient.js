@@ -6,9 +6,10 @@ const urijs = require('urijs');
 
 /**
  * @typedef {Object} FetchOptions
- * @property {String} method  The request method.
- * @property {Object} headers The request headers.
- * @property {String} body    The request body.
+ * @property {string}  method  The request method.
+ * @property {Object}  headers The request headers.
+ * @property {string}  body    The request body.
+ * @property {boolean} json    Whether or not the response should _"JSON decoded"_.
  */
 
 /**
@@ -182,6 +183,15 @@ class APIClient {
     return this.fetch(Object.assign({ url }, options));
   }
   /**
+   * Makes a `HEAD` request.
+   * @param {String}       url          The request URL.
+   * @param {FetchOptions} [options={}] The request options.
+   * @return {Promise<Object,Error>}
+   */
+  head(url, options = {}) {
+    return this.get(url, Object.assign({}, options, { method: 'head' }));
+  }
+  /**
    * Makes a `POST` request.
    * @param {String}       url          The request URL.
    * @param {Object}       body         The request body.
@@ -308,11 +318,13 @@ class APIClient {
   }
   /**
    * Makes a request.
-   * @param {Object} options         The request options.
-   * @param {String} options.url     The request URL.
-   * @param {String} options.method  The request method. `GET` by default.
-   * @param {Object} options.body    A request body to send.
-   * @param {Object} options.headers The request headers.
+   * @param {Object}  options         The request options.
+   * @param {string}  options.url     The request URL.
+   * @param {string}  options.method  The request method. `GET` by default.
+   * @param {Object}  options.body    A request body to send.
+   * @param {Object}  options.headers The request headers.
+   * @param {boolean} options.json    Whether or not the response should _"JSON decoded"_. `true`
+   *                                  by default.
    * @return {Promise<Object,Error>}
    * @todo Add support for a `string` `body`.
    */
@@ -327,10 +339,12 @@ class APIClient {
     if (Object.keys(headers).length) {
       opts.headers = headers;
     }
-    // Get the request URL.
+    // Format the flag the method will use to decided whether to decode the response or not.
+    const handleAsJSON = typeof opts.json === 'boolean' ? opts.json : true;
     const { url } = opts;
-    // Remove the URL from the options in order to make it a valid FetchOptions object.
+    // Remove the necessary options in order to make it a valid `FetchOptions` object.
     delete opts.url;
+    delete opts.json;
     // If the options include a body...
     if (opts.body) {
       // Let's first check if there are headers and if a `Content-Type` has been set.
@@ -358,8 +372,13 @@ class APIClient {
     .then((response) => {
       // Capture the response status.
       responseStatus = response.status;
-      // If the response supports `json()`, decode it, otherwise return the same response.
-      return response.json ? response.json() : response;
+      /**
+       * If the response should be handled as JSON and it has a `json()` method, return the
+       * promise of the decoded content, otherwise just return the same object.
+       */
+      return handleAsJSON && response.json ?
+        response.json() :
+        response;
     })
     .then((response) => (
       /**
