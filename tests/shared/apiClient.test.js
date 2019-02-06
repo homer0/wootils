@@ -128,6 +128,25 @@ describe('APIClient', () => {
     expect(result).toBe(`${url}/${expectedPath}`);
   });
 
+  it('should be able to format an endpoint and add a parameter as query', () => {
+    // Given
+    const url = 'http://example.com';
+    const placeholder = 'param';
+    const placeholderValue = 'hello-world';
+    const endpointName = 'endpoint';
+    const endpointPath = 'some/path';
+    const endpoints = {
+      [endpointName]: endpointPath,
+    };
+    let sut = null;
+    let result = null;
+    // When
+    sut = new APIClient(url, endpoints, () => {});
+    result = sut.endpoint(endpointName, { [placeholder]: placeholderValue });
+    // Then
+    expect(result).toBe(`${url}/${endpointPath}?${placeholder}=${placeholderValue}`);
+  });
+
   it('should throw an error if a requested endpoint doesn\'t exist', () => {
     // Given
     const endpoint = 'some-endpoint';
