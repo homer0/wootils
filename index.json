@@ -2819,7 +2819,7 @@
     "__docId__": 132,
     "kind": "file",
     "name": "wootils/shared/apiClient.js",
-    "content": "const statuses = require('statuses');\nconst urijs = require('urijs');\n/**\n * @typedef {Function:(string,Object):Promise<Object,Error>} FetchClient\n */\n\n/**\n * @typedef {Object} FetchOptions\n * @property {String} method  The request method.\n * @property {Object} headers The request headers.\n * @property {String} body    The request body.\n */\n\n/**\n * @typedef {Object} APIClientEndpoint\n * @property {String}  path  The path to the endpoint relative to the API entry point. It can\n *                           include placeholders with the format `:placeholder-name` that are\n *                           going to be replaced when the endpoint gets generated.\n * @property {?Object} query A dictionary of query string parameters that will be added when the\n *                           endpoint. If the value of a parameter is `null`, it won't be added.\n */\n\n/**\n * @typedef {Object} APIClientEndpoints\n * @property {string|APIClientEndpoints|APIClientEndpoint} [endpointName] A name for the endpoint\n *                                                                        that will be used to\n *                                                                        reference it on the\n *                                                                        `endpoint(...)` method.\n * @example\n * {\n *   // Endpoint path as a string.\n *   endpointOne: 'endpoint-one',\n *   // Endpoint as {APIClientEndpoint}.\n *   endpointTwo: {\n *     path: 'endpoint-two',\n *     query: {\n *       count: 20,\n *     },\n *   },\n *   // Endpoint as a dictionary of endpoints ({APIClientEndpoints}).\n *   endpointThree: {\n *     subEndpointThreeOne: 'sub-endpoint-three-one',\n *     subEndpointThreeTwo: {\n *       path: 'sub-endpoint-three-two',\n *       query: {\n *         count: 20,\n *       },\n *     },\n *   },\n * }\n */\n\n/**\n * An API client with configurable endpoints.\n */\nclass APIClient {\n  /**\n   * Class constructor.\n   * @param {String}                  url                 The API entry point.\n   * @param {APIClientEndpoints}      endpoints           A dictionary of named endpoints relative\n   *                                                      to the API entry point.\n   * @param {FetchClient}             fetchClient         The fetch function that makes the\n   *                                                      requests.\n   * @param {Object}                  [defaultHeaders={}] A dictionary of default headers to\n   *                                                      include on every request.\n   */\n  constructor(url, endpoints, fetchClient, defaultHeaders = {}) {\n    /**\n     * The API entry point.\n     * @type {String}\n     */\n    this.url = url;\n    /**\n     * A dictionary of named endpoints relative to the API entry point.\n     * @type {Object}\n     * @property {string|APIClientEndpoint} [endpointName] The name of the endpoint.\n     */\n    this.endpoints = this.flattenEndpoints(endpoints);\n    /**\n     * The fetch function that makes the requests.\n     * @type {FetchClient}\n     */\n    this.fetchClient = fetchClient;\n    /**\n     * A dictionary of default headers to include on every request.\n     * @type {Object}\n     */\n    this.defaultHeaders = defaultHeaders;\n    /**\n     * An authorization token to include on the requests.\n     * @type {String}\n     */\n    this.authorizationToken = '';\n  }\n  /**\n   * Taks a dictionary of endpoints and flatten them on a single level.\n   * @example\n   * console.log(APIClient.flattenEndpoints({\n   *   endpointOne: 'endpoint-one',\n   *   endpointTwo: {\n   *     path: 'endpoint-two',\n   *     query: {\n   *       count: 20,\n   *     },\n   *   },\n   *   endpointThree: {\n   *     subEndpointThreeOne: 'sub-endpoint-three-one',\n   *     subEndpointThreeTwo: {\n   *       path: 'sub-endpoint-three-two',\n   *       query: {\n   *         count: 20,\n   *       },\n   *     },\n   *   },\n   * }));\n   * // Will output\n   * {\n   *   endpointOne: 'endpoint-one',\n   *   endpointTwo: {\n   *     path: 'endpoint-two',\n   *     query: {\n   *       count: 20,\n   *     },\n   *   },\n   *   'endpointThree.subEndpointThreeOne': 'sub-endpoint-three-one',\n   *   'endpointThree.subEndpointThreeTwo': {\n   *       path: 'sub-endpoint-three-two',\n   *       query: {\n   *         count: 20,\n   *       },\n   *     },\n   *   },\n   * }\n   * @param {Object} endpoints   A dictionary of named endpoints.\n   * @param {String} [parent=''] The parent key of the received endpoints. This is used when the\n   *                             method is calling itself recursively.\n   * @return {Object}\n   */\n  flattenEndpoints(endpoints, parent = '') {\n    const parentKey = parent ? `${parent}.` : '';\n    let result = {};\n    Object.keys(endpoints).forEach((name) => {\n      const value = endpoints[name];\n      const key = `${parentKey}${name}`;\n      if (typeof value === 'string' || value.path) {\n        result[key] = value;\n      } else {\n        result = Object.assign({}, result, this.flattenEndpoints(value, key));\n      }\n    });\n\n    return result;\n  }\n  /**\n   * Sets the authorization token for the requests.\n   * @param {String} [token=''] The new authorization token. If the value is empty, it won't be\n   *                            included on the requests.\n   */\n  setAuthorizationToken(token = '') {\n    this.authorizationToken = token;\n  }\n  /**\n   * Sets the default headers for the requests.\n   * @param {Object}  [headers={}]     The new default headers.\n   * @param {Boolean} [overwrite=true] If `false`, it will merge the new default headers with\n   *                                   the current ones.\n   */\n  setDefaultHeaders(headers = {}, overwrite = true) {\n    this.defaultHeaders = Object.assign(\n      {},\n      (overwrite ? {} : this.defaultHeaders),\n      headers\n    );\n  }\n  /**\n   * Makes a `GET` request.\n   * @param {String}       url          The request URL.\n   * @param {FetchOptions} [options={}] The request options.\n   * @return {Promise<Object,Error>}\n   */\n  get(url, options = {}) {\n    return this.fetch(Object.assign({ url }, options));\n  }\n  /**\n   * Makes a `POST` request.\n   * @param {String}       url          The request URL.\n   * @param {Object}       body         The request body.\n   * @param {FetchOptions} [options={}] The request options.\n   * @return {Promise<Object,Error>}\n   */\n  post(url, body, options = {}) {\n    return this.fetch(Object.assign({\n      url,\n      body,\n      method: 'post',\n    }, options));\n  }\n  /**\n   * Makes a `PUT` request.\n   * @param {String}       url          The request URL.\n   * @param {Object}       body         The request body.\n   * @param {FetchOptions} [options={}] The request options.\n   * @return {Promise<Object,Error>}\n   */\n  put(url, body, options = {}) {\n    return this.post(url, body, Object.assign({}, options, { method: 'put' }));\n  }\n  /**\n   * Makes a `PATCH` request.\n   * @param {String}       url          The request URL.\n   * @param {Object}       body         The request body.\n   * @param {FetchOptions} [options={}] The request options.\n   * @return {Promise<Object,Error>}\n   */\n  patch(url, body, options = {}) {\n    return this.post(url, body, Object.assign({}, options, { method: 'patch' }));\n  }\n  /**\n   * Makes a `DELETE` request.\n   * @param {String}       url          The request URL.\n   * @param {Object}       body         The request body.\n   * @param {FetchOptions} [options={}] The request options.\n   * @return {Promise<Object,Error>}\n   */\n  delete(url, body = {}, options = {}) {\n    return this.post(url, body, Object.assign({}, options, { method: 'delete' }));\n  }\n  /**\n   * Generates an endpoint URL.\n   * @param {String} name            The name of the endpoint on the `endpoints` property.\n   * @param {Object} [parameters={}] A dictionary of values that will replace placeholders on the\n   *                                 endpoint definition.\n   * @return {String}\n   * @throws {Error} If the endpoint doesn't exist on the `endpoints` property.\n   */\n  endpoint(name, parameters = {}) {\n    // Get the endpoint information.\n    const info = this.endpoints[name];\n    // Validate that the endpoint exists.\n    if (!info) {\n      throw new Error(`Trying to request unknown endpoint: ${name}`);\n    }\n    // Get a new reference for the parameters.\n    const params = Object.assign({}, parameters);\n    // If the endpoint is a string, format it into an object with `path`.\n    const endpoint = typeof info === 'string' ? { path: info } : info;\n    // Define the object that will have the query string.\n    const query = {};\n    // If the endpoint has a `query` property...\n    if (endpoint.query) {\n      // ...Loog all the query parameters.\n      Object.keys(endpoint.query).forEach((queryName) => {\n        // Get the defined value of the parameter.\n        const queryValue = endpoint.query[queryName];\n        // If there's a value of this parameter on the received `parameters`...\n        if (typeof params[queryName] !== 'undefined') {\n          // ...add it to the query dictionary.\n          query[queryName] = params[queryName];\n          // Remove the used parameter.\n          delete params[queryName];\n        } else if (queryValue !== null) {\n          // If the default value of the parameter is not `null`, use it.\n          query[queryName] = queryValue;\n        }\n      });\n    }\n    // Get the endpoint path.\n    let { path } = endpoint;\n    // Loop all the received `parameters`...\n    Object.keys(params).forEach((parameter) => {\n      // Build how a placeholder for this parameter would look like.\n      const placeholder = `:${parameter}`;\n      // Get the parameter value.\n      const value = params[parameter];\n      // If the path has the placeholder...\n      if (path.includes(placeholder)) {\n        // ...replace the placeholder with the value.\n        path = path.replace(placeholder, value);\n      } else {\n        // ...otherwise, add it on the query string.\n        query[parameter] = value;\n      }\n    });\n    // Convert the URL into a `urijs` object.\n    const uri = urijs(`${this.url}/${path}`);\n    // Loop and add all the query string parameters.\n    Object.keys(query).forEach((queryName) => {\n      uri.addQuery(queryName, query[queryName]);\n    });\n    // Return the `urijs` object as a string.\n    return uri.toString();\n  }\n  /**\n   * Generates a dictionary of headers using the service `defaultHeaders` property as base.\n   * If the service has an `authorizationToken`, it will be included as the `Authorization`\n   * header.\n   * @param {Object} [overwrites={}] Extra headers to add.\n   * @return {Object}\n   * @todo Bearer should be configurable when setting the token.\n   */\n  headers(overwrites = {}) {\n    const headers = Object.assign({}, this.defaultHeaders);\n    if (this.authorizationToken) {\n      headers.Authorization = `Bearer ${this.authorizationToken}`;\n    }\n\n    return Object.assign({}, headers, overwrites);\n  }\n  /**\n   * Makes a request.\n   * @param {Object} options         The request options.\n   * @param {String} options.url     The request URL.\n   * @param {String} options.method  The request method. `GET` by default.\n   * @param {Object} options.body    A request body to send.\n   * @param {Object} options.headers The request headers.\n   * @return {Promise<Object,Error>}\n   * @todo Add support for a `string` `body`.\n   */\n  fetch(options) {\n    // Get a new reference of the request options.\n    const opts = Object.assign({}, options);\n    // Format the request method and check if it should use the default.\n    opts.method = opts.method ? opts.method.toUpperCase() : 'GET';\n    // Get the request headers.\n    const headers = this.headers(opts.headers);\n    // This check is to avoid pushing an empty object on the request options.\n    if (Object.keys(headers).length) {\n      opts.headers = headers;\n    }\n    // Get the request URL.\n    const { url } = opts;\n    // Remove the URL from the options in order to make it a valid FetchOptions object.\n    delete opts.url;\n    // If the options include a body...\n    if (opts.body) {\n      // Let's first check if there are headers and if a `Content-Type` has been set.\n      let hasContentType = false;\n      if (opts.headers) {\n        hasContentType = Object.keys(opts.headers)\n        .find((name) => name.toLowerCase() === 'content-type');\n      } else {\n        opts.headers = {};\n      }\n      // If the body is an object...\n      if (typeof opts.body === 'object') {\n        // ...encode it.\n        opts.body = JSON.stringify(opts.body);\n        // And if no `Content-Type` was defined, let's assume is a JSON request.\n        if (!hasContentType) {\n          opts.headers['Content-Type'] = 'application/json';\n        }\n      }\n    }\n\n    let responseStatus;\n    // Make the request.\n    return this.fetchClient(url, opts)\n    .then((response) => {\n      // Capture the response status.\n      responseStatus = response.status;\n      // If the response supports `json()`, decode it, otherwise return the same response.\n      return response.json ? response.json() : response;\n    })\n    .then((response) => (\n      /**\n       * If the response status is from an Error, format and return the error; otherwise, return\n       * the same response.\n       */\n      responseStatus >= statuses['Bad Request'] ?\n        Promise.reject(this.error(response, responseStatus)) :\n        response\n    ));\n  }\n  /**\n   * Formats an error response into a proper Error object.\n   * @param {Object} response A received response from a request.\n   * @return {Error}\n   */\n  error(response) {\n    return new Error(response.error);\n  }\n}\n\nmodule.exports = APIClient;\n",
+    "content": "const statuses = require('statuses');\nconst urijs = require('urijs');\n/**\n * @typedef {Function:(string,Object):Promise<Object,Error>} FetchClient\n */\n\n/**\n * @typedef {Object} FetchOptions\n * @property {string}  method  The request method.\n * @property {Object}  headers The request headers.\n * @property {string}  body    The request body.\n * @property {boolean} json    Whether or not the response should _\"JSON decoded\"_.\n */\n\n/**\n * @typedef {Object} APIClientEndpoint\n * @property {String}  path  The path to the endpoint relative to the API entry point. It can\n *                           include placeholders with the format `:placeholder-name` that are\n *                           going to be replaced when the endpoint gets generated.\n * @property {?Object} query A dictionary of query string parameters that will be added when the\n *                           endpoint. If the value of a parameter is `null`, it won't be added.\n */\n\n/**\n * @typedef {Object} APIClientEndpoints\n * @property {string|APIClientEndpoints|APIClientEndpoint} [endpointName] A name for the endpoint\n *                                                                        that will be used to\n *                                                                        reference it on the\n *                                                                        `endpoint(...)` method.\n * @example\n * {\n *   // Endpoint path as a string.\n *   endpointOne: 'endpoint-one',\n *   // Endpoint as {APIClientEndpoint}.\n *   endpointTwo: {\n *     path: 'endpoint-two',\n *     query: {\n *       count: 20,\n *     },\n *   },\n *   // Endpoint as a dictionary of endpoints ({APIClientEndpoints}).\n *   endpointThree: {\n *     subEndpointThreeOne: 'sub-endpoint-three-one',\n *     subEndpointThreeTwo: {\n *       path: 'sub-endpoint-three-two',\n *       query: {\n *         count: 20,\n *       },\n *     },\n *   },\n * }\n */\n\n/**\n * An API client with configurable endpoints.\n */\nclass APIClient {\n  /**\n   * Class constructor.\n   * @param {String}                  url                 The API entry point.\n   * @param {APIClientEndpoints}      endpoints           A dictionary of named endpoints relative\n   *                                                      to the API entry point.\n   * @param {FetchClient}             fetchClient         The fetch function that makes the\n   *                                                      requests.\n   * @param {Object}                  [defaultHeaders={}] A dictionary of default headers to\n   *                                                      include on every request.\n   */\n  constructor(url, endpoints, fetchClient, defaultHeaders = {}) {\n    /**\n     * The API entry point.\n     * @type {String}\n     */\n    this.url = url;\n    /**\n     * A dictionary of named endpoints relative to the API entry point.\n     * @type {Object}\n     * @property {string|APIClientEndpoint} [endpointName] The name of the endpoint.\n     */\n    this.endpoints = this.flattenEndpoints(endpoints);\n    /**\n     * The fetch function that makes the requests.\n     * @type {FetchClient}\n     */\n    this.fetchClient = fetchClient;\n    /**\n     * A dictionary of default headers to include on every request.\n     * @type {Object}\n     */\n    this.defaultHeaders = defaultHeaders;\n    /**\n     * An authorization token to include on the requests.\n     * @type {String}\n     */\n    this.authorizationToken = '';\n  }\n  /**\n   * Taks a dictionary of endpoints and flatten them on a single level.\n   * @example\n   * console.log(APIClient.flattenEndpoints({\n   *   endpointOne: 'endpoint-one',\n   *   endpointTwo: {\n   *     path: 'endpoint-two',\n   *     query: {\n   *       count: 20,\n   *     },\n   *   },\n   *   endpointThree: {\n   *     subEndpointThreeOne: 'sub-endpoint-three-one',\n   *     subEndpointThreeTwo: {\n   *       path: 'sub-endpoint-three-two',\n   *       query: {\n   *         count: 20,\n   *       },\n   *     },\n   *   },\n   * }));\n   * // Will output\n   * {\n   *   endpointOne: 'endpoint-one',\n   *   endpointTwo: {\n   *     path: 'endpoint-two',\n   *     query: {\n   *       count: 20,\n   *     },\n   *   },\n   *   'endpointThree.subEndpointThreeOne': 'sub-endpoint-three-one',\n   *   'endpointThree.subEndpointThreeTwo': {\n   *       path: 'sub-endpoint-three-two',\n   *       query: {\n   *         count: 20,\n   *       },\n   *     },\n   *   },\n   * }\n   * @param {Object} endpoints   A dictionary of named endpoints.\n   * @param {String} [parent=''] The parent key of the received endpoints. This is used when the\n   *                             method is calling itself recursively.\n   * @return {Object}\n   */\n  flattenEndpoints(endpoints, parent = '') {\n    const parentKey = parent ? `${parent}.` : '';\n    let result = {};\n    Object.keys(endpoints).forEach((name) => {\n      const value = endpoints[name];\n      const key = `${parentKey}${name}`;\n      if (typeof value === 'string' || value.path) {\n        result[key] = value;\n      } else {\n        result = Object.assign({}, result, this.flattenEndpoints(value, key));\n      }\n    });\n\n    return result;\n  }\n  /**\n   * Sets the authorization token for the requests.\n   * @param {String} [token=''] The new authorization token. If the value is empty, it won't be\n   *                            included on the requests.\n   */\n  setAuthorizationToken(token = '') {\n    this.authorizationToken = token;\n  }\n  /**\n   * Sets the default headers for the requests.\n   * @param {Object}  [headers={}]     The new default headers.\n   * @param {Boolean} [overwrite=true] If `false`, it will merge the new default headers with\n   *                                   the current ones.\n   */\n  setDefaultHeaders(headers = {}, overwrite = true) {\n    this.defaultHeaders = Object.assign(\n      {},\n      (overwrite ? {} : this.defaultHeaders),\n      headers\n    );\n  }\n  /**\n   * Makes a `GET` request.\n   * @param {String}       url          The request URL.\n   * @param {FetchOptions} [options={}] The request options.\n   * @return {Promise<Object,Error>}\n   */\n  get(url, options = {}) {\n    return this.fetch(Object.assign({ url }, options));\n  }\n  /**\n   * Makes a `HEAD` request.\n   * @param {String}       url          The request URL.\n   * @param {FetchOptions} [options={}] The request options.\n   * @return {Promise<Object,Error>}\n   */\n  head(url, options = {}) {\n    return this.get(url, Object.assign({}, options, { method: 'head' }));\n  }\n  /**\n   * Makes a `POST` request.\n   * @param {String}       url          The request URL.\n   * @param {Object}       body         The request body.\n   * @param {FetchOptions} [options={}] The request options.\n   * @return {Promise<Object,Error>}\n   */\n  post(url, body, options = {}) {\n    return this.fetch(Object.assign({\n      url,\n      body,\n      method: 'post',\n    }, options));\n  }\n  /**\n   * Makes a `PUT` request.\n   * @param {String}       url          The request URL.\n   * @param {Object}       body         The request body.\n   * @param {FetchOptions} [options={}] The request options.\n   * @return {Promise<Object,Error>}\n   */\n  put(url, body, options = {}) {\n    return this.post(url, body, Object.assign({}, options, { method: 'put' }));\n  }\n  /**\n   * Makes a `PATCH` request.\n   * @param {String}       url          The request URL.\n   * @param {Object}       body         The request body.\n   * @param {FetchOptions} [options={}] The request options.\n   * @return {Promise<Object,Error>}\n   */\n  patch(url, body, options = {}) {\n    return this.post(url, body, Object.assign({}, options, { method: 'patch' }));\n  }\n  /**\n   * Makes a `DELETE` request.\n   * @param {String}       url          The request URL.\n   * @param {Object}       body         The request body.\n   * @param {FetchOptions} [options={}] The request options.\n   * @return {Promise<Object,Error>}\n   */\n  delete(url, body = {}, options = {}) {\n    return this.post(url, body, Object.assign({}, options, { method: 'delete' }));\n  }\n  /**\n   * Generates an endpoint URL.\n   * @param {String} name            The name of the endpoint on the `endpoints` property.\n   * @param {Object} [parameters={}] A dictionary of values that will replace placeholders on the\n   *                                 endpoint definition.\n   * @return {String}\n   * @throws {Error} If the endpoint doesn't exist on the `endpoints` property.\n   */\n  endpoint(name, parameters = {}) {\n    // Get the endpoint information.\n    const info = this.endpoints[name];\n    // Validate that the endpoint exists.\n    if (!info) {\n      throw new Error(`Trying to request unknown endpoint: ${name}`);\n    }\n    // Get a new reference for the parameters.\n    const params = Object.assign({}, parameters);\n    // If the endpoint is a string, format it into an object with `path`.\n    const endpoint = typeof info === 'string' ? { path: info } : info;\n    // Define the object that will have the query string.\n    const query = {};\n    // If the endpoint has a `query` property...\n    if (endpoint.query) {\n      // ...Loog all the query parameters.\n      Object.keys(endpoint.query).forEach((queryName) => {\n        // Get the defined value of the parameter.\n        const queryValue = endpoint.query[queryName];\n        // If there's a value of this parameter on the received `parameters`...\n        if (typeof params[queryName] !== 'undefined') {\n          // ...add it to the query dictionary.\n          query[queryName] = params[queryName];\n          // Remove the used parameter.\n          delete params[queryName];\n        } else if (queryValue !== null) {\n          // If the default value of the parameter is not `null`, use it.\n          query[queryName] = queryValue;\n        }\n      });\n    }\n    // Get the endpoint path.\n    let { path } = endpoint;\n    // Loop all the received `parameters`...\n    Object.keys(params).forEach((parameter) => {\n      // Build how a placeholder for this parameter would look like.\n      const placeholder = `:${parameter}`;\n      // Get the parameter value.\n      const value = params[parameter];\n      // If the path has the placeholder...\n      if (path.includes(placeholder)) {\n        // ...replace the placeholder with the value.\n        path = path.replace(placeholder, value);\n      } else {\n        // ...otherwise, add it on the query string.\n        query[parameter] = value;\n      }\n    });\n    // Convert the URL into a `urijs` object.\n    const uri = urijs(`${this.url}/${path}`);\n    // Loop and add all the query string parameters.\n    Object.keys(query).forEach((queryName) => {\n      uri.addQuery(queryName, query[queryName]);\n    });\n    // Return the `urijs` object as a string.\n    return uri.toString();\n  }\n  /**\n   * Generates a dictionary of headers using the service `defaultHeaders` property as base.\n   * If the service has an `authorizationToken`, it will be included as the `Authorization`\n   * header.\n   * @param {Object} [overwrites={}] Extra headers to add.\n   * @return {Object}\n   * @todo Bearer should be configurable when setting the token.\n   */\n  headers(overwrites = {}) {\n    const headers = Object.assign({}, this.defaultHeaders);\n    if (this.authorizationToken) {\n      headers.Authorization = `Bearer ${this.authorizationToken}`;\n    }\n\n    return Object.assign({}, headers, overwrites);\n  }\n  /**\n   * Makes a request.\n   * @param {Object}  options         The request options.\n   * @param {string}  options.url     The request URL.\n   * @param {string}  options.method  The request method. `GET` by default.\n   * @param {Object}  options.body    A request body to send.\n   * @param {Object}  options.headers The request headers.\n   * @param {boolean} options.json    Whether or not the response should _\"JSON decoded\"_. `true`\n   *                                  by default.\n   * @return {Promise<Object,Error>}\n   * @todo Add support for a `string` `body`.\n   */\n  fetch(options) {\n    // Get a new reference of the request options.\n    const opts = Object.assign({}, options);\n    // Format the request method and check if it should use the default.\n    opts.method = opts.method ? opts.method.toUpperCase() : 'GET';\n    // Get the request headers.\n    const headers = this.headers(opts.headers);\n    // This check is to avoid pushing an empty object on the request options.\n    if (Object.keys(headers).length) {\n      opts.headers = headers;\n    }\n    // Format the flag the method will use to decided whether to decode the response or not.\n    const handleAsJSON = typeof opts.json === 'boolean' ? opts.json : true;\n    const { url } = opts;\n    // Remove the necessary options in order to make it a valid `FetchOptions` object.\n    delete opts.url;\n    delete opts.json;\n    // If the options include a body...\n    if (opts.body) {\n      // Let's first check if there are headers and if a `Content-Type` has been set.\n      let hasContentType = false;\n      if (opts.headers) {\n        hasContentType = Object.keys(opts.headers)\n        .find((name) => name.toLowerCase() === 'content-type');\n      } else {\n        opts.headers = {};\n      }\n      // If the body is an object...\n      if (typeof opts.body === 'object') {\n        // ...encode it.\n        opts.body = JSON.stringify(opts.body);\n        // And if no `Content-Type` was defined, let's assume is a JSON request.\n        if (!hasContentType) {\n          opts.headers['Content-Type'] = 'application/json';\n        }\n      }\n    }\n\n    let responseStatus;\n    // Make the request.\n    return this.fetchClient(url, opts)\n    .then((response) => {\n      // Capture the response status.\n      responseStatus = response.status;\n      /**\n       * If the response should be handled as JSON and it has a `json()` method, return the\n       * promise of the decoded content, otherwise just return the same object.\n       */\n      return handleAsJSON && response.json ?\n        response.json() :\n        response;\n    })\n    .then((response) => (\n      /**\n       * If the response status is from an Error, format and return the error; otherwise, return\n       * the same response.\n       */\n      responseStatus >= statuses['Bad Request'] ?\n        Promise.reject(this.error(response, responseStatus)) :\n        response\n    ));\n  }\n  /**\n   * Formats an error response into a proper Error object.\n   * @param {Object} response A received response from a request.\n   * @return {Error}\n   */\n  error(response) {\n    return new Error(response.error);\n  }\n}\n\nmodule.exports = APIClient;\n",
     "static": true,
     "longname": "/Users/homer0/CODE/node/wootils/shared/apiClient.js",
     "access": "public",
@@ -2856,7 +2856,7 @@
       {
         "nullable": null,
         "types": [
-          "String"
+          "string"
         ],
         "spread": false,
         "optional": false,
@@ -2876,12 +2876,22 @@
       {
         "nullable": null,
         "types": [
-          "String"
+          "string"
         ],
         "spread": false,
         "optional": false,
         "name": "body",
         "description": "The request body."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "json",
+        "description": "Whether or not the response should _\"JSON decoded\"_."
       }
     ],
     "type": {
@@ -2977,7 +2987,7 @@
     "importPath": "wootils/wootils/shared/apiClient.js",
     "importStyle": "APIClient",
     "description": "An API client with configurable endpoints.",
-    "lineNumber": 56,
+    "lineNumber": 57,
     "interface": false
   },
   {
@@ -2991,7 +3001,7 @@
     "longname": "wootils/shared/apiClient.js~APIClient#constructor",
     "access": "public",
     "description": "Class constructor.",
-    "lineNumber": 67,
+    "lineNumber": 68,
     "params": [
       {
         "nullable": null,
@@ -3046,7 +3056,7 @@
     "longname": "wootils/shared/apiClient.js~APIClient#url",
     "access": "public",
     "description": "The API entry point.",
-    "lineNumber": 72,
+    "lineNumber": 73,
     "type": {
       "nullable": null,
       "types": [
@@ -3065,7 +3075,7 @@
     "longname": "wootils/shared/apiClient.js~APIClient#endpoints",
     "access": "public",
     "description": "A dictionary of named endpoints relative to the API entry point.",
-    "lineNumber": 78,
+    "lineNumber": 79,
     "properties": [
       {
         "nullable": null,
@@ -3097,7 +3107,7 @@
     "longname": "wootils/shared/apiClient.js~APIClient#fetchClient",
     "access": "public",
     "description": "The fetch function that makes the requests.",
-    "lineNumber": 83,
+    "lineNumber": 84,
     "type": {
       "nullable": null,
       "types": [
@@ -3116,7 +3126,7 @@
     "longname": "wootils/shared/apiClient.js~APIClient#defaultHeaders",
     "access": "public",
     "description": "A dictionary of default headers to include on every request.",
-    "lineNumber": 88,
+    "lineNumber": 89,
     "type": {
       "nullable": null,
       "types": [
@@ -3135,7 +3145,7 @@
     "longname": "wootils/shared/apiClient.js~APIClient#authorizationToken",
     "access": "public",
     "description": "An authorization token to include on the requests.",
-    "lineNumber": 93,
+    "lineNumber": 94,
     "type": {
       "nullable": null,
       "types": [
@@ -3159,7 +3169,7 @@
     "examples": [
       "console.log(APIClient.flattenEndpoints({\n  endpointOne: 'endpoint-one',\n  endpointTwo: {\n    path: 'endpoint-two',\n    query: {\n      count: 20,\n    },\n  },\n  endpointThree: {\n    subEndpointThreeOne: 'sub-endpoint-three-one',\n    subEndpointThreeTwo: {\n      path: 'sub-endpoint-three-two',\n      query: {\n        count: 20,\n      },\n    },\n  },\n}));\n// Will output\n{\n  endpointOne: 'endpoint-one',\n  endpointTwo: {\n    path: 'endpoint-two',\n    query: {\n      count: 20,\n    },\n  },\n  'endpointThree.subEndpointThreeOne': 'sub-endpoint-three-one',\n  'endpointThree.subEndpointThreeTwo': {\n      path: 'sub-endpoint-three-two',\n      query: {\n        count: 20,\n      },\n    },\n  },\n}"
     ],
-    "lineNumber": 139,
+    "lineNumber": 140,
     "params": [
       {
         "nullable": null,
@@ -3204,7 +3214,7 @@
     "longname": "wootils/shared/apiClient.js~APIClient#setAuthorizationToken",
     "access": "public",
     "description": "Sets the authorization token for the requests.",
-    "lineNumber": 159,
+    "lineNumber": 160,
     "params": [
       {
         "nullable": null,
@@ -3232,7 +3242,7 @@
     "longname": "wootils/shared/apiClient.js~APIClient#setDefaultHeaders",
     "access": "public",
     "description": "Sets the default headers for the requests.",
-    "lineNumber": 168,
+    "lineNumber": 169,
     "params": [
       {
         "nullable": null,
@@ -3272,7 +3282,7 @@
     "longname": "wootils/shared/apiClient.js~APIClient#get",
     "access": "public",
     "description": "Makes a `GET` request.",
-    "lineNumber": 181,
+    "lineNumber": 182,
     "params": [
       {
         "nullable": null,
@@ -3309,14 +3319,14 @@
   {
     "__docId__": 150,
     "kind": "method",
-    "name": "post",
+    "name": "head",
     "memberof": "wootils/shared/apiClient.js~APIClient",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "wootils/shared/apiClient.js~APIClient#post",
+    "longname": "wootils/shared/apiClient.js~APIClient#head",
     "access": "public",
-    "description": "Makes a `POST` request.",
+    "description": "Makes a `HEAD` request.",
     "lineNumber": 191,
     "params": [
       {
@@ -3328,16 +3338,6 @@
         "optional": false,
         "name": "url",
         "description": "The request URL."
-      },
-      {
-        "nullable": null,
-        "types": [
-          "Object"
-        ],
-        "spread": false,
-        "optional": false,
-        "name": "body",
-        "description": "The request body."
       },
       {
         "nullable": null,
@@ -3364,15 +3364,15 @@
   {
     "__docId__": 151,
     "kind": "method",
-    "name": "put",
+    "name": "post",
     "memberof": "wootils/shared/apiClient.js~APIClient",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "wootils/shared/apiClient.js~APIClient#put",
+    "longname": "wootils/shared/apiClient.js~APIClient#post",
     "access": "public",
-    "description": "Makes a `PUT` request.",
-    "lineNumber": 205,
+    "description": "Makes a `POST` request.",
+    "lineNumber": 201,
     "params": [
       {
         "nullable": null,
@@ -3419,14 +3419,14 @@
   {
     "__docId__": 152,
     "kind": "method",
-    "name": "patch",
+    "name": "put",
     "memberof": "wootils/shared/apiClient.js~APIClient",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "wootils/shared/apiClient.js~APIClient#patch",
+    "longname": "wootils/shared/apiClient.js~APIClient#put",
     "access": "public",
-    "description": "Makes a `PATCH` request.",
+    "description": "Makes a `PUT` request.",
     "lineNumber": 215,
     "params": [
       {
@@ -3474,14 +3474,14 @@
   {
     "__docId__": 153,
     "kind": "method",
-    "name": "delete",
+    "name": "patch",
     "memberof": "wootils/shared/apiClient.js~APIClient",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "wootils/shared/apiClient.js~APIClient#delete",
+    "longname": "wootils/shared/apiClient.js~APIClient#patch",
     "access": "public",
-    "description": "Makes a `DELETE` request.",
+    "description": "Makes a `PATCH` request.",
     "lineNumber": 225,
     "params": [
       {
@@ -3529,6 +3529,61 @@
   {
     "__docId__": 154,
     "kind": "method",
+    "name": "delete",
+    "memberof": "wootils/shared/apiClient.js~APIClient",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/shared/apiClient.js~APIClient#delete",
+    "access": "public",
+    "description": "Makes a `DELETE` request.",
+    "lineNumber": 235,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "url",
+        "description": "The request URL."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "body",
+        "description": "The request body."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "FetchOptions"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "{}",
+        "defaultRaw": {},
+        "name": "options",
+        "description": "The request options."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Object,Error>"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 155,
+    "kind": "method",
     "name": "endpoint",
     "memberof": "wootils/shared/apiClient.js~APIClient",
     "generator": false,
@@ -3537,7 +3592,7 @@
     "longname": "wootils/shared/apiClient.js~APIClient#endpoint",
     "access": "public",
     "description": "Generates an endpoint URL.",
-    "lineNumber": 236,
+    "lineNumber": 246,
     "params": [
       {
         "nullable": null,
@@ -3580,7 +3635,7 @@
     ]
   },
   {
-    "__docId__": 155,
+    "__docId__": 156,
     "kind": "method",
     "name": "headers",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3590,7 +3645,7 @@
     "longname": "wootils/shared/apiClient.js~APIClient#headers",
     "access": "public",
     "description": "Generates a dictionary of headers using the service `defaultHeaders` property as base.\nIf the service has an `authorizationToken`, it will be included as the `Authorization`\nheader.",
-    "lineNumber": 301,
+    "lineNumber": 311,
     "todo": [
       "Bearer should be configurable when setting the token."
     ],
@@ -3618,7 +3673,7 @@
     }
   },
   {
-    "__docId__": 156,
+    "__docId__": 157,
     "kind": "method",
     "name": "fetch",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3628,7 +3683,7 @@
     "longname": "wootils/shared/apiClient.js~APIClient#fetch",
     "access": "public",
     "description": "Makes a request.",
-    "lineNumber": 319,
+    "lineNumber": 331,
     "todo": [
       "Add support for a `string` `body`."
     ],
@@ -3646,7 +3701,7 @@
       {
         "nullable": null,
         "types": [
-          "String"
+          "string"
         ],
         "spread": false,
         "optional": false,
@@ -3656,7 +3711,7 @@
       {
         "nullable": null,
         "types": [
-          "String"
+          "string"
         ],
         "spread": false,
         "optional": false,
@@ -3682,6 +3737,16 @@
         "optional": false,
         "name": "options.headers",
         "description": "The request headers."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options.json",
+        "description": "Whether or not the response should _\"JSON decoded\"_. `true`\n                                 by default."
       }
     ],
     "return": {
@@ -3694,7 +3759,7 @@
     }
   },
   {
-    "__docId__": 157,
+    "__docId__": 158,
     "kind": "method",
     "name": "error",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3704,7 +3769,7 @@
     "longname": "wootils/shared/apiClient.js~APIClient#error",
     "access": "public",
     "description": "Formats an error response into a proper Error object.",
-    "lineNumber": 379,
+    "lineNumber": 398,
     "params": [
       {
         "nullable": null,
@@ -3727,7 +3792,7 @@
     }
   },
   {
-    "__docId__": 158,
+    "__docId__": 159,
     "kind": "file",
     "name": "wootils/shared/deferred.js",
     "content": "/**\n * Create a deferred promise using a native Promise.\n * @return {Object}\n * @property {Promise}  promise The deferred promise.\n * @property {Function} resolve The functon to resolve the promise.\n * @property {Function} reject  The functon to reject the promise.\n */\nconst deferred = () => {\n  let resolve;\n  let reject;\n  const promise = new Promise((presolve, preject) => {\n    resolve = presolve;\n    reject = preject;\n  });\n\n  return {\n    promise,\n    resolve,\n    reject,\n  };\n};\n\nmodule.exports = deferred;\n",
@@ -3738,7 +3803,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 159,
+    "__docId__": 160,
     "kind": "function",
     "name": "deferred",
     "memberof": "wootils/shared/deferred.js",
@@ -3795,7 +3860,7 @@
     "params": []
   },
   {
-    "__docId__": 160,
+    "__docId__": 161,
     "kind": "file",
     "name": "wootils/shared/eventsHub.js",
     "content": "/**\n * A minimal implementation of an events handler service.\n */\nclass EventsHub {\n  /**\n   * Class constructor.\n   * @ignore\n   */\n  constructor() {\n    /**\n     * A dictionary of the events and their listeners.\n     * @type {Object}\n     * @ignore\n     */\n    this._events = {};\n  }\n  /**\n   * Adds a new event listener.\n   * @param {String|Array} event An event name or a list of them.\n   * @param {Function}     fn    The listener function.\n   * @return {Function} An unsubscribe function to remove the listener or listeners.\n   */\n  on(event, fn) {\n    const events = Array.isArray(event) ? event : [event];\n    events.forEach((name) => {\n      const subscribers = this.subscribers(name);\n      if (!subscribers.includes(fn)) {\n        subscribers.push(fn);\n      }\n    });\n\n    return () => this.off(event, fn);\n  }\n  /**\n   * Adds an event listener that will only be executed once.\n   * @param {String|Array} event An event name or a list of them.\n   * @param {Function}     fn    The listener function.\n   * @return {Function} An unsubscribe function to remove the listener.\n   */\n  once(event, fn) {\n    // eslint-disable-next-line no-param-reassign\n    fn.once = true;\n    return this.on(event, fn);\n  }\n  /**\n   * Removes an event listener.\n   * @param {String|Array} event An event name or a list of them.\n   * @param {Function}     fn    The listener function.\n   * @return {Boolean|Array} If `event` was a `string`, it will return whether or not the listener\n   *                         was found and removed; but if `event` was an `Array`, it will return\n   *                         a list of boolean values.\n   */\n  off(event, fn) {\n    const isArray = Array.isArray(event);\n    const events = isArray ? event : [event];\n    const result = events.map((name) => {\n      const subscribers = this.subscribers(name);\n      let found = false;\n      const index = subscribers.indexOf(fn);\n      if (index > -1) {\n        found = true;\n        subscribers.splice(index, 1);\n      }\n\n      return found;\n    });\n\n    return isArray ? result : result[0];\n  }\n  /**\n   * Emits an event and call all its listeners.\n   * @param {String|Array} event An event name or a list of them.\n   * @param {Array}        args  A list of parameters to send to the listeners.\n   */\n  emit(event, ...args) {\n    const toClean = [];\n    const events = Array.isArray(event) ? event : [event];\n    events.forEach((name) => {\n      this.subscribers(name).forEach((subscriber) => {\n        subscriber(...args);\n        if (subscriber.once) {\n          toClean.push({\n            event: name,\n            fn: subscriber,\n          });\n        }\n      });\n    });\n\n    toClean.forEach((info) => this.off(info.event, info.fn));\n  }\n  /**\n   * Reduce a target using an event. It's like emit, but the events listener return\n   * a modified (or not) version of the `target`.\n   * @param {String|Array} event  An event name or a list of them.\n   * @param {*}            target The variable to reduce with the listeners.\n   * @param {Array}        args   A list of parameters to send to the listeners.\n   * @return {*} A version of the `target` processed by the listeners.\n   */\n  reduce(event, target, ...args) {\n    const events = Array.isArray(event) ? event : [event];\n    let result = target;\n    events.forEach((name) => {\n      const subscribers = this.subscribers(name);\n      if (subscribers.length) {\n        const toClean = [];\n        let processed;\n        if (Array.isArray(result)) {\n          processed = result.slice();\n        } else if (typeof result === 'object') {\n          processed = Object.assign({}, result);\n        } else {\n          processed = result;\n        }\n\n        subscribers.forEach((subscriber) => {\n          processed = subscriber(...[processed, ...args]);\n          if (subscriber.once) {\n            toClean.push({\n              event: name,\n              fn: subscriber,\n            });\n          }\n        });\n\n        toClean.forEach((info) => this.off(info.event, info.fn));\n        result = processed;\n      }\n    });\n\n    return result;\n  }\n  /**\n   * Get all the listeners for an event.\n   * @param {String} event The name of the event.\n   * @return {Array}\n   */\n  subscribers(event) {\n    if (!this._events[event]) {\n      this._events[event] = [];\n    }\n\n    return this._events[event];\n  }\n}\n\nmodule.exports = EventsHub;\n",
@@ -3806,7 +3871,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 161,
+    "__docId__": 162,
     "kind": "class",
     "name": "EventsHub",
     "memberof": "wootils/shared/eventsHub.js",
@@ -3821,7 +3886,7 @@
     "interface": false
   },
   {
-    "__docId__": 162,
+    "__docId__": 163,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "wootils/shared/eventsHub.js~EventsHub",
@@ -3835,7 +3900,7 @@
     "ignore": true
   },
   {
-    "__docId__": 163,
+    "__docId__": 164,
     "kind": "member",
     "name": "_events",
     "memberof": "wootils/shared/eventsHub.js~EventsHub",
@@ -3855,7 +3920,7 @@
     }
   },
   {
-    "__docId__": 164,
+    "__docId__": 165,
     "kind": "method",
     "name": "on",
     "memberof": "wootils/shared/eventsHub.js~EventsHub",
@@ -3899,7 +3964,7 @@
     }
   },
   {
-    "__docId__": 165,
+    "__docId__": 166,
     "kind": "method",
     "name": "once",
     "memberof": "wootils/shared/eventsHub.js~EventsHub",
@@ -3943,7 +4008,7 @@
     }
   },
   {
-    "__docId__": 166,
+    "__docId__": 167,
     "kind": "method",
     "name": "off",
     "memberof": "wootils/shared/eventsHub.js~EventsHub",
@@ -3988,7 +4053,7 @@
     }
   },
   {
-    "__docId__": 167,
+    "__docId__": 168,
     "kind": "method",
     "name": "emit",
     "memberof": "wootils/shared/eventsHub.js~EventsHub",
@@ -4025,7 +4090,7 @@
     "return": null
   },
   {
-    "__docId__": 168,
+    "__docId__": 169,
     "kind": "method",
     "name": "reduce",
     "memberof": "wootils/shared/eventsHub.js~EventsHub",
@@ -4079,7 +4144,7 @@
     }
   },
   {
-    "__docId__": 169,
+    "__docId__": 170,
     "kind": "method",
     "name": "subscribers",
     "memberof": "wootils/shared/eventsHub.js~EventsHub",
@@ -4112,7 +4177,7 @@
     }
   },
   {
-    "__docId__": 170,
+    "__docId__": 171,
     "kind": "file",
     "name": "wootils/shared/index.js",
     "content": "const APIClient = require('./apiClient');\nconst deferred = require('./deferred');\nconst EventsHub = require('./eventsHub');\n\nmodule.exports = {\n  APIClient,\n  deferred,\n  EventsHub,\n};\n",
@@ -4124,7 +4189,7 @@
   },
   {
     "kind": "index",
-    "content": "# Wootils\n\n[![Travis](https://img.shields.io/travis/homer0/wootils.svg?style=flat-square)](https://travis-ci.org/homer0/wootils)\n[![Coveralls github](https://img.shields.io/coveralls/github/homer0/wootils.svg?style=flat-square)](https://coveralls.io/github/homer0/wootils?branch=master)\n[![David](https://img.shields.io/david/homer0/wootils.svg?style=flat-square)](https://david-dm.org/homer0/wootils)\n[![David](https://img.shields.io/david/dev/homer0/wootils.svg?style=flat-square)](https://david-dm.org/homer0/wootils)\n\nA set of Javascript utilities for building Node and browser apps.\n\n## Motivation/Introduction\n\nThe idea was to take all those small thing I'm always rewriting on every project and move them to a single package so I can not only stop copying & pasting them all over the place but also maintain them all together.\n\nThere are two rules I followed when I had to decide what to put and what to keep somewhere else:\n\n1. The utility needs to fit on a single file.\n2. It shouldn't include any specific business logic from any other project.\n\n## Information\n\n| -            | -                                                                  |\n|--------------|--------------------------------------------------------------------|\n| Package      | wootils                                                            |\n| Description  | A set of Javascript utilities for building Node and browser apps.  |\n| Node Version | >= v6.10.0                                                         |\n\n## Usage\n\nThe package is divided on 2 folders:\n\n- `node`: Utilities only compatible with Node.\n- `shared`: Utilities that can work on both browser and Node.\n\n> Yes, when the time comes, it will have a `browser` folder too.\n\n### Node utilities\n\nTwo notes about the Node utilities:\n\n1. I'm a big fan of [Jimple](https://github.com/fjorgemota/jimple), so all the files not only export the utility but also a service provider or a _\"servicer provider generator\"_ to register the utility on a Jimple app.\n2. Some of them may depend on the others.\n\n#### AppConfiguration\n\nThis is a service to manage applications configurations. It takes care of loading, activating, switching and merging configuration files.\n\n[Read more about AppConfiguration](manual/appConfiguration.html)\n\n#### EnvironmentUtils\n\nA really small service to centralize the place where you read environment variables and check if you are running on development or production.\n\n[Read more about EnvironmentUtils](manual/environmentUtils.html)\n\n#### ErrorHandler\n\nListens for uncaught exceptions and unhandled promises rejections, and logs them out with full detail.\n\n[Read more about ErrorHandler](manual/errorHandler.html)\n\n#### Logger\n\nThe name leaves nothing to the imagination. As you may have guessed, this is service for logging messages into the console.\n\n[Read more about Logger](manual/logger.html)\n\n#### packageInfo\n\nA tiny function that reads the contents of the app `package.json`. This is really useful on an Jimple application where you can register it, because the returned value gets cached and it's available as a service.\n\n[Read more about packageInfo](manual/packageInfo.html)\n\n#### PathUtils\n\nAn easy way to manage locations and build paths relative to those locations on a Node app.\n\n[Read more about PathUtils](manual/pathUtils.html)\n\n#### rootRequire\n\nIs basically `require` but the path is relative to the project root directory.\n\n[Read more about rootRequire](manual/rootRequire.html)\n\n### Shared utilities\n\n#### APIClient\n\nA really basic client to work with an API endpoints requests.\n\n[Read more about APIClient](manual/APIClient.html)\n\n#### deferred\n\nCreate a deferred promise using the native `Promise` object.\n\n[Read more about deferred](manual/deferred.html)\n\n#### deferred\n\nA small implementation of a pubsub service for handling events on an app.\n\n[Read more about EventsHub](manual/eventsHub.html)\n\n## Development\n\nBefore doing anything, install the repository hooks:\n\n```bash\n# You can either use npm or yarn, it doesn't matter\nyarn run hooks\n```\n\n### NPM/Yarn Tasks\n\n| Task                     | Description                         |\n|--------------------------|-------------------------------------|\n| `yarn run hooks`         | Install the GIT repository hooks.   |\n| `yarn test`              | Run the project unit tests.         |\n| `yarn run lint`          | Lint the modified files.            |\n| `yarn run lint:full`     | Lint the project code.              |\n| `yarn run docs`          | Generate the project documentation. |\n| `yarn run todo`          | List all the pending to-do's.       |\n\n### Testing\n\nI use [Jest](https://facebook.github.io/jest/) with [Jest-Ex](https://yarnpkg.com/en/package/jest-ex) to test the project. The configuration file is on `./.jestrc`, the tests and mocks are on `./tests` and the script that runs it is on `./utils/scripts/test`.\n\n### Linting\n\nI use [ESlint](http://eslint.org) to validate all our JS code. The configuration file for the project code is on `./.eslintrc` and for the tests on `./tests/.eslintrc` (which inherits from the one on the root), there's also an `./.eslintignore` to ignore some files on the process, and the script that runs it is on `./utils/scripts/lint`.\n\n### Documentation\n\nI use [ESDoc](http://esdoc.org) to generate HTML documentation for the project. The configuration file is on `./.esdocrc` and the script that runs it is on `./utils/scripts/docs`.\n\n### To-Dos\n\nI use `@todo` comments to write all the pending improvements and fixes, and [Leasot](https://yarnpkg.com/en/package/leasot) to generate a report. The script that runs it is on `./utils/scripts/todo`.\n",
+    "content": "# Wootils\n\n[![Travis](https://img.shields.io/travis/homer0/wootils.svg?style=flat-square)](https://travis-ci.org/homer0/wootils)\n[![Coveralls github](https://img.shields.io/coveralls/github/homer0/wootils.svg?style=flat-square)](https://coveralls.io/github/homer0/wootils?branch=master)\n[![David](https://img.shields.io/david/homer0/wootils.svg?style=flat-square)](https://david-dm.org/homer0/wootils)\n[![David](https://img.shields.io/david/dev/homer0/wootils.svg?style=flat-square)](https://david-dm.org/homer0/wootils)\n\nA set of Javascript utilities for building Node and browser apps.\n\n## Motivation/Introduction\n\nThe idea was to take all those small thing I'm always rewriting on every project and move them to a single package so I can not only stop copying & pasting them all over the place but also maintain them all together.\n\nThere are two rules I followed when I had to decide what to put and what to keep somewhere else:\n\n1. The utility needs to fit on a single file.\n2. It shouldn't include any specific business logic from any other project.\n\n## Information\n\n| -            | -                                                                  |\n|--------------|--------------------------------------------------------------------|\n| Package      | wootils                                                            |\n| Description  | A set of Javascript utilities for building Node and browser apps.  |\n| Node Version | >= v8.0.0                                                         |\n\n## Usage\n\nThe package is divided on 2 folders:\n\n- `node`: Utilities only compatible with Node.\n- `shared`: Utilities that can work on both browser and Node.\n\n> Yes, when the time comes, it will have a `browser` folder too.\n\n### Node utilities\n\nTwo notes about the Node utilities:\n\n1. I'm a big fan of [Jimple](https://github.com/fjorgemota/jimple), so all the files not only export the utility but also a service provider or a _\"servicer provider generator\"_ to register the utility on a Jimple app.\n2. Some of them may depend on the others.\n\n#### AppConfiguration\n\nThis is a service to manage applications configurations. It takes care of loading, activating, switching and merging configuration files.\n\n[Read more about AppConfiguration](manual/appConfiguration.html)\n\n#### EnvironmentUtils\n\nA really small service to centralize the place where you read environment variables and check if you are running on development or production.\n\n[Read more about EnvironmentUtils](manual/environmentUtils.html)\n\n#### ErrorHandler\n\nListens for uncaught exceptions and unhandled promises rejections, and logs them out with full detail.\n\n[Read more about ErrorHandler](manual/errorHandler.html)\n\n#### Logger\n\nThe name leaves nothing to the imagination. As you may have guessed, this is service for logging messages into the console.\n\n[Read more about Logger](manual/logger.html)\n\n#### packageInfo\n\nA tiny function that reads the contents of the app `package.json`. This is really useful on an Jimple application where you can register it, because the returned value gets cached and it's available as a service.\n\n[Read more about packageInfo](manual/packageInfo.html)\n\n#### PathUtils\n\nAn easy way to manage locations and build paths relative to those locations on a Node app.\n\n[Read more about PathUtils](manual/pathUtils.html)\n\n#### rootRequire\n\nIs basically `require` but the path is relative to the project root directory.\n\n[Read more about rootRequire](manual/rootRequire.html)\n\n### Shared utilities\n\n#### APIClient\n\nA really basic client to work with an API endpoints requests.\n\n[Read more about APIClient](manual/APIClient.html)\n\n#### deferred\n\nCreate a deferred promise using the native `Promise` object.\n\n[Read more about deferred](manual/deferred.html)\n\n#### deferred\n\nA small implementation of a pubsub service for handling events on an app.\n\n[Read more about EventsHub](manual/eventsHub.html)\n\n## Development\n\nBefore doing anything, install the repository hooks:\n\n```bash\n# You can either use npm or yarn, it doesn't matter\nyarn run hooks\n```\n\n### NPM/Yarn Tasks\n\n| Task                     | Description                         |\n|--------------------------|-------------------------------------|\n| `yarn run hooks`         | Install the GIT repository hooks.   |\n| `yarn test`              | Run the project unit tests.         |\n| `yarn run lint`          | Lint the modified files.            |\n| `yarn run lint:full`     | Lint the project code.              |\n| `yarn run docs`          | Generate the project documentation. |\n| `yarn run todo`          | List all the pending to-do's.       |\n\n### Testing\n\nI use [Jest](https://facebook.github.io/jest/) with [Jest-Ex](https://yarnpkg.com/en/package/jest-ex) to test the project. The configuration file is on `./.jestrc`, the tests and mocks are on `./tests` and the script that runs it is on `./utils/scripts/test`.\n\n### Linting\n\nI use [ESlint](http://eslint.org) to validate all our JS code. The configuration file for the project code is on `./.eslintrc` and for the tests on `./tests/.eslintrc` (which inherits from the one on the root), there's also an `./.eslintignore` to ignore some files on the process, and the script that runs it is on `./utils/scripts/lint`.\n\n### Documentation\n\nI use [ESDoc](http://esdoc.org) to generate HTML documentation for the project. The configuration file is on `./.esdocrc` and the script that runs it is on `./utils/scripts/docs`.\n\n### To-Dos\n\nI use `@todo` comments to write all the pending improvements and fixes, and [Leasot](https://yarnpkg.com/en/package/leasot) to generate a report. The script that runs it is on `./utils/scripts/todo`.\n",
     "longname": "/Users/homer0/CODE/node/wootils/README-esdoc.md",
     "name": "./README-esdoc.md",
     "static": true,
@@ -4132,7 +4197,7 @@
   },
   {
     "kind": "packageJSON",
-    "content": "{\n  \"name\": \"wootils\",\n  \"description\": \"A set of Javascript utilities for building Node and browser apps.\",\n  \"homepage\": \"https://homer0.github.io/wootils/\",\n  \"version\": \"1.3.2\",\n  \"repository\": \"homer0/wootils\",\n  \"author\": \"Leonardo Apiwan (@homer0) <me@homer0.com>\",\n  \"license\": \"MIT\",\n  \"dependencies\": {\n    \"jimple\": \"1.5.0\",\n    \"fs-extra\": \"6.0.1\",\n    \"colors\": \"1.3.0\",\n    \"urijs\": \"1.19.1\",\n    \"statuses\": \"1.5.0\"\n  },\n  \"devDependencies\": {\n    \"eslint\": \"4.19.1\",\n    \"eslint-config-airbnb-base\": \"13.0.0\",\n    \"eslint-plugin-import\": \"2.12.0\",\n    \"eslint-plugin-node\": \"6.0.1\",\n    \"jest-ex\": \"5.0.0\",\n    \"jest-cli\": \"23.1.0\",\n    \"jasmine-expect\": \"3.8.3\",\n    \"babel-preset-env\": \"1.7.0\",\n    \"esdoc\": \"1.1.0\",\n    \"esdoc-standard-plugin\": \"1.0.0\",\n    \"esdoc-node\": \"1.0.3\",\n    \"leasot\": \"6.3.0\",\n    \"coveralls\": \"3.0.1\"\n  },\n  \"engine-strict\": true,\n  \"engines\": {\n    \"node\": \">=6.0.0\",\n    \"npm\": \">=3.0.0\"\n  },\n  \"main\": \"src/index.js\",\n  \"scripts\": {\n    \"hooks\": \"./utils/hooks/install\",\n    \"test\": \"./utils/scripts/test\",\n    \"lint\": \"./utils/scripts/lint\",\n    \"lint:full\": \"./utils/scripts/lint-full\",\n    \"predocs\": \"./utils/scripts/docs-index\",\n    \"docs\": \"./utils/scripts/docs\",\n    \"todo\": \"./utils/scripts/todo\"\n  }\n}\n",
+    "content": "{\n  \"name\": \"wootils\",\n  \"description\": \"A set of Javascript utilities for building Node and browser apps.\",\n  \"homepage\": \"https://homer0.github.io/wootils/\",\n  \"version\": \"2.0.0\",\n  \"repository\": \"homer0/wootils\",\n  \"author\": \"Leonardo Apiwan (@homer0) <me@homer0.com>\",\n  \"license\": \"MIT\",\n  \"dependencies\": {\n    \"jimple\": \"1.5.0\",\n    \"fs-extra\": \"7.0.1\",\n    \"colors\": \"1.3.3\",\n    \"urijs\": \"1.19.1\",\n    \"statuses\": \"1.5.0\"\n  },\n  \"devDependencies\": {\n    \"eslint\": \"5.13.0\",\n    \"eslint-config-airbnb-base\": \"13.1.0\",\n    \"eslint-plugin-import\": \"2.16.0\",\n    \"eslint-plugin-node\": \"8.0.1\",\n    \"jest-ex\": \"6.0.0\",\n    \"jest-cli\": \"24.0.0\",\n    \"jasmine-expect\": \"4.0.1\",\n    \"@babel/preset-env\": \"7.0.0\",\n    \"@babel/core\": \"7.2.2\",\n    \"esdoc\": \"1.1.0\",\n    \"esdoc-standard-plugin\": \"1.0.0\",\n    \"esdoc-node\": \"1.0.4\",\n    \"leasot\": \"7.2.0\",\n    \"coveralls\": \"3.0.2\"\n  },\n  \"engine-strict\": true,\n  \"engines\": {\n    \"node\": \">=8.0.0\",\n    \"npm\": \">=3.0.0\"\n  },\n  \"main\": \"src/index.js\",\n  \"scripts\": {\n    \"hooks\": \"./utils/hooks/install\",\n    \"test\": \"./utils/scripts/test\",\n    \"lint\": \"./utils/scripts/lint\",\n    \"lint:full\": \"./utils/scripts/lint-full\",\n    \"predocs\": \"./utils/scripts/docs-index\",\n    \"docs\": \"./utils/scripts/docs\",\n    \"todo\": \"./utils/scripts/todo\"\n  }\n}\n",
     "longname": "/Users/homer0/CODE/node/wootils/package.json",
     "name": "package.json",
     "static": true,
@@ -4206,7 +4271,7 @@
     "kind": "manual",
     "longname": "/Users/homer0/CODE/node/wootils/documents/shared/APIClient.md",
     "name": "./documents/shared/APIClient.md",
-    "content": "# APIClient\n\nA really basic client to work with an API endpoints requests.\n\nNowadays there's almost no app that doesn't make requests to one or more external APIs, that's why I built this service.\n\nNow, the reason this is marked as _'shared'_ it's because it basically organizes the API configuration and prepares the requests, but you have to give it a `fetch` client to make the request. It's _'shared'_ because on a browser you can give it the native `fetch` function, and on Node, something like `node-fetch` or `axios`, but that supports the native `fetch` signature.\n\n## Examples\n\n> This example will be on Node, so I'll use [`node-fetch`](https://yarnpkg.com/en/package/node-fetch) as fetch client.\n\nFirst, let's start by creating the configuration:\n\n```js\nconst url = 'https://my-api.com';\nconst endpoints: {\n  login: 'auth/login',\n  profile: 'users/:userId',\n  users: 'users',\n};\nconst fetchClient = require('node-fetch');\n```\n\nYou need those three things to instantiate the client:\n\n1. An entry point for your API.\n2. A dictionary of endpoints (Check the **features** section to see all the possible ways to define an endpoint).\n3. A fetch client to make the requests.\n\nNow, to instantiate the client:\n\n```js\nconst { APIClient } = require('wootils/shared');\n\nconst client = new APIClient(url, endpoints, fetchClient);\n```\n\nTo make a request, you first need to generate an endpoint and use it to call the method of the type of request you want to make.\n\nLet's say you want to authenticate a user, which is a `POST` request to the `login` endpoint with a body that includes `username` and `password`:\n\n```js\nclient.post(client.endpoint('login'), {\n  username: 'Rosario',\n  password: 'charito',\n})\n.then((response) => {\n  // Do something...\n});\n```\n\nOk, that one was easy, no extra options or parameters. Next will request some user information from the `profile` endpoint, a `GET` request that requires a `userId` parameter:\n\n```js\nclient.get(client.endpoint('profile', { userId: 2509 }), {\n  username: 'Rosario',\n  password: 'charito',\n})\n.then((response) => {\n  // Do something...\n});\n```\n\nEasy enough, right? Well, for the last example, we'll make a request to get the users directory to the `users` endpoint, a `GET` request and we'll include a query string parameter to _\"limit the number of returned users\"_:\n\n```js\nclient.get(client.endpoint('users', { count: 10 }), {\n  username: 'Rosario',\n  password: 'charito',\n})\n.then((response) => {\n  // Do something...\n});\n```\n\nDone! If the parameter doesn't have a placeholder on the endpoint path, it gets automatically added on the query string.\n\n## Features\n\n### Configurable endpoints\n\nOn the example above, all the endpoints were strings, but you can define them as objects to include default query string parameters, or even as sub collections of endpoints:\n\n#### Endpoint objects\n\n```js\nconst endpoints = {\n  users: {\n    path: 'users',\n    query: {\n      count: 10,\n      offset: null,\n    },\n  },\n};\n```\n\nIn that case, if `count` is not specified on `endpoint(...)`, it will have a default value of `10`.\n\nAnd if `offset` is not specified, it won't be sent. The reason the configuration supports _\"nullable\"_ parameters is so they can be used like some sort of documentation for the endpoint: _\"It's not used, but there's an optional parameter called ...\"_.\n\n#### Sub collections of endpoints\n\n```js\nconst endpoints = {\n  login: 'auth/login',\n  users: {\n    profile: 'users/:userId',\n    directory: {\n      path: 'users',\n      query: {\n        count: 10,\n      },\n    },\n  },\n};\n```\n\nAs you can see, both users related endpoints are now under `users`, and `login` is still on the top level. To access _\"sub endpoints\"_ you use dot notation:\n\n```js\nconst endpointURL = client.endpoint('users.profile', { userId: 2509 });\n```\n\nThis allows you to organize the scopes of your endpoints and make the configuration easier to read.\n\n#### Built-in request methods\n\nOn the example above we saw only `.get` and `.post`, but the client comes with these already built-in request methods:\n\n- `.get(url, options = {})`\n- `.post(url, body, options = {})`\n- `.put(url, body, options = {})`\n- `.patch(url, body, options = {})`\n- `.delete(url, body = {}, options = {})`\n\nIf you are wondering what `options` are, well, they are extra options for the `fetch` client call. It can include headers, another method, another body, etc. Everything that could send on the `fetch` call second parameter.\n\n#### Default headers\n\nThe client allows you to set a dictionary of default headers you want to include on every request.\n\nFor example, let's say you are on a development environment and you want all your request to go out with the header `x-development` set to `true`:\n\n```js\nclient.setDefaultHeaders({\n  'x-development': true,\n});\n```\n\nNow, all the outgoing requests will include that header.\n\n#### Authorization token\n\nIf you are working with an API that requires authorization on every requests, and that provides you with a bearer token when you authenticate, you could set it on the client and it will automatically include the `Authorization` header on every request and send the token:\n\n```js\nclient.setAuthorizationToken('some-token');\n```\n\nDone, all the requests will include `Authorization: Bearer some-token`.\n\n## Technical documentation\n\nThe code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/class/wootils/shared/apiClient.js~APIClient.html) or generate it yourself using:\n\n```bash\n# You can either use npm or yarn, it doesn't matter\nnpm run docs\nopen ./docs/index.html\n```\n",
+    "content": "# APIClient\n\nA really basic client to work with an API endpoints requests.\n\nNowadays there's almost no app that doesn't make requests to one or more external APIs, that's why I built this service.\n\nNow, the reason this is marked as _'shared'_ it's because it basically organizes the API configuration and prepares the requests, but you have to give it a `fetch` client to make the request. It's _'shared'_ because on a browser you can give it the native `fetch` function, and on Node, something like `node-fetch` or `axios`, but that supports the native `fetch` signature.\n\n## Examples\n\n> This example will be on Node, so I'll use [`node-fetch`](https://yarnpkg.com/en/package/node-fetch) as fetch client.\n\nFirst, let's start by creating the configuration:\n\n```js\nconst url = 'https://my-api.com';\nconst endpoints: {\n  login: 'auth/login',\n  profile: 'users/:userId',\n  users: 'users',\n};\nconst fetchClient = require('node-fetch');\n```\n\nYou need those three things to instantiate the client:\n\n1. An entry point for your API.\n2. A dictionary of endpoints (Check the **features** section to see all the possible ways to define an endpoint).\n3. A fetch client to make the requests.\n\nNow, to instantiate the client:\n\n```js\nconst { APIClient } = require('wootils/shared');\n\nconst client = new APIClient(url, endpoints, fetchClient);\n```\n\nTo make a request, you first need to generate an endpoint and use it to call the method of the type of request you want to make.\n\nLet's say you want to authenticate a user, which is a `POST` request to the `login` endpoint with a body that includes `username` and `password`:\n\n```js\nclient.post(client.endpoint('login'), {\n  username: 'Rosario',\n  password: 'charito',\n})\n.then((response) => {\n  // Do something...\n});\n```\n\nOk, that one was easy, no extra options or parameters. Next will request some user information from the `profile` endpoint, a `GET` request that requires a `userId` parameter:\n\n```js\nclient.get(client.endpoint('profile', { userId: 2509 }), {\n  username: 'Rosario',\n  password: 'charito',\n})\n.then((response) => {\n  // Do something...\n});\n```\n\nEasy enough, right? Well, for the last example, we'll make a request to get the users directory to the `users` endpoint, a `GET` request and we'll include a query string parameter to _\"limit the number of returned users\"_:\n\n```js\nclient.get(client.endpoint('users', { count: 10 }), {\n  username: 'Rosario',\n  password: 'charito',\n})\n.then((response) => {\n  // Do something...\n});\n```\n\nDone! If the parameter doesn't have a placeholder on the endpoint path, it gets automatically added on the query string.\n\n## Features\n\n### Configurable endpoints\n\nOn the example above, all the endpoints were strings, but you can define them as objects to include default query string parameters, or even as sub collections of endpoints:\n\n#### Endpoint objects\n\n```js\nconst endpoints = {\n  users: {\n    path: 'users',\n    query: {\n      count: 10,\n      offset: null,\n    },\n  },\n};\n```\n\nIn that case, if `count` is not specified on `endpoint(...)`, it will have a default value of `10`.\n\nAnd if `offset` is not specified, it won't be sent. The reason the configuration supports _\"nullable\"_ parameters is so they can be used like some sort of documentation for the endpoint: _\"It's not used, but there's an optional parameter called ...\"_.\n\n#### Sub collections of endpoints\n\n```js\nconst endpoints = {\n  login: 'auth/login',\n  users: {\n    profile: 'users/:userId',\n    directory: {\n      path: 'users',\n      query: {\n        count: 10,\n      },\n    },\n  },\n};\n```\n\nAs you can see, both users related endpoints are now under `users`, and `login` is still on the top level. To access _\"sub endpoints\"_ you use dot notation:\n\n```js\nconst endpointURL = client.endpoint('users.profile', { userId: 2509 });\n```\n\nThis allows you to organize the scopes of your endpoints and make the configuration easier to read.\n\n#### Built-in request methods\n\nOn the example above we saw only `.get` and `.post`, but the client comes with these already built-in request methods:\n\n- `.get(url, options = {})`\n- `.head(url, options = {})`\n- `.post(url, body, options = {})`\n- `.put(url, body, options = {})`\n- `.patch(url, body, options = {})`\n- `.delete(url, body = {}, options = {})`\n\nIf you are wondering what `options` are, well, they are extra options for the `fetch` client call. It can include headers, another method, another body, etc. Everything that could send on the `fetch` call second parameter.\n\n#### Default headers\n\nThe client allows you to set a dictionary of default headers you want to include on every request.\n\nFor example, let's say you are on a development environment and you want all your request to go out with the header `x-development` set to `true`:\n\n```js\nclient.setDefaultHeaders({\n  'x-development': true,\n});\n```\n\nNow, all the outgoing requests will include that header.\n\n#### Authorization token\n\nIf you are working with an API that requires authorization on every requests, and that provides you with a bearer token when you authenticate, you could set it on the client and it will automatically include the `Authorization` header on every request and send the token:\n\n```js\nclient.setAuthorizationToken('some-token');\n```\n\nDone, all the requests will include `Authorization: Bearer some-token`.\n\n## Technical documentation\n\nThe code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/class/wootils/shared/apiClient.js~APIClient.html) or generate it yourself using:\n\n```bash\n# You can either use npm or yarn, it doesn't matter\nnpm run docs\nopen ./docs/index.html\n```\n",
     "static": true,
     "access": "public"
   },

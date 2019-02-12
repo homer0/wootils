@@ -726,6 +726,7 @@ const client = new APIClient(url, endpoints, fetchClient);</code>
 </code></pre><p>As you can see, both users related endpoints are now under <code>users</code>, and <code>login</code> is still on the top level. To access <em>&quot;sub endpoints&quot;</em> you use dot notation:</p><pre><code class="lang-js"><code class="source-code prettyprint">const endpointURL = client.endpoint(&apos;users.profile&apos;, { userId: 2509 });</code>
 </code></pre><p>This allows you to organize the scopes of your endpoints and make the configuration easier to read.</p><h4>Built-in request methods</h4><p>On the example above we saw only <code>.get</code> and <code>.post</code>, but the client comes with these already built-in request methods:</p><ul>
 <li><code>.get(url, options = {})</code></li>
+<li><code>.head(url, options = {})</code></li>
 <li><code>.post(url, body, options = {})</code></li>
 <li><code>.put(url, body, options = {})</code></li>
 <li><code>.patch(url, body, options = {})</code></li>
