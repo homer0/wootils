@@ -26,12 +26,11 @@ There are two rules I followed when I had to decide what to put and what to keep
 
 ## Usage
 
-The package is divided on 2 folders:
+The package is divided on 3 folders:
 
-- `node`: Utilities only compatible with Node.
+- `node`: Utilities that are only compatible with Node.
 - `shared`: Utilities that can work on both browser and Node.
-
-> Yes, when the time comes, it will have a `browser` folder too.
+- `browser`: Utilities that can only be used while on a browser.
 
 ### Node utilities
 
@@ -101,6 +100,14 @@ Create a deferred promise using the native `Promise` object.
 A small implementation of a pubsub service for handling events on an app.
 
 [Read more about EventsHub](manual/eventsHub.html)
+
+### Browser utilities
+
+#### SimpleStorage
+
+An **abstract** class allows you to build services that relay on browser storage (session/local) and simplifies the way you work it.
+
+[Read more about SimpleStorage](manual/simpleStorage.html)
 
 ## Development
 
