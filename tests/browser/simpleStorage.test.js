@@ -147,8 +147,6 @@ describe('SimpleStorage', () => {
       storage: {
         typePriority: [
           'unknown',
-          'unknown',
-          'unknown',
         ],
       },
     };

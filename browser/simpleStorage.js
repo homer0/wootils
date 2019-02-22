@@ -113,8 +113,8 @@ const extend = require('extend');
  */
 
 /**
- * This class allows you to define services that relay browser storage (session/local) and
- * simplifies the way to work it.
+ * An abstract class allows you to build services that relay on browser storage (session/local)
+ * and simplifies the way you work it
  * You can specify the storage type you want to use, the format in which you want to handle the
  * data and even expiration time for it.
  * @abstract
@@ -140,6 +140,7 @@ class SimpleStorage {
      * @access protected
      */
     this._options = this._mergeOptions({
+      window,
       initialize: true,
       storage: {
         name: 'simpleStorage',
@@ -156,6 +157,7 @@ class SimpleStorage {
         deleteExpired: true,
         saveWhenDeletingExpired: true,
       },
+      logger: null,
       tempStorage: {},
     }, options);
     /**
@@ -410,29 +412,46 @@ class SimpleStorage {
   /**
    * Merges the class default options with the custom ones that can be sent to the constructor.
    * The reason there's a method for this is because some of the options can be functions, and
-   * deep merges with functions can go wrong, so this methods takes out the functions first, does
-   * the merge and then adds them again.
+   * deep merges with functions can go wrong (and are expensive), so this methods takes out the
+   * functions first, does the merge and then adds them again.
+   * Similar to what it does for fuctions, it also takes out arrays: Merging arrays not always work
+   * as expected if the base array has some values already. Instead of the base values being
+   * overwritten, they are replaced with the amount of values specified on the _"overwrite array"_.
+   * Is easy to understand the reason, but nonetheless, it makes it confussing for an option to
+   * behave like that.
    * @param {SimpleStorageOptions} defaults The class default options.
    * @param {SimpleStorageOptions} custom   The custom options sent to the constructor.
    * @return {SimpleStorageOptions}
    * @access protected
    */
   _mergeOptions(defaults, custom) {
+    const newDefaults = Object.assign({}, defaults);
     const newCustom = Object.assign({}, custom);
-    const newWindow = custom.window || window;
-    const newLogger = custom.logger || null;
-    const newTempStorage = custom.tempStorage || {};
-    delete newCustom.window;
-    delete newCustom.logger;
-    delete newCustom.tempStorage;
+    const fnOptions = {};
+    ['window', 'logger', 'tempStorage'].forEach((fnOptionName) => {
+      fnOptions[fnOptionName] = newCustom[fnOptionName] || newDefaults[fnOptionName];
+      delete newDefaults[fnOptionName];
+      delete newCustom[fnOptionName];
+    });
+    let newStorageTypePriority;
+    if (newCustom.storage && newCustom.storage.typePriority) {
+      newStorageTypePriority = newCustom.storage.typePriority;
+    }
+
     const newOptions = extend(
       true,
-      defaults,
+      newDefaults,
       newCustom
     );
-    newOptions.window = newWindow;
-    newOptions.logger = newLogger;
-    newOptions.tempStorage = newTempStorage;
+
+    Object.keys(fnOptions).forEach((fnOptionName) => {
+      newOptions[fnOptionName] = fnOptions[fnOptionName];
+    });
+
+    if (newStorageTypePriority) {
+      newOptions.storage.typePriority = newStorageTypePriority;
+    }
+
     return newOptions;
   }
   /**
