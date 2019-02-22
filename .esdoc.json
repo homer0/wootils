@@ -18,7 +18,8 @@
             "./documents/node/rootRequire.md",
             "./documents/shared/APIClient.md",
             "./documents/shared/deferred.md",
-            "./documents/shared/eventsHub.md"
+            "./documents/shared/eventsHub.md",
+            "./documents/browser/simpleStorage.md"
           ]
         }
       }
