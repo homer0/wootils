@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">wootils/shared/deferred.js | wootils</title>
+  <title data-ice="title">wootils/browser/index.js | wootils</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -74,30 +74,12 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">wootils/shared/deferred.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
- * Create a deferred promise using a native Promise.
- * @return {Object}
- * @property {Promise}  promise The deferred promise.
- * @property {Function} resolve The functon to resolve the promise.
- * @property {Function} reject  The functon to reject the promise.
- */
-const deferred = () =&gt; {
-  let resolve;
-  let reject;
-  const promise = new Promise((presolve, preject) =&gt; {
-    resolve = presolve;
-    reject = preject;
-  });
+<div class="content" data-ice="content"><h1 data-ice="title">wootils/browser/index.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const SimpleStorage = require(&apos;./simpleStorage&apos;);
 
-  return {
-    promise,
-    resolve,
-    reject,
-  };
+module.exports = {
+  SimpleStorage,
 };
-
-module.exports = deferred;
 </code></pre>
 
 </div>

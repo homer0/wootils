@@ -1,8 +1,13 @@
 {
   "coverage": "100%",
-  "expectCount": 98,
-  "actualCount": 98,
+  "expectCount": 140,
+  "actualCount": 140,
   "files": {
+    "wootils/browser/simpleStorage.js": {
+      "expectCount": 42,
+      "actualCount": 42,
+      "undocumentLines": []
+    },
     "wootils/node/appConfiguration.js": {
       "expectCount": 18,
       "actualCount": 18,

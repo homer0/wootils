@@ -566,6 +566,1867 @@
   {
     "__docId__": 48,
     "kind": "file",
+    "name": "wootils/browser/index.js",
+    "content": "const SimpleStorage = require('./simpleStorage');\n\nmodule.exports = {\n  SimpleStorage,\n};\n",
+    "static": true,
+    "longname": "/Users/homer0/CODE/node/wootils/browser/index.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 49,
+    "kind": "file",
+    "name": "wootils/browser/simpleStorage.js",
+    "content": "const extend = require('extend');\n\n/**\n * @typedef {Object} SimpleStorageStorageLogger\n * @property {?Function} warn    Prints out a warning message. Either this or `warning` MUST be\n *                               present.\n * @property {?Function} warning Prints out a warning message. Either this or `warn` MUST be\n *                               present.\n */\n\n/**\n * @typedef {Object} SimpleStorageStorageOptions\n * @property {string} [name='simpleStorage']                      A reference name for the storage.\n * @property {string} [key='simpleStorage']                       The key the class will use to\n *                                                                store the data on the storage.\n * @property {Array}  [typePriority=['local', 'session', 'temp']] The priority list of types of\n *                                                                storage the service will try to\n *                                                                use when initialized.\n */\n\n/**\n * @typedef {Object} SimpleStorageEntriesOptions\n * @property {boolean} [enabled=false]                Whether or not to use the entries\n *                                                    functionality. Enabling it means that all\n *                                                    the _\"xxxEntry\"_ methods will be available\n *                                                    and that, when deleted or resetted, the\n *                                                    storage will become an empty object.\n * @property {Number}  [expiration=3600]              The amount of seconds relative to the\n *                                                    current time that needs to pass in order to\n *                                                    consider an entry expired.\n * @property {Boolean} [deleteExpired=true]           Whether or not to delete expired entries\n *                                                    (both when loading the storage and when\n *                                                    trying to access the entries).\n * @property {Boolean} [saveWhenDeletingExpired=true] Whether or not to sync the storage after\n *                                                    deleting an expired entry.\n */\n\n/**\n * @typedef {Object} SimpleStorageOptions\n * @property {Boolean}                     [initialize=true] Whether or not to initialize the\n *                                                           service right from the constructor.\n *                                                           It means that it will validate the\n *                                                           storage, check for existing data and\n *                                                           sync it on the class. This can be\n *                                                           disabled in case you need to do\n *                                                           something between the constructor and\n *                                                           the initialization.\n * @property {Window}                      [window]          The `window`/`global` object the class\n *                                                           will use in order to access\n *                                                           `localStorage` and `sessionStorage`.\n * @property {?SimpleStorageStorageLogger} [logger]          A custom logger to print out the\n *                                                           warnings when the class needs to do a\n *                                                           fallback to a different storage type.\n * @property {SimpleStorageStorageOptions} [storage]         These are all the options related to\n *                                                           the storage itself: The type, the\n *                                                           name and the key.\n * @property {SimpleStorageEntriesOptions} [entries]         These are the options for customizing\n *                                                           the way the service works with entries.\n *                                                           By default, the class saves any kind\n *                                                           of object on the storage, but by\n *                                                           using entries you can access them by\n *                                                           name and even define expiration time\n *                                                           so they'll be removed after a while.\n * @property {Object}                      [tempStorage={}]  The `tempStorage` is the storage the\n *                                                           class uses when none of the others\n *                                                           are available. Is just a simple\n *                                                           object, so when the class gets\n *                                                           destroyed (browser refreshes the\n *                                                           page), the data goes away.\n */\n\n/**\n * @typedef {Function} SimpleStorageStorageAvailableMethod\n * @param {string} [fallbackFrom] If the storage is being used as a fallback from another one that\n *                                is not available, this parameter will have its name.\n * @return {boolean} Whether or not the storage is available.\n */\n\n/**\n * @typedef {Function} SimpleStorageStorageGetMethod\n * @param {string} key The key used by the class to save data on the storage.\n * @return {Object} The contents from the storage.\n */\n\n/**\n * @typedef {Function} SimpleStorageStorageSetMethod\n * @param {string} key The key used by the class to save data on the storage.\n * @param {Object} value The data to save on the storage.\n */\n\n/**\n * @typedef {Function} SimpleStorageStorageDeleteMethod\n * @param {string} key The key used by the class to save data on the storage.\n */\n\n/**\n * @typedef {Object} SimpleStorageStorage\n * @property {string} name The name of the storage.\n * @property {SimpleStorageStorageAvailableMethod} available The method to check if the storage can\n *                                                           be used or not.\n * @property {SimpleStorageStorageGetMethod}       get       The method used to read from the\n *                                                           storage.\n * @property {SimpleStorageStorageSetMethod}       set       The method used to write on the\n *                                                           storage.\n * @property {SimpleStorageStorageDeleteMethod}    delete    The method used to delete data from\n *                                                           the storage.\n */\n\n/**\n * @typedef {Object} SimpleStorageEntry\n * @property {number} time  The timestamp of when the entry was first created.\n * @property {Object} value The actual data for the entry.\n */\n\n/**\n * An abstract class allows you to build services that relay on browser storage (session/local)\n * and simplifies the way you work it\n * You can specify the storage type you want to use, the format in which you want to handle the\n * data and even expiration time for it.\n * @abstract\n */\nclass SimpleStorage {\n  /**\n   * Class constructor.\n   * @param {SimpleStorageOptions} [options={}] The options to customize the class.\n   * @throws {Error} If instantiated without extending it.\n   * @abstract\n   */\n  constructor(options = {}) {\n    // Validate that it's being extended.\n    if (new.target === SimpleStorage) {\n      throw new TypeError(\n        'SimpleStorage is an abstract class, it can\\'t be instantiated directly'\n      );\n    }\n    /**\n     * These are the options/settings the class uses in order to work the with the storage and\n     * the data.\n     * @type {SimpleStorageOptions}\n     * @access protected\n     */\n    this._options = this._mergeOptions({\n      window,\n      initialize: true,\n      storage: {\n        name: 'simpleStorage',\n        key: 'simpleStorage',\n        typePriority: [\n          'local',\n          'session',\n          'temp',\n        ],\n      },\n      entries: {\n        enabled: false,\n        expiration: 3600,\n        deleteExpired: true,\n        saveWhenDeletingExpired: true,\n      },\n      logger: null,\n      tempStorage: {},\n    }, options);\n    /**\n     * A dictionary with the storage types the class supports.\n     * @type {Object}\n     * @property {SimpleStorageStorage} local   The methods to work with `localStorage`.\n     * @property {SimpleStorageStorage} session The methods to work with `sessionStorage`.\n     * @property {SimpleStorageStorage} temp    The methods to work with the _\"temp storage\"_.\n     * @access protected\n     */\n    this._storageTypes = {\n      local: {\n        name: 'localStorage',\n        isAvailable: this._isLocalStorageAvailable.bind(this),\n        get: this._getFromLocalStorage.bind(this),\n        set: this._setOnLocalStorage.bind(this),\n        delete: this._deleteFromLocalStorage.bind(this),\n      },\n      session: {\n        name: 'sessionStorage',\n        isAvailable: this._isSessionStorageAvailable.bind(this),\n        get: this._getFromSessionStorage.bind(this),\n        set: this._setOnSessionStorage.bind(this),\n        delete: this._deleteFromSessionStorage.bind(this),\n      },\n      temp: {\n        name: 'tempStorage',\n        isAvailable: this._isTempStorageAvailable.bind(this),\n        get: this._getFromTempStorage.bind(this),\n        set: this._setOnTempStorage.bind(this),\n        delete: this._deleteFromTempStorage.bind(this),\n      },\n    };\n    /**\n     * Once the class is initialized, this property will hold a reference to the\n     * {@link SimpleStorageStorage} being used.\n     * @type {?SimpleStorageStorage}\n     * @access protected\n     */\n    this._storage = null;\n    /**\n     * This is the object/dictionary the class will use to sync the content of the storage. That\n     * way you won't need to write/read/parse from the storage every time you need to do something.\n     * @type {Object}\n     * @access protected\n     */\n    this._data = {};\n    // Initialize the class if necessary.\n    if (this._options.initialize) {\n      this._initialize();\n    }\n  }\n  /**\n   * This method _\"initializes\" the class by validating custom options, loading the reference for\n   * the required storage and synchronizing the data with the storage.\n   * @access protected\n   */\n  _initialize() {\n    this._validateOptions();\n    this._storage = this._initializeStorage();\n    this._data = this._initializeStorageData();\n  }\n  /**\n   * This method is called when the storage is deleted or resetted and if entries are disabled.\n   * It can be used to define the initial value of the data the class saves on the storage.\n   * @return {Object}\n   * @access protected\n   */\n  _getInitialData() {\n    return {};\n  }\n  /**\n   * Access the data the class saves on the storage.\n   * @return {Object}\n   * @access protected\n   */\n  _getData() {\n    return this._data;\n  }\n  /**\n   * Overwrites the data reference the class has and, if `save` is used, it also saves it into\n   * the storage.\n   * @param {Object|Promise}  data        The new data, or a {@link Promise} that resolves into the\n   *                                      new data.\n   * @param {boolean}         [save=true] Whether or not the class should save the data into the\n   *                                      storage.\n   * @return {Object\\Promise} If `data` is an {@link Object}, it will return the same object; but\n   *                          if `data` is a {@link Promise}, it will return the _\"promise chain\"_.\n   * @access protected\n   */\n  _setData(data, save = true) {\n    return this._isPromise(data) ?\n      data.then((realData) => this._setResolvedData(realData, save)) :\n      this._setResolvedData(data, save);\n  }\n  /**\n   * This is the real method behind `_setData`. It overwrites the data reference the class\n   * has and, if `save` is used, it also saves it into the storage.\n   * The reason that there are two methods for this is, is because `_setData` can receive a\n   * {@link Promise}, and in that case, this method gets called after it gets resolved.\n   * @param {Object}  data The new data.\n   * @param {boolean} save Whether or not the class should save the data into the storage.\n   * @return {Object} The same data that was saved.\n   * @access protected\n   */\n  _setResolvedData(data, save) {\n    this._data = this._copy(data);\n    if (save) {\n      this._save();\n    }\n\n    return data;\n  }\n  /**\n   * Resets the data on the class; If entries are enabled, the data will become an empty\n   * {@link Object}; otherwise, it will call {@link this#_getInitialData}.\n   * @param {boolean} [save=true] Whether or not the class should save the data into the storage.\n   * @access protected\n   */\n  _resetData(save = true) {\n    const data = this._options.entries.enabled ? {} : this._getInitialData();\n    return this._setData(data, save);\n  }\n  /**\n   * Gets an entry from the storage dictionary.\n   * @param  {string} key The entry key.\n   * @return {SimpleStorageEntry} Whatever is on the storage.\n   * @throws {Error} If entries are not enabled.\n   * @access protected\n   */\n  _getEntry(key) {\n    const { entries } = this._options;\n    // Validate if the feature is enabled and fail with an error if it isn't.\n    if (!entries.enabled) {\n      throw new Error('Entries are not enabled for this storage');\n    }\n    // Get the entry from the data reference.\n    let entry = this._data[key];\n    // If an entry was found and the setting to delete entries when expired is enabled...\n    if (entry && entries.deleteExpired) {\n      // ...validate if the entry is expired.\n      ({ entry } = this._deleteExpiredEntries({ entry }, entries.expiration));\n      // ... and if the entry is expired, delete it.\n      if (!entry) {\n        this._deleteEntry(key, entries.saveWhenDeletingExpired);\n      }\n    }\n    // Return either the entry it found or `null`.\n    return entry || null;\n  }\n  /**\n   * Gets the value of an entry.\n   * @param {string} key The entry key.\n   * @return {?Object}\n   * @access protected\n   */\n  _getEntryValue(key) {\n    const entry = this.getEntry(key);\n    return entry ? entry.value : entry;\n  }\n  /**\n   * Adds a new entry to the class data, and if `save` is used, saves it into the storage.\n   * @param {string}         key         The entry key.\n   * @param {Object|Promise} value       The entry value, or a {@link Promise} that resolves into\n   *                                     the value.\n   * @param {boolean}        [save=true] Whether or not the class should save the data into the\n   *                                     storage.\n   * @return {Object\\Promise} If `value` is an {@link Object}, it will return the same object; but\n   *                          if `value` is a {@link Promise}, it will return the\n   *                          _\"promise chain\"_.\n   * @access protected\n   */\n  _addEntry(key, value, save = true) {\n    return this._isPromise(value) ?\n      value.then((realValue) => this._addResolvedEntry(key, realValue, save)) :\n      this._addResolvedEntry(key, value, save);\n  }\n  /**\n   * This is the real method behind `_addEntry`. It Adds a new entry to the class data and, if\n   * `save` is used, it also saves it into the storage.\n   * The reason that there are two methods for this is, is because `_addEntry` can receive a\n   * {@link Promise}, and in that case, this method gets called after it gets resolved.\n   * @param {string}  key   The entry key.\n   * @param {Object}  value The entry value.\n   * @param {boolean} save  Whether or not the class should save the data into the storage.\n   * @return {Object} The same data that was saved.\n   * @access protected\n   */\n  _addResolvedEntry(key, value, save) {\n    this._data[key] = {\n      time: this._now(),\n      value: this._copy(value),\n    };\n\n    if (save) {\n      this._save();\n    }\n\n    return value;\n  }\n  /**\n   * Deletes an entry from the class data, and if `save` is used, the changes will be saved on\n   * the storage.\n   * @param {string}  key         The entry key.\n   * @param {boolean} [save=true] Whether or not the class should save the data into the storage\n   *                              after deleting the entry.\n   * @return {boolean} Whether or not the entry was deleted.\n   * @access protected\n   */\n  _deleteEntry(key, save = true) {\n    const exists = this._hasEntry(key);\n    if (exists) {\n      delete this._data[key];\n      if (save) {\n        this._save();\n      }\n    }\n\n    return exists;\n  }\n  /**\n   * Checks whether an entry exists or not.\n   * @param {string} key The entry key.\n   * @return {boolean}\n   * @access protected\n   */\n  _hasEntry(key) {\n    return !!this._data[key];\n  }\n  /**\n   * Deletes the class data from the storage.\n   * @param {boolean} [reset=true] Whether or not to reset the data to the initial data\n   *                               (`_getInitialData`), if entries area disabled, or to an empty\n   *                               object, if they are enabled.\n   * @access protected\n   */\n  _delete(reset = true) {\n    delete this._storage.delete(this._options.storage.key);\n    if (reset) {\n      this.setData(this._getInitialData(), false);\n    } else {\n      this.setData({}, false);\n    }\n  }\n  /**\n   * Saves the data from the class into the storage.\n   * @access protected\n   */\n  _save() {\n    this._storage.set(this._options.storage.key, this._data);\n  }\n  /**\n   * Merges the class default options with the custom ones that can be sent to the constructor.\n   * The reason there's a method for this is because some of the options can be functions, and\n   * deep merges with functions can go wrong (and are expensive), so this methods takes out the\n   * functions first, does the merge and then adds them again.\n   * Similar to what it does for fuctions, it also takes out arrays: Merging arrays not always work\n   * as expected if the base array has some values already. Instead of the base values being\n   * overwritten, they are replaced with the amount of values specified on the _\"overwrite array\"_.\n   * Is easy to understand the reason, but nonetheless, it makes it confussing for an option to\n   * behave like that.\n   * @param {SimpleStorageOptions} defaults The class default options.\n   * @param {SimpleStorageOptions} custom   The custom options sent to the constructor.\n   * @return {SimpleStorageOptions}\n   * @access protected\n   */\n  _mergeOptions(defaults, custom) {\n    const newDefaults = Object.assign({}, defaults);\n    const newCustom = Object.assign({}, custom);\n    const fnOptions = {};\n    ['window', 'logger', 'tempStorage'].forEach((fnOptionName) => {\n      fnOptions[fnOptionName] = newCustom[fnOptionName] || newDefaults[fnOptionName];\n      delete newDefaults[fnOptionName];\n      delete newCustom[fnOptionName];\n    });\n    let newStorageTypePriority;\n    if (newCustom.storage && newCustom.storage.typePriority) {\n      newStorageTypePriority = newCustom.storage.typePriority;\n    }\n\n    const newOptions = extend(\n      true,\n      newDefaults,\n      newCustom\n    );\n\n    Object.keys(fnOptions).forEach((fnOptionName) => {\n      newOptions[fnOptionName] = fnOptions[fnOptionName];\n    });\n\n    if (newStorageTypePriority) {\n      newOptions.storage.typePriority = newStorageTypePriority;\n    }\n\n    return newOptions;\n  }\n  /**\n   * Validates the class options before loading the storage and the data.\n   * @throws {Error} If either `storage.name` or `storage.key` are missing from the options.\n   * @throws {Error} If the options have a custom logger but it doesn't have `warn` nor `warning`\n   *                 methods.\n   * @access protected\n   */\n  _validateOptions() {\n    const { storage, logger } = this._options;\n\n    const missing = ['name', 'key'].find((key) => typeof storage[key] !== 'string');\n    if (missing) {\n      throw new Error(`Missing required configuration setting: ${missing}`);\n    }\n\n    if (logger && (\n      typeof logger.warn !== 'function' &&\n      typeof logger.warning !== 'function'\n    )) {\n      throw new Error('The logger must implement a `warn` or `warning` method');\n    }\n  }\n  /**\n   * This method checks the list of priorities from the `storage.typePriority` option and tries\n   * to find the first available storage.\n   * @return {SimpleStorageStorage}\n   * @throws {Error} If none of the storage options are available.\n   * @access protected\n   */\n  _initializeStorage() {\n    let previousType;\n    const found = this._options.storage.typePriority\n    .filter((storageType) => !!this._storageTypes[storageType])\n    .find((storageType) => {\n      const storage = this._storageTypes[storageType];\n      const fallbackFrom = previousType ? storage.name : '';\n      previousType = storage;\n      return storage.isAvailable(fallbackFrom);\n    });\n\n    if (!found) {\n      throw new Error('None of the specified storage types are available');\n    }\n\n    return this._storageTypes[found];\n  }\n  /**\n   * Initializes the data on the class and if needed, on the storage. It first tries to load\n   * existing data from the storage, if there's nothing, it just sets an initial stage; but if\n   * there was something on the storage, and entries are enabled, it will try (if also enabled)\n   * to delete expired entries.\n   * @return {Object}\n   * @access protected\n   */\n  _initializeStorageData() {\n    const { storage, entries } = this._options;\n    let data = this._storage.get(storage.key) || null;\n    if (data && entries.enabled && entries.deleteExpired) {\n      data = this._deleteExpiredEntries(data, entries.expiration);\n    } else if (!data) {\n      data = entries.enabled ? {} : this._getInitialData();\n      this._storage.set(storage.key, data);\n    }\n\n    return data;\n  }\n  /**\n   * Filters out a dictionary of entries by checking if they expired or not.\n   * @param {Object}  entries    A dictionary of key-value, where the value is a\n   *                             {@link SimpleStorageEntry}.\n   * @param  {number} expiration The amount of seconds that need to have passed in order to\n   *                             consider an entry expired.\n   * @return {Object} A new dictionary without the expired entries.\n   * @access protected\n   */\n  _deleteExpiredEntries(entries, expiration) {\n    const result = {};\n    const now = this._now();\n    Object.keys(entries).forEach((key) => {\n      const entry = entries[key];\n      if ((now - entry.time) < expiration) {\n        result[key] = entry;\n      }\n    });\n\n    return result;\n  }\n  /**\n   * Prints out a warning message. The method will first check if there's a custom logger (from\n   * the class options), otherwise, it will fallback to the `console` on the `window` option.\n   * @param {string} message The message to print out.\n   * @access protected\n   */\n  _warn(message) {\n    const { logger } = this._options;\n    if (logger) {\n      if (logger.warning) {\n        logger.warning(message);\n      } else {\n        logger.warn(message);\n      }\n    } else {\n      // eslint-disable-next-line no-console\n      this._options.window.console.warn(message);\n    }\n  }\n  /**\n   * Makes a deep copy of an object.\n   * @param {Object} obj The object to copy.\n   * @return {Object}\n   * @access protected\n   */\n  _copy(obj) {\n    return extend(true, {}, obj);\n  }\n  /**\n   * Helper method to get the current timestamp in seconds.\n   * @return {number}\n   * @access protected\n   */\n  _now() {\n    return Math.floor(Date.now() / 1000);\n  }\n  /**\n   * Checkes whether an object is a Promise or not.\n   * @param {Object} obj The object to test.\n   * @return {boolean}\n   * @access protected\n   */\n  _isPromise(obj) {\n    return (\n      typeof obj === 'object' &&\n      typeof obj.then === 'function' &&\n      typeof obj.catch === 'function'\n    );\n  }\n  /**\n   * Prints out a message saying that the class is doing a fallback from a storage to another\n   * one.\n   * @param {string} from The name of the storage that's not available.\n   * @param {string} to   The name of the storage that will be used instead.\n   * @access protected\n   */\n  _warnStorageFallback(from, to) {\n    this._warn(`${from} is not available; switching to ${to}`);\n  }\n  /**\n   * Checks whether `localStorage` is available or not.\n   * @param {string} [fallbackFrom] In case it's being used as a fallback, this will be the name\n   *                                of the storage that wasn't available.\n   * @return {boolean}\n   * @access protected\n   */\n  _isLocalStorageAvailable(fallbackFrom) {\n    if (fallbackFrom) {\n      this._warnStorageFallback(fallbackFrom, 'localStorage');\n    }\n\n    return !!this._options.window.localStorage;\n  }\n  /**\n   * Gets an object from `localStorage`.\n   * @param {string} key The key used to save the object.\n   * @return {Object}\n   * @access protected\n   */\n  _getFromLocalStorage(key) {\n    const value = this._options.window.localStorage[key];\n    return value ? JSON.parse(value) : null;\n  }\n  /**\n   * Sets an object into the `localStorage`.\n   * @param {string} key   The object key.\n   * @param {Object} value The object to save.\n   * @access protected\n   */\n  _setOnLocalStorage(key, value) {\n    this._options.window.localStorage[key] = JSON.stringify(value);\n  }\n  /**\n   * Deletes an object from the `localStorage`.\n   * @param {string} key The object key.\n   * @access protected\n   */\n  _deleteFromLocalStorage(key) {\n    delete this._options.window.localStorage[key];\n  }\n  /**\n   * Checks whether `sessionStorage` is available or not.\n   * @param {string} [fallbackFrom] In case it's being used as a fallback, this will be the name\n   *                                of the storage that wasn't available.\n   * @return {boolean}\n   * @access protected\n   */\n  _isSessionStorageAvailable(fallbackFrom) {\n    if (fallbackFrom) {\n      this._warnStorageFallback(fallbackFrom, 'sessionStorage');\n    }\n\n    return !!this._options.window.sessionStorage;\n  }\n  /**\n   * Gets an object from `sessionStorage`.\n   * @param {string} key The key used to save the object.\n   * @return {Object}\n   * @access protected\n   */\n  _getFromSessionStorage(key) {\n    const value = this._options.window.sessionStorage[key];\n    return value ? JSON.parse(value) : null;\n  }\n  /**\n   * Sets an object into the `sessionStorage`.\n   * @param {string} key   The object key.\n   * @param {Object} value The object to save.\n   * @access protected\n   */\n  _setOnSessionStorage(key, value) {\n    this._options.window.sessionStorage[key] = JSON.stringify(value);\n  }\n  /**\n   * Deletes an object from the `sessionStorage`.\n   * @param {string} key The object key.\n   * @access protected\n   */\n  _deleteFromSessionStorage(key) {\n    delete this._options.window.sessionStorage[key];\n  }\n  /**\n   * This method is just here to comply with the {@link SimpleStorageStorage} _\"interface\"_ as\n   * the temp storage is always available.\n   * @param {string} [fallbackFrom] In case it's being used as a fallback, this will be the name\n   *                                of the storage that wasn't available.\n   * @return {boolean}\n   * @access protected\n   */\n  _isTempStorageAvailable(fallbackFrom) {\n    if (fallbackFrom) {\n      this._warnStorageFallback(fallbackFrom, 'tempStorage');\n    }\n\n    return true;\n  }\n  /**\n   * Gets an object from the _\"temp storage\"_.\n   * @param {string} key The key used to save the object.\n   * @return {Object}\n   * @access protected\n   */\n  _getFromTempStorage(key) {\n    return this._options.tempStorage[key];\n  }\n  /**\n   * Sets an object into the _\"temp storage\"_.\n   * @param {string} key   The object key.\n   * @param {Object} value The object to save.\n   * @access protected\n   */\n  _setOnTempStorage(key, value) {\n    this._options.tempStorage[key] = value;\n  }\n  /**\n   * Deletes an object from the _\"temp storage\"_.\n   * @param {string} key The object key.\n   * @access protected\n   */\n  _deleteFromTempStorage(key) {\n    delete this._options.tempStorage[key];\n  }\n}\n\nmodule.exports = SimpleStorage;\n",
+    "static": true,
+    "longname": "/Users/homer0/CODE/node/wootils/browser/simpleStorage.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 50,
+    "kind": "typedef",
+    "name": "SimpleStorageStorageLogger",
+    "memberof": "wootils/browser/simpleStorage.js",
+    "static": true,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorageStorageLogger",
+    "access": "public",
+    "description": "",
+    "properties": [
+      {
+        "nullable": true,
+        "types": [
+          "Function"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "warn",
+        "description": "Prints out a warning message. Either this or `warning` MUST be\n                              present."
+      },
+      {
+        "nullable": true,
+        "types": [
+          "Function"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "warning",
+        "description": "Prints out a warning message. Either this or `warn` MUST be\n                              present."
+      }
+    ],
+    "type": {
+      "types": [
+        "Object"
+      ],
+      "optional": false,
+      "name": "SimpleStorageStorageLogger"
+    }
+  },
+  {
+    "__docId__": 51,
+    "kind": "typedef",
+    "name": "SimpleStorageStorageOptions",
+    "memberof": "wootils/browser/simpleStorage.js",
+    "static": true,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorageStorageOptions",
+    "access": "public",
+    "description": "",
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "'simpleStorage'",
+        "defaultRaw": "'simpleStorage'",
+        "name": "name",
+        "description": "A reference name for the storage."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "'simpleStorage'",
+        "defaultRaw": "'simpleStorage'",
+        "name": "key",
+        "description": "The key the class will use to\n                                                               store the data on the storage."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Array"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "['local', 'session', 'temp']",
+        "defaultRaw": "['local', 'session', 'temp']",
+        "name": "typePriority",
+        "description": "The priority list of types of\n                                                               storage the service will try to\n                                                               use when initialized."
+      }
+    ],
+    "type": {
+      "types": [
+        "Object"
+      ],
+      "optional": false,
+      "name": "SimpleStorageStorageOptions"
+    }
+  },
+  {
+    "__docId__": 52,
+    "kind": "typedef",
+    "name": "SimpleStorageEntriesOptions",
+    "memberof": "wootils/browser/simpleStorage.js",
+    "static": true,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorageEntriesOptions",
+    "access": "public",
+    "description": "",
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "false",
+        "defaultRaw": false,
+        "name": "enabled",
+        "description": "Whether or not to use the entries\n                                                   functionality. Enabling it means that all\n                                                   the _\"xxxEntry\"_ methods will be available\n                                                   and that, when deleted or resetted, the\n                                                   storage will become an empty object."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Number"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "3600",
+        "defaultRaw": 3600,
+        "name": "expiration",
+        "description": "The amount of seconds relative to the\n                                                   current time that needs to pass in order to\n                                                   consider an entry expired."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "true",
+        "defaultRaw": true,
+        "name": "deleteExpired",
+        "description": "Whether or not to delete expired entries\n                                                   (both when loading the storage and when\n                                                   trying to access the entries)."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "true",
+        "defaultRaw": true,
+        "name": "saveWhenDeletingExpired",
+        "description": "Whether or not to sync the storage after\n                                                   deleting an expired entry."
+      }
+    ],
+    "type": {
+      "types": [
+        "Object"
+      ],
+      "optional": false,
+      "name": "SimpleStorageEntriesOptions"
+    }
+  },
+  {
+    "__docId__": 53,
+    "kind": "typedef",
+    "name": "SimpleStorageOptions",
+    "memberof": "wootils/browser/simpleStorage.js",
+    "static": true,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorageOptions",
+    "access": "public",
+    "description": "",
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "Boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "true",
+        "defaultRaw": true,
+        "name": "initialize",
+        "description": "Whether or not to initialize the\n                                                          service right from the constructor.\n                                                          It means that it will validate the\n                                                          storage, check for existing data and\n                                                          sync it on the class. This can be\n                                                          disabled in case you need to do\n                                                          something between the constructor and\n                                                          the initialization."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Window"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "window",
+        "description": "The `window`/`global` object the class\n                                                          will use in order to access\n                                                          `localStorage` and `sessionStorage`."
+      },
+      {
+        "nullable": true,
+        "types": [
+          "SimpleStorageStorageLogger"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "logger",
+        "description": "A custom logger to print out the\n                                                          warnings when the class needs to do a\n                                                          fallback to a different storage type."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "SimpleStorageStorageOptions"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "storage",
+        "description": "These are all the options related to\n                                                          the storage itself: The type, the\n                                                          name and the key."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "SimpleStorageEntriesOptions"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "entries",
+        "description": "These are the options for customizing\n                                                          the way the service works with entries.\n                                                          By default, the class saves any kind\n                                                          of object on the storage, but by\n                                                          using entries you can access them by\n                                                          name and even define expiration time\n                                                          so they'll be removed after a while."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "{}",
+        "defaultRaw": {},
+        "name": "tempStorage",
+        "description": "The `tempStorage` is the storage the\n                                                          class uses when none of the others\n                                                          are available. Is just a simple\n                                                          object, so when the class gets\n                                                          destroyed (browser refreshes the\n                                                          page), the data goes away."
+      }
+    ],
+    "type": {
+      "types": [
+        "Object"
+      ],
+      "optional": false,
+      "name": "SimpleStorageOptions"
+    }
+  },
+  {
+    "__docId__": 54,
+    "kind": "typedef",
+    "name": "SimpleStorageStorageAvailableMethod",
+    "memberof": "wootils/browser/simpleStorage.js",
+    "static": true,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorageStorageAvailableMethod",
+    "access": "public",
+    "description": "",
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "fallbackFrom",
+        "description": "If the storage is being used as a fallback from another one that\n                               is not available, this parameter will have its name."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": "Whether or not the storage is available."
+    },
+    "type": {
+      "types": [
+        "Function"
+      ],
+      "optional": false,
+      "name": "SimpleStorageStorageAvailableMethod"
+    }
+  },
+  {
+    "__docId__": 55,
+    "kind": "typedef",
+    "name": "SimpleStorageStorageGetMethod",
+    "memberof": "wootils/browser/simpleStorage.js",
+    "static": true,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorageStorageGetMethod",
+    "access": "public",
+    "description": "",
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "The key used by the class to save data on the storage."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": "The contents from the storage."
+    },
+    "type": {
+      "types": [
+        "Function"
+      ],
+      "optional": false,
+      "name": "SimpleStorageStorageGetMethod"
+    }
+  },
+  {
+    "__docId__": 56,
+    "kind": "typedef",
+    "name": "SimpleStorageStorageSetMethod",
+    "memberof": "wootils/browser/simpleStorage.js",
+    "static": true,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorageStorageSetMethod",
+    "access": "public",
+    "description": "",
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "The key used by the class to save data on the storage."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "The data to save on the storage."
+      }
+    ],
+    "type": {
+      "types": [
+        "Function"
+      ],
+      "optional": false,
+      "name": "SimpleStorageStorageSetMethod"
+    }
+  },
+  {
+    "__docId__": 57,
+    "kind": "typedef",
+    "name": "SimpleStorageStorageDeleteMethod",
+    "memberof": "wootils/browser/simpleStorage.js",
+    "static": true,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorageStorageDeleteMethod",
+    "access": "public",
+    "description": "",
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "The key used by the class to save data on the storage."
+      }
+    ],
+    "type": {
+      "types": [
+        "Function"
+      ],
+      "optional": false,
+      "name": "SimpleStorageStorageDeleteMethod"
+    }
+  },
+  {
+    "__docId__": 58,
+    "kind": "typedef",
+    "name": "SimpleStorageStorage",
+    "memberof": "wootils/browser/simpleStorage.js",
+    "static": true,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorageStorage",
+    "access": "public",
+    "description": "",
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "name",
+        "description": "The name of the storage."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "SimpleStorageStorageAvailableMethod"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "available",
+        "description": "The method to check if the storage can\n                                                          be used or not."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "SimpleStorageStorageGetMethod"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "get",
+        "description": "The method used to read from the\n                                                          storage."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "SimpleStorageStorageSetMethod"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "set",
+        "description": "The method used to write on the\n                                                          storage."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "SimpleStorageStorageDeleteMethod"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "delete",
+        "description": "The method used to delete data from\n                                                          the storage."
+      }
+    ],
+    "type": {
+      "types": [
+        "Object"
+      ],
+      "optional": false,
+      "name": "SimpleStorageStorage"
+    }
+  },
+  {
+    "__docId__": 59,
+    "kind": "typedef",
+    "name": "SimpleStorageEntry",
+    "memberof": "wootils/browser/simpleStorage.js",
+    "static": true,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorageEntry",
+    "access": "public",
+    "description": "",
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "time",
+        "description": "The timestamp of when the entry was first created."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "The actual data for the entry."
+      }
+    ],
+    "type": {
+      "types": [
+        "Object"
+      ],
+      "optional": false,
+      "name": "SimpleStorageEntry"
+    }
+  },
+  {
+    "__docId__": 60,
+    "kind": "class",
+    "name": "SimpleStorage",
+    "memberof": "wootils/browser/simpleStorage.js",
+    "static": true,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "access": "public",
+    "export": true,
+    "importPath": "wootils/wootils/browser/simpleStorage.js",
+    "importStyle": "SimpleStorage",
+    "description": "An abstract class allows you to build services that relay on browser storage (session/local)\nand simplifies the way you work it\nYou can specify the storage type you want to use, the format in which you want to handle the\ndata and even expiration time for it.",
+    "lineNumber": 122,
+    "abstract": true,
+    "interface": false
+  },
+  {
+    "__docId__": 61,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#constructor",
+    "access": "public",
+    "description": "Class constructor.",
+    "lineNumber": 129,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "SimpleStorageOptions"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "{}",
+        "defaultRaw": {},
+        "name": "options",
+        "description": "The options to customize the class."
+      }
+    ],
+    "abstract": true,
+    "throws": [
+      {
+        "types": [
+          "Error"
+        ],
+        "description": "If instantiated without extending it."
+      }
+    ]
+  },
+  {
+    "__docId__": 62,
+    "kind": "member",
+    "name": "_options",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_options",
+    "access": "protected",
+    "description": "These are the options/settings the class uses in order to work the with the storage and\nthe data.",
+    "lineNumber": 142,
+    "type": {
+      "nullable": null,
+      "types": [
+        "SimpleStorageOptions"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 63,
+    "kind": "member",
+    "name": "_storageTypes",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_storageTypes",
+    "access": "protected",
+    "description": "A dictionary with the storage types the class supports.",
+    "lineNumber": 171,
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "SimpleStorageStorage"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "local",
+        "description": "The methods to work with `localStorage`."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "SimpleStorageStorage"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "session",
+        "description": "The methods to work with `sessionStorage`."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "SimpleStorageStorage"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "temp",
+        "description": "The methods to work with the _\"temp storage\"_."
+      }
+    ],
+    "type": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 64,
+    "kind": "member",
+    "name": "_storage",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_storage",
+    "access": "protected",
+    "description": "Once the class is initialized, this property will hold a reference to the\n{@link SimpleStorageStorage} being used.",
+    "lineNumber": 200,
+    "type": {
+      "nullable": true,
+      "types": [
+        "SimpleStorageStorage"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 65,
+    "kind": "member",
+    "name": "_data",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_data",
+    "access": "protected",
+    "description": "This is the object/dictionary the class will use to sync the content of the storage. That\nway you won't need to write/read/parse from the storage every time you need to do something.",
+    "lineNumber": 207,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 66,
+    "kind": "method",
+    "name": "_initialize",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_initialize",
+    "access": "protected",
+    "description": "This method _\"initializes\" the class by validating custom options, loading the reference for\nthe required storage and synchronizing the data with the storage.",
+    "lineNumber": 218,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 69,
+    "kind": "method",
+    "name": "_getInitialData",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_getInitialData",
+    "access": "protected",
+    "description": "This method is called when the storage is deleted or resetted and if entries are disabled.\nIt can be used to define the initial value of the data the class saves on the storage.",
+    "lineNumber": 229,
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 70,
+    "kind": "method",
+    "name": "_getData",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_getData",
+    "access": "protected",
+    "description": "Access the data the class saves on the storage.",
+    "lineNumber": 237,
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 71,
+    "kind": "method",
+    "name": "_setData",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_setData",
+    "access": "protected",
+    "description": "Overwrites the data reference the class has and, if `save` is used, it also saves it into\nthe storage.",
+    "lineNumber": 251,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object",
+          "Promise"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "data",
+        "description": "The new data, or a {@link Promise} that resolves into the\n                                     new data."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "true",
+        "defaultRaw": true,
+        "name": "save",
+        "description": "Whether or not the class should save the data into the\n                                     storage."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object\\Promise"
+      ],
+      "spread": false,
+      "description": "If `data` is an {@link Object}, it will return the same object; but\n                         if `data` is a {@link Promise}, it will return the _\"promise chain\"_."
+    }
+  },
+  {
+    "__docId__": 72,
+    "kind": "method",
+    "name": "_setResolvedData",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_setResolvedData",
+    "access": "protected",
+    "description": "This is the real method behind `_setData`. It overwrites the data reference the class\nhas and, if `save` is used, it also saves it into the storage.\nThe reason that there are two methods for this is, is because `_setData` can receive a\n{@link Promise}, and in that case, this method gets called after it gets resolved.",
+    "lineNumber": 266,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "data",
+        "description": "The new data."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "save",
+        "description": "Whether or not the class should save the data into the storage."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": "The same data that was saved."
+    }
+  },
+  {
+    "__docId__": 74,
+    "kind": "method",
+    "name": "_resetData",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_resetData",
+    "access": "protected",
+    "description": "Resets the data on the class; If entries are enabled, the data will become an empty\n{@link Object}; otherwise, it will call {@link this#_getInitialData}.",
+    "lineNumber": 280,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "true",
+        "defaultRaw": true,
+        "name": "save",
+        "description": "Whether or not the class should save the data into the storage."
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 75,
+    "kind": "method",
+    "name": "_getEntry",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_getEntry",
+    "access": "protected",
+    "description": "Gets an entry from the storage dictionary.",
+    "lineNumber": 291,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "The entry key."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "SimpleStorageEntry"
+      ],
+      "spread": false,
+      "description": "Whatever is on the storage."
+    },
+    "throws": [
+      {
+        "types": [
+          "Error"
+        ],
+        "description": "If entries are not enabled."
+      }
+    ]
+  },
+  {
+    "__docId__": 76,
+    "kind": "method",
+    "name": "_getEntryValue",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_getEntryValue",
+    "access": "protected",
+    "description": "Gets the value of an entry.",
+    "lineNumber": 317,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "The entry key."
+      }
+    ],
+    "return": {
+      "nullable": true,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 77,
+    "kind": "method",
+    "name": "_addEntry",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_addEntry",
+    "access": "protected",
+    "description": "Adds a new entry to the class data, and if `save` is used, saves it into the storage.",
+    "lineNumber": 333,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "The entry key."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object",
+          "Promise"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "The entry value, or a {@link Promise} that resolves into\n                                    the value."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "true",
+        "defaultRaw": true,
+        "name": "save",
+        "description": "Whether or not the class should save the data into the\n                                    storage."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object\\Promise"
+      ],
+      "spread": false,
+      "description": "If `value` is an {@link Object}, it will return the same object; but\n                         if `value` is a {@link Promise}, it will return the\n                         _\"promise chain\"_."
+    }
+  },
+  {
+    "__docId__": 78,
+    "kind": "method",
+    "name": "_addResolvedEntry",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_addResolvedEntry",
+    "access": "protected",
+    "description": "This is the real method behind `_addEntry`. It Adds a new entry to the class data and, if\n`save` is used, it also saves it into the storage.\nThe reason that there are two methods for this is, is because `_addEntry` can receive a\n{@link Promise}, and in that case, this method gets called after it gets resolved.",
+    "lineNumber": 349,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "The entry key."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "The entry value."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "save",
+        "description": "Whether or not the class should save the data into the storage."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": "The same data that was saved."
+    }
+  },
+  {
+    "__docId__": 79,
+    "kind": "method",
+    "name": "_deleteEntry",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_deleteEntry",
+    "access": "protected",
+    "description": "Deletes an entry from the class data, and if `save` is used, the changes will be saved on\nthe storage.",
+    "lineNumber": 370,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "The entry key."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "true",
+        "defaultRaw": true,
+        "name": "save",
+        "description": "Whether or not the class should save the data into the storage\n                             after deleting the entry."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": "Whether or not the entry was deleted."
+    }
+  },
+  {
+    "__docId__": 80,
+    "kind": "method",
+    "name": "_hasEntry",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_hasEntry",
+    "access": "protected",
+    "description": "Checks whether an entry exists or not.",
+    "lineNumber": 387,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "The entry key."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 81,
+    "kind": "method",
+    "name": "_delete",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_delete",
+    "access": "protected",
+    "description": "Deletes the class data from the storage.",
+    "lineNumber": 397,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "true",
+        "defaultRaw": true,
+        "name": "reset",
+        "description": "Whether or not to reset the data to the initial data\n                              (`_getInitialData`), if entries area disabled, or to an empty\n                              object, if they are enabled."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 82,
+    "kind": "method",
+    "name": "_save",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_save",
+    "access": "protected",
+    "description": "Saves the data from the class into the storage.",
+    "lineNumber": 409,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 83,
+    "kind": "method",
+    "name": "_mergeOptions",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_mergeOptions",
+    "access": "protected",
+    "description": "Merges the class default options with the custom ones that can be sent to the constructor.\nThe reason there's a method for this is because some of the options can be functions, and\ndeep merges with functions can go wrong (and are expensive), so this methods takes out the\nfunctions first, does the merge and then adds them again.\nSimilar to what it does for fuctions, it also takes out arrays: Merging arrays not always work\nas expected if the base array has some values already. Instead of the base values being\noverwritten, they are replaced with the amount of values specified on the _\"overwrite array\"_.\nIs easy to understand the reason, but nonetheless, it makes it confussing for an option to\nbehave like that.",
+    "lineNumber": 427,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "SimpleStorageOptions"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "defaults",
+        "description": "The class default options."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "SimpleStorageOptions"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "custom",
+        "description": "The custom options sent to the constructor."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "SimpleStorageOptions"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 84,
+    "kind": "method",
+    "name": "_validateOptions",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_validateOptions",
+    "access": "protected",
+    "description": "Validates the class options before loading the storage and the data.",
+    "lineNumber": 464,
+    "throws": [
+      {
+        "types": [
+          "Error"
+        ],
+        "description": "If either `storage.name` or `storage.key` are missing from the options."
+      },
+      {
+        "types": [
+          "Error"
+        ],
+        "description": "If the options have a custom logger but it doesn't have `warn` nor `warning`\n                methods."
+      }
+    ],
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 85,
+    "kind": "method",
+    "name": "_initializeStorage",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_initializeStorage",
+    "access": "protected",
+    "description": "This method checks the list of priorities from the `storage.typePriority` option and tries\nto find the first available storage.",
+    "lineNumber": 486,
+    "return": {
+      "nullable": null,
+      "types": [
+        "SimpleStorageStorage"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "throws": [
+      {
+        "types": [
+          "Error"
+        ],
+        "description": "If none of the storage options are available."
+      }
+    ],
+    "params": []
+  },
+  {
+    "__docId__": 86,
+    "kind": "method",
+    "name": "_initializeStorageData",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_initializeStorageData",
+    "access": "protected",
+    "description": "Initializes the data on the class and if needed, on the storage. It first tries to load\nexisting data from the storage, if there's nothing, it just sets an initial stage; but if\nthere was something on the storage, and entries are enabled, it will try (if also enabled)\nto delete expired entries.",
+    "lineNumber": 511,
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 87,
+    "kind": "method",
+    "name": "_deleteExpiredEntries",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_deleteExpiredEntries",
+    "access": "protected",
+    "description": "Filters out a dictionary of entries by checking if they expired or not.",
+    "lineNumber": 532,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "entries",
+        "description": "A dictionary of key-value, where the value is a\n                            {@link SimpleStorageEntry}."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "number"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "expiration",
+        "description": "The amount of seconds that need to have passed in order to\n                            consider an entry expired."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": "A new dictionary without the expired entries."
+    }
+  },
+  {
+    "__docId__": 88,
+    "kind": "method",
+    "name": "_warn",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_warn",
+    "access": "protected",
+    "description": "Prints out a warning message. The method will first check if there's a custom logger (from\nthe class options), otherwise, it will fallback to the `console` on the `window` option.",
+    "lineNumber": 550,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "message",
+        "description": "The message to print out."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 89,
+    "kind": "method",
+    "name": "_copy",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_copy",
+    "access": "protected",
+    "description": "Makes a deep copy of an object.",
+    "lineNumber": 569,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "obj",
+        "description": "The object to copy."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 90,
+    "kind": "method",
+    "name": "_now",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_now",
+    "access": "protected",
+    "description": "Helper method to get the current timestamp in seconds.",
+    "lineNumber": 577,
+    "return": {
+      "nullable": null,
+      "types": [
+        "number"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "params": []
+  },
+  {
+    "__docId__": 91,
+    "kind": "method",
+    "name": "_isPromise",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_isPromise",
+    "access": "protected",
+    "description": "Checkes whether an object is a Promise or not.",
+    "lineNumber": 586,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "obj",
+        "description": "The object to test."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 92,
+    "kind": "method",
+    "name": "_warnStorageFallback",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_warnStorageFallback",
+    "access": "protected",
+    "description": "Prints out a message saying that the class is doing a fallback from a storage to another\none.",
+    "lineNumber": 600,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "from",
+        "description": "The name of the storage that's not available."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "to",
+        "description": "The name of the storage that will be used instead."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 93,
+    "kind": "method",
+    "name": "_isLocalStorageAvailable",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_isLocalStorageAvailable",
+    "access": "protected",
+    "description": "Checks whether `localStorage` is available or not.",
+    "lineNumber": 610,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "fallbackFrom",
+        "description": "In case it's being used as a fallback, this will be the name\n                               of the storage that wasn't available."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 94,
+    "kind": "method",
+    "name": "_getFromLocalStorage",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_getFromLocalStorage",
+    "access": "protected",
+    "description": "Gets an object from `localStorage`.",
+    "lineNumber": 623,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "The key used to save the object."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 95,
+    "kind": "method",
+    "name": "_setOnLocalStorage",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_setOnLocalStorage",
+    "access": "protected",
+    "description": "Sets an object into the `localStorage`.",
+    "lineNumber": 633,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "The object key."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "The object to save."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 96,
+    "kind": "method",
+    "name": "_deleteFromLocalStorage",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_deleteFromLocalStorage",
+    "access": "protected",
+    "description": "Deletes an object from the `localStorage`.",
+    "lineNumber": 641,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "The object key."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 97,
+    "kind": "method",
+    "name": "_isSessionStorageAvailable",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_isSessionStorageAvailable",
+    "access": "protected",
+    "description": "Checks whether `sessionStorage` is available or not.",
+    "lineNumber": 651,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "fallbackFrom",
+        "description": "In case it's being used as a fallback, this will be the name\n                               of the storage that wasn't available."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 98,
+    "kind": "method",
+    "name": "_getFromSessionStorage",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_getFromSessionStorage",
+    "access": "protected",
+    "description": "Gets an object from `sessionStorage`.",
+    "lineNumber": 664,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "The key used to save the object."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 99,
+    "kind": "method",
+    "name": "_setOnSessionStorage",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_setOnSessionStorage",
+    "access": "protected",
+    "description": "Sets an object into the `sessionStorage`.",
+    "lineNumber": 674,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "The object key."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "The object to save."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 100,
+    "kind": "method",
+    "name": "_deleteFromSessionStorage",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_deleteFromSessionStorage",
+    "access": "protected",
+    "description": "Deletes an object from the `sessionStorage`.",
+    "lineNumber": 682,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "The object key."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 101,
+    "kind": "method",
+    "name": "_isTempStorageAvailable",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_isTempStorageAvailable",
+    "access": "protected",
+    "description": "This method is just here to comply with the {@link SimpleStorageStorage} _\"interface\"_ as\nthe temp storage is always available.",
+    "lineNumber": 693,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "fallbackFrom",
+        "description": "In case it's being used as a fallback, this will be the name\n                               of the storage that wasn't available."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 102,
+    "kind": "method",
+    "name": "_getFromTempStorage",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_getFromTempStorage",
+    "access": "protected",
+    "description": "Gets an object from the _\"temp storage\"_.",
+    "lineNumber": 706,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "The key used to save the object."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 103,
+    "kind": "method",
+    "name": "_setOnTempStorage",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_setOnTempStorage",
+    "access": "protected",
+    "description": "Sets an object into the _\"temp storage\"_.",
+    "lineNumber": 715,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "The object key."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "The object to save."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 104,
+    "kind": "method",
+    "name": "_deleteFromTempStorage",
+    "memberof": "wootils/browser/simpleStorage.js~SimpleStorage",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/browser/simpleStorage.js~SimpleStorage#_deleteFromTempStorage",
+    "access": "protected",
+    "description": "Deletes an object from the _\"temp storage\"_.",
+    "lineNumber": 723,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key",
+        "description": "The object key."
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 105,
+    "kind": "file",
     "name": "wootils/node/appConfiguration.js",
     "content": "const path = require('path');\nconst extend = require('extend');\nconst { provider } = require('jimple');\n/**\n * @typedef {Object} AppConfigurationOptions\n * @property {string} [defaultConfigurationName='default']           The name of the default\n *                                                                   configuration\n * @property {string} [environmentVariable='APP_CONFIG']             The name of the variable it\n *                                                                   will read in order to\n *                                                                   determine which configuration\n *                                                                   to load\n * @property {string} [path='./config/[app-name]']                   The path to the configurations\n *                                                                   directory, relative to the\n *                                                                   project root path.\n * @property {string} [filenameFormat='[app-name].[name].config.js'] The name format of the\n *                                                                   configuration files. You\n *                                                                   need to use the `[name]`\n *                                                                   placeholder so the service\n *                                                                   can replace it with the name\n *                                                                   of the configuration.\n */\n\n/**\n * This is a service to manage applications configurations. It takes care of loading, activating,\n * switching and merging configuration files.\n */\nclass AppConfiguration {\n  /**\n   * Class constructor.\n   * @param {EnvironmentUtils}        environmentUtils          Required to read the environment\n   *                                                            variables and determine which\n   *                                                            configuration to use.\n   * @param {Function}                rootRequire               Necessary to be able to require the\n   *                                                            configuration files with paths\n   *                                                            relative to the app root directory.\n   * @param {string}                  [appName='app']           The name of the app using this\n   *                                                            service.\n   *                                                            It's also used as part of the name\n   *                                                            of the configuration files.\n   * @param {Object}                  [defaultConfiguration={}] The default configuration the others\n   *                                                            will extend.\n   * @param {AppConfigurationOptions} [options={}]              Options to customize the service\n   */\n  constructor(\n    environmentUtils,\n    rootRequire,\n    appName = 'app',\n    defaultConfiguration = {},\n    options = {}\n  ) {\n    /**\n     * A local reference for the `environmentUtils` service.\n     * @type {EnvironmentUtils}\n     */\n    this.environmentUtils = environmentUtils;\n    /**\n     * The function that allows the service to `require` a configuration file with a path relative\n     * to the app root directory.\n     * @type {Function}\n     */\n    this.rootRequire = rootRequire;\n    /**\n     * The service customizable options.\n     * @type {AppConfigurationOptions}\n     */\n    this.options = extend(true, {\n      defaultConfigurationName: 'default',\n      environmentVariable: 'APP_CONFIG',\n      path: `./config/${appName}`,\n      filenameFormat: `${appName}.[name].config.js`,\n    }, options);\n    /**\n     * A dictionary with all the loaded configurations. It uses the names of the configurations\n     * as keys.\n     * @type {Object}\n     */\n    this.configurations = {\n      [this.options.defaultConfigurationName]: defaultConfiguration,\n    };\n    /**\n     * The name of the active configuration.\n     * @type {string}\n     */\n    this.activeConfiguration = this.options.defaultConfigurationName;\n    /**\n     * Whether or not the configuration can be switched.\n     * @type {boolean}\n     */\n    this.allowConfigurationSwitch = !!this.get('allowConfigurationSwitch');\n  }\n  /**\n   * Load a new configuration.\n   * @param {string}  name            The configuration name.\n   * @param {Object}  settings        The configuration settings.\n   * @param {boolean} [switchTo=true] If the service should switch to the new configuration after\n   *                                  adding it.\n   * @return {Object} The settings of the new configuration.\n   * @throws {Error} If the configuration tries to extend a configuration that doesn't exist.\n   */\n  load(name, settings, switchTo = true) {\n    // Get the name of the configuration it will extend.\n    const extendsFrom = settings.extends || this.options.defaultConfigurationName;\n    // Get the settings of the configuration to extend.\n    const baseConfiguration = this.getConfig(extendsFrom);\n    // If the base configuration exists...\n    if (baseConfiguration) {\n      // ...add the new configuration with the merged settings.\n      this._addConfiguration(\n        name,\n        extend(true, {}, baseConfiguration, settings),\n        true,\n        switchTo\n      );\n    } else {\n      // ...otherwise, fail with an error.\n      throw new Error(`The base configuration for ${name} doesn't exist: ${extendsFrom}`);\n    }\n    // Return the loaded configuration.\n    return this.getConfig(name);\n  }\n  /**\n   * Load a configuration from a file.\n   * @param {string}  name                   The name of the configuration.\n   * @param {boolean} [switchTo=true]        If the service should switch to the new configuration\n   *                                         after adding it.\n   * @param {boolean} [checkSwitchFlag=true] If `true`, the service will update the value of\n   *                                         `allowConfigurationSwitch` based on the loaded\n   *                                         configuration setting.\n   * @return {Object} The settings of the loaded configuration.\n   * @throws {Error} If the configuration file can't be loaded.\n   */\n  loadFromFile(name, switchTo = true, checkSwitchFlag = true) {\n    // Format the name of the configuration file.\n    const filename = this.options.filenameFormat.replace(/\\[name\\]/g, name);\n    // Build the path to the configuration file.\n    const filepath = path.join(this.options.path, filename);\n\n    let settings = {};\n    // Try to require it.\n    try {\n      settings = this.rootRequire(filepath);\n    } catch (error) {\n      throw new Error(`The configuration file couldn't be loaded: ${filepath}`);\n    }\n\n    // Get the name of the configuration it will extend.\n    const extendsFrom = settings.extends || this.options.defaultConfigurationName;\n    // Get the base configuration from either the service or by loading it.\n    const baseConfiguration = this.getConfig(extendsFrom) || this.loadFromFile(extendsFrom, false);\n    // Add the new configuration with the merged settings.\n    this._addConfiguration(\n      name,\n      extend(true, {}, baseConfiguration, settings),\n      checkSwitchFlag,\n      switchTo\n    );\n    // Return the loaded configuration.\n    return this.getConfig(name);\n  }\n  /**\n   * Check if there's a configuration name on the environment variable and if there is, try to load\n   * the configuration file for it.\n   * @return {Object} The loaded configuration or an empty object if the variable was empty.\n   */\n  loadFromEnvironment() {\n    const name = this.environmentUtils.get(this.options.environmentVariable);\n    let result = {};\n    if (name) {\n      result = this.loadFromFile(name);\n    }\n\n    return result;\n  }\n  /**\n   * Get a configuration settings. If no name is specified, it will return the settings of the\n   * default configuration.\n   * @param {string} [name=''] The name of the configuration.\n   * @return {Object}\n   */\n  getConfig(name = '') {\n    return this.configurations[(name || this.activeConfiguration)];\n  }\n  /**\n   * Get a setting or settings from the active configuration.\n   * @example\n   * // To get a single setting\n   * const value = appConfiguration.get('some-setting');\n   * // To get multiple values\n   * const {settingOne, settingTwo} = appConfiguration.get(['settingOne', 'settingTwo']);\n   * @param {string|Array} setting The name of a setting or a list of them.\n   * @return {*}\n   */\n  get(setting) {\n    let result;\n    if (Array.isArray(setting)) {\n      result = {};\n      setting.forEach((name) => {\n        result[name] = this.get(name);\n      });\n    } else if (setting === 'name') {\n      result = this.activeConfiguration;\n    } else {\n      result = this.getConfig()[setting];\n    }\n\n    return result;\n  }\n  /**\n   * Set the value of a setting or settings from the active configuration.\n   * If both the current and the new value of a setting are objects, then instead of overwriting\n   * it, the method will merge them.\n   * @example\n   * // To set a single setting value\n   * appConfiguration.set('some-setting', 'some-setting-value');\n   * // To set the value of multiple settings\n   * appConfiguration.set({\n   *   settingOne: 'valueOne',\n   *   settingTwo: 'valueTwo',\n   * })\n   * @param {string|Object} setting The name of the setting to update or a dictionary of settings\n   *                                and their values.\n   * @param {*}             value   The value of the setting. This is only used when `setting` is\n   *                                a string.\n   */\n  set(setting, value) {\n    if (typeof setting === 'object') {\n      Object.keys(setting).forEach((name) => {\n        this.set(name, setting[name]);\n      });\n    } else if (typeof value !== 'undefined') {\n      const currentValue = this.get(setting);\n      let newValue = value;\n      if (typeof value === 'object' && typeof currentValue !== 'undefined') {\n        newValue = extend(true, {}, currentValue, value);\n      }\n\n      this.getConfig()[setting] = newValue;\n    } else {\n      throw new Error('You need to send a value in order to update a setting');\n    }\n  }\n  /**\n   * Check whether the service can switch configurations or not.\n   * @return {boolean}\n   */\n  canSwitch() {\n    return this.allowConfigurationSwitch;\n  }\n  /**\n   * Switch to a different configuration. If the configuration is not registered, it will try to\n   * load from a file.\n   * @param {string}  name          The new of the configuration to switch to.\n   * @param {boolean} [force=false] A way to force the service to switch even if the\n   *                                `allowConfigurationSwitch` property if `false`.\n   * @return {Object} The new active configuration.\n   * @throws {Error} If `force` is `false` and the `allowConfigurationSwitch` property is `false`.\n   */\n  switch(name, force = false) {\n    if (!this.canSwitch() && !force) {\n      throw new Error(`You can't switch the configuration to '${name}', the feature is disabled`);\n    } else if (!this.configurations[name]) {\n      this.loadFromFile(name, true, false);\n    } else {\n      this.activeConfiguration = name;\n    }\n\n    return this.getConfig();\n  }\n  /**\n   * Add a new configuration to the service.\n   * @param {string}  name            The name of the new configuration.\n   * @param {Object}  settings        The configuration settings.\n   * @param {boolean} checkSwitchFlag Whether or not the `allowConfigurationSwitch` should be\n   *                                  updated with the value of this new configuration setting.\n   * @param {boolean} switchTo        Whether or not to switch it to the active configuration\n   *                                  after adding it.\n   * @ignore\n   * @access protected\n   */\n  _addConfiguration(name, settings, checkSwitchFlag, switchTo) {\n    const newSettings = extend(true, {}, settings);\n    delete newSettings.extends;\n\n    if (checkSwitchFlag && typeof newSettings.allowConfigurationSwitch === 'boolean') {\n      this.allowConfigurationSwitch = newSettings.allowConfigurationSwitch;\n    }\n\n    this.configurations[name] = newSettings;\n    if (switchTo) {\n      this.switch(name, true);\n    }\n  }\n}\n/**\n * Generates a `Provider` with an already defined name, default configuration and options.\n * @example\n * // Generate the provider\n * const provider = appConfiguration('my-app', {\n *   birthday: '25-09-2015',\n * });\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const appConfiguration = container.get('appConfiguration');\n * @param {string} [appName]              The name of the app.\n * @param {Object} [defaultConfiguration] The service default configuration.\n * @param {Object} [options]              Options to customize the service.\n * @return {Provider}\n */\nconst appConfiguration = (\n  appName,\n  defaultConfiguration,\n  options\n) => provider((app) => {\n  app.set('appConfiguration', () => new AppConfiguration(\n    app.get('environmentUtils'),\n    app.get('rootRequire'),\n    appName,\n    defaultConfiguration,\n    options\n  ));\n});\n\nmodule.exports = {\n  AppConfiguration,\n  appConfiguration,\n};\n",
     "static": true,
@@ -575,7 +2436,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 49,
+    "__docId__": 106,
     "kind": "typedef",
     "name": "AppConfigurationOptions",
     "memberof": "wootils/node/appConfiguration.js",
@@ -642,7 +2503,7 @@
     }
   },
   {
-    "__docId__": 50,
+    "__docId__": 107,
     "kind": "class",
     "name": "AppConfiguration",
     "memberof": "wootils/node/appConfiguration.js",
@@ -657,7 +2518,7 @@
     "interface": false
   },
   {
-    "__docId__": 51,
+    "__docId__": 108,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "wootils/node/appConfiguration.js~AppConfiguration",
@@ -728,7 +2589,7 @@
     ]
   },
   {
-    "__docId__": 52,
+    "__docId__": 109,
     "kind": "member",
     "name": "environmentUtils",
     "memberof": "wootils/node/appConfiguration.js~AppConfiguration",
@@ -747,7 +2608,7 @@
     }
   },
   {
-    "__docId__": 53,
+    "__docId__": 110,
     "kind": "member",
     "name": "rootRequire",
     "memberof": "wootils/node/appConfiguration.js~AppConfiguration",
@@ -766,7 +2627,7 @@
     }
   },
   {
-    "__docId__": 54,
+    "__docId__": 111,
     "kind": "member",
     "name": "options",
     "memberof": "wootils/node/appConfiguration.js~AppConfiguration",
@@ -785,7 +2646,7 @@
     }
   },
   {
-    "__docId__": 55,
+    "__docId__": 112,
     "kind": "member",
     "name": "configurations",
     "memberof": "wootils/node/appConfiguration.js~AppConfiguration",
@@ -804,7 +2665,7 @@
     }
   },
   {
-    "__docId__": 56,
+    "__docId__": 113,
     "kind": "member",
     "name": "activeConfiguration",
     "memberof": "wootils/node/appConfiguration.js~AppConfiguration",
@@ -823,7 +2684,7 @@
     }
   },
   {
-    "__docId__": 57,
+    "__docId__": 114,
     "kind": "member",
     "name": "allowConfigurationSwitch",
     "memberof": "wootils/node/appConfiguration.js~AppConfiguration",
@@ -842,7 +2703,7 @@
     }
   },
   {
-    "__docId__": 58,
+    "__docId__": 115,
     "kind": "method",
     "name": "load",
     "memberof": "wootils/node/appConfiguration.js~AppConfiguration",
@@ -905,7 +2766,7 @@
     ]
   },
   {
-    "__docId__": 59,
+    "__docId__": 116,
     "kind": "method",
     "name": "loadFromFile",
     "memberof": "wootils/node/appConfiguration.js~AppConfiguration",
@@ -970,7 +2831,7 @@
     ]
   },
   {
-    "__docId__": 60,
+    "__docId__": 117,
     "kind": "method",
     "name": "loadFromEnvironment",
     "memberof": "wootils/node/appConfiguration.js~AppConfiguration",
@@ -992,7 +2853,7 @@
     "params": []
   },
   {
-    "__docId__": 61,
+    "__docId__": 118,
     "kind": "method",
     "name": "getConfig",
     "memberof": "wootils/node/appConfiguration.js~AppConfiguration",
@@ -1027,7 +2888,7 @@
     }
   },
   {
-    "__docId__": 62,
+    "__docId__": 119,
     "kind": "method",
     "name": "get",
     "memberof": "wootils/node/appConfiguration.js~AppConfiguration",
@@ -1064,7 +2925,7 @@
     }
   },
   {
-    "__docId__": 63,
+    "__docId__": 120,
     "kind": "method",
     "name": "set",
     "memberof": "wootils/node/appConfiguration.js~AppConfiguration",
@@ -1104,7 +2965,7 @@
     "return": null
   },
   {
-    "__docId__": 64,
+    "__docId__": 121,
     "kind": "method",
     "name": "canSwitch",
     "memberof": "wootils/node/appConfiguration.js~AppConfiguration",
@@ -1126,7 +2987,7 @@
     "params": []
   },
   {
-    "__docId__": 65,
+    "__docId__": 122,
     "kind": "method",
     "name": "switch",
     "memberof": "wootils/node/appConfiguration.js~AppConfiguration",
@@ -1179,7 +3040,7 @@
     ]
   },
   {
-    "__docId__": 67,
+    "__docId__": 124,
     "kind": "method",
     "name": "_addConfiguration",
     "memberof": "wootils/node/appConfiguration.js~AppConfiguration",
@@ -1236,7 +3097,7 @@
     "return": null
   },
   {
-    "__docId__": 69,
+    "__docId__": 126,
     "kind": "function",
     "name": "appConfiguration",
     "memberof": "wootils/node/appConfiguration.js",
@@ -1295,7 +3156,7 @@
     }
   },
   {
-    "__docId__": 70,
+    "__docId__": 127,
     "kind": "file",
     "name": "wootils/node/environmentUtils.js",
     "content": "const { provider } = require('jimple');\n/**\n * A simple service to avoid calling `process.env` on multiples places of an app.\n */\nclass EnvironmentUtils {\n  /**\n   * Class constructor.\n   */\n  constructor() {\n    /**\n     * The current `NODE_ENV`. If the variable is empty, the value will be `development`.\n     * @type {string}\n     */\n    this.env = this.get('NODE_ENV', 'development');\n    /**\n     * Whether or not the environment is production.\n     * @type {boolean}\n     */\n    this.production = this.env === 'production';\n  }\n  /**\n   * Get the value of an environment variable.\n   * @param {string} name              The name of the variable.\n   * @param {string} [defaultValue=''] A fallback value in case the variable is `undefined`\n   * @return {string}\n   * @todo add a `require` parameter to throw an error if the variable is not preset.\n   */\n  get(name, defaultValue = '') {\n    // eslint-disable-next-line no-process-env\n    let value = process.env[name];\n    if (typeof value === 'undefined') {\n      value = defaultValue;\n    }\n\n    return value;\n  }\n  /**\n   * Check whether or not the environment is for development.\n   * @return {boolean}\n   */\n  get development() {\n    return !this.production;\n  }\n}\n/**\n * The service provider that once registered on the app container will set an instance of\n * `EnvironmentUtils` as the `environmentUtils` service.\n * @example\n * // Register it on the container\n * container.register(environmentUtils);\n * // Getting access to the service instance\n * const environmentUtils = container.get('environmentUtils');\n * @type {Provider}\n */\nconst environmentUtils = provider((app) => {\n  app.set('environmentUtils', () => new EnvironmentUtils());\n});\n\nmodule.exports = {\n  EnvironmentUtils,\n  environmentUtils,\n};\n",
@@ -1306,7 +3167,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 71,
+    "__docId__": 128,
     "kind": "class",
     "name": "EnvironmentUtils",
     "memberof": "wootils/node/environmentUtils.js",
@@ -1321,7 +3182,7 @@
     "interface": false
   },
   {
-    "__docId__": 72,
+    "__docId__": 129,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "wootils/node/environmentUtils.js~EnvironmentUtils",
@@ -1334,7 +3195,7 @@
     "lineNumber": 9
   },
   {
-    "__docId__": 73,
+    "__docId__": 130,
     "kind": "member",
     "name": "env",
     "memberof": "wootils/node/environmentUtils.js~EnvironmentUtils",
@@ -1353,7 +3214,7 @@
     }
   },
   {
-    "__docId__": 74,
+    "__docId__": 131,
     "kind": "member",
     "name": "production",
     "memberof": "wootils/node/environmentUtils.js~EnvironmentUtils",
@@ -1372,7 +3233,7 @@
     }
   },
   {
-    "__docId__": 75,
+    "__docId__": 132,
     "kind": "method",
     "name": "get",
     "memberof": "wootils/node/environmentUtils.js~EnvironmentUtils",
@@ -1420,7 +3281,7 @@
     }
   },
   {
-    "__docId__": 76,
+    "__docId__": 133,
     "kind": "get",
     "name": "development",
     "memberof": "wootils/node/environmentUtils.js~EnvironmentUtils",
@@ -1446,7 +3307,7 @@
     }
   },
   {
-    "__docId__": 77,
+    "__docId__": 134,
     "kind": "variable",
     "name": "environmentUtils",
     "memberof": "wootils/node/environmentUtils.js",
@@ -1471,7 +3332,7 @@
     }
   },
   {
-    "__docId__": 78,
+    "__docId__": 135,
     "kind": "file",
     "name": "wootils/node/errorHandler.js",
     "content": "const { provider } = require('jimple');\n/**\n * An error handler that captures uncaught exceptions and unhandled rejections in order to log\n * them with detail.\n * @todo The `process.exit` should be configurable.\n */\nclass ErrorHandler {\n  /**\n   * Class constructor.\n   * @param {Logger}  appLogger          To log the detail of the erros.\n   * @param {boolean} [exitOnError=true] Whether or not to exit the process after receiving an\n   *                                     error.\n   */\n  constructor(appLogger, exitOnError = true) {\n    /**\n     * A local reference for the `appLogger` service.\n     * @type {Logger}\n     */\n    this.appLogger = appLogger;\n    /**\n     * Whether or not to exit the process after receiving an error.\n     * @type {boolean}\n     */\n    this.exitOnError = exitOnError;\n    /**\n     * The list of events this handler will listen for in order to catch errors.\n     * @type {Array}\n     */\n    this.eventsNames = [\n      'uncaughtException',\n      'unhandledRejection',\n    ];\n    /**\n     * Bind the handler method so it can be used on the calls to `process`.\n     * @ignore\n     */\n    this.handler = this.handle.bind(this);\n  }\n  /**\n   * Starts listening for unhandled errors.\n   */\n  listen() {\n    this.eventsNames.forEach((eventName) => {\n      process.on(eventName, this.handler);\n    });\n  }\n  /**\n   * Stops listening for unhandled errors.\n   */\n  stopListening() {\n    this.eventsNames.forEach((eventName) => {\n      process.removeListener(eventName, this.handler);\n    });\n  }\n  /**\n   * This is called by the process listeners when an uncaught exception is thrown or a rejected\n   * promise is not handled. It logs the error on detail.\n   * The process exits when after logging an error.\n   * @param {Error} error The unhandled error.\n   */\n  handle(error) {\n    // If the logger is configured to show the time...\n    if (this.appLogger.showTime) {\n      // ...just send the error.\n      this.appLogger.error(error);\n    } else {\n      // ...otherwise, get the time on a readable format.\n      const time = new Date()\n      .toISOString()\n      .replace(/T/, ' ')\n      .replace(/\\..+/, '');\n      // Build the error message with the time.\n      const message = `[${time}] ${error.message}`;\n      // Log the new message with the exception.\n      this.appLogger.error(message, error);\n    }\n\n    // Check if it should exit the process.\n    if (this.exitOnError) {\n      process.exit(1);\n    }\n  }\n}\n/**\n * Generates a `Provider` with an already defined flag to exit or not the process when after\n * handling an error.\n * @param {boolean} [exitOnError] Whether or not to exit the process after receiving an error.\n * @return {Provider}\n */\nconst errorHandlerWithOptions = (exitOnError) => provider((app) => {\n  app.set('errorHandler', () => {\n    let logger = null;\n    try {\n      logger = app.get('logger');\n    } catch (ignore) {\n      logger = app.get('appLogger');\n    }\n\n    return new ErrorHandler(\n      logger,\n      exitOnError\n    );\n  });\n});\n/**\n * The service provider that once registered on the app container will set an instance of\n * `ErrorHandler` as the `errorHandler` service.\n * @example\n * // Register it on the container\n * container.register(errorHandler);\n * // Getting access to the service instance\n * const errorHandler = container.get('errorHandler');\n * @type {Provider}\n */\nconst errorHandler = errorHandlerWithOptions();\n\nmodule.exports = {\n  ErrorHandler,\n  errorHandlerWithOptions,\n  errorHandler,\n};\n",
@@ -1482,7 +3343,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 79,
+    "__docId__": 136,
     "kind": "class",
     "name": "ErrorHandler",
     "memberof": "wootils/node/errorHandler.js",
@@ -1500,7 +3361,7 @@
     "interface": false
   },
   {
-    "__docId__": 80,
+    "__docId__": 137,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "wootils/node/errorHandler.js~ErrorHandler",
@@ -1537,7 +3398,7 @@
     ]
   },
   {
-    "__docId__": 81,
+    "__docId__": 138,
     "kind": "member",
     "name": "appLogger",
     "memberof": "wootils/node/errorHandler.js~ErrorHandler",
@@ -1556,7 +3417,7 @@
     }
   },
   {
-    "__docId__": 82,
+    "__docId__": 139,
     "kind": "member",
     "name": "exitOnError",
     "memberof": "wootils/node/errorHandler.js~ErrorHandler",
@@ -1575,7 +3436,7 @@
     }
   },
   {
-    "__docId__": 83,
+    "__docId__": 140,
     "kind": "member",
     "name": "eventsNames",
     "memberof": "wootils/node/errorHandler.js~ErrorHandler",
@@ -1594,7 +3455,7 @@
     }
   },
   {
-    "__docId__": 84,
+    "__docId__": 141,
     "kind": "member",
     "name": "handler",
     "memberof": "wootils/node/errorHandler.js~ErrorHandler",
@@ -1611,7 +3472,7 @@
     }
   },
   {
-    "__docId__": 85,
+    "__docId__": 142,
     "kind": "method",
     "name": "listen",
     "memberof": "wootils/node/errorHandler.js~ErrorHandler",
@@ -1626,7 +3487,7 @@
     "return": null
   },
   {
-    "__docId__": 86,
+    "__docId__": 143,
     "kind": "method",
     "name": "stopListening",
     "memberof": "wootils/node/errorHandler.js~ErrorHandler",
@@ -1641,7 +3502,7 @@
     "return": null
   },
   {
-    "__docId__": 87,
+    "__docId__": 144,
     "kind": "method",
     "name": "handle",
     "memberof": "wootils/node/errorHandler.js~ErrorHandler",
@@ -1667,7 +3528,7 @@
     "return": null
   },
   {
-    "__docId__": 88,
+    "__docId__": 145,
     "kind": "function",
     "name": "errorHandlerWithOptions",
     "memberof": "wootils/node/errorHandler.js",
@@ -1703,7 +3564,7 @@
     }
   },
   {
-    "__docId__": 89,
+    "__docId__": 146,
     "kind": "variable",
     "name": "errorHandler",
     "memberof": "wootils/node/errorHandler.js",
@@ -1728,7 +3589,7 @@
     }
   },
   {
-    "__docId__": 90,
+    "__docId__": 147,
     "kind": "file",
     "name": "wootils/node/index.js",
     "content": "const { AppConfiguration } = require('./appConfiguration');\nconst { EnvironmentUtils } = require('./environmentUtils');\nconst { ErrorHandler } = require('./errorHandler');\nconst { Logger } = require('./logger');\nconst { packageInfo } = require('./packageInfo');\nconst { PathUtils } = require('./pathUtils');\nconst { rootRequire } = require('./rootRequire');\n\nmodule.exports = {\n  AppConfiguration,\n  EnvironmentUtils,\n  ErrorHandler,\n  Logger,\n  packageInfo,\n  PathUtils,\n  rootRequire,\n};\n",
@@ -1739,7 +3600,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 91,
+    "__docId__": 148,
     "kind": "file",
     "name": "wootils/node/logger.js",
     "content": "const colors = require('colors/safe');\nconst { provider } = require('jimple');\n/**\n * A utility service to log messages on the console.\n */\nclass Logger {\n  /**\n   * Class constructor.\n   * @param {string}  [messagesPrefix=''] A prefix to include in front of all the messages.\n   * @param {boolean} [showTime=false]    Whether or not to show the time on each message.\n   */\n  constructor(messagesPrefix = '', showTime = false) {\n    /**\n     * The prefix to include in front of all the messages.\n     * @type {string}\n     */\n    this.messagesPrefix = messagesPrefix;\n    /**\n     * Whether or not to show the time on each message.\n     * @type {boolean}\n     */\n    this.showTime = showTime;\n  }\n  /**\n   * Logs a warning (yellow) message or messages on the console.\n   * @param {string|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   */\n  warning(message) {\n    this.log(message, 'yellow');\n  }\n  /**\n   * Logs a success (green) message or messages on the console.\n   * @param {string|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   */\n  success(message) {\n    this.log(message, 'green');\n  }\n  /**\n   * Logs an error (red) message or messages on the console.\n   * @param {string|Array|Error} message          A single message of a list of them. See the\n   *                                              `log()` documentation to see all the supported\n   *                                              properties for the `message` parameter. Different\n   *                                              from the other log methods, you can use an\n   *                                              `Error` object and the method will take care of\n   *                                              extracting the message and the stack information.\n   * @param {Object}             [exception=null] If the exception has a `stack` property, the\n   *                                              method will log each of the stack calls using\n   *                                              `info()`.\n   */\n  error(message, exception = null) {\n    if (message instanceof Error) {\n      this.error(message.message, message);\n    } else {\n      this.log(message, 'red');\n      if (exception) {\n        if (exception.stack) {\n          const stack = exception.stack\n          .split('\\n')\n          .map((line) => line.trim());\n\n          stack.splice(0, 1);\n          this.info(stack);\n        } else {\n          this.log(exception);\n        }\n      }\n    }\n  }\n  /**\n   * Logs an information (gray) message or messages on the console.\n   * @param {string|Array} message A single message of a list of them. See the `log()` documentation\n   *                               to see all the supported properties for the `message` parameter.\n   */\n  info(message) {\n    this.log(message, 'grey');\n  }\n  /**\n   * Logs a message with an specific color on the console.\n   * @example\n   * // Simple\n   * CLILogger.log('hello world');\n   * // Custom color\n   * CLILogger.log('It was the shadow who did it', 'red');\n   * // A list of messages all the same color\n   * CLILogger.log(['Ph\\'nglu', 'mglw\\'nafh'], 'grey');\n   * // A list of messages with different colors per line\n   * CLILogger.log([\n   *     'Ph\\'nglu',\n   *     'mglw\\'nafh',\n   *     ['Cthulhu', 'green'],\n   *     ['R\\'lyeh wgah\\'nagl fhtagn', 'red']\n   * ], 'grey');\n   *\n   * @param {string|Array} message A text message to log or a list of them.\n   * @param {string}       color   Optional. The color of the message (the default is 'white').\n   *                               This can be overwritten line by line when the message is an\n   *                               array, take a look at the example.\n   */\n  log(message, color = 'raw') {\n    const lines = [];\n    if (Array.isArray(message)) {\n      message.forEach((line) => {\n        if (Array.isArray(line)) {\n          lines.push(this._color(line[1])(this.prefix(line[0])));\n        } else {\n          lines.push(this._color(color)(this.prefix(line)));\n        }\n      });\n    } else {\n      lines.push(this._color(color)(this.prefix(message)));\n    }\n\n    // eslint-disable-next-line no-console\n    lines.forEach((line) => console.log(line));\n  }\n  /**\n   * Prefixes a message with the text sent to the constructor and, if enabled, the current time.\n   * @param {string} text The text that needs the prefix.\n   * @return {string}\n   */\n  prefix(text) {\n    // Define the list of things that will compose the formatted text.\n    const parts = [];\n    // If a prefix was set on the constructor...\n    if (this.messagesPrefix) {\n      // ...add it as first element.\n      parts.push(`[${this.messagesPrefix}]`);\n    }\n    // If the `showTime` setting is enabled...\n    if (this.showTime) {\n      // ...add the current time to the list.\n      const time = new Date()\n      .toISOString()\n      .replace(/T/, ' ')\n      .replace(/\\..+/, '');\n\n      parts.push(`[${time}]`);\n    }\n    // Add the original text.\n    parts.push(text);\n    // Join the list into a single text message.\n    return parts.join(' ').trim();\n  }\n  /**\n   * Gets a function to modify the color of a string. The reason for this _\"proxy method\"_ is that\n   * the `colors` module doesn't have a `raw` option and the alternative would've been adding a few\n   * `if`s on the `log` method.\n   * @param {string} name The name of the color.\n   * @return {Function} A function that receives a string and returns it colored.\n   * @ignore\n   * @access protected\n   */\n  _color(name) {\n    return name === 'raw' ? ((str) => str) : colors[name];\n  }\n}\n/**\n * Generates a `Provider` with an already defined message prefix and time setting.\n * @example\n * // Generate the provider\n * const provider = loggerWithOptions('my-prefix', true);\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const logger = container.get('logger');\n * @param {string}  [messagesPrefix] A prefix to include in front of all the messages.\n * @param {boolean} [showTime]       Whether or not to show the time on each message.\n * @return {Provider}\n */\nconst loggerWithOptions = (messagesPrefix, showTime) => provider((app) => {\n  app.set('logger', () => new Logger(messagesPrefix, showTime));\n});\n/**\n * The service provider that once registered on the app container will set an instance of\n * `Logger` as the `logger` service.\n * @example\n * // Register it on the container\n * container.register(logger);\n * // Getting access to the service instance\n * const logger = container.get('logger');\n * @type {Provider}\n */\nconst logger = loggerWithOptions();\n/**\n * Generates a `Provider` with an already defined time setting and that uses the `packageInfo`\n * service in order to retrieve the name of the project and use it as messages prefix.\n * @param {boolean} [showTime] Whether or not to show the time on each message.\n * @return {Provider}\n */\nconst appLoggerWithOptions = (showTime) => provider((app) => {\n  app.set('appLogger', () => {\n    const packageInfo = app.get('packageInfo');\n    const prefix = packageInfo.nameForCLI || packageInfo.name;\n    return new Logger(prefix, showTime);\n  });\n});\n/**\n * The service provider that once registered on the app container will set an instance of\n * `Logger` as the `appLogger` service. The difference with the regular `logger` is that this one\n * uses the `packageInfo` service in order to retrieve the name of the project and use it as\n * messages prefix.\n * @example\n * // Register it on the container\n * container.register(appLogger);\n * // Getting access to the service instance\n * const appLogger = container.get('appLogger');\n * @type {Provider}\n */\nconst appLogger = appLoggerWithOptions();\n\nmodule.exports = {\n  Logger,\n  loggerWithOptions,\n  logger,\n  appLoggerWithOptions,\n  appLogger,\n};\n",
@@ -1750,7 +3611,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 92,
+    "__docId__": 149,
     "kind": "class",
     "name": "Logger",
     "memberof": "wootils/node/logger.js",
@@ -1765,7 +3626,7 @@
     "interface": false
   },
   {
-    "__docId__": 93,
+    "__docId__": 150,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "wootils/node/logger.js~Logger",
@@ -1804,7 +3665,7 @@
     ]
   },
   {
-    "__docId__": 94,
+    "__docId__": 151,
     "kind": "member",
     "name": "messagesPrefix",
     "memberof": "wootils/node/logger.js~Logger",
@@ -1823,7 +3684,7 @@
     }
   },
   {
-    "__docId__": 95,
+    "__docId__": 152,
     "kind": "member",
     "name": "showTime",
     "memberof": "wootils/node/logger.js~Logger",
@@ -1842,7 +3703,7 @@
     }
   },
   {
-    "__docId__": 96,
+    "__docId__": 153,
     "kind": "method",
     "name": "warning",
     "memberof": "wootils/node/logger.js~Logger",
@@ -1869,7 +3730,7 @@
     "return": null
   },
   {
-    "__docId__": 97,
+    "__docId__": 154,
     "kind": "method",
     "name": "success",
     "memberof": "wootils/node/logger.js~Logger",
@@ -1896,7 +3757,7 @@
     "return": null
   },
   {
-    "__docId__": 98,
+    "__docId__": 155,
     "kind": "method",
     "name": "error",
     "memberof": "wootils/node/logger.js~Logger",
@@ -1936,7 +3797,7 @@
     "return": null
   },
   {
-    "__docId__": 99,
+    "__docId__": 156,
     "kind": "method",
     "name": "info",
     "memberof": "wootils/node/logger.js~Logger",
@@ -1963,7 +3824,7 @@
     "return": null
   },
   {
-    "__docId__": 100,
+    "__docId__": 157,
     "kind": "method",
     "name": "log",
     "memberof": "wootils/node/logger.js~Logger",
@@ -2003,7 +3864,7 @@
     "return": null
   },
   {
-    "__docId__": 101,
+    "__docId__": 158,
     "kind": "method",
     "name": "prefix",
     "memberof": "wootils/node/logger.js~Logger",
@@ -2036,7 +3897,7 @@
     }
   },
   {
-    "__docId__": 102,
+    "__docId__": 159,
     "kind": "method",
     "name": "_color",
     "memberof": "wootils/node/logger.js~Logger",
@@ -2070,7 +3931,7 @@
     }
   },
   {
-    "__docId__": 103,
+    "__docId__": 160,
     "kind": "function",
     "name": "loggerWithOptions",
     "memberof": "wootils/node/logger.js",
@@ -2119,7 +3980,7 @@
     }
   },
   {
-    "__docId__": 104,
+    "__docId__": 161,
     "kind": "variable",
     "name": "logger",
     "memberof": "wootils/node/logger.js",
@@ -2144,7 +4005,7 @@
     }
   },
   {
-    "__docId__": 105,
+    "__docId__": 162,
     "kind": "function",
     "name": "appLoggerWithOptions",
     "memberof": "wootils/node/logger.js",
@@ -2180,7 +4041,7 @@
     }
   },
   {
-    "__docId__": 106,
+    "__docId__": 163,
     "kind": "variable",
     "name": "appLogger",
     "memberof": "wootils/node/logger.js",
@@ -2205,7 +4066,7 @@
     }
   },
   {
-    "__docId__": 107,
+    "__docId__": 164,
     "kind": "file",
     "name": "wootils/node/packageInfo.js",
     "content": "const fs = require('fs-extra');\nconst { provider } = require('jimple');\n/**\n * Returns the contents of the project `package.json`.\n * @param {PathUtils} pathUtils To build the path to the `package.json`.\n * @return {Object}\n */\nconst packageInfo = (pathUtils) => fs.readJsonSync(pathUtils.join('package.json'));\n/**\n * The service provider that once registered on the app container will set the result of\n * `packageInfo()` as the `packageInfo` service.\n * @example\n * // Register it on the container\n * container.register(packageInfoProvider);\n * // Getting access to the service value\n * const packageInfo = container.get('packageInfo');\n * @type {Provider}\n */\nconst packageInfoProvider = provider((app) => {\n  app.set('packageInfo', () => packageInfo(app.get('pathUtils')));\n});\n\nmodule.exports = {\n  packageInfo,\n  packageInfoProvider,\n};\n",
@@ -2216,7 +4077,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 108,
+    "__docId__": 165,
     "kind": "function",
     "name": "packageInfo",
     "memberof": "wootils/node/packageInfo.js",
@@ -2252,7 +4113,7 @@
     }
   },
   {
-    "__docId__": 109,
+    "__docId__": 166,
     "kind": "variable",
     "name": "packageInfoProvider",
     "memberof": "wootils/node/packageInfo.js",
@@ -2277,7 +4138,7 @@
     }
   },
   {
-    "__docId__": 110,
+    "__docId__": 167,
     "kind": "file",
     "name": "wootils/node/pathUtils.js",
     "content": "const path = require('path');\nconst { provider } = require('jimple');\n/**\n * A utility services to manage paths on a project. It allows for path building relatives to\n * the project root or from where the app executable is located.\n */\nclass PathUtils {\n  /**\n   * Class constructor.\n   * @param {string} [home=''] The location of the project's `home`(root) directory. By default\n   *                           it uses `process.cwd()`.\n   */\n  constructor(home = '') {\n    /**\n     * The root path from where the app is being executed.\n     * @type {string}\n     */\n    this.path = process.cwd();\n    /**\n     * A dictionary of different path locations.\n     * @type {Object}\n     */\n    this.locations = {};\n\n    this._addAppLocation();\n    this.addLocation('home', home || this.path);\n  }\n  /**\n   * Add a new location.\n   * @param {string} name         The reference name.\n   * @param {string} locationPath The path of the location. It must be inside the path from the\n   *                              app is being executed.\n   */\n  addLocation(name, locationPath) {\n    let location = locationPath;\n    /**\n     * If it doesn't starts with the root location, then prefix it with it. The project should\n     * never attempt to access a location outside its directory.\n     */\n    if (location !== this.path && !location.startsWith(this.path)) {\n      location = path.join(this.path, location);\n    }\n    // Fix it so all the locations will end with `/`.\n    if (!location.endsWith('/')) {\n      location = `${location}/`;\n    }\n    // Add it to the dictionary.\n    this.locations[name] = location;\n  }\n  /**\n   * Get a location path by its name.\n   * @param {string} name The location name.\n   * @return {string}\n   * @throws {Error} If there location hasn't been added.\n   */\n  getLocation(name) {\n    const location = this.locations[name];\n    if (!location) {\n      throw new Error(`There's no location with the following name: ${name}`);\n    }\n\n    return location;\n  }\n  /**\n   * Build a path using a location path as base.\n   * @param {string} location The location name.\n   * @param {Array}  paths    The rest of the path components to join.\n   * @return {string}\n   */\n  joinFrom(location, ...paths) {\n    const locationPath = this.getLocation(location);\n    return path.join(locationPath, ...paths);\n  }\n  /**\n   * Alias to `joinFrom` that uses the `home` location by default.\n   * @param {Array} paths The rest of the path components to join.\n   * @return {string}\n   */\n  join(...paths) {\n    return this.joinFrom('home', ...paths);\n  }\n  /**\n   * Get the project root path.\n   * @return {string}\n   */\n  get home() {\n    return this.getLocation('home');\n  }\n  /**\n   * Get the path to the directory where the app executable is located.\n   * @return {string}\n   */\n  get app() {\n    return this.getLocation('app');\n  }\n  /**\n   * Find and register the location for the app executable directory.\n   * @ignore\n   * @access protected\n   */\n  _addAppLocation() {\n    let current = module;\n    while (\n      current.parent &&\n      current.parent.filename !== current.filename\n    ) {\n      current = current.parent;\n    }\n\n    this.addLocation('app', path.dirname(current.filename));\n  }\n}\n/**\n * Generates a `Provider` with an already defined `home` location.\n * @example\n * // Generate the provider\n * const provider = pathUtilsWithHome('my-path');\n * // Register it on the container\n * container.register(provider);\n * // Getting access to the service instance\n * const pathUtils = container.get('pathUtils');\n * @param {string} [home] The path to the new home location.\n * @return {Provider}\n */\nconst pathUtilsWithHome = (home) => provider((app) => {\n  app.set('pathUtils', () => new PathUtils(home));\n});\n/**\n * The service provider that once registered on the app container will set an instance of\n * `PathUtils` as the `pathUtils` service.\n * @example\n * // Register it on the container\n * container.register(pathUtils);\n * // Getting access to the service instance\n * const pathUtils = container.get('pathUtils');\n * @type {Provider}\n */\nconst pathUtils = pathUtilsWithHome();\n\nmodule.exports = {\n  PathUtils,\n  pathUtils,\n  pathUtilsWithHome,\n};\n",
@@ -2288,7 +4149,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 111,
+    "__docId__": 168,
     "kind": "class",
     "name": "PathUtils",
     "memberof": "wootils/node/pathUtils.js",
@@ -2303,7 +4164,7 @@
     "interface": false
   },
   {
-    "__docId__": 112,
+    "__docId__": 169,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "wootils/node/pathUtils.js~PathUtils",
@@ -2330,7 +4191,7 @@
     ]
   },
   {
-    "__docId__": 113,
+    "__docId__": 170,
     "kind": "member",
     "name": "path",
     "memberof": "wootils/node/pathUtils.js~PathUtils",
@@ -2349,7 +4210,7 @@
     }
   },
   {
-    "__docId__": 114,
+    "__docId__": 171,
     "kind": "member",
     "name": "locations",
     "memberof": "wootils/node/pathUtils.js~PathUtils",
@@ -2368,7 +4229,7 @@
     }
   },
   {
-    "__docId__": 115,
+    "__docId__": 172,
     "kind": "method",
     "name": "addLocation",
     "memberof": "wootils/node/pathUtils.js~PathUtils",
@@ -2404,7 +4265,7 @@
     "return": null
   },
   {
-    "__docId__": 116,
+    "__docId__": 173,
     "kind": "method",
     "name": "getLocation",
     "memberof": "wootils/node/pathUtils.js~PathUtils",
@@ -2445,7 +4306,7 @@
     ]
   },
   {
-    "__docId__": 117,
+    "__docId__": 174,
     "kind": "method",
     "name": "joinFrom",
     "memberof": "wootils/node/pathUtils.js~PathUtils",
@@ -2488,7 +4349,7 @@
     }
   },
   {
-    "__docId__": 118,
+    "__docId__": 175,
     "kind": "method",
     "name": "join",
     "memberof": "wootils/node/pathUtils.js~PathUtils",
@@ -2521,7 +4382,7 @@
     }
   },
   {
-    "__docId__": 119,
+    "__docId__": 176,
     "kind": "get",
     "name": "home",
     "memberof": "wootils/node/pathUtils.js~PathUtils",
@@ -2547,7 +4408,7 @@
     }
   },
   {
-    "__docId__": 120,
+    "__docId__": 177,
     "kind": "get",
     "name": "app",
     "memberof": "wootils/node/pathUtils.js~PathUtils",
@@ -2573,7 +4434,7 @@
     }
   },
   {
-    "__docId__": 121,
+    "__docId__": 178,
     "kind": "method",
     "name": "_addAppLocation",
     "memberof": "wootils/node/pathUtils.js~PathUtils",
@@ -2589,7 +4450,7 @@
     "return": null
   },
   {
-    "__docId__": 122,
+    "__docId__": 179,
     "kind": "variable",
     "name": "pathUtils",
     "memberof": "wootils/node/pathUtils.js",
@@ -2614,7 +4475,7 @@
     }
   },
   {
-    "__docId__": 123,
+    "__docId__": 180,
     "kind": "function",
     "name": "pathUtilsWithHome",
     "memberof": "wootils/node/pathUtils.js",
@@ -2653,7 +4514,7 @@
     }
   },
   {
-    "__docId__": 124,
+    "__docId__": 181,
     "kind": "file",
     "name": "wootils/node/providers.js",
     "content": "const { appConfiguration } = require('./appConfiguration');\nconst { environmentUtils } = require('./environmentUtils');\nconst { errorHandlerWithOptions, errorHandler } = require('./errorHandler');\nconst {\n  loggerWithOptions,\n  logger,\n  appLoggerWithOptions,\n  appLogger,\n} = require('./logger');\nconst { packageInfoProvider } = require('./packageInfo');\nconst { pathUtils, pathUtilsWithHome } = require('./pathUtils');\nconst { rootRequireProvider } = require('./rootRequire');\n\nmodule.exports = {\n  appConfiguration,\n  environmentUtils,\n  errorHandlerWithOptions,\n  errorHandler,\n  loggerWithOptions,\n  logger,\n  appLoggerWithOptions,\n  appLogger,\n  packageInfo: packageInfoProvider,\n  pathUtils,\n  pathUtilsWithHome,\n  rootRequire: rootRequireProvider,\n};\n",
@@ -2664,7 +4525,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 125,
+    "__docId__": 182,
     "kind": "file",
     "name": "wootils/node/rootRequire.js",
     "content": "const { provider } = require('jimple');\n/**\n * Generates a function to require a file relative to the project root directory.\n * @param {PathUtils} pathUtils To build the path to the files it will `require`.\n * @return {Function(string):*}\n */\nconst rootRequire = (pathUtils) => (path) =>\n  // eslint-disable-next-line global-require,import/no-dynamic-require,implicit-arrow-linebreak\n  require(pathUtils.join(path));\n\n/**\n * The service provider that once registered on the app container will set the result of\n * `rootRequire(pathUtils)` as the `rootRequire` service.\n * @example\n * // Register it on the container\n * container.register(rootRequireProvider);\n * // Getting access to the service instance\n * const rootRequire = container.get('rootRequire');\n * @type {Provider}\n */\nconst rootRequireProvider = provider((app) => {\n  app.set('rootRequire', () => rootRequire(app.get('pathUtils')));\n});\n\nmodule.exports = {\n  rootRequire,\n  rootRequireProvider,\n};\n",
@@ -2675,7 +4536,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 126,
+    "__docId__": 183,
     "kind": "function",
     "name": "rootRequire",
     "memberof": "wootils/node/rootRequire.js",
@@ -2711,7 +4572,7 @@
     }
   },
   {
-    "__docId__": 127,
+    "__docId__": 184,
     "kind": "variable",
     "name": "rootRequireProvider",
     "memberof": "wootils/node/rootRequire.js",
@@ -2736,7 +4597,7 @@
     }
   },
   {
-    "__docId__": 128,
+    "__docId__": 185,
     "kind": "file",
     "name": "wootils/node/typedef.js",
     "content": "/**\n * @external {Jimple}\n * https://yarnpkg.com/en/package/jimple\n */\n\n/**\n * @typedef {function} ProviderRegisterMethod\n * @param {Jimple} app\n * A reference to the dependency injection container.\n */\n\n/**\n * @typedef {Object} Provider\n * @property {ProviderRegisterMethod} register\n * The method that gets called when registering the provider.\n */\n",
@@ -2747,7 +4608,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 129,
+    "__docId__": 186,
     "kind": "external",
     "name": "Jimple",
     "externalLink": "https://yarnpkg.com/en/package/jimple",
@@ -2758,7 +4619,7 @@
     "description": ""
   },
   {
-    "__docId__": 130,
+    "__docId__": 187,
     "kind": "typedef",
     "name": "ProviderRegisterMethod",
     "memberof": "wootils/node/typedef.js",
@@ -2787,7 +4648,7 @@
     }
   },
   {
-    "__docId__": 131,
+    "__docId__": 188,
     "kind": "typedef",
     "name": "Provider",
     "memberof": "wootils/node/typedef.js",
@@ -2816,7 +4677,7 @@
     }
   },
   {
-    "__docId__": 132,
+    "__docId__": 189,
     "kind": "file",
     "name": "wootils/shared/apiClient.js",
     "content": "const statuses = require('statuses');\nconst urijs = require('urijs');\n/**\n * @typedef {Function:(string,Object):Promise<Object,Error>} FetchClient\n */\n\n/**\n * @typedef {Object} FetchOptions\n * @property {string}  method  The request method.\n * @property {Object}  headers The request headers.\n * @property {string}  body    The request body.\n * @property {boolean} json    Whether or not the response should _\"JSON decoded\"_.\n */\n\n/**\n * @typedef {Object} APIClientEndpoint\n * @property {String}  path  The path to the endpoint relative to the API entry point. It can\n *                           include placeholders with the format `:placeholder-name` that are\n *                           going to be replaced when the endpoint gets generated.\n * @property {?Object} query A dictionary of query string parameters that will be added when the\n *                           endpoint. If the value of a parameter is `null`, it won't be added.\n */\n\n/**\n * @typedef {Object} APIClientEndpoints\n * @property {string|APIClientEndpoints|APIClientEndpoint} [endpointName] A name for the endpoint\n *                                                                        that will be used to\n *                                                                        reference it on the\n *                                                                        `endpoint(...)` method.\n * @example\n * {\n *   // Endpoint path as a string.\n *   endpointOne: 'endpoint-one',\n *   // Endpoint as {APIClientEndpoint}.\n *   endpointTwo: {\n *     path: 'endpoint-two',\n *     query: {\n *       count: 20,\n *     },\n *   },\n *   // Endpoint as a dictionary of endpoints ({APIClientEndpoints}).\n *   endpointThree: {\n *     subEndpointThreeOne: 'sub-endpoint-three-one',\n *     subEndpointThreeTwo: {\n *       path: 'sub-endpoint-three-two',\n *       query: {\n *         count: 20,\n *       },\n *     },\n *   },\n * }\n */\n\n/**\n * An API client with configurable endpoints.\n */\nclass APIClient {\n  /**\n   * Class constructor.\n   * @param {String}                  url                 The API entry point.\n   * @param {APIClientEndpoints}      endpoints           A dictionary of named endpoints relative\n   *                                                      to the API entry point.\n   * @param {FetchClient}             fetchClient         The fetch function that makes the\n   *                                                      requests.\n   * @param {Object}                  [defaultHeaders={}] A dictionary of default headers to\n   *                                                      include on every request.\n   */\n  constructor(url, endpoints, fetchClient, defaultHeaders = {}) {\n    /**\n     * The API entry point.\n     * @type {String}\n     */\n    this.url = url;\n    /**\n     * A dictionary of named endpoints relative to the API entry point.\n     * @type {Object}\n     * @property {string|APIClientEndpoint} [endpointName] The name of the endpoint.\n     */\n    this.endpoints = this.flattenEndpoints(endpoints);\n    /**\n     * The fetch function that makes the requests.\n     * @type {FetchClient}\n     */\n    this.fetchClient = fetchClient;\n    /**\n     * A dictionary of default headers to include on every request.\n     * @type {Object}\n     */\n    this.defaultHeaders = defaultHeaders;\n    /**\n     * An authorization token to include on the requests.\n     * @type {String}\n     */\n    this.authorizationToken = '';\n  }\n  /**\n   * Taks a dictionary of endpoints and flatten them on a single level.\n   * @example\n   * console.log(APIClient.flattenEndpoints({\n   *   endpointOne: 'endpoint-one',\n   *   endpointTwo: {\n   *     path: 'endpoint-two',\n   *     query: {\n   *       count: 20,\n   *     },\n   *   },\n   *   endpointThree: {\n   *     subEndpointThreeOne: 'sub-endpoint-three-one',\n   *     subEndpointThreeTwo: {\n   *       path: 'sub-endpoint-three-two',\n   *       query: {\n   *         count: 20,\n   *       },\n   *     },\n   *   },\n   * }));\n   * // Will output\n   * {\n   *   endpointOne: 'endpoint-one',\n   *   endpointTwo: {\n   *     path: 'endpoint-two',\n   *     query: {\n   *       count: 20,\n   *     },\n   *   },\n   *   'endpointThree.subEndpointThreeOne': 'sub-endpoint-three-one',\n   *   'endpointThree.subEndpointThreeTwo': {\n   *       path: 'sub-endpoint-three-two',\n   *       query: {\n   *         count: 20,\n   *       },\n   *     },\n   *   },\n   * }\n   * @param {Object} endpoints   A dictionary of named endpoints.\n   * @param {String} [parent=''] The parent key of the received endpoints. This is used when the\n   *                             method is calling itself recursively.\n   * @return {Object}\n   */\n  flattenEndpoints(endpoints, parent = '') {\n    const parentKey = parent ? `${parent}.` : '';\n    let result = {};\n    Object.keys(endpoints).forEach((name) => {\n      const value = endpoints[name];\n      const key = `${parentKey}${name}`;\n      if (typeof value === 'string' || value.path) {\n        result[key] = value;\n      } else {\n        result = Object.assign({}, result, this.flattenEndpoints(value, key));\n      }\n    });\n\n    return result;\n  }\n  /**\n   * Sets the authorization token for the requests.\n   * @param {String} [token=''] The new authorization token. If the value is empty, it won't be\n   *                            included on the requests.\n   */\n  setAuthorizationToken(token = '') {\n    this.authorizationToken = token;\n  }\n  /**\n   * Sets the default headers for the requests.\n   * @param {Object}  [headers={}]     The new default headers.\n   * @param {Boolean} [overwrite=true] If `false`, it will merge the new default headers with\n   *                                   the current ones.\n   */\n  setDefaultHeaders(headers = {}, overwrite = true) {\n    this.defaultHeaders = Object.assign(\n      {},\n      (overwrite ? {} : this.defaultHeaders),\n      headers\n    );\n  }\n  /**\n   * Makes a `GET` request.\n   * @param {String}       url          The request URL.\n   * @param {FetchOptions} [options={}] The request options.\n   * @return {Promise<Object,Error>}\n   */\n  get(url, options = {}) {\n    return this.fetch(Object.assign({ url }, options));\n  }\n  /**\n   * Makes a `HEAD` request.\n   * @param {String}       url          The request URL.\n   * @param {FetchOptions} [options={}] The request options.\n   * @return {Promise<Object,Error>}\n   */\n  head(url, options = {}) {\n    return this.get(url, Object.assign({}, options, { method: 'head' }));\n  }\n  /**\n   * Makes a `POST` request.\n   * @param {String}       url          The request URL.\n   * @param {Object}       body         The request body.\n   * @param {FetchOptions} [options={}] The request options.\n   * @return {Promise<Object,Error>}\n   */\n  post(url, body, options = {}) {\n    return this.fetch(Object.assign({\n      url,\n      body,\n      method: 'post',\n    }, options));\n  }\n  /**\n   * Makes a `PUT` request.\n   * @param {String}       url          The request URL.\n   * @param {Object}       body         The request body.\n   * @param {FetchOptions} [options={}] The request options.\n   * @return {Promise<Object,Error>}\n   */\n  put(url, body, options = {}) {\n    return this.post(url, body, Object.assign({}, options, { method: 'put' }));\n  }\n  /**\n   * Makes a `PATCH` request.\n   * @param {String}       url          The request URL.\n   * @param {Object}       body         The request body.\n   * @param {FetchOptions} [options={}] The request options.\n   * @return {Promise<Object,Error>}\n   */\n  patch(url, body, options = {}) {\n    return this.post(url, body, Object.assign({}, options, { method: 'patch' }));\n  }\n  /**\n   * Makes a `DELETE` request.\n   * @param {String}       url          The request URL.\n   * @param {Object}       body         The request body.\n   * @param {FetchOptions} [options={}] The request options.\n   * @return {Promise<Object,Error>}\n   */\n  delete(url, body = {}, options = {}) {\n    return this.post(url, body, Object.assign({}, options, { method: 'delete' }));\n  }\n  /**\n   * Generates an endpoint URL.\n   * @param {String} name            The name of the endpoint on the `endpoints` property.\n   * @param {Object} [parameters={}] A dictionary of values that will replace placeholders on the\n   *                                 endpoint definition.\n   * @return {String}\n   * @throws {Error} If the endpoint doesn't exist on the `endpoints` property.\n   */\n  endpoint(name, parameters = {}) {\n    // Get the endpoint information.\n    const info = this.endpoints[name];\n    // Validate that the endpoint exists.\n    if (!info) {\n      throw new Error(`Trying to request unknown endpoint: ${name}`);\n    }\n    // Get a new reference for the parameters.\n    const params = Object.assign({}, parameters);\n    // If the endpoint is a string, format it into an object with `path`.\n    const endpoint = typeof info === 'string' ? { path: info } : info;\n    // Define the object that will have the query string.\n    const query = {};\n    // If the endpoint has a `query` property...\n    if (endpoint.query) {\n      // ...Loog all the query parameters.\n      Object.keys(endpoint.query).forEach((queryName) => {\n        // Get the defined value of the parameter.\n        const queryValue = endpoint.query[queryName];\n        // If there's a value of this parameter on the received `parameters`...\n        if (typeof params[queryName] !== 'undefined') {\n          // ...add it to the query dictionary.\n          query[queryName] = params[queryName];\n          // Remove the used parameter.\n          delete params[queryName];\n        } else if (queryValue !== null) {\n          // If the default value of the parameter is not `null`, use it.\n          query[queryName] = queryValue;\n        }\n      });\n    }\n    // Get the endpoint path.\n    let { path } = endpoint;\n    // Loop all the received `parameters`...\n    Object.keys(params).forEach((parameter) => {\n      // Build how a placeholder for this parameter would look like.\n      const placeholder = `:${parameter}`;\n      // Get the parameter value.\n      const value = params[parameter];\n      // If the path has the placeholder...\n      if (path.includes(placeholder)) {\n        // ...replace the placeholder with the value.\n        path = path.replace(placeholder, value);\n      } else {\n        // ...otherwise, add it on the query string.\n        query[parameter] = value;\n      }\n    });\n    // Convert the URL into a `urijs` object.\n    const uri = urijs(`${this.url}/${path}`);\n    // Loop and add all the query string parameters.\n    Object.keys(query).forEach((queryName) => {\n      uri.addQuery(queryName, query[queryName]);\n    });\n    // Return the `urijs` object as a string.\n    return uri.toString();\n  }\n  /**\n   * Generates a dictionary of headers using the service `defaultHeaders` property as base.\n   * If the service has an `authorizationToken`, it will be included as the `Authorization`\n   * header.\n   * @param {Object} [overwrites={}] Extra headers to add.\n   * @return {Object}\n   * @todo Bearer should be configurable when setting the token.\n   */\n  headers(overwrites = {}) {\n    const headers = Object.assign({}, this.defaultHeaders);\n    if (this.authorizationToken) {\n      headers.Authorization = `Bearer ${this.authorizationToken}`;\n    }\n\n    return Object.assign({}, headers, overwrites);\n  }\n  /**\n   * Makes a request.\n   * @param {Object}  options         The request options.\n   * @param {string}  options.url     The request URL.\n   * @param {string}  options.method  The request method. `GET` by default.\n   * @param {Object}  options.body    A request body to send.\n   * @param {Object}  options.headers The request headers.\n   * @param {boolean} options.json    Whether or not the response should _\"JSON decoded\"_. `true`\n   *                                  by default.\n   * @return {Promise<Object,Error>}\n   * @todo Add support for a `string` `body`.\n   */\n  fetch(options) {\n    // Get a new reference of the request options.\n    const opts = Object.assign({}, options);\n    // Format the request method and check if it should use the default.\n    opts.method = opts.method ? opts.method.toUpperCase() : 'GET';\n    // Get the request headers.\n    const headers = this.headers(opts.headers);\n    // This check is to avoid pushing an empty object on the request options.\n    if (Object.keys(headers).length) {\n      opts.headers = headers;\n    }\n    // Format the flag the method will use to decided whether to decode the response or not.\n    const handleAsJSON = typeof opts.json === 'boolean' ? opts.json : true;\n    const { url } = opts;\n    // Remove the necessary options in order to make it a valid `FetchOptions` object.\n    delete opts.url;\n    delete opts.json;\n    // If the options include a body...\n    if (opts.body) {\n      // Let's first check if there are headers and if a `Content-Type` has been set.\n      let hasContentType = false;\n      if (opts.headers) {\n        hasContentType = Object.keys(opts.headers)\n        .find((name) => name.toLowerCase() === 'content-type');\n      } else {\n        opts.headers = {};\n      }\n      // If the body is an object...\n      if (typeof opts.body === 'object') {\n        // ...encode it.\n        opts.body = JSON.stringify(opts.body);\n        // And if no `Content-Type` was defined, let's assume is a JSON request.\n        if (!hasContentType) {\n          opts.headers['Content-Type'] = 'application/json';\n        }\n      }\n    }\n\n    let responseStatus;\n    // Make the request.\n    return this.fetchClient(url, opts)\n    .then((response) => {\n      // Capture the response status.\n      responseStatus = response.status;\n      /**\n       * If the response should be handled as JSON and it has a `json()` method, return the\n       * promise of the decoded content, otherwise just return the same object.\n       */\n      return handleAsJSON && response.json ?\n        response.json() :\n        response;\n    })\n    .then((response) => (\n      /**\n       * If the response status is from an Error, format and return the error; otherwise, return\n       * the same response.\n       */\n      responseStatus >= statuses['Bad Request'] ?\n        Promise.reject(this.error(response, responseStatus)) :\n        response\n    ));\n  }\n  /**\n   * Formats an error response into a proper Error object.\n   * @param {Object} response A received response from a request.\n   * @return {Error}\n   */\n  error(response) {\n    return new Error(response.error);\n  }\n}\n\nmodule.exports = APIClient;\n",
@@ -2827,7 +4688,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 133,
+    "__docId__": 190,
     "kind": "typedef",
     "name": "FetchClient",
     "memberof": "wootils/shared/apiClient.js",
@@ -2844,7 +4705,7 @@
     }
   },
   {
-    "__docId__": 134,
+    "__docId__": 191,
     "kind": "typedef",
     "name": "FetchOptions",
     "memberof": "wootils/shared/apiClient.js",
@@ -2903,7 +4764,7 @@
     }
   },
   {
-    "__docId__": 135,
+    "__docId__": 192,
     "kind": "typedef",
     "name": "APIClientEndpoint",
     "memberof": "wootils/shared/apiClient.js",
@@ -2942,7 +4803,7 @@
     }
   },
   {
-    "__docId__": 136,
+    "__docId__": 193,
     "kind": "typedef",
     "name": "APIClientEndpoints",
     "memberof": "wootils/shared/apiClient.js",
@@ -2976,7 +4837,7 @@
     }
   },
   {
-    "__docId__": 137,
+    "__docId__": 194,
     "kind": "class",
     "name": "APIClient",
     "memberof": "wootils/shared/apiClient.js",
@@ -2991,7 +4852,7 @@
     "interface": false
   },
   {
-    "__docId__": 138,
+    "__docId__": 195,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3048,7 +4909,7 @@
     ]
   },
   {
-    "__docId__": 139,
+    "__docId__": 196,
     "kind": "member",
     "name": "url",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3067,7 +4928,7 @@
     }
   },
   {
-    "__docId__": 140,
+    "__docId__": 197,
     "kind": "member",
     "name": "endpoints",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3099,7 +4960,7 @@
     }
   },
   {
-    "__docId__": 141,
+    "__docId__": 198,
     "kind": "member",
     "name": "fetchClient",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3118,7 +4979,7 @@
     }
   },
   {
-    "__docId__": 142,
+    "__docId__": 199,
     "kind": "member",
     "name": "defaultHeaders",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3137,7 +4998,7 @@
     }
   },
   {
-    "__docId__": 143,
+    "__docId__": 200,
     "kind": "member",
     "name": "authorizationToken",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3156,7 +5017,7 @@
     }
   },
   {
-    "__docId__": 144,
+    "__docId__": 201,
     "kind": "method",
     "name": "flattenEndpoints",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3204,7 +5065,7 @@
     }
   },
   {
-    "__docId__": 145,
+    "__docId__": 202,
     "kind": "method",
     "name": "setAuthorizationToken",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3232,7 +5093,7 @@
     "return": null
   },
   {
-    "__docId__": 147,
+    "__docId__": 204,
     "kind": "method",
     "name": "setDefaultHeaders",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3272,7 +5133,7 @@
     "return": null
   },
   {
-    "__docId__": 149,
+    "__docId__": 206,
     "kind": "method",
     "name": "get",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3317,7 +5178,7 @@
     }
   },
   {
-    "__docId__": 150,
+    "__docId__": 207,
     "kind": "method",
     "name": "head",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3362,7 +5223,7 @@
     }
   },
   {
-    "__docId__": 151,
+    "__docId__": 208,
     "kind": "method",
     "name": "post",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3417,7 +5278,7 @@
     }
   },
   {
-    "__docId__": 152,
+    "__docId__": 209,
     "kind": "method",
     "name": "put",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3472,7 +5333,7 @@
     }
   },
   {
-    "__docId__": 153,
+    "__docId__": 210,
     "kind": "method",
     "name": "patch",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3527,7 +5388,7 @@
     }
   },
   {
-    "__docId__": 154,
+    "__docId__": 211,
     "kind": "method",
     "name": "delete",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3582,7 +5443,7 @@
     }
   },
   {
-    "__docId__": 155,
+    "__docId__": 212,
     "kind": "method",
     "name": "endpoint",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3635,7 +5496,7 @@
     ]
   },
   {
-    "__docId__": 156,
+    "__docId__": 213,
     "kind": "method",
     "name": "headers",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3673,7 +5534,7 @@
     }
   },
   {
-    "__docId__": 157,
+    "__docId__": 214,
     "kind": "method",
     "name": "fetch",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3759,7 +5620,7 @@
     }
   },
   {
-    "__docId__": 158,
+    "__docId__": 215,
     "kind": "method",
     "name": "error",
     "memberof": "wootils/shared/apiClient.js~APIClient",
@@ -3792,7 +5653,7 @@
     }
   },
   {
-    "__docId__": 159,
+    "__docId__": 216,
     "kind": "file",
     "name": "wootils/shared/deferred.js",
     "content": "/**\n * Create a deferred promise using a native Promise.\n * @return {Object}\n * @property {Promise}  promise The deferred promise.\n * @property {Function} resolve The functon to resolve the promise.\n * @property {Function} reject  The functon to reject the promise.\n */\nconst deferred = () => {\n  let resolve;\n  let reject;\n  const promise = new Promise((presolve, preject) => {\n    resolve = presolve;\n    reject = preject;\n  });\n\n  return {\n    promise,\n    resolve,\n    reject,\n  };\n};\n\nmodule.exports = deferred;\n",
@@ -3803,7 +5664,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 160,
+    "__docId__": 217,
     "kind": "function",
     "name": "deferred",
     "memberof": "wootils/shared/deferred.js",
@@ -3860,7 +5721,7 @@
     "params": []
   },
   {
-    "__docId__": 161,
+    "__docId__": 218,
     "kind": "file",
     "name": "wootils/shared/eventsHub.js",
     "content": "/**\n * A minimal implementation of an events handler service.\n */\nclass EventsHub {\n  /**\n   * Class constructor.\n   * @ignore\n   */\n  constructor() {\n    /**\n     * A dictionary of the events and their listeners.\n     * @type {Object}\n     * @ignore\n     */\n    this._events = {};\n  }\n  /**\n   * Adds a new event listener.\n   * @param {String|Array} event An event name or a list of them.\n   * @param {Function}     fn    The listener function.\n   * @return {Function} An unsubscribe function to remove the listener or listeners.\n   */\n  on(event, fn) {\n    const events = Array.isArray(event) ? event : [event];\n    events.forEach((name) => {\n      const subscribers = this.subscribers(name);\n      if (!subscribers.includes(fn)) {\n        subscribers.push(fn);\n      }\n    });\n\n    return () => this.off(event, fn);\n  }\n  /**\n   * Adds an event listener that will only be executed once.\n   * @param {String|Array} event An event name or a list of them.\n   * @param {Function}     fn    The listener function.\n   * @return {Function} An unsubscribe function to remove the listener.\n   */\n  once(event, fn) {\n    // eslint-disable-next-line no-param-reassign\n    fn.once = true;\n    return this.on(event, fn);\n  }\n  /**\n   * Removes an event listener.\n   * @param {String|Array} event An event name or a list of them.\n   * @param {Function}     fn    The listener function.\n   * @return {Boolean|Array} If `event` was a `string`, it will return whether or not the listener\n   *                         was found and removed; but if `event` was an `Array`, it will return\n   *                         a list of boolean values.\n   */\n  off(event, fn) {\n    const isArray = Array.isArray(event);\n    const events = isArray ? event : [event];\n    const result = events.map((name) => {\n      const subscribers = this.subscribers(name);\n      let found = false;\n      const index = subscribers.indexOf(fn);\n      if (index > -1) {\n        found = true;\n        subscribers.splice(index, 1);\n      }\n\n      return found;\n    });\n\n    return isArray ? result : result[0];\n  }\n  /**\n   * Emits an event and call all its listeners.\n   * @param {String|Array} event An event name or a list of them.\n   * @param {Array}        args  A list of parameters to send to the listeners.\n   */\n  emit(event, ...args) {\n    const toClean = [];\n    const events = Array.isArray(event) ? event : [event];\n    events.forEach((name) => {\n      this.subscribers(name).forEach((subscriber) => {\n        subscriber(...args);\n        if (subscriber.once) {\n          toClean.push({\n            event: name,\n            fn: subscriber,\n          });\n        }\n      });\n    });\n\n    toClean.forEach((info) => this.off(info.event, info.fn));\n  }\n  /**\n   * Reduce a target using an event. It's like emit, but the events listener return\n   * a modified (or not) version of the `target`.\n   * @param {String|Array} event  An event name or a list of them.\n   * @param {*}            target The variable to reduce with the listeners.\n   * @param {Array}        args   A list of parameters to send to the listeners.\n   * @return {*} A version of the `target` processed by the listeners.\n   */\n  reduce(event, target, ...args) {\n    const events = Array.isArray(event) ? event : [event];\n    let result = target;\n    events.forEach((name) => {\n      const subscribers = this.subscribers(name);\n      if (subscribers.length) {\n        const toClean = [];\n        let processed;\n        if (Array.isArray(result)) {\n          processed = result.slice();\n        } else if (typeof result === 'object') {\n          processed = Object.assign({}, result);\n        } else {\n          processed = result;\n        }\n\n        subscribers.forEach((subscriber) => {\n          processed = subscriber(...[processed, ...args]);\n          if (subscriber.once) {\n            toClean.push({\n              event: name,\n              fn: subscriber,\n            });\n          }\n        });\n\n        toClean.forEach((info) => this.off(info.event, info.fn));\n        result = processed;\n      }\n    });\n\n    return result;\n  }\n  /**\n   * Get all the listeners for an event.\n   * @param {String} event The name of the event.\n   * @return {Array}\n   */\n  subscribers(event) {\n    if (!this._events[event]) {\n      this._events[event] = [];\n    }\n\n    return this._events[event];\n  }\n}\n\nmodule.exports = EventsHub;\n",
@@ -3871,7 +5732,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 162,
+    "__docId__": 219,
     "kind": "class",
     "name": "EventsHub",
     "memberof": "wootils/shared/eventsHub.js",
@@ -3886,7 +5747,7 @@
     "interface": false
   },
   {
-    "__docId__": 163,
+    "__docId__": 220,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "wootils/shared/eventsHub.js~EventsHub",
@@ -3900,7 +5761,7 @@
     "ignore": true
   },
   {
-    "__docId__": 164,
+    "__docId__": 221,
     "kind": "member",
     "name": "_events",
     "memberof": "wootils/shared/eventsHub.js~EventsHub",
@@ -3920,7 +5781,7 @@
     }
   },
   {
-    "__docId__": 165,
+    "__docId__": 222,
     "kind": "method",
     "name": "on",
     "memberof": "wootils/shared/eventsHub.js~EventsHub",
@@ -3964,7 +5825,7 @@
     }
   },
   {
-    "__docId__": 166,
+    "__docId__": 223,
     "kind": "method",
     "name": "once",
     "memberof": "wootils/shared/eventsHub.js~EventsHub",
@@ -4008,7 +5869,7 @@
     }
   },
   {
-    "__docId__": 167,
+    "__docId__": 224,
     "kind": "method",
     "name": "off",
     "memberof": "wootils/shared/eventsHub.js~EventsHub",
@@ -4053,7 +5914,7 @@
     }
   },
   {
-    "__docId__": 168,
+    "__docId__": 225,
     "kind": "method",
     "name": "emit",
     "memberof": "wootils/shared/eventsHub.js~EventsHub",
@@ -4090,7 +5951,7 @@
     "return": null
   },
   {
-    "__docId__": 169,
+    "__docId__": 226,
     "kind": "method",
     "name": "reduce",
     "memberof": "wootils/shared/eventsHub.js~EventsHub",
@@ -4144,7 +6005,7 @@
     }
   },
   {
-    "__docId__": 170,
+    "__docId__": 227,
     "kind": "method",
     "name": "subscribers",
     "memberof": "wootils/shared/eventsHub.js~EventsHub",
@@ -4177,7 +6038,7 @@
     }
   },
   {
-    "__docId__": 171,
+    "__docId__": 228,
     "kind": "file",
     "name": "wootils/shared/index.js",
     "content": "const APIClient = require('./apiClient');\nconst deferred = require('./deferred');\nconst EventsHub = require('./eventsHub');\n\nmodule.exports = {\n  APIClient,\n  deferred,\n  EventsHub,\n};\n",
@@ -4189,7 +6050,7 @@
   },
   {
     "kind": "index",
-    "content": "# Wootils\n\n[![Travis](https://img.shields.io/travis/homer0/wootils.svg?style=flat-square)](https://travis-ci.org/homer0/wootils)\n[![Coveralls github](https://img.shields.io/coveralls/github/homer0/wootils.svg?style=flat-square)](https://coveralls.io/github/homer0/wootils?branch=master)\n[![David](https://img.shields.io/david/homer0/wootils.svg?style=flat-square)](https://david-dm.org/homer0/wootils)\n[![David](https://img.shields.io/david/dev/homer0/wootils.svg?style=flat-square)](https://david-dm.org/homer0/wootils)\n\nA set of Javascript utilities for building Node and browser apps.\n\n## Motivation/Introduction\n\nThe idea was to take all those small thing I'm always rewriting on every project and move them to a single package so I can not only stop copying & pasting them all over the place but also maintain them all together.\n\nThere are two rules I followed when I had to decide what to put and what to keep somewhere else:\n\n1. The utility needs to fit on a single file.\n2. It shouldn't include any specific business logic from any other project.\n\n## Information\n\n| -            | -                                                                  |\n|--------------|--------------------------------------------------------------------|\n| Package      | wootils                                                            |\n| Description  | A set of Javascript utilities for building Node and browser apps.  |\n| Node Version | >= v8.0.0                                                         |\n\n## Usage\n\nThe package is divided on 2 folders:\n\n- `node`: Utilities only compatible with Node.\n- `shared`: Utilities that can work on both browser and Node.\n\n> Yes, when the time comes, it will have a `browser` folder too.\n\n### Node utilities\n\nTwo notes about the Node utilities:\n\n1. I'm a big fan of [Jimple](https://github.com/fjorgemota/jimple), so all the files not only export the utility but also a service provider or a _\"servicer provider generator\"_ to register the utility on a Jimple app.\n2. Some of them may depend on the others.\n\n#### AppConfiguration\n\nThis is a service to manage applications configurations. It takes care of loading, activating, switching and merging configuration files.\n\n[Read more about AppConfiguration](manual/appConfiguration.html)\n\n#### EnvironmentUtils\n\nA really small service to centralize the place where you read environment variables and check if you are running on development or production.\n\n[Read more about EnvironmentUtils](manual/environmentUtils.html)\n\n#### ErrorHandler\n\nListens for uncaught exceptions and unhandled promises rejections, and logs them out with full detail.\n\n[Read more about ErrorHandler](manual/errorHandler.html)\n\n#### Logger\n\nThe name leaves nothing to the imagination. As you may have guessed, this is service for logging messages into the console.\n\n[Read more about Logger](manual/logger.html)\n\n#### packageInfo\n\nA tiny function that reads the contents of the app `package.json`. This is really useful on an Jimple application where you can register it, because the returned value gets cached and it's available as a service.\n\n[Read more about packageInfo](manual/packageInfo.html)\n\n#### PathUtils\n\nAn easy way to manage locations and build paths relative to those locations on a Node app.\n\n[Read more about PathUtils](manual/pathUtils.html)\n\n#### rootRequire\n\nIs basically `require` but the path is relative to the project root directory.\n\n[Read more about rootRequire](manual/rootRequire.html)\n\n### Shared utilities\n\n#### APIClient\n\nA really basic client to work with an API endpoints requests.\n\n[Read more about APIClient](manual/APIClient.html)\n\n#### deferred\n\nCreate a deferred promise using the native `Promise` object.\n\n[Read more about deferred](manual/deferred.html)\n\n#### deferred\n\nA small implementation of a pubsub service for handling events on an app.\n\n[Read more about EventsHub](manual/eventsHub.html)\n\n## Development\n\nBefore doing anything, install the repository hooks:\n\n```bash\n# You can either use npm or yarn, it doesn't matter\nyarn run hooks\n```\n\n### NPM/Yarn Tasks\n\n| Task                     | Description                         |\n|--------------------------|-------------------------------------|\n| `yarn run hooks`         | Install the GIT repository hooks.   |\n| `yarn test`              | Run the project unit tests.         |\n| `yarn run lint`          | Lint the modified files.            |\n| `yarn run lint:full`     | Lint the project code.              |\n| `yarn run docs`          | Generate the project documentation. |\n| `yarn run todo`          | List all the pending to-do's.       |\n\n### Testing\n\nI use [Jest](https://facebook.github.io/jest/) with [Jest-Ex](https://yarnpkg.com/en/package/jest-ex) to test the project. The configuration file is on `./.jestrc`, the tests and mocks are on `./tests` and the script that runs it is on `./utils/scripts/test`.\n\n### Linting\n\nI use [ESlint](http://eslint.org) to validate all our JS code. The configuration file for the project code is on `./.eslintrc` and for the tests on `./tests/.eslintrc` (which inherits from the one on the root), there's also an `./.eslintignore` to ignore some files on the process, and the script that runs it is on `./utils/scripts/lint`.\n\n### Documentation\n\nI use [ESDoc](http://esdoc.org) to generate HTML documentation for the project. The configuration file is on `./.esdocrc` and the script that runs it is on `./utils/scripts/docs`.\n\n### To-Dos\n\nI use `@todo` comments to write all the pending improvements and fixes, and [Leasot](https://yarnpkg.com/en/package/leasot) to generate a report. The script that runs it is on `./utils/scripts/todo`.\n",
+    "content": "# Wootils\n\n[![Travis](https://img.shields.io/travis/homer0/wootils.svg?style=flat-square)](https://travis-ci.org/homer0/wootils)\n[![Coveralls github](https://img.shields.io/coveralls/github/homer0/wootils.svg?style=flat-square)](https://coveralls.io/github/homer0/wootils?branch=master)\n[![David](https://img.shields.io/david/homer0/wootils.svg?style=flat-square)](https://david-dm.org/homer0/wootils)\n[![David](https://img.shields.io/david/dev/homer0/wootils.svg?style=flat-square)](https://david-dm.org/homer0/wootils)\n\nA set of Javascript utilities for building Node and browser apps.\n\n## Motivation/Introduction\n\nThe idea was to take all those small thing I'm always rewriting on every project and move them to a single package so I can not only stop copying & pasting them all over the place but also maintain them all together.\n\nThere are two rules I followed when I had to decide what to put and what to keep somewhere else:\n\n1. The utility needs to fit on a single file.\n2. It shouldn't include any specific business logic from any other project.\n\n## Information\n\n| -            | -                                                                  |\n|--------------|--------------------------------------------------------------------|\n| Package      | wootils                                                            |\n| Description  | A set of Javascript utilities for building Node and browser apps.  |\n| Node Version | >= v8.0.0                                                         |\n\n## Usage\n\nThe package is divided on 3 folders:\n\n- `node`: Utilities that are only compatible with Node.\n- `shared`: Utilities that can work on both browser and Node.\n- `browser`: Utilities that can only be used while on a browser.\n\n### Node utilities\n\nTwo notes about the Node utilities:\n\n1. I'm a big fan of [Jimple](https://github.com/fjorgemota/jimple), so all the files not only export the utility but also a service provider or a _\"servicer provider generator\"_ to register the utility on a Jimple app.\n2. Some of them may depend on the others.\n\n#### AppConfiguration\n\nThis is a service to manage applications configurations. It takes care of loading, activating, switching and merging configuration files.\n\n[Read more about AppConfiguration](manual/appConfiguration.html)\n\n#### EnvironmentUtils\n\nA really small service to centralize the place where you read environment variables and check if you are running on development or production.\n\n[Read more about EnvironmentUtils](manual/environmentUtils.html)\n\n#### ErrorHandler\n\nListens for uncaught exceptions and unhandled promises rejections, and logs them out with full detail.\n\n[Read more about ErrorHandler](manual/errorHandler.html)\n\n#### Logger\n\nThe name leaves nothing to the imagination. As you may have guessed, this is service for logging messages into the console.\n\n[Read more about Logger](manual/logger.html)\n\n#### packageInfo\n\nA tiny function that reads the contents of the app `package.json`. This is really useful on an Jimple application where you can register it, because the returned value gets cached and it's available as a service.\n\n[Read more about packageInfo](manual/packageInfo.html)\n\n#### PathUtils\n\nAn easy way to manage locations and build paths relative to those locations on a Node app.\n\n[Read more about PathUtils](manual/pathUtils.html)\n\n#### rootRequire\n\nIs basically `require` but the path is relative to the project root directory.\n\n[Read more about rootRequire](manual/rootRequire.html)\n\n### Shared utilities\n\n#### APIClient\n\nA really basic client to work with an API endpoints requests.\n\n[Read more about APIClient](manual/APIClient.html)\n\n#### deferred\n\nCreate a deferred promise using the native `Promise` object.\n\n[Read more about deferred](manual/deferred.html)\n\n#### deferred\n\nA small implementation of a pubsub service for handling events on an app.\n\n[Read more about EventsHub](manual/eventsHub.html)\n\n### Browser utilities\n\n#### SimpleStorage\n\nAn **abstract** class allows you to build services that relay on browser storage (session/local) and simplifies the way you work it.\n\n[Read more about SimpleStorage](manual/simpleStorage.html)\n\n## Development\n\nBefore doing anything, install the repository hooks:\n\n```bash\n# You can either use npm or yarn, it doesn't matter\nyarn run hooks\n```\n\n### NPM/Yarn Tasks\n\n| Task                     | Description                         |\n|--------------------------|-------------------------------------|\n| `yarn run hooks`         | Install the GIT repository hooks.   |\n| `yarn test`              | Run the project unit tests.         |\n| `yarn run lint`          | Lint the modified files.            |\n| `yarn run lint:full`     | Lint the project code.              |\n| `yarn run docs`          | Generate the project documentation. |\n| `yarn run todo`          | List all the pending to-do's.       |\n\n### Testing\n\nI use [Jest](https://facebook.github.io/jest/) with [Jest-Ex](https://yarnpkg.com/en/package/jest-ex) to test the project. The configuration file is on `./.jestrc`, the tests and mocks are on `./tests` and the script that runs it is on `./utils/scripts/test`.\n\n### Linting\n\nI use [ESlint](http://eslint.org) to validate all our JS code. The configuration file for the project code is on `./.eslintrc` and for the tests on `./tests/.eslintrc` (which inherits from the one on the root), there's also an `./.eslintignore` to ignore some files on the process, and the script that runs it is on `./utils/scripts/lint`.\n\n### Documentation\n\nI use [ESDoc](http://esdoc.org) to generate HTML documentation for the project. The configuration file is on `./.esdocrc` and the script that runs it is on `./utils/scripts/docs`.\n\n### To-Dos\n\nI use `@todo` comments to write all the pending improvements and fixes, and [Leasot](https://yarnpkg.com/en/package/leasot) to generate a report. The script that runs it is on `./utils/scripts/todo`.\n",
     "longname": "/Users/homer0/CODE/node/wootils/README-esdoc.md",
     "name": "./README-esdoc.md",
     "static": true,
@@ -4197,7 +6058,7 @@
   },
   {
     "kind": "packageJSON",
-    "content": "{\n  \"name\": \"wootils\",\n  \"description\": \"A set of Javascript utilities for building Node and browser apps.\",\n  \"homepage\": \"https://homer0.github.io/wootils/\",\n  \"version\": \"2.0.0\",\n  \"repository\": \"homer0/wootils\",\n  \"author\": \"Leonardo Apiwan (@homer0) <me@homer0.com>\",\n  \"license\": \"MIT\",\n  \"dependencies\": {\n    \"jimple\": \"1.5.0\",\n    \"fs-extra\": \"7.0.1\",\n    \"colors\": \"1.3.3\",\n    \"urijs\": \"1.19.1\",\n    \"statuses\": \"1.5.0\"\n  },\n  \"devDependencies\": {\n    \"eslint\": \"5.13.0\",\n    \"eslint-config-airbnb-base\": \"13.1.0\",\n    \"eslint-plugin-import\": \"2.16.0\",\n    \"eslint-plugin-node\": \"8.0.1\",\n    \"jest-ex\": \"6.0.0\",\n    \"jest-cli\": \"24.0.0\",\n    \"jasmine-expect\": \"4.0.1\",\n    \"@babel/preset-env\": \"7.0.0\",\n    \"@babel/core\": \"7.2.2\",\n    \"esdoc\": \"1.1.0\",\n    \"esdoc-standard-plugin\": \"1.0.0\",\n    \"esdoc-node\": \"1.0.4\",\n    \"leasot\": \"7.2.0\",\n    \"coveralls\": \"3.0.2\"\n  },\n  \"engine-strict\": true,\n  \"engines\": {\n    \"node\": \">=8.0.0\",\n    \"npm\": \">=3.0.0\"\n  },\n  \"main\": \"src/index.js\",\n  \"scripts\": {\n    \"hooks\": \"./utils/hooks/install\",\n    \"test\": \"./utils/scripts/test\",\n    \"lint\": \"./utils/scripts/lint\",\n    \"lint:full\": \"./utils/scripts/lint-full\",\n    \"predocs\": \"./utils/scripts/docs-index\",\n    \"docs\": \"./utils/scripts/docs\",\n    \"todo\": \"./utils/scripts/todo\"\n  }\n}\n",
+    "content": "{\n  \"name\": \"wootils\",\n  \"description\": \"A set of Javascript utilities for building Node and browser apps.\",\n  \"homepage\": \"https://homer0.github.io/wootils/\",\n  \"version\": \"2.1.0\",\n  \"repository\": \"homer0/wootils\",\n  \"author\": \"Leonardo Apiwan (@homer0) <me@homer0.com>\",\n  \"license\": \"MIT\",\n  \"dependencies\": {\n    \"jimple\": \"1.5.0\",\n    \"fs-extra\": \"7.0.1\",\n    \"colors\": \"1.3.3\",\n    \"urijs\": \"1.19.1\",\n    \"statuses\": \"1.5.0\"\n  },\n  \"devDependencies\": {\n    \"eslint\": \"5.13.0\",\n    \"eslint-config-airbnb-base\": \"13.1.0\",\n    \"eslint-plugin-import\": \"2.16.0\",\n    \"eslint-plugin-node\": \"8.0.1\",\n    \"jest-ex\": \"6.0.0\",\n    \"jest-cli\": \"24.0.0\",\n    \"jasmine-expect\": \"4.0.1\",\n    \"@babel/preset-env\": \"7.0.0\",\n    \"@babel/core\": \"7.2.2\",\n    \"esdoc\": \"1.1.0\",\n    \"esdoc-standard-plugin\": \"1.0.0\",\n    \"esdoc-node\": \"1.0.4\",\n    \"leasot\": \"7.2.0\",\n    \"coveralls\": \"3.0.2\"\n  },\n  \"engine-strict\": true,\n  \"engines\": {\n    \"node\": \">=8.0.0\",\n    \"npm\": \">=3.0.0\"\n  },\n  \"main\": \"src/index.js\",\n  \"scripts\": {\n    \"hooks\": \"./utils/hooks/install\",\n    \"test\": \"./utils/scripts/test\",\n    \"lint\": \"./utils/scripts/lint\",\n    \"lint:full\": \"./utils/scripts/lint-full\",\n    \"predocs\": \"./utils/scripts/docs-index\",\n    \"docs\": \"./utils/scripts/docs\",\n    \"todo\": \"./utils/scripts/todo\"\n  }\n}\n",
     "longname": "/Users/homer0/CODE/node/wootils/package.json",
     "name": "package.json",
     "static": true,
@@ -4288,6 +6149,14 @@
     "longname": "/Users/homer0/CODE/node/wootils/documents/shared/eventsHub.md",
     "name": "./documents/shared/eventsHub.md",
     "content": "# EventsHub\n\nA small implementation of a pubsub service for handling events on an app.\n\nIt doesn't require any configuration or have customization options: You listen for an event with `on`, emit an event with `emit` and reduce a variable through an event with `reduce`.\n\n## Examples\n\nFirst, let's create an instance of the hub:\n\n```js\nconst { EventsHub } = require('wootils/shared');\nconst events = new EventsHub();\n```\n\n### Listen and emit\n\n```js\n// Add the listener\nevents.on('my-event', () => {\n  console.log('The event listener was called!');\n});\n// Emit the event\nevents.emit('my-event');\n```\n\nQuite simple, right? You can also send any number of parameters to the events:\n\n```js\n// Add the listener\nevents.on('user-login', (username, password) => {\n  someAuthService.login(username, password)\n  .then((userInfo) => {\n    events.emit('user-login-successfull', userInfo);\n  })\n  .catch((error) => {\n  \t events.emit('user-login-failed', error);\n  });\n});\n\n...\n\nevents.emit('user-login', 'rosario', 'p4ssword');\n```\n\nAnd you can even use the same listener for multiple events:\n\n```js\n// Add the listener\nevents.on(['logout-route', 'unauthorized-request'], () => {\n  someAuthService.signout();\n});\n\n...\n\nevents.emit('logout-route');\n// or\nsomeRequest()\n.then(() => ... )\n.catch((error) => {\n  if (error.code === 401) {\n    events.emit('unauthorized-request');\n  }\n})\n```\n\n> All methods that support an event name also support an `Array` with a list of them.\n\n### Reduce a variable\n\nIt's basically the same as calling `emit`, but the first parameter may be modified by the listeners and it's returned after it went through all of them.\n\n```js\nevents.on('filter-users-list', (list) => {\n  list.splice(1, 1);\n  return list;\n});\n\nconst usersList = ['charito', 'Rosario'];\nconst newUsersList = events.reduce('filter-users-list', usersList);\nconsole.log(newUsersList);\n// Will log ['charito']\n```\n\n> `reduce` also supports sending any number of parameters after the target variable.\n\n## Technical documentation\n\nThe code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/class/wootils/shared/eventsHub.js~EventsHub.html) or generate it yourself using:\n\n```bash\n# You can either use npm or yarn, it doesn't matter\nnpm run docs\nopen ./docs/index.html\n```",
+    "static": true,
+    "access": "public"
+  },
+  {
+    "kind": "manual",
+    "longname": "/Users/homer0/CODE/node/wootils/documents/browser/simpleStorage.md",
+    "name": "./documents/browser/simpleStorage.md",
+    "content": "# SimpleStorage\n\nAn **abstract** class allows you to build services that relay on browser storage (session/local) and simplifies the way you work it.\n\nThe class doesn't have any public method, as the idea is for you to define your (let's call it) _\"service\"_ and then interact with the storage internally, using the _protected_ methods.\n\n## Examples\n\n### Basic\n\nLet's say you have an app with a form for writing blog posts (or any kind of articles), and it has two fields: title and content.\n\nThe basic functionality is ready, when the user hits the `Save` button, you send the post to an API in order to publish. We can imagine a service like this:\n\n```js\nclass Posts {\n  save(title, content) {\n    return fetch(...);\n  }\n}\n```\n\nBut, what if we want to add a feature to save a draft of the post while the user is writing? in case something happens, we can prevent the user from losing what he/she wrote.\n\nWe can use `localStorage`! we need to write the functions to:\n\n1. Save the draft, encoded as JSON.\n2. Load the storage, check for the draft, decode it and restore.\n\nAnd that's exactly what `SimpleStorage` can do for you:\n\n```js\nconst SimpleStorage = require('wootils/browser/simpleStorage');\n\nclass Posts extends SimpleStorage {\n  constructor(...) {\n    super({\n      storage: {\n        name: 'posts',\n        key: 'myApp-posts',\n      },\n    });\n  }\n\n  saveDraft(title, content) {\n    this._setData({ title, content });\n  }\n\n  getDraft() {\n    const draft = this._getData();\n    return draft.title ? draft : null;\n  }\n\n  save(title, content) {\n    this._delete();\n    return fetch(...);\n  }\n}\n```\n\nLet's go over all the changes:\n\nWe first `require`/`import` the class and make `Posts` extend from it.\n\nThen we use the constructor options to specify the name and key for the storage. The name is just a reference the class uses and the key is the actual key that will be used on the storage to save the data.\n\n> Since we wanted `localStorage`, we don't need to touch any other default option, but if you are interested on the default options, take a look at the technical documentation for the class.\n\nWe add `saveDraft` and `getDraft`: As you can imagine, `saveDraft` just tells the class to save an object, and based on the storage options, the class already knows that the object should be encoded as a JSON before saving it, no need to worry about that.\n\n`getDraft` will just try to obtain the data and make sure there's a draft there; the whole process where the class checks the storage and loads its contents has been already taken care of.\n\nThe reason we check for `.title` is because the class will check if there's something on the storage using the key from the options, and if there's nothing, it will add an empty object in order to work with future data.\n\nAnd the last modification is the call to `_delete` on the `save` method: We are going to finally save the post, so it's ok to delete the draft from the storage: this is basically a _\"clean up\"_.\n\nNow... there's a problem with this implementation: we are using `localStorage`, so if the user is writing different posts on different browser tabs, they'll overwrite each other (yeah, that seems like an odd scenario, but it may happen).\n\nWe should switch to `sessionStorage` and keep the draft limited to each tab. Doing that with `SimpleStorage` is quite easy:\n\n```js\nconst SimpleStorage = require('wootils/browser/simpleStorage');\n\nclass Posts extends SimpleStorage {\n  constructor(...) {\n    super({\n      storage: {\n        name: 'posts',\n        key: 'myApp-posts',\n        typePriority: ['session', 'local'],\n      },\n    });\n  }\n...\n```\n\nBy adding the `storage.typePriority` option, we tell the class to use `sessionStorage` if available and switch to `localStorage` as a fallback.\n\n### Working with entries\n\nOn the example above we saw how to save, read and delete a simple object from the storage, but `SimpleStorage` allows you to also work with different objects: Entries.\n\nWhen working with entries, instead of just sending an object to the storage, you can have like a _\"storage inside the storage\"_, where you can assign different keys for different objects... and even and expiration time for them.\n\nLet's illustrate this with an example: You have an app that, when a user navigates to _\"its profile page\"_, it makes some requests to load some \"settings\", like this:\n\n```js\nclass Users {\n  ...\n  getUserProfileSettings(userId) {\n    const result = {};\n    this.getUserProfile(userId)\n    .then((userProfile) => {\n      result.userProfile = userProfile;\n      return this.getUserAppSettings(userId);\n    })\n    .then((appSettings) => {\n      result.appSettings = appSettings;\n      return this.getUserUISettings(userId);\n    })\n    .then((uiSettings) => {\n      result.uiSettings = uiSettings;\n      return result;\n    })\n    .catch(...)\n    .then(() => {\n      this._turnOffThatCrazyAjaxLoadIndicator(): // :P\n    });\n  }\n\n  getUserProfile(userId) {\n    return fetch(`/user-profile/${userId}`)\n    .then((resp) => resp.json());\n  }\n\n  getUserAppSettings(userId) {\n    return fetch(`/user-app-settings/${userId}`)\n    .then((resp) => resp.json());\n  }\n\n  getUserUISettings(userId) {\n    return fetch(`/user-ui-settings/${userId}`)\n    .then((resp) => resp.json());\n  }\n}\n```\n\n> Yes, you could also use `async`/`await` or `Promise.all`, but this is just a simple example.\n\nBut what if we know that it's hardly possible that those setting would change in the near future and that the app may need to do those requests for more than just the _\"profile page\"_?\n\nWe can do something like on the example above and store everything on the local storage, right? well... manipulating a single object in order to put the responses of all the different request will require some extra coding and it may seem like an overkill, so, that's why `SimpleStorage` has entries.\n\nWe can use the entries feature to store each request as a different _entry_, and even tell the class to just keep them for an 2 hours, after that, make the request again.\n\nLet's start by adding `SimpleStorage` and enabling the feature:\n\n```js\nconst SimpleStorage = require('wootils/browser/simpleStorage');\n\nclass Users extends SimpleStorage {\n  constructor(...) {\n    super({\n      storage: {\n        name: 'user-requests',\n        key: 'myApp-user-requests',\n      },\n      entries: {\n        enabled: true,\n        expiration: 7200,\n      }\n    });\n  }\n...\n```\n\nWe first `require`/`import` the class and make `Users` extend from it.\n\nThen we use the constructor options to:\n\n1. Specify the name and key for the storage. The name is just a reference the class uses and the key is the actual key that will be used on the storage to save the data.\n2. Enable the feature `entries.enabled` and set the expiration time of each entry (2 hours, in seconds).\n\nNow we need to add a method to cache the requests as entries:\n\n```js\ncacheRequest(url) {\n  const entry = this._getEntry(url);\n  return entry ?\n    Promise.resolve(entry.value) :\n    this._saveEntry(fetch(url).then((resp) => resp.json()));\n}\n```\n\nAs you can see, the method first uses `_getEntry`, to locate an entry for the received URL.\n\nIf an entry was found, it uses `Promise.resolve` to return the value. The reason for returning a `Promise` is so method will always return a promise even if the request doesn't fire.\n\nBut if there's no entry, it calls `_saveEntry` with the result of the `fetch` request.\n\n> You can send an object or a promise to `_saveEntry` and `_sendData`, the class will wait for it to be resolved and _then_ use the received value.\n\nThat's all for the method; like on the other example, `SimpleStorage` will take care of writing and reading the entries and their values for the storage.\n\nTime to refactor! We need to change the _\"get methods\"_ and make them use the new `cacheRequest`:\n\n```js\n...\ngetUserProfile(userId) {\n  return this.cacheRequest(`/user-profile/${userId}`);\n}\n\ngetUserAppSettings(userId) {\n  return this.cacheRequest(`/user-app-settings/${userId}`);\n}\n\ngetUserUISettings(userId) {\n  return this.cacheRequest(`/user-ui-settings/${userId}`);\n}\n...\n```\n\nDone! Now the request will only trigger if there's nothing on the storage (this includes entries that were deleted because they expired.\n\n## Technical documentation\n\nThe code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/class/wootils/browser/simpleStorage.js~SimpleStorage.html) or generate it yourself using:\n\n```bash\n# You can either use npm or yarn, it doesn't matter\nnpm run docs\nopen ./docs/index.html\n```\n",
     "static": true,
     "access": "public"
   }

@@ -168,84 +168,181 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><div class="github-markdown" data-ice="content"><h1 id="errorhandler">ErrorHandler</h1><p>Listens for uncaught exceptions and unhandled promises rejections, and logs them out with full detail.</p>
-<p>By default, if an error is thrown, node will just output the error, but if a <code>Promise</code> is rejected and there&apos;s no <code>catch</code> to capture the exception, it will log <code>...</code>, which doesn&apos;t provide a lot of information, right?</p>
-<p>Well, <code>ErrorHandler</code> listens for these kind of exceptions, unhandled errors and rejected promises, and logs them with their stack trace information using the <code>Logger</code> utility.</p>
-<h2 id="example">Example</h2><p>Let&apos;s say your code looks something like this:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">makeAnAPICall()
-.then((response) =&gt; console.log(response));</code>
+<div class="content" data-ice="content"><div class="github-markdown" data-ice="content"><h1 id="simplestorage">SimpleStorage</h1><p>An <strong>abstract</strong> class allows you to build services that relay on browser storage (session/local) and simplifies the way you work it.</p>
+<p>The class doesn&apos;t have any public method, as the idea is for you to define your (let&apos;s call it) <em>&quot;service&quot;</em> and then interact with the storage internally, using the <em>protected</em> methods.</p>
+<h2 id="examples">Examples</h2><h3 id="basic">Basic</h3><p>Let&apos;s say you have an app with a form for writing blog posts (or any kind of articles), and it has two fields: title and content.</p>
+<p>The basic functionality is ready, when the user hits the <code>Save</code> button, you send the post to an API in order to publish. We can imagine a service like this:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">class Posts {
+  save(title, content) {
+    return fetch(...);
+  }
+}</code>
 </code></pre>
-<p>If the request returned a <code>401</code>, Node would output something like this:</p>
-<pre><code class="lang-bash"><code class="source-code prettyprint">(node:34097) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 2): 401</code>
+<p>But, what if we want to add a feature to save a draft of the post while the user is writing? in case something happens, we can prevent the user from losing what he/she wrote.</p>
+<p>We can use <code>localStorage</code>! we need to write the functions to:</p>
+<ol>
+<li>Save the draft, encoded as JSON.</li>
+<li>Load the storage, check for the draft, decode it and restore.</li>
+</ol>
+<p>And that&apos;s exactly what <code>SimpleStorage</code> can do for you:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const SimpleStorage = require(&apos;wootils/browser/simpleStorage&apos;);
+
+class Posts extends SimpleStorage {
+  constructor(...) {
+    super({
+      storage: {
+        name: &apos;posts&apos;,
+        key: &apos;myApp-posts&apos;,
+      },
+    });
+  }
+
+  saveDraft(title, content) {
+    this._setData({ title, content });
+  }
+
+  getDraft() {
+    const draft = this._getData();
+    return draft.title ? draft : null;
+  }
+
+  save(title, content) {
+    this._delete();
+    return fetch(...);
+  }
+}</code>
 </code></pre>
-<p>Now, let&apos;s see how to get more information with <code>ErrorHandler</code>:</p>
+<p>Let&apos;s go over all the changes:</p>
+<p>We first <code>require</code>/<code>import</code> the class and make <code>Posts</code> extend from it.</p>
+<p>Then we use the constructor options to specify the name and key for the storage. The name is just a reference the class uses and the key is the actual key that will be used on the storage to save the data.</p>
 <blockquote>
-<p>The service depends on a <code>Logger</code> service instance, so you need to register it first.</p>
+<p>Since we wanted <code>localStorage</code>, we don&apos;t need to touch any other default option, but if you are interested on the default options, take a look at the technical documentation for the class.</p>
 </blockquote>
-<h3 id="without-jimple">Without Jimple</h3><blockquote>
-<p>If you haven&apos;t tried <a href="https://github.com/fjorgemota/jimple">Jimple</a>, give it a try, it&apos;s excellent for organizing your app dependencies and services.</p>
-</blockquote>
-<p>Let&apos;s start with the setup:</p>
+<p>We add <code>saveDraft</code> and <code>getDraft</code>: As you can imagine, <code>saveDraft</code> just tells the class to save an object, and based on the storage options, the class already knows that the object should be encoded as a JSON before saving it, no need to worry about that.</p>
+<p><code>getDraft</code> will just try to obtain the data and make sure there&apos;s a draft there; the whole process where the class checks the storage and loads its contents has been already taken care of.</p>
+<p>The reason we check for <code>.title</code> is because the class will check if there&apos;s something on the storage using the key from the options, and if there&apos;s nothing, it will add an empty object in order to work with future data.</p>
+<p>And the last modification is the call to <code>_delete</code> on the <code>save</code> method: We are going to finally save the post, so it&apos;s ok to delete the draft from the storage: this is basically a <em>&quot;clean up&quot;</em>.</p>
+<p>Now... there&apos;s a problem with this implementation: we are using <code>localStorage</code>, so if the user is writing different posts on different browser tabs, they&apos;ll overwrite each other (yeah, that seems like an odd scenario, but it may happen).</p>
+<p>We should switch to <code>sessionStorage</code> and keep the draft limited to each tab. Doing that with <code>SimpleStorage</code> is quite easy:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const SimpleStorage = require(&apos;wootils/browser/simpleStorage&apos;);
+
+class Posts extends SimpleStorage {
+  constructor(...) {
+    super({
+      storage: {
+        name: &apos;posts&apos;,
+        key: &apos;myApp-posts&apos;,
+        typePriority: [&apos;session&apos;, &apos;local&apos;],
+      },
+    });
+  }
+...</code>
+</code></pre>
+<p>By adding the <code>storage.typePriority</code> option, we tell the class to use <code>sessionStorage</code> if available and switch to <code>localStorage</code> as a fallback.</p>
+<h3 id="working-with-entries">Working with entries</h3><p>On the example above we saw how to save, read and delete a simple object from the storage, but <code>SimpleStorage</code> allows you to also work with different objects: Entries.</p>
+<p>When working with entries, instead of just sending an object to the storage, you can have like a <em>&quot;storage inside the storage&quot;</em>, where you can assign different keys for different objects... and even and expiration time for them.</p>
+<p>Let&apos;s illustrate this with an example: You have an app that, when a user navigates to <em>&quot;its profile page&quot;</em>, it makes some requests to load some &quot;settings&quot;, like this:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">class Users {
+  ...
+  getUserProfileSettings(userId) {
+    const result = {};
+    this.getUserProfile(userId)
+    .then((userProfile) =&gt; {
+      result.userProfile = userProfile;
+      return this.getUserAppSettings(userId);
+    })
+    .then((appSettings) =&gt; {
+      result.appSettings = appSettings;
+      return this.getUserUISettings(userId);
+    })
+    .then((uiSettings) =&gt; {
+      result.uiSettings = uiSettings;
+      return result;
+    })
+    .catch(...)
+    .then(() =&gt; {
+      this._turnOffThatCrazyAjaxLoadIndicator(): // :P
+    });
+  }
+
+  getUserProfile(userId) {
+    return fetch(`/user-profile/${userId}`)
+    .then((resp) =&gt; resp.json());
+  }
+
+  getUserAppSettings(userId) {
+    return fetch(`/user-app-settings/${userId}`)
+    .then((resp) =&gt; resp.json());
+  }
+
+  getUserUISettings(userId) {
+    return fetch(`/user-ui-settings/${userId}`)
+    .then((resp) =&gt; resp.json());
+  }
+}</code>
+</code></pre>
 <blockquote>
-<p>All of this code should be added on top of the already existing code showed above.</p>
+<p>Yes, you could also use <code>async</code>/<code>await</code> or <code>Promise.all</code>, but this is just a simple example.</p>
 </blockquote>
-<pre><code class="lang-js"><code class="source-code prettyprint">const { Logger, ErrorHandler } = require(&apos;wootils/node&apos;);
-// Create an instance of the logger service
-const logger = new Logger();
-// Create an instance of the handler
-const errorHandler = new ErrorHandler(logger);</code>
+<p>But what if we know that it&apos;s hardly possible that those setting would change in the near future and that the app may need to do those requests for more than just the <em>&quot;profile page&quot;</em>?</p>
+<p>We can do something like on the example above and store everything on the local storage, right? well... manipulating a single object in order to put the responses of all the different request will require some extra coding and it may seem like an overkill, so, that&apos;s why <code>SimpleStorage</code> has entries.</p>
+<p>We can use the entries feature to store each request as a different <em>entry</em>, and even tell the class to just keep them for an 2 hours, after that, make the request again.</p>
+<p>Let&apos;s start by adding <code>SimpleStorage</code> and enabling the feature:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const SimpleStorage = require(&apos;wootils/browser/simpleStorage&apos;);
+
+class Users extends SimpleStorage {
+  constructor(...) {
+    super({
+      storage: {
+        name: &apos;user-requests&apos;,
+        key: &apos;myApp-user-requests&apos;,
+      },
+      entries: {
+        enabled: true,
+        expiration: 7200,
+      }
+    });
+  }
+...</code>
 </code></pre>
-<p>Now, once you have the instance, you have to tell it to start listening for unhandled errors:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">errorHandler.listen();</code>
+<p>We first <code>require</code>/<code>import</code> the class and make <code>Users</code> extend from it.</p>
+<p>Then we use the constructor options to:</p>
+<ol>
+<li>Specify the name and key for the storage. The name is just a reference the class uses and the key is the actual key that will be used on the storage to save the data.</li>
+<li>Enable the feature <code>entries.enabled</code> and set the expiration time of each entry (2 hours, in seconds).</li>
+</ol>
+<p>Now we need to add a method to cache the requests as entries:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">cacheRequest(url) {
+  const entry = this._getEntry(url);
+  return entry ?
+    Promise.resolve(entry.value) :
+    this._saveEntry(fetch(url).then((resp) =&gt; resp.json()));
+}</code>
 </code></pre>
-<p>Done! If you run the same code now, this is the kind of logged information you&apos;ll get:</p>
-<pre><code class="lang-bash"><code class="source-code prettyprint">[2018-01-22 04:19:12] 401
-at makeAPICall (/path-to-your-app/index.js:9:42)
-at Object.&lt;anonymous&gt; (/path-to-your-app/index.js:11:1)
-at Module._compile (module.js:570:32)
-at Object.Module._extensions..js (module.js:579:10)
-at Module.load (module.js:487:32)
-at tryModuleLoad (module.js:446:12)
-at Function.Module._load (module.js:438:3)
-at Module.runMain (module.js:604:10)
-at run (bootstrap_node.js:383:7)
-at startup (bootstrap_node.js:149:9)</code>
-</code></pre>
-<p>You get the date and time when it happened and the full stack trace of the error.</p>
-<h3 id="with-jimple">With Jimple</h3><p>When used with Jimple, instead of using the <code>logger</code> service, it uses the <code>logger</code> service:</p>
+<p>As you can see, the method first uses <code>_getEntry</code>, to locate an entry for the received URL.</p>
+<p>If an entry was found, it uses <code>Promise.resolve</code> to return the value. The reason for returning a <code>Promise</code> is so method will always return a promise even if the request doesn&apos;t fire.</p>
+<p>But if there&apos;s no entry, it calls <code>_saveEntry</code> with the result of the <code>fetch</code> request.</p>
 <blockquote>
-<p>It uses <code>logger</code> by default, but if the service is not available, it will try to fallback to <code>appLogger</code>, the alternative version of <code>logger</code> that prefixes all the messages with the project name.</p>
+<p>You can send an object or a promise to <code>_saveEntry</code> and <code>_sendData</code>, the class will wait for it to be resolved and <em>then</em> use the received value.</p>
 </blockquote>
-<pre><code class="lang-js"><code class="source-code prettyprint">// Import all the required modules
-const Jimple = require(&apos;jimple&apos;);
-const {
-  logger,
-  errorHandler,
-} = require(&apos;wootils/node/providers&apos;);
-// Create a dummy app
-const app = new Jimple();
-// Register the logger
-app.register(logger);
-// Register the ErrorHandler
-app.register(errorHandler);</code>
+<p>That&apos;s all for the method; like on the other example, <code>SimpleStorage</code> will take care of writing and reading the entries and their values for the storage.</p>
+<p>Time to refactor! We need to change the <em>&quot;get methods&quot;</em> and make them use the new <code>cacheRequest</code>:</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">...
+getUserProfile(userId) {
+  return this.cacheRequest(`/user-profile/${userId}`);
+}
+
+getUserAppSettings(userId) {
+  return this.cacheRequest(`/user-app-settings/${userId}`);
+}
+
+getUserUISettings(userId) {
+  return this.cacheRequest(`/user-ui-settings/${userId}`);
+}
+...</code>
 </code></pre>
-<p>Now, we should tell the service to start listening for errors:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">app.get(&apos;errorHandler&apos;).listen();</code>
-</code></pre>
-<p>Done! If you run the same code now, this is the kind of logged information you&apos;ll get:</p>
-<pre><code class="lang-bash"><code class="source-code prettyprint">[my-app] [2018-01-22 04:29:40] 401
-[my-app] at makeAPICall (/path-to-your-app/index.js:9:42)
-[my-app] at Object.&lt;anonymous&gt; (/path-to-your-app/index.js:11:1)
-[my-app] at Module._compile (module.js:570:32)
-[my-app] at Object.Module._extensions..js (module.js:579:10)
-[my-app] at Module.load (module.js:487:32)
-[my-app] at tryModuleLoad (module.js:446:12)
-[my-app] at Function.Module._load (module.js:438:3)
-[my-app] at Module.runMain (module.js:604:10)
-[my-app] at run (bootstrap_node.js:383:7)
-[my-app] at startup (bootstrap_node.js:149:9)</code>
-</code></pre>
-<h2 id="technical-documentation">Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://homer0.github.io/wootils/class/wootils/node/errorHandler.js~ErrorHandler.html">online</a> and generate it yourself using:</p>
+<p>Done! Now the request will only trigger if there&apos;s nothing on the storage (this includes entries that were deleted because they expired.</p>
+<h2 id="technical-documentation">Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://homer0.github.io/wootils/class/wootils/browser/simpleStorage.js~SimpleStorage.html">online</a> or generate it yourself using:</p>
 <pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
 npm run docs
 open ./docs/index.html</code>

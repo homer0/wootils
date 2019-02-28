@@ -29,7 +29,18 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#node">node</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/appConfiguration.js~AppConfiguration.html">AppConfiguration</a></span></span></li>
+  <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#browser">browser</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/browser/simpleStorage.js~SimpleStorage.html">SimpleStorage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SimpleStorageEntriesOptions">SimpleStorageEntriesOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SimpleStorageEntry">SimpleStorageEntry</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SimpleStorageOptions">SimpleStorageOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SimpleStorageStorage">SimpleStorageStorage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SimpleStorageStorageAvailableMethod">SimpleStorageStorageAvailableMethod</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SimpleStorageStorageDeleteMethod">SimpleStorageStorageDeleteMethod</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SimpleStorageStorageGetMethod">SimpleStorageStorageGetMethod</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SimpleStorageStorageLogger">SimpleStorageStorageLogger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SimpleStorageStorageOptions">SimpleStorageStorageOptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SimpleStorageStorageSetMethod">SimpleStorageStorageSetMethod</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#node">node</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/appConfiguration.js~AppConfiguration.html">AppConfiguration</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/environmentUtils.js~EnvironmentUtils.html">EnvironmentUtils</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/errorHandler.js~ErrorHandler.html">ErrorHandler</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/logger.js~Logger.html">Logger</a></span></span></li>
@@ -96,14 +107,12 @@
 </tr>
 </tbody>
 </table>
-<h2 id="usage">Usage</h2><p>The package is divided on 2 folders:</p>
+<h2 id="usage">Usage</h2><p>The package is divided on 3 folders:</p>
 <ul>
-<li><code>node</code>: Utilities only compatible with Node.</li>
+<li><code>node</code>: Utilities that are only compatible with Node.</li>
 <li><code>shared</code>: Utilities that can work on both browser and Node.</li>
+<li><code>browser</code>: Utilities that can only be used while on a browser.</li>
 </ul>
-<blockquote>
-<p>Yes, when the time comes, it will have a <code>browser</code> folder too.</p>
-</blockquote>
 <h3 id="node-utilities">Node utilities</h3><p>Two notes about the Node utilities:</p>
 <ol>
 <li>I&apos;m a big fan of <a href="https://github.com/fjorgemota/jimple">Jimple</a>, so all the files not only export the utility but also a service provider or a <em>&quot;servicer provider generator&quot;</em> to register the utility on a Jimple app.</li>
@@ -129,6 +138,8 @@
 <p><a href="manual/deferred.html">Read more about deferred</a></p>
 <h4 id="deferred">deferred</h4><p>A small implementation of a pubsub service for handling events on an app.</p>
 <p><a href="manual/eventsHub.html">Read more about EventsHub</a></p>
+<h3 id="browser-utilities">Browser utilities</h3><h4 id="simplestorage">SimpleStorage</h4><p>An <strong>abstract</strong> class allows you to build services that relay on browser storage (session/local) and simplifies the way you work it.</p>
+<p><a href="manual/simpleStorage.html">Read more about SimpleStorage</a></p>
 <h2 id="development">Development</h2><p>Before doing anything, install the repository hooks:</p>
 <pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
 yarn run hooks</code>
