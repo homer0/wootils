@@ -19,6 +19,7 @@
             "./documents/shared/APIClient.md",
             "./documents/shared/deferred.md",
             "./documents/shared/eventsHub.md",
+            "./documents/shared/objectUtils.md",
             "./documents/browser/simpleStorage.md"
           ]
         }

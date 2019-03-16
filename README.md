@@ -95,11 +95,17 @@ Create a deferred promise using the native `Promise` object.
 
 [Read more about deferred](./documents/shared/deferred.md)
 
-#### deferred
+#### EventsHub
 
 A small implementation of a pubsub service for handling events on an app.
 
 [Read more about EventsHub](./documents/shared/eventsHub.md)
+
+#### ObjectUtils
+
+A small collection of utility methods to work with objects.
+
+[Read more about ObjectUtils](./documents/shared/objectUtils.md)
 
 ### Browser utilities
 
