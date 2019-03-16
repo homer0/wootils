@@ -36,6 +36,12 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "wootils/wootils/shared/objectutils.js~objectutils",
+    "class/wootils/shared/objectUtils.js~ObjectUtils.html",
+    "<span>ObjectUtils</span> <span class=\"search-result-import-path\">wootils/wootils/shared/objectUtils.js</span>",
+    "class"
+  ],
+  [
     "wootils/wootils/node/pathutils.js~pathutils",
     "class/wootils/node/pathUtils.js~PathUtils.html",
     "<span>PathUtils</span> <span class=\"search-result-import-path\">wootils/wootils/node/pathUtils.js</span>",
@@ -1288,5 +1294,47 @@ window.esdocSearchIndex = [
     "file/wootils/shared/index.js.html",
     "wootils/shared/index.js",
     "file"
+  ],
+  [
+    "wootils/shared/objectutils.js",
+    "file/wootils/shared/objectUtils.js.html",
+    "wootils/shared/objectUtils.js",
+    "file"
+  ],
+  [
+    "wootils/shared/objectutils.js~objectutils.copy",
+    "class/wootils/shared/objectUtils.js~ObjectUtils.html#static-method-copy",
+    "wootils/shared/objectUtils.js~ObjectUtils.copy",
+    "method"
+  ],
+  [
+    "wootils/shared/objectutils.js~objectutils.delete",
+    "class/wootils/shared/objectUtils.js~ObjectUtils.html#static-method-delete",
+    "wootils/shared/objectUtils.js~ObjectUtils.delete",
+    "method"
+  ],
+  [
+    "wootils/shared/objectutils.js~objectutils.extract",
+    "class/wootils/shared/objectUtils.js~ObjectUtils.html#static-method-extract",
+    "wootils/shared/objectUtils.js~ObjectUtils.extract",
+    "method"
+  ],
+  [
+    "wootils/shared/objectutils.js~objectutils.get",
+    "class/wootils/shared/objectUtils.js~ObjectUtils.html#static-method-get",
+    "wootils/shared/objectUtils.js~ObjectUtils.get",
+    "method"
+  ],
+  [
+    "wootils/shared/objectutils.js~objectutils.merge",
+    "class/wootils/shared/objectUtils.js~ObjectUtils.html#static-method-merge",
+    "wootils/shared/objectUtils.js~ObjectUtils.merge",
+    "method"
+  ],
+  [
+    "wootils/shared/objectutils.js~objectutils.set",
+    "class/wootils/shared/objectUtils.js~ObjectUtils.html#static-method-set",
+    "wootils/shared/objectUtils.js~ObjectUtils.set",
+    "method"
   ]
 ]

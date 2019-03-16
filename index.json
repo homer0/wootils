@@ -6041,7 +6041,7 @@
     "__docId__": 228,
     "kind": "file",
     "name": "wootils/shared/index.js",
-    "content": "const APIClient = require('./apiClient');\nconst deferred = require('./deferred');\nconst EventsHub = require('./eventsHub');\n\nmodule.exports = {\n  APIClient,\n  deferred,\n  EventsHub,\n};\n",
+    "content": "const APIClient = require('./apiClient');\nconst deferred = require('./deferred');\nconst EventsHub = require('./eventsHub');\nconst ObjectUtils = require('./objectUtils');\n\nmodule.exports = {\n  APIClient,\n  deferred,\n  EventsHub,\n  ObjectUtils,\n};\n",
     "static": true,
     "longname": "/Users/homer0/CODE/node/wootils/shared/index.js",
     "access": "public",
@@ -6049,8 +6049,445 @@
     "lineNumber": 1
   },
   {
+    "__docId__": 229,
+    "kind": "file",
+    "name": "wootils/shared/objectUtils.js",
+    "content": "const extend = require('extend');\n/**\n * A small collection of utility methods to work with objects.\n */\nclass ObjectUtils {\n  /**\n   * @throws {Error} is called. This class is meant to be have only static methods.\n   * @ignore\n   */\n  constructor() {\n    throw new Error('ObjectUtils is a static class');\n  }\n  /**\n   * This method makes a deep merge of a list of objects into a new one.\n   * @example\n   * const objA = { a: 'first' };\n   * const objB = { b: 'second' };\n   * console.log(ObjectUtils.merge(objA, objB));\n   * // Will output { a: 'first', b: 'second' }\n   * @param {...{Object}} targets The objects to merge.\n   * @return {Object}\n   */\n  static merge(...targets) {\n    return extend(true, {}, ...targets);\n  }\n  /**\n   * Creates a deep copy of a given object.\n   * @param {Object} target The object to copy.\n   * @return {Object}\n   */\n  static copy(target) {\n    return this.merge(target);\n  }\n  /**\n   * Returns the value of an object property using a path.\n   * @example\n   * const obj = {\n   *   propOne: {\n   *     propOneSub: 'Charito!',\n   *   },\n   *   propTwo: '!!!',\n   * };\n   * console.log(ObjectUtils.get(\n   *   obj,\n   *   'propOne.propOneSub'\n   * ));\n   * // Will output 'Charito!'\n   *\n   * @param {Object}  target                The object from where the property will be read.\n   * @param {string}  objPath               The path to the property.\n   * @param {string}  [pathDelimiter='.']   The delimiter that will separate the path components.\n   * @param {boolean} [failWithError=false] Whether or not to throw an error when the path is\n   *                                        invalid. If this is `false`, the method will silently\n   *                                        fail and return `undefined`.\n   * @return {*}\n   * @throws {Error} If the path is invalid and `failWithError` is set to `true`.\n   */\n  static get(target, objPath, pathDelimiter = '.', failWithError = true) {\n    const parts = objPath.split(pathDelimiter);\n    const first = parts.shift();\n    let currentElement = target[first];\n    if (typeof currentElement === 'undefined') {\n      if (failWithError) {\n        throw new Error(`There's nothing on '${objPath}'`);\n      }\n    } else if (parts.length) {\n      let currentPath = first;\n      parts.some((currentPart) => {\n        let breakLoop = false;\n        currentPath += `${pathDelimiter}${currentPart}`;\n        currentElement = currentElement[currentPart];\n        if (typeof currentElement === 'undefined') {\n          if (failWithError) {\n            throw new Error(`There's nothing on '${currentPath}'`);\n          } else {\n            breakLoop = true;\n          }\n        }\n\n        return breakLoop;\n      });\n    }\n\n    return currentElement;\n  }\n  /**\n   * Sets a property on an object using a path. If the path doesn't exist, it will be created.\n   * @example\n   * const target = {};\n   * console.log(ObjectUtils.set(target, 'some.prop.path', 'some-value'));\n   * // Will output { some: { prop: { path: 'some-value' } } }\n   *\n   * @param {Object}  target                The object where the property will be set.\n   * @param {string}  objPath               The path for the property.\n   * @param {*}       value                 The value to set on the property.\n   * @param {string}  [pathDelimiter='.']   The delimiter that will separate the path components.\n   * @param {boolean} [failWithError=false] Whether or not to throw an error when the path is\n   *                                        invalid. If this is `false`, the method will silently\n   *                                        fail and return `undefined`.\n   * @return {Object} A copy of the original object with the added property/properties.\n   * @throws {Error} If one of the path components is for a non-object property and\n   *                 `failWithError` is set to `true`.\n   */\n  static set(\n    target,\n    objPath,\n    value,\n    pathDelimiter = '.',\n    failWithError = true\n  ) {\n    let result = this.copy(target);\n    if (objPath.includes(pathDelimiter)) {\n      const parts = objPath.split(pathDelimiter);\n      const last = parts.pop();\n      let currentElement = result;\n      let currentPath = '';\n      parts.forEach((part) => {\n        currentPath += `${pathDelimiter}${part}`;\n        const element = currentElement[part];\n        const elementType = typeof element;\n        if (elementType === 'undefined') {\n          currentElement[part] = {};\n          currentElement = currentElement[part];\n        } else if (elementType === 'object') {\n          currentElement = currentElement[part];\n        } else {\n          const errorPath = currentPath.substr(pathDelimiter.length);\n          if (failWithError) {\n            throw new Error(\n              `There's already an element of type '${elementType}' on '${errorPath}'`\n            );\n          } else {\n            result = undefined;\n          }\n        }\n      });\n\n      if (result) {\n        currentElement[last] = value;\n      }\n    } else {\n      result[objPath] = value;\n    }\n\n    return result;\n  }\n  /**\n   * Extracts a property or properties from an object in order to create a new one.\n   * @example\n   * const target = {\n   *   name: {\n   *     first: 'Rosario',\n   *   },\n   *   age: 3,\n   *   address: {\n   *     planet: 'earth',\n   *     something: 'else',\n   *   },\n   * };\n   * console.log(ObjectUtils.set(obj, [\n   *   { 'name': 'name.first'},\n   *   'age',\n   *   'address.planet'\n   * ]));\n   * // Will output { name: 'Rosario', age: 3, address: { planet: 'earth' } }\n   * @param {Object}               target               The object from where the\n   *                                                    property/properties will be extracted.\n   * @param {Array|Object|string}  objPaths             This can be a single path or a list of\n   *                                                    them. And for this method, the paths are\n   *                                                    not only strings but can also be an object\n   *                                                    with a single key, the would be the path\n   *                                                    to where to \"do the extraction\", and the\n   *                                                    value the path on the target object.\n   * @param {string}               [pathDelimiter='.']  The delimiter that will separate the\n   *                                                    path components.\n   * @param {boolean}              [failWithError=true] Whether or not to throw an error when the\n   *                                                    path is invalid. If this is `false`, the\n   *                                                    method will silently fail an empty object.\n   * @return {Object}\n   */\n  static extract(target, objPaths, pathDelimiter = '.', failWithError = true) {\n    const copied = this.copy(target);\n    let result = {};\n    (Array.isArray(objPaths) ? objPaths : [objPaths])\n    .reduce((acc, objPath) => {\n      let destPath;\n      let originPath;\n      if (typeof objPath === 'object') {\n        [destPath] = Object.keys(objPath);\n        originPath = objPath[destPath];\n      } else {\n        destPath = objPath;\n        originPath = objPath;\n      }\n\n      return [...acc, {\n        origin: originPath,\n        customDest: destPath.includes(pathDelimiter),\n        dest: destPath,\n      }];\n    }, [])\n    .some((pathInfo) => {\n      let breakLoop = false;\n      const value = this.get(copied, pathInfo.origin, pathDelimiter, failWithError);\n      if (typeof value === 'undefined') {\n        breakLoop = true;\n      } else if (pathInfo.customDest) {\n        result = this.set(result, pathInfo.dest, value, pathDelimiter, failWithError);\n        if (typeof result === 'undefined') {\n          breakLoop = true;\n        }\n      } else {\n        result[pathInfo.dest] = value;\n      }\n\n      return breakLoop;\n    });\n\n    return result;\n  }\n  /**\n   * Deletes a property of an object using a path.\n   * @example\n   * const target = {\n   *   propOne: {\n   *     propOneSub: 'Charito!',\n   *   },\n   *   propTwo: '!!!',\n   * };\n   * console.log(ObjectUtils.delete(\n   *   target,\n   *   'propOne.propOneSub'\n   * ));\n   * // Will output { propTwo: '!!!' }\n   *\n   * @param {Object}  target                      The object from where the property will be\n   *                                              removed.\n   * @param {string}  objPath                     The path to the property.\n   * @param {String}  [pathDelimiter='.']         The delimiter that will separate the path\n   *                                              components.\n   * @param {Boolean} [cleanEmptyProperties=true] If this flag is `true` and after removing the\n   *                                              property the parent object is empty, it will\n   *                                              remove it recursively until a non empty parent\n   *                                              object is found.\n   * @param {boolean} [failWithError=true]        Whether or not to throw an error when the path\n   *                                              is invalid. If this is `false`, the method will\n   *                                              silently fail.\n   * @return {Object} A copy of the original object with the removed property/properties.\n   */\n  static delete(\n    target,\n    objPath,\n    pathDelimiter = '.',\n    cleanEmptyProperties = true,\n    failWithError = true\n  ) {\n    const parts = objPath.split(pathDelimiter);\n    const last = parts.pop();\n    let result = this.copy(target);\n    if (parts.length) {\n      const parentPath = parts.join(pathDelimiter);\n      const parentObj = this.get(\n        result,\n        parentPath,\n        pathDelimiter,\n        failWithError\n      );\n      delete parentObj[last];\n      if (cleanEmptyProperties && !Object.keys(parentObj).length) {\n        result = this.delete(\n          result,\n          parentPath,\n          pathDelimiter,\n          cleanEmptyProperties,\n          failWithError\n        );\n      }\n    } else {\n      delete result[last];\n    }\n\n    return result;\n  }\n}\n\nmodule.exports = ObjectUtils;\n",
+    "static": true,
+    "longname": "/Users/homer0/CODE/node/wootils/shared/objectUtils.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 230,
+    "kind": "class",
+    "name": "ObjectUtils",
+    "memberof": "wootils/shared/objectUtils.js",
+    "static": true,
+    "longname": "wootils/shared/objectUtils.js~ObjectUtils",
+    "access": "public",
+    "export": true,
+    "importPath": "wootils/wootils/shared/objectUtils.js",
+    "importStyle": "ObjectUtils",
+    "description": "A small collection of utility methods to work with objects.",
+    "lineNumber": 5,
+    "interface": false
+  },
+  {
+    "__docId__": 231,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "wootils/shared/objectUtils.js~ObjectUtils",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "wootils/shared/objectUtils.js~ObjectUtils#constructor",
+    "access": "public",
+    "description": "",
+    "lineNumber": 10,
+    "ignore": true,
+    "throws": [
+      {
+        "types": [
+          "Error"
+        ],
+        "description": "is called. This class is meant to be have only static methods."
+      }
+    ]
+  },
+  {
+    "__docId__": 232,
+    "kind": "method",
+    "name": "merge",
+    "memberof": "wootils/shared/objectUtils.js~ObjectUtils",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "wootils/shared/objectUtils.js~ObjectUtils.merge",
+    "access": "public",
+    "description": "This method makes a deep merge of a list of objects into a new one.",
+    "examples": [
+      "const objA = { a: 'first' };\nconst objB = { b: 'second' };\nconsole.log(ObjectUtils.merge(objA, objB));\n// Will output { a: 'first', b: 'second' }"
+    ],
+    "lineNumber": 23,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "...{Object}"
+        ],
+        "spread": true,
+        "optional": false,
+        "name": "targets",
+        "description": "The objects to merge."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 233,
+    "kind": "method",
+    "name": "copy",
+    "memberof": "wootils/shared/objectUtils.js~ObjectUtils",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "wootils/shared/objectUtils.js~ObjectUtils.copy",
+    "access": "public",
+    "description": "Creates a deep copy of a given object.",
+    "lineNumber": 31,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "target",
+        "description": "The object to copy."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 234,
+    "kind": "method",
+    "name": "get",
+    "memberof": "wootils/shared/objectUtils.js~ObjectUtils",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "wootils/shared/objectUtils.js~ObjectUtils.get",
+    "access": "public",
+    "description": "Returns the value of an object property using a path.",
+    "examples": [
+      "const obj = {\n  propOne: {\n    propOneSub: 'Charito!',\n  },\n  propTwo: '!!!',\n};\nconsole.log(ObjectUtils.get(\n  obj,\n  'propOne.propOneSub'\n));\n// Will output 'Charito!'"
+    ],
+    "lineNumber": 58,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "target",
+        "description": "The object from where the property will be read."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "objPath",
+        "description": "The path to the property."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "'.'",
+        "defaultRaw": "'.'",
+        "name": "pathDelimiter",
+        "description": "The delimiter that will separate the path components."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "false",
+        "defaultRaw": false,
+        "name": "failWithError",
+        "description": "Whether or not to throw an error when the path is\n                                       invalid. If this is `false`, the method will silently\n                                       fail and return `undefined`."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "*"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "throws": [
+      {
+        "types": [
+          "Error"
+        ],
+        "description": "If the path is invalid and `failWithError` is set to `true`."
+      }
+    ]
+  },
+  {
+    "__docId__": 235,
+    "kind": "method",
+    "name": "set",
+    "memberof": "wootils/shared/objectUtils.js~ObjectUtils",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "wootils/shared/objectUtils.js~ObjectUtils.set",
+    "access": "public",
+    "description": "Sets a property on an object using a path. If the path doesn't exist, it will be created.",
+    "examples": [
+      "const target = {};\nconsole.log(ObjectUtils.set(target, 'some.prop.path', 'some-value'));\n// Will output { some: { prop: { path: 'some-value' } } }"
+    ],
+    "lineNumber": 104,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "target",
+        "description": "The object where the property will be set."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "objPath",
+        "description": "The path for the property."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "*"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "The value to set on the property."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "'.'",
+        "defaultRaw": "'.'",
+        "name": "pathDelimiter",
+        "description": "The delimiter that will separate the path components."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "false",
+        "defaultRaw": false,
+        "name": "failWithError",
+        "description": "Whether or not to throw an error when the path is\n                                       invalid. If this is `false`, the method will silently\n                                       fail and return `undefined`."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": "A copy of the original object with the added property/properties."
+    },
+    "throws": [
+      {
+        "types": [
+          "Error"
+        ],
+        "description": "If one of the path components is for a non-object property and\n                `failWithError` is set to `true`."
+      }
+    ]
+  },
+  {
+    "__docId__": 236,
+    "kind": "method",
+    "name": "extract",
+    "memberof": "wootils/shared/objectUtils.js~ObjectUtils",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "wootils/shared/objectUtils.js~ObjectUtils.extract",
+    "access": "public",
+    "description": "Extracts a property or properties from an object in order to create a new one.",
+    "examples": [
+      "const target = {\n  name: {\n    first: 'Rosario',\n  },\n  age: 3,\n  address: {\n    planet: 'earth',\n    something: 'else',\n  },\n};\nconsole.log(ObjectUtils.set(obj, [\n  { 'name': 'name.first'},\n  'age',\n  'address.planet'\n]));\n// Will output { name: 'Rosario', age: 3, address: { planet: 'earth' } }"
+    ],
+    "lineNumber": 181,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "target",
+        "description": "The object from where the\n                                                   property/properties will be extracted."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Array",
+          "Object",
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "objPaths",
+        "description": "This can be a single path or a list of\n                                                   them. And for this method, the paths are\n                                                   not only strings but can also be an object\n                                                   with a single key, the would be the path\n                                                   to where to \"do the extraction\", and the\n                                                   value the path on the target object."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "'.'",
+        "defaultRaw": "'.'",
+        "name": "pathDelimiter",
+        "description": "The delimiter that will separate the\n                                                   path components."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "true",
+        "defaultRaw": true,
+        "name": "failWithError",
+        "description": "Whether or not to throw an error when the\n                                                   path is invalid. If this is `false`, the\n                                                   method will silently fail an empty object."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 237,
+    "kind": "method",
+    "name": "delete",
+    "memberof": "wootils/shared/objectUtils.js~ObjectUtils",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "wootils/shared/objectUtils.js~ObjectUtils.delete",
+    "access": "public",
+    "description": "Deletes a property of an object using a path.",
+    "examples": [
+      "const target = {\n  propOne: {\n    propOneSub: 'Charito!',\n  },\n  propTwo: '!!!',\n};\nconsole.log(ObjectUtils.delete(\n  target,\n  'propOne.propOneSub'\n));\n// Will output { propTwo: '!!!' }"
+    ],
+    "lineNumber": 250,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "target",
+        "description": "The object from where the property will be\n                                             removed."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "objPath",
+        "description": "The path to the property."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "String"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "'.'",
+        "defaultRaw": "'.'",
+        "name": "pathDelimiter",
+        "description": "The delimiter that will separate the path\n                                             components."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "true",
+        "defaultRaw": true,
+        "name": "cleanEmptyProperties",
+        "description": "If this flag is `true` and after removing the\n                                             property the parent object is empty, it will\n                                             remove it recursively until a non empty parent\n                                             object is found."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "true",
+        "defaultRaw": true,
+        "name": "failWithError",
+        "description": "Whether or not to throw an error when the path\n                                             is invalid. If this is `false`, the method will\n                                             silently fail."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": "A copy of the original object with the removed property/properties."
+    }
+  },
+  {
     "kind": "index",
-    "content": "# Wootils\n\n[![Travis](https://img.shields.io/travis/homer0/wootils.svg?style=flat-square)](https://travis-ci.org/homer0/wootils)\n[![Coveralls github](https://img.shields.io/coveralls/github/homer0/wootils.svg?style=flat-square)](https://coveralls.io/github/homer0/wootils?branch=master)\n[![David](https://img.shields.io/david/homer0/wootils.svg?style=flat-square)](https://david-dm.org/homer0/wootils)\n[![David](https://img.shields.io/david/dev/homer0/wootils.svg?style=flat-square)](https://david-dm.org/homer0/wootils)\n\nA set of Javascript utilities for building Node and browser apps.\n\n## Motivation/Introduction\n\nThe idea was to take all those small thing I'm always rewriting on every project and move them to a single package so I can not only stop copying & pasting them all over the place but also maintain them all together.\n\nThere are two rules I followed when I had to decide what to put and what to keep somewhere else:\n\n1. The utility needs to fit on a single file.\n2. It shouldn't include any specific business logic from any other project.\n\n## Information\n\n| -            | -                                                                  |\n|--------------|--------------------------------------------------------------------|\n| Package      | wootils                                                            |\n| Description  | A set of Javascript utilities for building Node and browser apps.  |\n| Node Version | >= v8.0.0                                                         |\n\n## Usage\n\nThe package is divided on 3 folders:\n\n- `node`: Utilities that are only compatible with Node.\n- `shared`: Utilities that can work on both browser and Node.\n- `browser`: Utilities that can only be used while on a browser.\n\n### Node utilities\n\nTwo notes about the Node utilities:\n\n1. I'm a big fan of [Jimple](https://github.com/fjorgemota/jimple), so all the files not only export the utility but also a service provider or a _\"servicer provider generator\"_ to register the utility on a Jimple app.\n2. Some of them may depend on the others.\n\n#### AppConfiguration\n\nThis is a service to manage applications configurations. It takes care of loading, activating, switching and merging configuration files.\n\n[Read more about AppConfiguration](manual/appConfiguration.html)\n\n#### EnvironmentUtils\n\nA really small service to centralize the place where you read environment variables and check if you are running on development or production.\n\n[Read more about EnvironmentUtils](manual/environmentUtils.html)\n\n#### ErrorHandler\n\nListens for uncaught exceptions and unhandled promises rejections, and logs them out with full detail.\n\n[Read more about ErrorHandler](manual/errorHandler.html)\n\n#### Logger\n\nThe name leaves nothing to the imagination. As you may have guessed, this is service for logging messages into the console.\n\n[Read more about Logger](manual/logger.html)\n\n#### packageInfo\n\nA tiny function that reads the contents of the app `package.json`. This is really useful on an Jimple application where you can register it, because the returned value gets cached and it's available as a service.\n\n[Read more about packageInfo](manual/packageInfo.html)\n\n#### PathUtils\n\nAn easy way to manage locations and build paths relative to those locations on a Node app.\n\n[Read more about PathUtils](manual/pathUtils.html)\n\n#### rootRequire\n\nIs basically `require` but the path is relative to the project root directory.\n\n[Read more about rootRequire](manual/rootRequire.html)\n\n### Shared utilities\n\n#### APIClient\n\nA really basic client to work with an API endpoints requests.\n\n[Read more about APIClient](manual/APIClient.html)\n\n#### deferred\n\nCreate a deferred promise using the native `Promise` object.\n\n[Read more about deferred](manual/deferred.html)\n\n#### deferred\n\nA small implementation of a pubsub service for handling events on an app.\n\n[Read more about EventsHub](manual/eventsHub.html)\n\n### Browser utilities\n\n#### SimpleStorage\n\nAn **abstract** class allows you to build services that relay on browser storage (session/local) and simplifies the way you work it.\n\n[Read more about SimpleStorage](manual/simpleStorage.html)\n\n## Development\n\nBefore doing anything, install the repository hooks:\n\n```bash\n# You can either use npm or yarn, it doesn't matter\nyarn run hooks\n```\n\n### NPM/Yarn Tasks\n\n| Task                     | Description                         |\n|--------------------------|-------------------------------------|\n| `yarn run hooks`         | Install the GIT repository hooks.   |\n| `yarn test`              | Run the project unit tests.         |\n| `yarn run lint`          | Lint the modified files.            |\n| `yarn run lint:full`     | Lint the project code.              |\n| `yarn run docs`          | Generate the project documentation. |\n| `yarn run todo`          | List all the pending to-do's.       |\n\n### Testing\n\nI use [Jest](https://facebook.github.io/jest/) with [Jest-Ex](https://yarnpkg.com/en/package/jest-ex) to test the project. The configuration file is on `./.jestrc`, the tests and mocks are on `./tests` and the script that runs it is on `./utils/scripts/test`.\n\n### Linting\n\nI use [ESlint](http://eslint.org) to validate all our JS code. The configuration file for the project code is on `./.eslintrc` and for the tests on `./tests/.eslintrc` (which inherits from the one on the root), there's also an `./.eslintignore` to ignore some files on the process, and the script that runs it is on `./utils/scripts/lint`.\n\n### Documentation\n\nI use [ESDoc](http://esdoc.org) to generate HTML documentation for the project. The configuration file is on `./.esdocrc` and the script that runs it is on `./utils/scripts/docs`.\n\n### To-Dos\n\nI use `@todo` comments to write all the pending improvements and fixes, and [Leasot](https://yarnpkg.com/en/package/leasot) to generate a report. The script that runs it is on `./utils/scripts/todo`.\n",
+    "content": "# Wootils\n\n[![Travis](https://img.shields.io/travis/homer0/wootils.svg?style=flat-square)](https://travis-ci.org/homer0/wootils)\n[![Coveralls github](https://img.shields.io/coveralls/github/homer0/wootils.svg?style=flat-square)](https://coveralls.io/github/homer0/wootils?branch=master)\n[![David](https://img.shields.io/david/homer0/wootils.svg?style=flat-square)](https://david-dm.org/homer0/wootils)\n[![David](https://img.shields.io/david/dev/homer0/wootils.svg?style=flat-square)](https://david-dm.org/homer0/wootils)\n\nA set of Javascript utilities for building Node and browser apps.\n\n## Motivation/Introduction\n\nThe idea was to take all those small thing I'm always rewriting on every project and move them to a single package so I can not only stop copying & pasting them all over the place but also maintain them all together.\n\nThere are two rules I followed when I had to decide what to put and what to keep somewhere else:\n\n1. The utility needs to fit on a single file.\n2. It shouldn't include any specific business logic from any other project.\n\n## Information\n\n| -            | -                                                                  |\n|--------------|--------------------------------------------------------------------|\n| Package      | wootils                                                            |\n| Description  | A set of Javascript utilities for building Node and browser apps.  |\n| Node Version | >= v8.0.0                                                         |\n\n## Usage\n\nThe package is divided on 3 folders:\n\n- `node`: Utilities that are only compatible with Node.\n- `shared`: Utilities that can work on both browser and Node.\n- `browser`: Utilities that can only be used while on a browser.\n\n### Node utilities\n\nTwo notes about the Node utilities:\n\n1. I'm a big fan of [Jimple](https://github.com/fjorgemota/jimple), so all the files not only export the utility but also a service provider or a _\"servicer provider generator\"_ to register the utility on a Jimple app.\n2. Some of them may depend on the others.\n\n#### AppConfiguration\n\nThis is a service to manage applications configurations. It takes care of loading, activating, switching and merging configuration files.\n\n[Read more about AppConfiguration](manual/appConfiguration.html)\n\n#### EnvironmentUtils\n\nA really small service to centralize the place where you read environment variables and check if you are running on development or production.\n\n[Read more about EnvironmentUtils](manual/environmentUtils.html)\n\n#### ErrorHandler\n\nListens for uncaught exceptions and unhandled promises rejections, and logs them out with full detail.\n\n[Read more about ErrorHandler](manual/errorHandler.html)\n\n#### Logger\n\nThe name leaves nothing to the imagination. As you may have guessed, this is service for logging messages into the console.\n\n[Read more about Logger](manual/logger.html)\n\n#### packageInfo\n\nA tiny function that reads the contents of the app `package.json`. This is really useful on an Jimple application where you can register it, because the returned value gets cached and it's available as a service.\n\n[Read more about packageInfo](manual/packageInfo.html)\n\n#### PathUtils\n\nAn easy way to manage locations and build paths relative to those locations on a Node app.\n\n[Read more about PathUtils](manual/pathUtils.html)\n\n#### rootRequire\n\nIs basically `require` but the path is relative to the project root directory.\n\n[Read more about rootRequire](manual/rootRequire.html)\n\n### Shared utilities\n\n#### APIClient\n\nA really basic client to work with an API endpoints requests.\n\n[Read more about APIClient](manual/APIClient.html)\n\n#### deferred\n\nCreate a deferred promise using the native `Promise` object.\n\n[Read more about deferred](manual/deferred.html)\n\n#### EventsHub\n\nA small implementation of a pubsub service for handling events on an app.\n\n[Read more about EventsHub](manual/eventsHub.html)\n\n#### ObjectUtils\n\nA small collection of utility methods to work with objects.\n\n[Read more about ObjectUtils](manual/objectUtils.html)\n\n### Browser utilities\n\n#### SimpleStorage\n\nAn **abstract** class allows you to build services that relay on browser storage (session/local) and simplifies the way you work it.\n\n[Read more about SimpleStorage](manual/simpleStorage.html)\n\n## Development\n\nBefore doing anything, install the repository hooks:\n\n```bash\n# You can either use npm or yarn, it doesn't matter\nyarn run hooks\n```\n\n### NPM/Yarn Tasks\n\n| Task                     | Description                         |\n|--------------------------|-------------------------------------|\n| `yarn run hooks`         | Install the GIT repository hooks.   |\n| `yarn test`              | Run the project unit tests.         |\n| `yarn run lint`          | Lint the modified files.            |\n| `yarn run lint:full`     | Lint the project code.              |\n| `yarn run docs`          | Generate the project documentation. |\n| `yarn run todo`          | List all the pending to-do's.       |\n\n### Testing\n\nI use [Jest](https://facebook.github.io/jest/) with [Jest-Ex](https://yarnpkg.com/en/package/jest-ex) to test the project. The configuration file is on `./.jestrc`, the tests and mocks are on `./tests` and the script that runs it is on `./utils/scripts/test`.\n\n### Linting\n\nI use [ESlint](http://eslint.org) to validate all our JS code. The configuration file for the project code is on `./.eslintrc` and for the tests on `./tests/.eslintrc` (which inherits from the one on the root), there's also an `./.eslintignore` to ignore some files on the process, and the script that runs it is on `./utils/scripts/lint`.\n\n### Documentation\n\nI use [ESDoc](http://esdoc.org) to generate HTML documentation for the project. The configuration file is on `./.esdocrc` and the script that runs it is on `./utils/scripts/docs`.\n\n### To-Dos\n\nI use `@todo` comments to write all the pending improvements and fixes, and [Leasot](https://yarnpkg.com/en/package/leasot) to generate a report. The script that runs it is on `./utils/scripts/todo`.\n",
     "longname": "/Users/homer0/CODE/node/wootils/README-esdoc.md",
     "name": "./README-esdoc.md",
     "static": true,
@@ -6058,7 +6495,7 @@
   },
   {
     "kind": "packageJSON",
-    "content": "{\n  \"name\": \"wootils\",\n  \"description\": \"A set of Javascript utilities for building Node and browser apps.\",\n  \"homepage\": \"https://homer0.github.io/wootils/\",\n  \"version\": \"2.1.0\",\n  \"repository\": \"homer0/wootils\",\n  \"author\": \"Leonardo Apiwan (@homer0) <me@homer0.com>\",\n  \"license\": \"MIT\",\n  \"dependencies\": {\n    \"jimple\": \"1.5.0\",\n    \"fs-extra\": \"7.0.1\",\n    \"colors\": \"1.3.3\",\n    \"urijs\": \"1.19.1\",\n    \"statuses\": \"1.5.0\"\n  },\n  \"devDependencies\": {\n    \"eslint\": \"5.13.0\",\n    \"eslint-config-airbnb-base\": \"13.1.0\",\n    \"eslint-plugin-import\": \"2.16.0\",\n    \"eslint-plugin-node\": \"8.0.1\",\n    \"jest-ex\": \"6.0.0\",\n    \"jest-cli\": \"24.0.0\",\n    \"jasmine-expect\": \"4.0.1\",\n    \"@babel/preset-env\": \"7.0.0\",\n    \"@babel/core\": \"7.2.2\",\n    \"esdoc\": \"1.1.0\",\n    \"esdoc-standard-plugin\": \"1.0.0\",\n    \"esdoc-node\": \"1.0.4\",\n    \"leasot\": \"7.2.0\",\n    \"coveralls\": \"3.0.2\"\n  },\n  \"engine-strict\": true,\n  \"engines\": {\n    \"node\": \">=8.0.0\",\n    \"npm\": \">=3.0.0\"\n  },\n  \"main\": \"src/index.js\",\n  \"scripts\": {\n    \"hooks\": \"./utils/hooks/install\",\n    \"test\": \"./utils/scripts/test\",\n    \"lint\": \"./utils/scripts/lint\",\n    \"lint:full\": \"./utils/scripts/lint-full\",\n    \"predocs\": \"./utils/scripts/docs-index\",\n    \"docs\": \"./utils/scripts/docs\",\n    \"todo\": \"./utils/scripts/todo\"\n  }\n}\n",
+    "content": "{\n  \"name\": \"wootils\",\n  \"description\": \"A set of Javascript utilities for building Node and browser apps.\",\n  \"homepage\": \"https://homer0.github.io/wootils/\",\n  \"version\": \"2.2.0\",\n  \"repository\": \"homer0/wootils\",\n  \"author\": \"Leonardo Apiwan (@homer0) <me@homer0.com>\",\n  \"license\": \"MIT\",\n  \"dependencies\": {\n    \"jimple\": \"1.5.0\",\n    \"fs-extra\": \"7.0.1\",\n    \"colors\": \"1.3.3\",\n    \"urijs\": \"1.19.1\",\n    \"statuses\": \"1.5.0\"\n  },\n  \"devDependencies\": {\n    \"eslint\": \"5.13.0\",\n    \"eslint-config-airbnb-base\": \"13.1.0\",\n    \"eslint-plugin-import\": \"2.16.0\",\n    \"eslint-plugin-node\": \"8.0.1\",\n    \"jest-ex\": \"6.0.0\",\n    \"jest-cli\": \"24.0.0\",\n    \"jasmine-expect\": \"4.0.1\",\n    \"@babel/preset-env\": \"7.0.0\",\n    \"@babel/core\": \"7.2.2\",\n    \"esdoc\": \"1.1.0\",\n    \"esdoc-standard-plugin\": \"1.0.0\",\n    \"esdoc-node\": \"1.0.4\",\n    \"leasot\": \"7.2.0\",\n    \"coveralls\": \"3.0.2\"\n  },\n  \"engine-strict\": true,\n  \"engines\": {\n    \"node\": \">=8.0.0\",\n    \"npm\": \">=3.0.0\"\n  },\n  \"main\": \"src/index.js\",\n  \"scripts\": {\n    \"hooks\": \"./utils/hooks/install\",\n    \"test\": \"./utils/scripts/test\",\n    \"lint\": \"./utils/scripts/lint\",\n    \"lint:full\": \"./utils/scripts/lint-full\",\n    \"predocs\": \"./utils/scripts/docs-index\",\n    \"docs\": \"./utils/scripts/docs\",\n    \"todo\": \"./utils/scripts/todo\"\n  }\n}\n",
     "longname": "/Users/homer0/CODE/node/wootils/package.json",
     "name": "package.json",
     "static": true,
@@ -6149,6 +6586,14 @@
     "longname": "/Users/homer0/CODE/node/wootils/documents/shared/eventsHub.md",
     "name": "./documents/shared/eventsHub.md",
     "content": "# EventsHub\n\nA small implementation of a pubsub service for handling events on an app.\n\nIt doesn't require any configuration or have customization options: You listen for an event with `on`, emit an event with `emit` and reduce a variable through an event with `reduce`.\n\n## Examples\n\nFirst, let's create an instance of the hub:\n\n```js\nconst { EventsHub } = require('wootils/shared');\nconst events = new EventsHub();\n```\n\n### Listen and emit\n\n```js\n// Add the listener\nevents.on('my-event', () => {\n  console.log('The event listener was called!');\n});\n// Emit the event\nevents.emit('my-event');\n```\n\nQuite simple, right? You can also send any number of parameters to the events:\n\n```js\n// Add the listener\nevents.on('user-login', (username, password) => {\n  someAuthService.login(username, password)\n  .then((userInfo) => {\n    events.emit('user-login-successfull', userInfo);\n  })\n  .catch((error) => {\n  \t events.emit('user-login-failed', error);\n  });\n});\n\n...\n\nevents.emit('user-login', 'rosario', 'p4ssword');\n```\n\nAnd you can even use the same listener for multiple events:\n\n```js\n// Add the listener\nevents.on(['logout-route', 'unauthorized-request'], () => {\n  someAuthService.signout();\n});\n\n...\n\nevents.emit('logout-route');\n// or\nsomeRequest()\n.then(() => ... )\n.catch((error) => {\n  if (error.code === 401) {\n    events.emit('unauthorized-request');\n  }\n})\n```\n\n> All methods that support an event name also support an `Array` with a list of them.\n\n### Reduce a variable\n\nIt's basically the same as calling `emit`, but the first parameter may be modified by the listeners and it's returned after it went through all of them.\n\n```js\nevents.on('filter-users-list', (list) => {\n  list.splice(1, 1);\n  return list;\n});\n\nconst usersList = ['charito', 'Rosario'];\nconst newUsersList = events.reduce('filter-users-list', usersList);\nconsole.log(newUsersList);\n// Will log ['charito']\n```\n\n> `reduce` also supports sending any number of parameters after the target variable.\n\n## Technical documentation\n\nThe code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/class/wootils/shared/eventsHub.js~EventsHub.html) or generate it yourself using:\n\n```bash\n# You can either use npm or yarn, it doesn't matter\nnpm run docs\nopen ./docs/index.html\n```",
+    "static": true,
+    "access": "public"
+  },
+  {
+    "kind": "manual",
+    "longname": "/Users/homer0/CODE/node/wootils/documents/shared/objectUtils.md",
+    "name": "./documents/shared/objectUtils.md",
+    "content": "# ObjectUtils\n\nA small collection of utility methods to work with objects that relies on [`extend`](https://yarnpkg.com/en/package/extend) for deep merge and copy.\n\n## Examples\n\n### `merge`\n\nMake a deep merge of a list of objects.\n\n```js\nconst objA = { a: 'first' };\nconst objB = { b: 'second' };\n\nconsole.log(ObjectUtils.merge(objA, objB));\n// Will output { a: 'first', b: 'second' }\n```\n\n### `copy`\n\nMake a deep copy of an object.\n\n```js\nconst objA = { a: 'first' };\nconst objB = ObjectUtils.copy(objA);\nobjA.b = 'second';\n\nconsole.log(objB);\n// Will output { a: 'first' }\n```\n\n### `get`\n\nRead a property from an object using a path:\n\n```js\nconst obj = {\n  propOne: {\n    propOneSub: 'Charito!',\n  },\n  propTwo: '!!!',\n};\n\nconsole.log(ObjectUtils.get(\n  obj,\n  'propOne.propOneSub'\n));\n// Will output 'Charito!'\n```\n### `set`\n\nSet a property on an object using a path. If the path doesn't exist, it will be created.\n\n```js\nconst target = {};\n\nconsole.log(ObjectUtils.set(target, 'some.prop.path', 'some-value'));\n// Will output { some: { prop: { path: 'some-value' } } }\n```\n\n### `extract`\n\nExtracts a property or properties from an object in order to create a new one.\n\n```js\nconst target = {\n  name: {\n    first: 'Rosario',\n  },\n  age: 3,\n  address: {\n    planet: 'earth',\n    something: 'else',\n  },\n};\n\nconsole.log(ObjectUtils.set(obj, [\n  { 'name': 'name.first'},\n  'age',\n  'address.planet'\n]));\n// Will output { name: 'Rosario', age: 3, address: { planet: 'earth' } }\n```\n\n### `delete`\n\nDelete a property of an object using a path. If by removing a property of a sub object, the object has no more keys, it also removes it.\n\n```js\nconst target = {\n  propOne: {\n    propOneSub: 'Charito!',\n  },\n  propTwo: '!!!',\n};\n\nconsole.log(ObjectUtils.delete(\n  target,\n  'propOne.propOneSub'\n));\n// Will output { propTwo: '!!!' }\n```\n\n## Technical documentation\n\nThe code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/class/wootils/shared/eventsHub.js~EventsHub.html) or generate it yourself using:\n\n```bash\n# You can either use npm or yarn, it doesn't matter\nnpm run docs\nopen ./docs/index.html\n```",
     "static": true,
     "access": "public"
   },

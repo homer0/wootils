@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">wootils/shared/eventsHub.js | wootils</title>
+  <title data-ice="title">wootils/shared/objectUtils.js | wootils</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -75,154 +75,293 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">wootils/shared/eventsHub.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
- * A minimal implementation of an events handler service.
+<div class="content" data-ice="content"><h1 data-ice="title">wootils/shared/objectUtils.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const extend = require(&apos;extend&apos;);
+/**
+ * A small collection of utility methods to work with objects.
  */
-class EventsHub {
+class ObjectUtils {
   /**
-   * Class constructor.
+   * @throws {Error} is called. This class is meant to be have only static methods.
    * @ignore
    */
   constructor() {
-    /**
-     * A dictionary of the events and their listeners.
-     * @type {Object}
-     * @ignore
-     */
-    this._events = {};
+    throw new Error(&apos;ObjectUtils is a static class&apos;);
   }
   /**
-   * Adds a new event listener.
-   * @param {String|Array} event An event name or a list of them.
-   * @param {Function}     fn    The listener function.
-   * @return {Function} An unsubscribe function to remove the listener or listeners.
+   * This method makes a deep merge of a list of objects into a new one.
+   * @example
+   * const objA = { a: &apos;first&apos; };
+   * const objB = { b: &apos;second&apos; };
+   * console.log(ObjectUtils.merge(objA, objB));
+   * // Will output { a: &apos;first&apos;, b: &apos;second&apos; }
+   * @param {...{Object}} targets The objects to merge.
+   * @return {Object}
    */
-  on(event, fn) {
-    const events = Array.isArray(event) ? event : [event];
-    events.forEach((name) =&gt; {
-      const subscribers = this.subscribers(name);
-      if (!subscribers.includes(fn)) {
-        subscribers.push(fn);
+  static merge(...targets) {
+    return extend(true, {}, ...targets);
+  }
+  /**
+   * Creates a deep copy of a given object.
+   * @param {Object} target The object to copy.
+   * @return {Object}
+   */
+  static copy(target) {
+    return this.merge(target);
+  }
+  /**
+   * Returns the value of an object property using a path.
+   * @example
+   * const obj = {
+   *   propOne: {
+   *     propOneSub: &apos;Charito!&apos;,
+   *   },
+   *   propTwo: &apos;!!!&apos;,
+   * };
+   * console.log(ObjectUtils.get(
+   *   obj,
+   *   &apos;propOne.propOneSub&apos;
+   * ));
+   * // Will output &apos;Charito!&apos;
+   *
+   * @param {Object}  target                The object from where the property will be read.
+   * @param {string}  objPath               The path to the property.
+   * @param {string}  [pathDelimiter=&apos;.&apos;]   The delimiter that will separate the path components.
+   * @param {boolean} [failWithError=false] Whether or not to throw an error when the path is
+   *                                        invalid. If this is `false`, the method will silently
+   *                                        fail and return `undefined`.
+   * @return {*}
+   * @throws {Error} If the path is invalid and `failWithError` is set to `true`.
+   */
+  static get(target, objPath, pathDelimiter = &apos;.&apos;, failWithError = true) {
+    const parts = objPath.split(pathDelimiter);
+    const first = parts.shift();
+    let currentElement = target[first];
+    if (typeof currentElement === &apos;undefined&apos;) {
+      if (failWithError) {
+        throw new Error(`There&apos;s nothing on &apos;${objPath}&apos;`);
       }
-    });
+    } else if (parts.length) {
+      let currentPath = first;
+      parts.some((currentPart) =&gt; {
+        let breakLoop = false;
+        currentPath += `${pathDelimiter}${currentPart}`;
+        currentElement = currentElement[currentPart];
+        if (typeof currentElement === &apos;undefined&apos;) {
+          if (failWithError) {
+            throw new Error(`There&apos;s nothing on &apos;${currentPath}&apos;`);
+          } else {
+            breakLoop = true;
+          }
+        }
 
-    return () =&gt; this.off(event, fn);
+        return breakLoop;
+      });
+    }
+
+    return currentElement;
   }
   /**
-   * Adds an event listener that will only be executed once.
-   * @param {String|Array} event An event name or a list of them.
-   * @param {Function}     fn    The listener function.
-   * @return {Function} An unsubscribe function to remove the listener.
+   * Sets a property on an object using a path. If the path doesn&apos;t exist, it will be created.
+   * @example
+   * const target = {};
+   * console.log(ObjectUtils.set(target, &apos;some.prop.path&apos;, &apos;some-value&apos;));
+   * // Will output { some: { prop: { path: &apos;some-value&apos; } } }
+   *
+   * @param {Object}  target                The object where the property will be set.
+   * @param {string}  objPath               The path for the property.
+   * @param {*}       value                 The value to set on the property.
+   * @param {string}  [pathDelimiter=&apos;.&apos;]   The delimiter that will separate the path components.
+   * @param {boolean} [failWithError=false] Whether or not to throw an error when the path is
+   *                                        invalid. If this is `false`, the method will silently
+   *                                        fail and return `undefined`.
+   * @return {Object} A copy of the original object with the added property/properties.
+   * @throws {Error} If one of the path components is for a non-object property and
+   *                 `failWithError` is set to `true`.
    */
-  once(event, fn) {
-    // eslint-disable-next-line no-param-reassign
-    fn.once = true;
-    return this.on(event, fn);
-  }
-  /**
-   * Removes an event listener.
-   * @param {String|Array} event An event name or a list of them.
-   * @param {Function}     fn    The listener function.
-   * @return {Boolean|Array} If `event` was a `string`, it will return whether or not the listener
-   *                         was found and removed; but if `event` was an `Array`, it will return
-   *                         a list of boolean values.
-   */
-  off(event, fn) {
-    const isArray = Array.isArray(event);
-    const events = isArray ? event : [event];
-    const result = events.map((name) =&gt; {
-      const subscribers = this.subscribers(name);
-      let found = false;
-      const index = subscribers.indexOf(fn);
-      if (index &gt; -1) {
-        found = true;
-        subscribers.splice(index, 1);
-      }
-
-      return found;
-    });
-
-    return isArray ? result : result[0];
-  }
-  /**
-   * Emits an event and call all its listeners.
-   * @param {String|Array} event An event name or a list of them.
-   * @param {Array}        args  A list of parameters to send to the listeners.
-   */
-  emit(event, ...args) {
-    const toClean = [];
-    const events = Array.isArray(event) ? event : [event];
-    events.forEach((name) =&gt; {
-      this.subscribers(name).forEach((subscriber) =&gt; {
-        subscriber(...args);
-        if (subscriber.once) {
-          toClean.push({
-            event: name,
-            fn: subscriber,
-          });
+  static set(
+    target,
+    objPath,
+    value,
+    pathDelimiter = &apos;.&apos;,
+    failWithError = true
+  ) {
+    let result = this.copy(target);
+    if (objPath.includes(pathDelimiter)) {
+      const parts = objPath.split(pathDelimiter);
+      const last = parts.pop();
+      let currentElement = result;
+      let currentPath = &apos;&apos;;
+      parts.forEach((part) =&gt; {
+        currentPath += `${pathDelimiter}${part}`;
+        const element = currentElement[part];
+        const elementType = typeof element;
+        if (elementType === &apos;undefined&apos;) {
+          currentElement[part] = {};
+          currentElement = currentElement[part];
+        } else if (elementType === &apos;object&apos;) {
+          currentElement = currentElement[part];
+        } else {
+          const errorPath = currentPath.substr(pathDelimiter.length);
+          if (failWithError) {
+            throw new Error(
+              `There&apos;s already an element of type &apos;${elementType}&apos; on &apos;${errorPath}&apos;`
+            );
+          } else {
+            result = undefined;
+          }
         }
       });
-    });
 
-    toClean.forEach((info) =&gt; this.off(info.event, info.fn));
+      if (result) {
+        currentElement[last] = value;
+      }
+    } else {
+      result[objPath] = value;
+    }
+
+    return result;
   }
   /**
-   * Reduce a target using an event. It&apos;s like emit, but the events listener return
-   * a modified (or not) version of the `target`.
-   * @param {String|Array} event  An event name or a list of them.
-   * @param {*}            target The variable to reduce with the listeners.
-   * @param {Array}        args   A list of parameters to send to the listeners.
-   * @return {*} A version of the `target` processed by the listeners.
+   * Extracts a property or properties from an object in order to create a new one.
+   * @example
+   * const target = {
+   *   name: {
+   *     first: &apos;Rosario&apos;,
+   *   },
+   *   age: 3,
+   *   address: {
+   *     planet: &apos;earth&apos;,
+   *     something: &apos;else&apos;,
+   *   },
+   * };
+   * console.log(ObjectUtils.set(obj, [
+   *   { &apos;name&apos;: &apos;name.first&apos;},
+   *   &apos;age&apos;,
+   *   &apos;address.planet&apos;
+   * ]));
+   * // Will output { name: &apos;Rosario&apos;, age: 3, address: { planet: &apos;earth&apos; } }
+   * @param {Object}               target               The object from where the
+   *                                                    property/properties will be extracted.
+   * @param {Array|Object|string}  objPaths             This can be a single path or a list of
+   *                                                    them. And for this method, the paths are
+   *                                                    not only strings but can also be an object
+   *                                                    with a single key, the would be the path
+   *                                                    to where to &quot;do the extraction&quot;, and the
+   *                                                    value the path on the target object.
+   * @param {string}               [pathDelimiter=&apos;.&apos;]  The delimiter that will separate the
+   *                                                    path components.
+   * @param {boolean}              [failWithError=true] Whether or not to throw an error when the
+   *                                                    path is invalid. If this is `false`, the
+   *                                                    method will silently fail an empty object.
+   * @return {Object}
    */
-  reduce(event, target, ...args) {
-    const events = Array.isArray(event) ? event : [event];
-    let result = target;
-    events.forEach((name) =&gt; {
-      const subscribers = this.subscribers(name);
-      if (subscribers.length) {
-        const toClean = [];
-        let processed;
-        if (Array.isArray(result)) {
-          processed = result.slice();
-        } else if (typeof result === &apos;object&apos;) {
-          processed = Object.assign({}, result);
-        } else {
-          processed = result;
-        }
-
-        subscribers.forEach((subscriber) =&gt; {
-          processed = subscriber(...[processed, ...args]);
-          if (subscriber.once) {
-            toClean.push({
-              event: name,
-              fn: subscriber,
-            });
-          }
-        });
-
-        toClean.forEach((info) =&gt; this.off(info.event, info.fn));
-        result = processed;
+  static extract(target, objPaths, pathDelimiter = &apos;.&apos;, failWithError = true) {
+    const copied = this.copy(target);
+    let result = {};
+    (Array.isArray(objPaths) ? objPaths : [objPaths])
+    .reduce((acc, objPath) =&gt; {
+      let destPath;
+      let originPath;
+      if (typeof objPath === &apos;object&apos;) {
+        [destPath] = Object.keys(objPath);
+        originPath = objPath[destPath];
+      } else {
+        destPath = objPath;
+        originPath = objPath;
       }
+
+      return [...acc, {
+        origin: originPath,
+        customDest: destPath.includes(pathDelimiter),
+        dest: destPath,
+      }];
+    }, [])
+    .some((pathInfo) =&gt; {
+      let breakLoop = false;
+      const value = this.get(copied, pathInfo.origin, pathDelimiter, failWithError);
+      if (typeof value === &apos;undefined&apos;) {
+        breakLoop = true;
+      } else if (pathInfo.customDest) {
+        result = this.set(result, pathInfo.dest, value, pathDelimiter, failWithError);
+        if (typeof result === &apos;undefined&apos;) {
+          breakLoop = true;
+        }
+      } else {
+        result[pathInfo.dest] = value;
+      }
+
+      return breakLoop;
     });
 
     return result;
   }
   /**
-   * Get all the listeners for an event.
-   * @param {String} event The name of the event.
-   * @return {Array}
+   * Deletes a property of an object using a path.
+   * @example
+   * const target = {
+   *   propOne: {
+   *     propOneSub: &apos;Charito!&apos;,
+   *   },
+   *   propTwo: &apos;!!!&apos;,
+   * };
+   * console.log(ObjectUtils.delete(
+   *   target,
+   *   &apos;propOne.propOneSub&apos;
+   * ));
+   * // Will output { propTwo: &apos;!!!&apos; }
+   *
+   * @param {Object}  target                      The object from where the property will be
+   *                                              removed.
+   * @param {string}  objPath                     The path to the property.
+   * @param {String}  [pathDelimiter=&apos;.&apos;]         The delimiter that will separate the path
+   *                                              components.
+   * @param {Boolean} [cleanEmptyProperties=true] If this flag is `true` and after removing the
+   *                                              property the parent object is empty, it will
+   *                                              remove it recursively until a non empty parent
+   *                                              object is found.
+   * @param {boolean} [failWithError=true]        Whether or not to throw an error when the path
+   *                                              is invalid. If this is `false`, the method will
+   *                                              silently fail.
+   * @return {Object} A copy of the original object with the removed property/properties.
    */
-  subscribers(event) {
-    if (!this._events[event]) {
-      this._events[event] = [];
+  static delete(
+    target,
+    objPath,
+    pathDelimiter = &apos;.&apos;,
+    cleanEmptyProperties = true,
+    failWithError = true
+  ) {
+    const parts = objPath.split(pathDelimiter);
+    const last = parts.pop();
+    let result = this.copy(target);
+    if (parts.length) {
+      const parentPath = parts.join(pathDelimiter);
+      const parentObj = this.get(
+        result,
+        parentPath,
+        pathDelimiter,
+        failWithError
+      );
+      delete parentObj[last];
+      if (cleanEmptyProperties &amp;&amp; !Object.keys(parentObj).length) {
+        result = this.delete(
+          result,
+          parentPath,
+          pathDelimiter,
+          cleanEmptyProperties,
+          failWithError
+        );
+      }
+    } else {
+      delete result[last];
     }
 
-    return this._events[event];
+    return result;
   }
 }
 
-module.exports = EventsHub;
+module.exports = ObjectUtils;
 </code></pre>
 
 </div>
