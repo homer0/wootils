@@ -202,15 +202,15 @@ class ObjectUtils {
     .some((pathInfo) => {
       let breakLoop = false;
       const value = this.get(copied, pathInfo.origin, pathDelimiter, failWithError);
-      if (typeof value === 'undefined') {
-        breakLoop = true;
-      } else if (pathInfo.customDest) {
-        result = this.set(result, pathInfo.dest, value, pathDelimiter, failWithError);
-        if (typeof result === 'undefined') {
-          breakLoop = true;
+      if (typeof value !== 'undefined') {
+        if (pathInfo.customDest) {
+          result = this.set(result, pathInfo.dest, value, pathDelimiter, failWithError);
+          if (typeof result === 'undefined') {
+            breakLoop = true;
+          }
+        } else {
+          result[pathInfo.dest] = value;
         }
-      } else {
-        result[pathInfo.dest] = value;
       }
 
       return breakLoop;
