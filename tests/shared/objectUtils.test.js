@@ -113,36 +113,13 @@ describe('ObjectUtils', () => {
       expect(result).toBe(name);
     });
 
-    it('should throw an error when trying to read a property that doesn\'t exist', () => {
-      // Given
-      const target = {};
-      const fakePath = 'something';
-      // When/Then
-      expect(() => ObjectUtils.get(target, fakePath))
-      .toThrow(new RegExp(`there's nothing on '${fakePath}'`, 'i'));
-    });
-
-    it('should throw an error when trying to read a path that doesn\'t exist', () => {
-      // Given
-      const topElement = 'person';
-      const childElement = 'name';
-      const grandChildElement = 'first';
-      const target = {
-        [topElement]: {},
-      };
-      const fakePath = `${topElement}.${childElement}.${grandChildElement}`;
-      // When/Then
-      expect(() => ObjectUtils.get(target, fakePath))
-      .toThrow(new RegExp(`there's nothing on '${topElement}.${childElement}'`, 'i'));
-    });
-
     it('shouldn\'t throw an error when trying to read a property that doesn\'t exist', () => {
       // Given
       const target = {};
       const fakePath = 'something';
       let result = null;
       // When
-      result = ObjectUtils.get(target, fakePath, '.', false);
+      result = ObjectUtils.get(target, fakePath);
       // Then
       expect(result).toBeUndefined();
     });
@@ -160,6 +137,29 @@ describe('ObjectUtils', () => {
       result = ObjectUtils.get(target, fakePath, '.', false);
       // When/Then
       expect(result).toBeUndefined();
+    });
+
+    it('should throw an error when trying to read a property that doesn\'t exist', () => {
+      // Given
+      const target = {};
+      const fakePath = 'something';
+      // When/Then
+      expect(() => ObjectUtils.get(target, fakePath, '.', true))
+      .toThrow(new RegExp(`there's nothing on '${fakePath}'`, 'i'));
+    });
+
+    it('should throw an error when trying to read a path that doesn\'t exist', () => {
+      // Given
+      const topElement = 'person';
+      const childElement = 'name';
+      const grandChildElement = 'first';
+      const target = {
+        [topElement]: {},
+      };
+      const fakePath = `${topElement}.${childElement}.${grandChildElement}`;
+      // When/Then
+      expect(() => ObjectUtils.get(target, fakePath, '.', true))
+      .toThrow(new RegExp(`there's nothing on '${topElement}.${childElement}'`, 'i'));
     });
   });
 
@@ -256,26 +256,6 @@ describe('ObjectUtils', () => {
       expect(target).toEqual(copy);
     });
 
-    it('should throw an error when trying to set a property on an non object path', () => {
-      // Given
-      const topElement = 'people';
-      const childElement = 'name';
-      const grandChildElement = 'first';
-      const value = 'Rosario';
-      const target = {
-        [topElement]: {
-          [childElement]: value,
-        },
-      };
-      const objPath = `${topElement}.${childElement}.${grandChildElement}`;
-      // When/Then
-      expect(() => ObjectUtils.set(target, objPath, value))
-      .toThrow(new RegExp(
-        `There's already an element of type 'string' on '${topElement}.${childElement}'`,
-        'i'
-      ));
-    });
-
     it('shouldn\'t throw an error when trying to set a property on an non object path', () => {
       // Given
       const topElement = 'people';
@@ -290,9 +270,29 @@ describe('ObjectUtils', () => {
       const objPath = `${topElement}.${childElement}.${grandChildElement}`;
       let result = null;
       // When
-      result = ObjectUtils.set(target, objPath, value, '.', false);
+      result = ObjectUtils.set(target, objPath, value);
       // Then
       expect(result).toBeUndefined();
+    });
+
+    it('should throw an error when trying to set a property on an non object path', () => {
+      // Given
+      const topElement = 'people';
+      const childElement = 'name';
+      const grandChildElement = 'first';
+      const value = 'Rosario';
+      const target = {
+        [topElement]: {
+          [childElement]: value,
+        },
+      };
+      const objPath = `${topElement}.${childElement}.${grandChildElement}`;
+      // When/Then
+      expect(() => ObjectUtils.set(target, objPath, value, '.', true))
+      .toThrow(new RegExp(
+        `There's already an element of type 'string' on '${topElement}.${childElement}'`,
+        'i'
+      ));
     });
   });
 
@@ -374,50 +374,27 @@ describe('ObjectUtils', () => {
       });
     });
 
-    it('should throw an error when trying to exact from an invalid path', () => {
-      // Given
-      const topElement = 'person';
-      const target = {};
-      // When/Then
-      expect(() => ObjectUtils.extract(target, topElement))
-      .toThrow(new RegExp(`There's nothing on '${topElement}'`, 'i'));
-    });
-
-    it('shouldn\'t throw an error when trying to exact from an invalid path', () => {
+    it('shouldn\'t throw an error when trying to extract from an invalid path', () => {
       // Given
       const topElement = 'person';
       const target = {};
       let result = null;
       // When
-      result = ObjectUtils.extract(target, topElement, '.', false);
+      result = ObjectUtils.extract(target, topElement);
       // Then
       expect(result).toEqual({});
     });
 
-    it('should throw an error when trying to exact reusing a path', () => {
+    it('should throw an error when trying to extract from an invalid path', () => {
       // Given
       const topElement = 'person';
-      const childElement = 'name';
-      const childElementValue = 'Rosario';
-      const target = {
-        [topElement]: {
-          [childElement]: childElementValue,
-          age: 3,
-          planet: 'earth',
-        },
-      };
+      const target = {};
       // When/Then
-      expect(() => ObjectUtils.extract(target, [
-        { [topElement]: `${topElement}.${childElement}` },
-        { [`${topElement}.${childElement}`]: `${topElement}.${childElement}` },
-      ]))
-      .toThrow(new RegExp(
-        `There's already an element of type 'string' on '${topElement}'`,
-        'i'
-      ));
+      expect(() => ObjectUtils.extract(target, topElement, '.', true))
+      .toThrow(new RegExp(`There's nothing on '${topElement}'`, 'i'));
     });
 
-    it('shouldn\'t throw an error when trying to exact reusing a path', () => {
+    it('shouldn\'t throw an error when trying to extract reusing a path', () => {
       // Given
       const topElement = 'person';
       const childElement = 'name';
@@ -436,12 +413,38 @@ describe('ObjectUtils', () => {
         [
           { [topElement]: `${topElement}.${childElement}` },
           { [`${topElement}.${childElement}`]: `${topElement}.${childElement}` },
-        ],
-        '.',
-        false
+        ]
       );
       // Then
       expect(result).toBeUndefined();
+    });
+
+    it('should throw an error when trying to extract reusing a path', () => {
+      // Given
+      const topElement = 'person';
+      const childElement = 'name';
+      const childElementValue = 'Rosario';
+      const target = {
+        [topElement]: {
+          [childElement]: childElementValue,
+          age: 3,
+          planet: 'earth',
+        },
+      };
+      // When/Then
+      expect(() => ObjectUtils.extract(
+        target,
+        [
+          { [topElement]: `${topElement}.${childElement}` },
+          { [`${topElement}.${childElement}`]: `${topElement}.${childElement}` },
+        ],
+        '.',
+        true
+      ))
+      .toThrow(new RegExp(
+        `There's already an element of type 'string' on '${topElement}'`,
+        'i'
+      ));
     });
   });
 

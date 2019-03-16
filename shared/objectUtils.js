@@ -55,7 +55,7 @@ class ObjectUtils {
    * @return {*}
    * @throws {Error} If the path is invalid and `failWithError` is set to `true`.
    */
-  static get(target, objPath, pathDelimiter = '.', failWithError = true) {
+  static get(target, objPath, pathDelimiter = '.', failWithError = false) {
     const parts = objPath.split(pathDelimiter);
     const first = parts.shift();
     let currentElement = target[first];
@@ -106,7 +106,7 @@ class ObjectUtils {
     objPath,
     value,
     pathDelimiter = '.',
-    failWithError = true
+    failWithError = false
   ) {
     let result = this.copy(target);
     if (objPath.includes(pathDelimiter)) {
@@ -163,22 +163,22 @@ class ObjectUtils {
    *   'address.planet'
    * ]));
    * // Will output { name: 'Rosario', age: 3, address: { planet: 'earth' } }
-   * @param {Object}               target               The object from where the
+   * @param {Object}              target                The object from where the
    *                                                    property/properties will be extracted.
-   * @param {Array|Object|string}  objPaths             This can be a single path or a list of
+   * @param {Array|Object|string} objPaths              This can be a single path or a list of
    *                                                    them. And for this method, the paths are
    *                                                    not only strings but can also be an object
    *                                                    with a single key, the would be the path
    *                                                    to where to "do the extraction", and the
    *                                                    value the path on the target object.
-   * @param {string}               [pathDelimiter='.']  The delimiter that will separate the
+   * @param {string}              [pathDelimiter='.']   The delimiter that will separate the
    *                                                    path components.
-   * @param {boolean}              [failWithError=true] Whether or not to throw an error when the
+   * @param {boolean}             [failWithError=false] Whether or not to throw an error when the
    *                                                    path is invalid. If this is `false`, the
    *                                                    method will silently fail an empty object.
    * @return {Object}
    */
-  static extract(target, objPaths, pathDelimiter = '.', failWithError = true) {
+  static extract(target, objPaths, pathDelimiter = '.', failWithError = false) {
     const copied = this.copy(target);
     let result = {};
     (Array.isArray(objPaths) ? objPaths : [objPaths])
@@ -242,7 +242,7 @@ class ObjectUtils {
    *                                              property the parent object is empty, it will
    *                                              remove it recursively until a non empty parent
    *                                              object is found.
-   * @param {boolean} [failWithError=true]        Whether or not to throw an error when the path
+   * @param {boolean} [failWithError=false]       Whether or not to throw an error when the path
    *                                              is invalid. If this is `false`, the method will
    *                                              silently fail.
    * @return {Object} A copy of the original object with the removed property/properties.
@@ -252,7 +252,7 @@ class ObjectUtils {
     objPath,
     pathDelimiter = '.',
     cleanEmptyProperties = true,
-    failWithError = true
+    failWithError = false
   ) {
     const parts = objPath.split(pathDelimiter);
     const last = parts.pop();
