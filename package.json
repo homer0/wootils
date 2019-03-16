@@ -2,7 +2,7 @@
   "name": "wootils",
   "description": "A set of Javascript utilities for building Node and browser apps.",
   "homepage": "https://homer0.github.io/wootils/",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "repository": "homer0/wootils",
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
   "license": "MIT",
