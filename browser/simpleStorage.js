@@ -562,12 +562,19 @@ class SimpleStorage {
   }
   /**
    * Makes a deep copy of an object.
-   * @param {Object} obj The object to copy.
-   * @return {Object}
+   * @param {Object|Array} obj The object to copy.
+   * @return {Object|Array}
    * @access protected
    */
   _copy(obj) {
-    return extend(true, {}, obj);
+    let result;
+    if (Array.isArray(obj)) {
+      ({ obj: result } = extend(true, {}, { obj }));
+    } else {
+      result = extend(true, {}, obj);
+    }
+
+    return result;
   }
   /**
    * Helper method to get the current timestamp in seconds.
