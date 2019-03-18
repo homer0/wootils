@@ -315,7 +315,7 @@ class SimpleStorage {
    * @access protected
    */
   _getEntryValue(key) {
-    const entry = this.getEntry(key);
+    const entry = this._getEntry(key);
     return entry ? entry.value : entry;
   }
   /**
@@ -397,9 +397,9 @@ class SimpleStorage {
   _delete(reset = true) {
     delete this._storage.delete(this._options.storage.key);
     if (reset) {
-      this.setData(this._getInitialData(), false);
+      this._setData(this._getInitialData(), false);
     } else {
-      this.setData({}, false);
+      this._setData({}, false);
     }
   }
   /**
