@@ -755,6 +755,57 @@ describe('SimpleStorage', () => {
       );
     });
 
+    it('should add and save a new array entry', () => {
+      // Given
+      const currentTime = 0;
+      global.Date = {
+        now: jest.fn(() => currentTime),
+      };
+      const storageKey = 'myStorage';
+      const entryKey = 'user';
+      const entryValue = ['Rosario', 'Charo', 'Charito'];
+      const mStorage = getStorageProxy();
+      const mWindow = {
+        localStorage: mStorage,
+      };
+      const options = {
+        window: mWindow,
+        storage: {
+          key: storageKey,
+        },
+        entries: {
+          enabled: true,
+          deleteExpired: false,
+        },
+      };
+      let sut = null;
+      let resultBeforeAdding = null;
+      let resultFromAdding = null;
+      let resultAfterAdding = null;
+      // When
+      sut = getSutProxy(options);
+      resultBeforeAdding = sut.getEntryValue(entryKey);
+      resultFromAdding = sut.addEntry(entryKey, entryValue);
+      resultAfterAdding = sut.getEntryValue(entryKey);
+      // Then
+      expect(resultBeforeAdding).toBeNull();
+      expect(resultFromAdding).toEqual(entryValue);
+      expect(resultAfterAdding).toEqual(entryValue);
+      expect(mStorage.mocks.get).toHaveBeenCalledTimes(1);
+      expect(mStorage.mocks.get).toHaveBeenCalledWith(options.storage.key);
+      expect(mStorage.mocks.set).toHaveBeenCalledTimes(2);
+      expect(mStorage.mocks.set).toHaveBeenCalledWith(options.storage.key, '{}');
+      expect(mStorage.mocks.set).toHaveBeenCalledWith(
+        options.storage.key,
+        JSON.stringify({
+          [entryKey]: {
+            time: currentTime,
+            value: entryValue,
+          },
+        })
+      );
+    });
+
     it('should add a new entry but not save it', () => {
       // Given
       const currentTime = 0;
