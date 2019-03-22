@@ -393,7 +393,7 @@ class SimpleStorage {
    * @access protected
    */
   _getEntryValue(key) {
-    const entry = this.getEntry(key);
+    const entry = this._getEntry(key);
     return entry ? entry.value : entry;
   }
   /**
@@ -475,9 +475,9 @@ class SimpleStorage {
   _delete(reset = true) {
     delete this._storage.delete(this._options.storage.key);
     if (reset) {
-      this.setData(this._getInitialData(), false);
+      this._setData(this._getInitialData(), false);
     } else {
-      this.setData({}, false);
+      this._setData({}, false);
     }
   }
   /**
@@ -640,12 +640,19 @@ class SimpleStorage {
   }
   /**
    * Makes a deep copy of an object.
-   * @param {Object} obj The object to copy.
-   * @return {Object}
+   * @param {Object|Array} obj The object to copy.
+   * @return {Object|Array}
    * @access protected
    */
   _copy(obj) {
-    return extend(true, {}, obj);
+    let result;
+    if (Array.isArray(obj)) {
+      ({ obj: result } = extend(true, {}, { obj }));
+    } else {
+      result = extend(true, {}, obj);
+    }
+
+    return result;
   }
   /**
    * Helper method to get the current timestamp in seconds.
