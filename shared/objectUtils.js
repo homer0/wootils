@@ -11,17 +11,25 @@ class ObjectUtils {
     throw new Error('ObjectUtils is a static class');
   }
   /**
-   * This method makes a deep merge of a list of objects into a new one.
+   * This method makes a deep merge of a list of objects into a new one. The method also supports
+   * arrays.
    * @example
    * const objA = { a: 'first' };
    * const objB = { b: 'second' };
    * console.log(ObjectUtils.merge(objA, objB));
    * // Will output { a: 'first', b: 'second' }
+   * @example
+   * const arrA = [{ a: 'first' }];
+   * const arrB = [{ b: 'second' }];
+   * console.log(ObjectUtils.merge(objA, objB));
+   * // Will output [{ a: 'first', b: 'second' }]
    * @param {...{Object}} targets The objects to merge.
    * @return {Object}
    */
   static merge(...targets) {
-    return extend(true, {}, ...targets);
+    const [firstTarget] = targets;
+    const base = Array.isArray(firstTarget) ? [] : {};
+    return extend(true, base, ...targets);
   }
   /**
    * Creates a deep copy of a given object.
