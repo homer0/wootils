@@ -24,6 +24,21 @@ describe('ObjectUtils', () => {
     expect(result).toEqual({ name, nickname });
   });
 
+  it('should merge two objects from arrays', () => {
+    // Given
+    const name = 'Rosario';
+    const nickname = 'Charito';
+    const arrA = [{ name }];
+    const arrB = [{ nickname }];
+    let result = null;
+    // When
+    result = ObjectUtils.merge(arrA, arrB);
+    arrA.push('value');
+    arrB.push('value');
+    // Then
+    expect(result).toEqual([{ name, nickname }]);
+  });
+
   it('should make a copy of an object', () => {
     // Given
     const name = 'Rosario';
