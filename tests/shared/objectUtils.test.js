@@ -547,4 +547,201 @@ describe('ObjectUtils', () => {
       expect(target).toEqual(copy);
     });
   });
+
+  describe('flat', () => {
+    it('should flattern the properties of an object', () => {
+      // Given
+      const name = 'Rosario';
+      const nickname = 'Charito';
+      const age = 3;
+      const total = 1;
+      const numbers = [
+        'one',
+        'two',
+        'three',
+      ];
+      const target = {
+        total,
+        person: {
+          age,
+          names: {
+            name,
+            nickname,
+          },
+          numbers,
+        },
+      };
+      let result = null;
+      const expected = Object.assign(
+        {
+          total,
+          'person.age': age,
+          'person.names.name': name,
+          'person.names.nickname': nickname,
+        },
+        numbers.reduce(
+          (acc, item, index) => Object.assign({}, acc, {
+            [`person.numbers.${index}`]: item,
+          }),
+          {}
+        )
+      );
+      // When
+      result = ObjectUtils.flat(target);
+      // Then
+      expect(result).toEqual(expected);
+    });
+
+    it('should flattern the properties of an object using a custom path', () => {
+      // Given
+      const name = 'Rosario';
+      const nickname = 'Charito';
+      const age = 3;
+      const total = 1;
+      const numbers = [
+        'one',
+        'two',
+        'three',
+      ];
+      const target = {
+        total,
+        person: {
+          age,
+          names: {
+            name,
+            nickname,
+          },
+          numbers,
+        },
+      };
+      const separator = '/';
+      let result = null;
+      const expected = Object.assign(
+        {
+          total,
+          [`person${separator}age`]: age,
+          [`person${separator}names${separator}name`]: name,
+          [`person${separator}names${separator}nickname`]: nickname,
+        },
+        numbers.reduce(
+          (acc, item, index) => Object.assign({}, acc, {
+            [`person${separator}numbers${separator}${index}`]: item,
+          }),
+          {}
+        )
+      );
+      // When
+      result = ObjectUtils.flat(target, separator);
+      // Then
+      expect(result).toEqual(expected);
+    });
+
+    it('should flattern the properties except those filtered by a callback', () => {
+      // Given
+      const name = 'Rosario';
+      const nickname = 'Charito';
+      const age = 3;
+      const total = 1;
+      const numbers = [
+        'one',
+        'two',
+        'three',
+      ];
+      const target = {
+        total,
+        person: {
+          age,
+          names: {
+            name,
+            nickname,
+          },
+          numbers,
+        },
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.flat(target, '.', '', (key, value) => !Array.isArray(value));
+      // Then
+      expect(result).toEqual({
+        total,
+        'person.age': age,
+        'person.names.name': name,
+        'person.names.nickname': nickname,
+        'person.numbers': numbers,
+      });
+    });
+  });
+
+  describe('unflat', () => {
+    it('should un-flattern a list of properties into a new object', () => {
+      // Given
+      const name = 'Rosario';
+      const nickname = 'Charito';
+      const age = 3;
+      const total = 1;
+      const numbers = [
+        'one',
+        'two',
+        'three',
+      ];
+      const target = {
+        total,
+        'person.age': age,
+        'person.names.name': name,
+        'person.names.nickname': nickname,
+        'person.numbers': numbers,
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.unflat(target);
+      // Then
+      expect(result).toEqual({
+        total,
+        person: {
+          age,
+          names: {
+            name,
+            nickname,
+          },
+          numbers,
+        },
+      });
+    });
+
+    it('should un-flattern a list of properties into a new object using a custom path', () => {
+      // Given
+      const name = 'Rosario';
+      const nickname = 'Charito';
+      const age = 3;
+      const total = 1;
+      const numbers = [
+        'one',
+        'two',
+        'three',
+      ];
+      const separator = '/';
+      const target = {
+        total,
+        [`person${separator}age`]: age,
+        [`person${separator}names${separator}name`]: name,
+        [`person${separator}names${separator}nickname`]: nickname,
+        [`person${separator}numbers`]: numbers,
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.unflat(target, separator);
+      // Then
+      expect(result).toEqual({
+        total,
+        person: {
+          age,
+          names: {
+            name,
+            nickname,
+          },
+          numbers,
+        },
+      });
+    });
+  });
 });
