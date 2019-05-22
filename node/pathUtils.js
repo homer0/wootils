@@ -40,9 +40,9 @@ class PathUtils {
     if (location !== this.path && !location.startsWith(this.path)) {
       location = path.join(this.path, location);
     }
-    // Fix it so all the locations will end with `/`.
-    if (!location.endsWith('/')) {
-      location = `${location}/`;
+    // Fix it so all the locations will end with a separator.
+    if (!location.endsWith(path.sep)) {
+      location = `${location}${path.sep}`;
     }
     // Add it to the dictionary.
     this.locations[name] = location;
