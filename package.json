@@ -18,7 +18,7 @@
     "eslint-config-airbnb-base": "13.1.0",
     "eslint-plugin-import": "2.17.2",
     "eslint-plugin-node": "9.0.1",
-    "jest-ex": "6.0.1",
+    "jest-ex": "6.1.0",
     "jest-cli": "24.8.0",
     "jasmine-expect": "4.0.1",
     "@babel/preset-env": "7.4.4",
