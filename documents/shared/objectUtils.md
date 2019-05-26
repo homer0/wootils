@@ -101,6 +101,36 @@ console.log(ObjectUtils.delete(
 // Will output { propTwo: '!!!' }
 ```
 
+### `flat`
+
+Flatterns an object properties into a single level dictionary.
+
+```js
+const target = {
+  propOne: {
+    propOneSub: 'Charito!',
+  },
+  propTwo: '!!!',
+};
+
+console.log(ObjectUtils.flat(target);
+// Will output { 'propOne.propOneSub': 'Charito!', propTwo: '!!!' }
+```
+
+### `unflat`
+
+This method does the exact opposite from `flat`: It takes an already flattern object and restores it structure.
+
+```js
+const target = {
+  'propOne.propOneSub': 'Charito!
+  propTwo: '!!!',
+};
+
+console.log(ObjectUtils.unflat(target);
+// Will output { propOne: { propOneSub: 'Charito!' }, 'propTwo': '!!!' }
+```
+
 ## Technical documentation
 
 The code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/class/wootils/shared/eventsHub.js~EventsHub.html) or generate it yourself using:
