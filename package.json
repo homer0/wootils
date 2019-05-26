@@ -2,7 +2,7 @@
   "name": "wootils",
   "description": "A set of Javascript utilities for building Node and browser apps.",
   "homepage": "https://homer0.github.io/wootils/",
-  "version": "2.2.4",
+  "version": "2.3.0",
   "repository": "homer0/wootils",
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
   "license": "MIT",
@@ -18,7 +18,7 @@
     "eslint-config-airbnb-base": "13.1.0",
     "eslint-plugin-import": "2.17.2",
     "eslint-plugin-node": "9.0.1",
-    "jest-ex": "6.0.1",
+    "jest-ex": "6.1.0",
     "jest-cli": "24.8.0",
     "jasmine-expect": "4.0.1",
     "@babel/preset-env": "7.4.4",
@@ -38,10 +38,10 @@
   "main": "src/index.js",
   "scripts": {
     "hooks": "./utils/hooks/install",
-    "test": "./utils/scripts/test",
+    "test": "node ./utils/scripts/test.js",
     "lint": "./utils/scripts/lint",
     "lint:full": "./utils/scripts/lint-full",
-    "predocs": "./utils/scripts/docs-index",
+    "predocs": "node ./utils/scripts/docs-index.js",
     "docs": "./utils/scripts/docs",
     "todo": "./utils/scripts/todo"
   }

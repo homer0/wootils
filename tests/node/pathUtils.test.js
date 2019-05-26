@@ -31,21 +31,19 @@ describe('PathUtils', () => {
 
   it('should have getters for the app and home locations', () => {
     // Given
-    const home = '/some-folder/';
+    const home = `${path.sep}some-folder${path.sep}`;
     process.cwd = jest.fn(() => home);
     let sut = null;
     let homePath = null;
     let appPath = null;
-    // The `substr` is to remove the leading `/`
-    const thisfilePath = __dirname.substr(1);
-    const expectedAppPath = `${home}${thisfilePath}/`;
+    const expectedAppPath = path.join(home, __dirname);
     // When
     sut = new PathUtils();
     homePath = sut.home;
     appPath = sut.app;
     // Then
     expect(homePath).toBe(home);
-    expect(appPath).toBe(expectedAppPath);
+    expect(appPath).toBe(`${expectedAppPath}${path.sep}`);
   });
 
   it('should be able to be instantiated with a custom home/base ', () => {

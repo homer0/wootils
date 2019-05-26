@@ -150,3 +150,9 @@ I use [ESDoc](http://esdoc.org) to generate HTML documentation for the project. 
 ### To-Dos
 
 I use `@todo` comments to write all the pending improvements and fixes, and [Leasot](https://yarnpkg.com/en/package/leasot) to generate a report. The script that runs it is on `./utils/scripts/todo`.
+
+### Windows
+
+You can work with this project on Windows, but it only works if you use [Yarn](https://yarnpkg.com/en/docs/install). The reason is that NPM on Windows doesn't allow you to use paths like `./scripts/something` on the `package.json` scripts, while Yarn does.
+
+Another alternative if you are using Windows is to use [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).

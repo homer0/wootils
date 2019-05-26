@@ -2,6 +2,7 @@ jest.unmock('/node/appConfiguration');
 jest.mock('jimple', () => ({ provider: jest.fn(() => 'provider') }));
 
 require('jasmine-expect');
+const path = require('path');
 const {
   AppConfiguration,
   appConfiguration,
@@ -24,7 +25,7 @@ describe('AppConfiguration', () => {
   });
 
   const getDefaultFileInfo = (name) => ({
-    path: `config/app/app.${name}.config.js`,
+    path: path.join('config', 'app', `app.${name}.config.js`),
     name: `app.${name}.config.js`,
   });
 

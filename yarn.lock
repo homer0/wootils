@@ -3324,10 +3324,10 @@ jest-environment-node@^24.8.0:
     jest-mock "^24.8.0"
     jest-util "^24.8.0"
 
-jest-ex@6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/jest-ex/-/jest-ex-6.0.1.tgz#d487215a6382febfd8242e87ab21e31d99f78411"
-  integrity sha512-VTAUu5nLDk6EUsS8e1LxdoCkVRio6CJ8GY8ZUTkG0n2iIwNNrCK8USvd73CqdQMX68+001pifzFpTR8n3eo8sg==
+jest-ex@6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/jest-ex/-/jest-ex-6.1.0.tgz#966f7afb19969593fc7ea92d7df2870ea8e3814e"
+  integrity sha512-5YMxOXRrRUge1OmpzsCMAVnfumqF1Kq+lBA/yQNIEHYDsUFasI6iYdWgfG2YZbtsYBwTIYbGswUePEFztYSaog==
   dependencies:
     "@babel/core" "7.4.3"
     "@babel/plugin-transform-runtime" "7.4.3"

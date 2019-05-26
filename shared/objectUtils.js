@@ -289,6 +289,77 @@ class ObjectUtils {
 
     return result;
   }
+  /**
+   * Flatterns an object properties into a single level dictionary.
+   * @example
+   * const target = {
+   *   propOne: {
+   *     propOneSub: 'Charito!',
+   *   },
+   *   propTwo: '!!!',
+   * };
+   * console.log(ObjectUtils.flat(target);
+   * // Will output { 'propOne.propOneSub': 'Charito!', propTwo: '!!!' }
+   *
+   * @param {Object}                      target                The object to transform.
+   * @param {String}                      [pathDelimiter='.']   The delimiter that will separate
+   *                                                            the path components.
+   * @param {String}                      [prefix='']           A custom prefix to be added before
+   *                                                            the name of the properties. This
+   *                                                            can be used on custom cases and
+   *                                                            it's also used when the method
+   *                                                            calls itself in order to flattern
+   *                                                            a sub object.
+   * @param {?Function(String,*):Boolean} [shouldFlattern=null] A custom function that can be used
+   *                                                            in order to tell the method whether
+   *                                                            an Object or an Array property
+   *                                                            should be flattern or not. It will
+   *                                                            receive the key for the property
+   *                                                            and the Object/Array itself.
+   * @return {Object}
+   */
+  static flat(target, pathDelimiter = '.', prefix = '', shouldFlattern = null) {
+    let result = {};
+    const namePrefix = prefix ? `${prefix}${pathDelimiter}` : '';
+    Object.keys(target).forEach((key) => {
+      const name = `${namePrefix}${key}`;
+      const value = target[key];
+      const valueType = typeof value;
+      if (valueType === 'object' && (!shouldFlattern || shouldFlattern(key, value))) {
+        result = this.merge(result, this.flat(
+          value,
+          pathDelimiter,
+          name,
+          shouldFlattern
+        ));
+      } else {
+        result[name] = valueType === 'object' ? this.copy(value) : value;
+      }
+    });
+
+    return result;
+  }
+  /**
+   * This method does the exact opposite from `flat`: It takes an already flattern object and
+   * restores it structure.
+   * @example
+   * const target = {
+   *   'propOne.propOneSub': 'Charito!
+   *   propTwo: '!!!',
+   * };
+   * console.log(ObjectUtils.unflat(target);
+   * // Will output { propOne: { propOneSub: 'Charito!' }, 'propTwo': '!!!' }
+   *
+   * @param {Object} target                The object to transform.
+   * @param {String} [pathDelimiter='.']   The delimiter that will separate the path components.
+   * @return {Object}
+   */
+  static unflat(target, pathDelimiter = '.') {
+    return Object.keys(target).reduce(
+      (current, key) => this.set(current, key, target[key], pathDelimiter),
+      {}
+    );
+  }
 }
 
 module.exports = ObjectUtils;
