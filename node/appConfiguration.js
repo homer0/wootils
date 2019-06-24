@@ -1,6 +1,6 @@
 const path = require('path');
-const extend = require('extend');
 const { provider } = require('jimple');
+const ObjectUtils = require('../shared/objectUtils');
 /**
  * @typedef {Object} AppConfigurationOptions
  * @property {string} [defaultConfigurationName='default']           The name of the default
@@ -63,7 +63,7 @@ class AppConfiguration {
      * The service customizable options.
      * @type {AppConfigurationOptions}
      */
-    this.options = extend(true, {
+    this.options = ObjectUtils.merge(true, {
       defaultConfigurationName: 'default',
       environmentVariable: 'APP_CONFIG',
       path: `./config/${appName}`,
@@ -107,7 +107,7 @@ class AppConfiguration {
       // ...add the new configuration with the merged settings.
       this._addConfiguration(
         name,
-        extend(true, {}, baseConfiguration, settings),
+        ObjectUtils.merge(baseConfiguration, settings),
         true,
         switchTo
       );
@@ -150,7 +150,7 @@ class AppConfiguration {
     // Add the new configuration with the merged settings.
     this._addConfiguration(
       name,
-      extend(true, {}, baseConfiguration, settings),
+      ObjectUtils.merge(baseConfiguration, settings),
       checkSwitchFlag,
       switchTo
     );
@@ -173,7 +173,7 @@ class AppConfiguration {
   }
   /**
    * Get a configuration settings. If no name is specified, it will return the settings of the
-   * default configuration.
+   * active configuration.
    * @param {string} [name=''] The name of the configuration.
    * @return {Object}
    */
@@ -181,26 +181,57 @@ class AppConfiguration {
     return this.configurations[(name || this.activeConfiguration)];
   }
   /**
+   * Overwrites all the settings for a configuration. If the name is not specified, it will
+   * overwrite the active configuration.
+   * @param {Object}  config       The new configuration settings.
+   * @param {string}  [name='']    The name of the configuration.
+   * @param {boolean} [merge=true] Whether or not to merge the new settings with the existing
+   *                               ones.
+   * @return {Object} The updated configuration.
+   */
+  setConfig(config, name = '', merge = true) {
+    const key = (name || this.activeConfiguration);
+    this.configurations[key] = merge ?
+      ObjectUtils.merge(this.configurations[key], config) :
+      config;
+    return this.configurations[key];
+  }
+  /**
    * Get a setting or settings from the active configuration.
    * @example
    * // To get a single setting
    * const value = appConfiguration.get('some-setting');
+   *
    * // To get multiple values
-   * const {settingOne, settingTwo} = appConfiguration.get(['settingOne', 'settingTwo']);
-   * @param {string|Array} setting The name of a setting or a list of them.
+   * const {
+   *   settingOne,
+   *   settingTwo,
+   * } = appConfiguration.get(['settingOne', 'settingTwo']);
+   *
+   * // Use paths
+   * const subValue = appConfiguration.get('settingOne.subSetting');
+   *
+   * @param {string|Array} setting         A setting path or a list of them.
+   * @param {boolean}      [asArray=false] When `setting` is an Array, if this is `true`, instead
+   *                                       of returning an object, it will return an array of
+   *                                       settings.
    * @return {*}
    */
-  get(setting) {
+  get(setting, asArray = false) {
     let result;
     if (Array.isArray(setting)) {
-      result = {};
-      setting.forEach((name) => {
-        result[name] = this.get(name);
-      });
+      result = asArray ?
+        setting.map((name) => this.get(name)) :
+        setting.reduce(
+          (current, name) => Object.assign({}, current, {
+            [name]: this.get(name),
+          }),
+          {}
+        );
     } else if (setting === 'name') {
       result = this.activeConfiguration;
     } else {
-      result = this.getConfig()[setting];
+      result = ObjectUtils.get(this.getConfig(), setting);
     }
 
     return result;
@@ -231,10 +262,10 @@ class AppConfiguration {
       const currentValue = this.get(setting);
       let newValue = value;
       if (typeof value === 'object' && typeof currentValue !== 'undefined') {
-        newValue = extend(true, {}, currentValue, value);
+        newValue = ObjectUtils.merge(currentValue, value);
       }
 
-      this.getConfig()[setting] = newValue;
+      this.setConfig(ObjectUtils.set({}, setting, newValue));
     } else {
       throw new Error('You need to send a value in order to update a setting');
     }
@@ -278,7 +309,7 @@ class AppConfiguration {
    * @access protected
    */
   _addConfiguration(name, settings, checkSwitchFlag, switchTo) {
-    const newSettings = extend(true, {}, settings);
+    const newSettings = ObjectUtils.copy(settings);
     delete newSettings.extends;
 
     if (checkSwitchFlag && typeof newSettings.allowConfigurationSwitch === 'boolean') {
