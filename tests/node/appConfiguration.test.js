@@ -1,3 +1,4 @@
+jest.unmock('/shared/objectUtils');
 jest.unmock('/node/appConfiguration');
 jest.mock('jimple', () => ({ provider: jest.fn(() => 'provider') }));
 
@@ -335,6 +336,52 @@ describe('AppConfiguration', () => {
     expect(result).toEqual({});
   });
 
+  it('should merge an entire configuration by its name', () => {
+    // Given
+    const environmentUtils = 'environmentUtils';
+    const rootRequire = 'rootRequire';
+    const newConfigName = 'charitoConfig';
+    const newConfigSettings = {
+      name: 'charito',
+      allowConfigurationSwitch: true,
+    };
+    const updatedSettings = {
+      allowConfigurationSwitch: false,
+      extra: 'value',
+    };
+    let sut = null;
+    let result = null;
+    // When
+    sut = new AppConfiguration(environmentUtils, rootRequire);
+    sut.load(newConfigName, newConfigSettings);
+    result = sut.setConfig(updatedSettings, newConfigName);
+    // Then
+    expect(result).toEqual(Object.assign({}, newConfigSettings, updatedSettings));
+  });
+
+  it('should overwrite an entire configuration by its name', () => {
+    // Given
+    const environmentUtils = 'environmentUtils';
+    const rootRequire = 'rootRequire';
+    const newConfigName = 'charitoConfig';
+    const newConfigSettings = {
+      name: 'charito',
+      allowConfigurationSwitch: true,
+    };
+    const updatedSettings = {
+      allowConfigurationSwitch: false,
+      extra: 'value',
+    };
+    let sut = null;
+    let result = null;
+    // When
+    sut = new AppConfiguration(environmentUtils, rootRequire);
+    sut.load(newConfigName, newConfigSettings);
+    result = sut.setConfig(updatedSettings, newConfigName, false);
+    // Then
+    expect(result).toEqual(updatedSettings);
+  });
+
   it('should return a setting of the active configuration by its name', () => {
     // Given
     const environmentUtils = 'environmentUtils';
@@ -354,6 +401,30 @@ describe('AppConfiguration', () => {
     result = sut.get(newSettingName);
     // Then
     expect(result).toEqual(newSettingValue);
+  });
+
+  it('should return a setting of the active configuration by its path', () => {
+    // Given
+    const environmentUtils = 'environmentUtils';
+    const rootRequire = 'rootRequire';
+    const newSettingName = 'version';
+    const newSubSettingName = 'type';
+    const newSubSettingValue = 'alpha';
+    const newConfigName = 'charitoConfig';
+    const newConfigSettings = {
+      name: 'charito',
+      [newSettingName]: {
+        [newSubSettingName]: newSubSettingValue,
+      },
+    };
+    let sut = null;
+    let result = null;
+    // When
+    sut = new AppConfiguration(environmentUtils, rootRequire);
+    sut.load(newConfigName, newConfigSettings);
+    result = sut.get(`${newSettingName}.${newSubSettingName}`);
+    // Then
+    expect(result).toEqual(newSubSettingValue);
   });
 
   it('should return the active configuration name when trying to get the `name` setting', () => {
@@ -400,6 +471,76 @@ describe('AppConfiguration', () => {
     result = sut.get([newSettingOneName, newSettingTwoName]);
     // Then
     expect(result).toEqual(expectedSettings);
+  });
+
+  it('should return the settings from the active configuration by their path', () => {
+    // Given
+    const environmentUtils = 'environmentUtils';
+    const rootRequire = 'rootRequire';
+    const newSettingOneName = 'version';
+    const newSubSettingOneName = 'type';
+    const newSubSettingOneValue = 'alpha';
+    const newSettingTwoName = 'date';
+    const newSubSettingTwoName = 'date';
+    const newSubSettingTwoValue = '25';
+    const newConfigName = 'charitoConfig';
+    const newConfigSettings = {
+      name: 'charito',
+      [newSettingOneName]: {
+        [newSubSettingOneName]: newSubSettingOneValue,
+      },
+      [newSettingTwoName]: {
+        [newSubSettingTwoName]: newSubSettingTwoValue,
+      },
+    };
+    const pathOne = `${newSettingOneName}.${newSubSettingOneName}`;
+    const pathTwo = `${newSettingTwoName}.${newSubSettingTwoName}`;
+    let sut = null;
+    let result = null;
+    // When
+    sut = new AppConfiguration(environmentUtils, rootRequire);
+    sut.load(newConfigName, newConfigSettings);
+    result = sut.get([pathOne, pathTwo]);
+    // Then
+    expect(result).toEqual({
+      [pathOne]: newSubSettingOneValue,
+      [pathTwo]: newSubSettingTwoValue,
+    });
+  });
+
+  it('should return a list of settings from the active configuration by their path', () => {
+    // Given
+    const environmentUtils = 'environmentUtils';
+    const rootRequire = 'rootRequire';
+    const newSettingOneName = 'version';
+    const newSubSettingOneName = 'type';
+    const newSubSettingOneValue = 'alpha';
+    const newSettingTwoName = 'date';
+    const newSubSettingTwoName = 'date';
+    const newSubSettingTwoValue = '25';
+    const newConfigName = 'charitoConfig';
+    const newConfigSettings = {
+      name: 'charito',
+      [newSettingOneName]: {
+        [newSubSettingOneName]: newSubSettingOneValue,
+      },
+      [newSettingTwoName]: {
+        [newSubSettingTwoName]: newSubSettingTwoValue,
+      },
+    };
+    const pathOne = `${newSettingOneName}.${newSubSettingOneName}`;
+    const pathTwo = `${newSettingTwoName}.${newSubSettingTwoName}`;
+    let sut = null;
+    let result = null;
+    // When
+    sut = new AppConfiguration(environmentUtils, rootRequire);
+    sut.load(newConfigName, newConfigSettings);
+    result = sut.get([pathOne, pathTwo], true);
+    // Then
+    expect(result).toEqual([
+      newSubSettingOneValue,
+      newSubSettingTwoValue,
+    ]);
   });
 
   it('should set the value of a setting from the active configuration', () => {
