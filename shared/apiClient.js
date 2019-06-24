@@ -1,5 +1,6 @@
 const statuses = require('statuses');
 const urijs = require('urijs');
+const ObjectUtils = require('./objectUtils');
 /**
  * @typedef {Function:(string,Object):Promise<Object,Error>} FetchClient
  */
@@ -94,63 +95,19 @@ class APIClient {
     this.authorizationToken = '';
   }
   /**
-   * Taks a dictionary of endpoints and flatten them on a single level.
-   * @example
-   * console.log(APIClient.flattenEndpoints({
-   *   endpointOne: 'endpoint-one',
-   *   endpointTwo: {
-   *     path: 'endpoint-two',
-   *     query: {
-   *       count: 20,
-   *     },
-   *   },
-   *   endpointThree: {
-   *     subEndpointThreeOne: 'sub-endpoint-three-one',
-   *     subEndpointThreeTwo: {
-   *       path: 'sub-endpoint-three-two',
-   *       query: {
-   *         count: 20,
-   *       },
-   *     },
-   *   },
-   * }));
-   * // Will output
-   * {
-   *   endpointOne: 'endpoint-one',
-   *   endpointTwo: {
-   *     path: 'endpoint-two',
-   *     query: {
-   *       count: 20,
-   *     },
-   *   },
-   *   'endpointThree.subEndpointThreeOne': 'sub-endpoint-three-one',
-   *   'endpointThree.subEndpointThreeTwo': {
-   *       path: 'sub-endpoint-three-two',
-   *       query: {
-   *         count: 20,
-   *       },
-   *     },
-   *   },
-   * }
+   * Takes a dictionary of endpoints and flatten them on a single level.
+   * The method just calls {@link ObjectUtils.flat}.
    * @param {Object} endpoints   A dictionary of named endpoints.
-   * @param {String} [parent=''] The parent key of the received endpoints. This is used when the
-   *                             method is calling itself recursively.
    * @return {Object}
+   * @deprecated This will be removed on the next major version.
    */
-  flattenEndpoints(endpoints, parent = '') {
-    const parentKey = parent ? `${parent}.` : '';
-    let result = {};
-    Object.keys(endpoints).forEach((name) => {
-      const value = endpoints[name];
-      const key = `${parentKey}${name}`;
-      if (typeof value === 'string' || value.path) {
-        result[key] = value;
-      } else {
-        result = Object.assign({}, result, this.flattenEndpoints(value, key));
-      }
-    });
-
-    return result;
+  flattenEndpoints(endpoints) {
+    return ObjectUtils.flat(
+      endpoints,
+      '.',
+      '',
+      (ignore, value) => typeof value.path === 'undefined'
+    );
   }
   /**
    * Sets the authorization token for the requests.
