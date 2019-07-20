@@ -1,3 +1,4 @@
+jest.unmock('/shared/objectUtils');
 jest.unmock('/shared/apiClient');
 
 require('jasmine-expect');

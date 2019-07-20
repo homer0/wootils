@@ -1,5 +1,6 @@
 const statuses = require('statuses');
 const urijs = require('urijs');
+const ObjectUtils = require('./objectUtils');
 /**
  * @typedef {Function:(string,Object):Promise<Object,Error>} FetchClient
  */
@@ -94,68 +95,23 @@ class APIClient {
     this.authorizationToken = '';
   }
   /**
-   * Taks a dictionary of endpoints and flatten them on a single level.
-   * @example
-   * console.log(APIClient.flattenEndpoints({
-   *   endpointOne: 'endpoint-one',
-   *   endpointTwo: {
-   *     path: 'endpoint-two',
-   *     query: {
-   *       count: 20,
-   *     },
-   *   },
-   *   endpointThree: {
-   *     subEndpointThreeOne: 'sub-endpoint-three-one',
-   *     subEndpointThreeTwo: {
-   *       path: 'sub-endpoint-three-two',
-   *       query: {
-   *         count: 20,
-   *       },
-   *     },
-   *   },
-   * }));
-   * // Will output
-   * {
-   *   endpointOne: 'endpoint-one',
-   *   endpointTwo: {
-   *     path: 'endpoint-two',
-   *     query: {
-   *       count: 20,
-   *     },
-   *   },
-   *   'endpointThree.subEndpointThreeOne': 'sub-endpoint-three-one',
-   *   'endpointThree.subEndpointThreeTwo': {
-   *       path: 'sub-endpoint-three-two',
-   *       query: {
-   *         count: 20,
-   *       },
-   *     },
-   *   },
-   * }
-   * @param {Object} endpoints   A dictionary of named endpoints.
-   * @param {String} [parent=''] The parent key of the received endpoints. This is used when the
-   *                             method is calling itself recursively.
+   * Takes a dictionary of endpoints and flatten them on a single level.
+   * The method just calls {@link ObjectUtils.flat}.
+   * @param {APIClientEndpoints} endpoints A dictionary of named endpoints.
    * @return {Object}
    */
-  flattenEndpoints(endpoints, parent = '') {
-    const parentKey = parent ? `${parent}.` : '';
-    let result = {};
-    Object.keys(endpoints).forEach((name) => {
-      const value = endpoints[name];
-      const key = `${parentKey}${name}`;
-      if (typeof value === 'string' || value.path) {
-        result[key] = value;
-      } else {
-        result = Object.assign({}, result, this.flattenEndpoints(value, key));
-      }
-    });
-
-    return result;
+  flattenEndpoints(endpoints) {
+    return ObjectUtils.flat(
+      endpoints,
+      '.',
+      '',
+      (ignore, value) => typeof value.path === 'undefined'
+    );
   }
   /**
-   * Sets the authorization token for the requests.
-   * @param {String} [token=''] The new authorization token. If the value is empty, it won't be
-   *                            included on the requests.
+   * Sets a bearer token for all the requests.
+   * @param {String} [token=''] The new authorization token. If the value is empty, it will remove
+   *                            any token previously saved.
    */
   setAuthorizationToken(token = '') {
     this.authorizationToken = token;
@@ -302,11 +258,10 @@ class APIClient {
   }
   /**
    * Generates a dictionary of headers using the service `defaultHeaders` property as base.
-   * If the service has an `authorizationToken`, it will be included as the `Authorization`
-   * header.
+   * If a token was set using `setAuthorizationToken`, the method will add an `Authorization`
+   * header for the bearer token.
    * @param {Object} [overwrites={}] Extra headers to add.
    * @return {Object}
-   * @todo Bearer should be configurable when setting the token.
    */
   headers(overwrites = {}) {
     const headers = Object.assign({}, this.defaultHeaders);
@@ -326,7 +281,6 @@ class APIClient {
    * @param {boolean} options.json    Whether or not the response should _"JSON decoded"_. `true`
    *                                  by default.
    * @return {Promise<Object,Error>}
-   * @todo Add support for a `string` `body`.
    */
   fetch(options) {
     // Get a new reference of the request options.
