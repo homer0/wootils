@@ -53,7 +53,7 @@ describe('EnvironmentUtils', () => {
     expect(result).toBe(varValue);
   });
 
-  it('should fallback to an empty string if a required variable doesn\'t exist', () => {
+  it('should fallback to an empty string if a specified variable doesn\'t exist', () => {
     // Given
     let result = 'unknown';
     // When
@@ -61,6 +61,13 @@ describe('EnvironmentUtils', () => {
     result = envUtils.get('Charito');
     // Then
     expect(result).toBeEmptyString();
+  });
+
+  it('should throw an error if a required variable doesn\'t exist', () => {
+    // Given/When/Then
+    const envUtils = new EnvironmentUtils();
+    expect(() => envUtils.get('Charito', '', true))
+    .toThrow(/The following environment variable is missing/i);
   });
 
   it('should have a Jimple provider to register the service', () => {

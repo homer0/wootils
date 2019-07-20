@@ -20,15 +20,21 @@ class EnvironmentUtils {
   }
   /**
    * Get the value of an environment variable.
-   * @param {string} name              The name of the variable.
-   * @param {string} [defaultValue=''] A fallback value in case the variable is `undefined`
+   * @param {string}  name              The name of the variable.
+   * @param {string}  [defaultValue=''] A fallback value in case the variable is `undefined`
+   * @param {boolean} [required=false]  If the variable is required and `undefined`, it will throw
+   *                                    an error.
    * @return {string}
-   * @todo add a `require` parameter to throw an error if the variable is not preset.
+   * @throws {Error} if `required` is set to `true` and the variable is `undefined`.
    */
-  get(name, defaultValue = '') {
+  get(name, defaultValue = '', required = false) {
     // eslint-disable-next-line no-process-env
     let value = process.env[name];
     if (typeof value === 'undefined') {
+      if (required) {
+        throw new Error(`The following environment variable is missing: ${name}`);
+      }
+
       value = defaultValue;
     }
 
