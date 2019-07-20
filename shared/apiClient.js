@@ -281,7 +281,6 @@ class APIClient {
    * @param {boolean} options.json    Whether or not the response should _"JSON decoded"_. `true`
    *                                  by default.
    * @return {Promise<Object,Error>}
-   * @todo Add support for a `string` `body`.
    */
   fetch(options) {
     // Get a new reference of the request options.
