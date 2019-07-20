@@ -109,9 +109,9 @@ class APIClient {
     );
   }
   /**
-   * Sets the authorization token for the requests.
-   * @param {String} [token=''] The new authorization token. If the value is empty, it won't be
-   *                            included on the requests.
+   * Sets a bearer token for all the requests.
+   * @param {String} [token=''] The new authorization token. If the value is empty, it will remove
+   *                            any token previously saved.
    */
   setAuthorizationToken(token = '') {
     this.authorizationToken = token;
@@ -258,11 +258,10 @@ class APIClient {
   }
   /**
    * Generates a dictionary of headers using the service `defaultHeaders` property as base.
-   * If the service has an `authorizationToken`, it will be included as the `Authorization`
-   * header.
+   * If a token was set using `setAuthorizationToken`, the method will add an `Authorization`
+   * header for the bearer token.
    * @param {Object} [overwrites={}] Extra headers to add.
    * @return {Object}
-   * @todo Bearer should be configurable when setting the token.
    */
   headers(overwrites = {}) {
     const headers = Object.assign({}, this.defaultHeaders);
