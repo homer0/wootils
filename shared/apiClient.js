@@ -97,9 +97,8 @@ class APIClient {
   /**
    * Takes a dictionary of endpoints and flatten them on a single level.
    * The method just calls {@link ObjectUtils.flat}.
-   * @param {Object} endpoints   A dictionary of named endpoints.
+   * @param {APIClientEndpoints} endpoints A dictionary of named endpoints.
    * @return {Object}
-   * @deprecated This will be removed on the next major version.
    */
   flattenEndpoints(endpoints) {
     return ObjectUtils.flat(
