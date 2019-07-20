@@ -19,20 +19,54 @@ class EnvironmentUtils {
     this.production = this.env === 'production';
   }
   /**
-   * Get the value of an environment variable.
-   * @param {string} name              The name of the variable.
-   * @param {string} [defaultValue=''] A fallback value in case the variable is `undefined`
+   * Gets the value of an environment variable.
+   * @param {string}  name              The name of the variable.
+   * @param {string}  [defaultValue=''] A fallback value in case the variable is `undefined`
+   * @param {boolean} [required=false]  If the variable is required and `undefined`, it will throw
+   *                                    an error.
    * @return {string}
-   * @todo add a `require` parameter to throw an error if the variable is not preset.
+   * @throws {Error} if `required` is set to `true` and the variable is `undefined`.
    */
-  get(name, defaultValue = '') {
-    // eslint-disable-next-line no-process-env
-    let value = process.env[name];
-    if (typeof value === 'undefined') {
+  get(name, defaultValue = '', required = false) {
+    let value;
+    if (this.exists(name)) {
+      value = process.env[name];
+    } else {
+      if (required) {
+        throw new Error(`The following environment variable is missing: ${name}`);
+      }
+
       value = defaultValue;
     }
 
     return value;
+  }
+  /**
+   * Sets the value of an environment variable.
+   * @param {string} name              The name of the variable
+   * @param {string} value             The value of the variable.
+   * @param {string} [overwrite=false] If the variable already exists, the method won't overwrite
+   *                                   it, unless you set this parameter to `true`.
+   * @return {boolean} Whether or not the variable was set.
+   */
+  set(name, value, overwrite = false) {
+    let result;
+    if (!this.exists(name) || overwrite) {
+      process.env[name] = value;
+      result = true;
+    } else {
+      result = false;
+    }
+
+    return result;
+  }
+  /**
+   * Checks whether an environment variable exists or not.
+   * @param {string} name The name of the variable.
+   * @return {boolean}
+   */
+  exists(name) {
+    return typeof process.env[name] !== 'undefined';
   }
   /**
    * Check whether or not the environment is for development.
