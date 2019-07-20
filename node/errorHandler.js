@@ -2,7 +2,6 @@ const { provider } = require('jimple');
 /**
  * An error handler that captures uncaught exceptions and unhandled rejections in order to log
  * them with detail.
- * @todo The `process.exit` should be configurable.
  */
 class ErrorHandler {
   /**
