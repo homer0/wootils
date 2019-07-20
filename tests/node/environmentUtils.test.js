@@ -53,7 +53,7 @@ describe('EnvironmentUtils', () => {
     expect(result).toBe(varValue);
   });
 
-  it('should fallback to an empty string if a required variable doesn\'t exist', () => {
+  it('should fallback to an empty string if a specified variable doesn\'t exist', () => {
     // Given
     let result = 'unknown';
     // When
@@ -61,6 +61,63 @@ describe('EnvironmentUtils', () => {
     result = envUtils.get('Charito');
     // Then
     expect(result).toBeEmptyString();
+  });
+
+  it('should throw an error if a required variable doesn\'t exist', () => {
+    // Given/When/Then
+    const envUtils = new EnvironmentUtils();
+    expect(() => envUtils.get('Charito', '', true))
+    .toThrow(/The following environment variable is missing/i);
+  });
+
+  it('should set the value for an environment variable', () => {
+    // Given
+    const varName = 'BATMAN_IDENTITY';
+    const varValue = 'Bruce Wayne';
+    let result = null;
+    let saved = null;
+    // When
+    delete process.env[varName];
+    const envUtils = new EnvironmentUtils();
+    result = envUtils.set(varName, varValue);
+    saved = envUtils.get(varName);
+    // Then
+    expect(result).toBeTrue();
+    expect(saved).toBe(varValue);
+  });
+
+  it('shouldn\'t overwrite an existing environment variable', () => {
+    // Given
+    const varName = 'ROBIN_IDENTITY';
+    const varOriginalValue = 'Tim Drake';
+    const varValue = 'Damian Wayne';
+    let result = null;
+    let saved = null;
+    // When
+    process.env[varName] = varOriginalValue;
+    const envUtils = new EnvironmentUtils();
+    result = envUtils.set(varName, varValue);
+    saved = envUtils.get(varName);
+    // Then
+    expect(result).toBeFalse();
+    expect(saved).toBe(varOriginalValue);
+  });
+
+  it('should overwrite an existing environment variable', () => {
+    // Given
+    const varName = 'ROBIN_IDENTITY';
+    const varOriginalValue = 'Tim Drake';
+    const varValue = 'Damian Wayne';
+    let result = null;
+    let saved = null;
+    // When
+    process.env[varName] = varOriginalValue;
+    const envUtils = new EnvironmentUtils();
+    result = envUtils.set(varName, varValue, true);
+    saved = envUtils.get(varName);
+    // Then
+    expect(result).toBeTrue();
+    expect(saved).toBe(varValue);
   });
 
   it('should have a Jimple provider to register the service', () => {
