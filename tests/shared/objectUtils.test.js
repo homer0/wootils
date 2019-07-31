@@ -744,4 +744,549 @@ describe('ObjectUtils', () => {
       });
     });
   });
+
+  describe('formatKeys', () => {
+    it('should make all keys first letters into upper case', () => {
+      // Given
+      const name = 'Rosario';
+      const nickname = 'Charito';
+      const age = 3;
+      const target = {
+        name,
+        nickname,
+        age,
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.formatKeys(
+        target,
+        /^\w/,
+        (letter) => letter.toUpperCase()
+      );
+      // Then
+      expect(result).toEqual({
+        Name: name,
+        Nickname: nickname,
+        Age: age,
+      });
+    });
+
+    it('should make specific keys first letters into upper case', () => {
+      // Given
+      const first = 'Rosario';
+      const nickname = 'Charito';
+      const age = 3;
+      const likes = 'ice-cream';
+      const target = {
+        name: {
+          first,
+          nickname,
+        },
+        age,
+        likes,
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.formatKeys(
+        target,
+        /^\w/,
+        (letter) => letter.toUpperCase(),
+        ['name.first', 'likes']
+      );
+      // Then
+      expect(result).toEqual({
+        name: {
+          First: first,
+          nickname,
+        },
+        age,
+        Likes: likes,
+      });
+    });
+
+    it('should make specific keys first letters into upper case (incomplete paths)', () => {
+      // Given
+      const first = 'Rosario';
+      const nickname = 'Charito';
+      const age = 3;
+      const likes = 'ice-cream';
+      const target = {
+        name: {
+          first,
+          nickname,
+        },
+        age,
+        likes,
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.formatKeys(
+        target,
+        /^\w/,
+        (letter) => letter.toUpperCase(),
+        ['name.first.', '.name.nickname.', 'likes']
+      );
+      // Then
+      expect(result).toEqual({
+        name: {
+          First: first,
+          Nickname: nickname,
+        },
+        age,
+        Likes: likes,
+      });
+    });
+
+    it('should exclude some keys when transforming them', () => {
+      // Given
+      const first = 'Rosario';
+      const nickname = 'Charito';
+      const age = 3;
+      const likes = 'ice-cream';
+      const target = {
+        name: {
+          first,
+          nickname,
+        },
+        age,
+        likes,
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.formatKeys(
+        target,
+        /^\w/,
+        (letter) => letter.toUpperCase(),
+        [],
+        ['name.first', 'likes']
+      );
+      // Then
+      expect(result).toEqual({
+        Name: {
+          first,
+          Nickname: nickname,
+        },
+        Age: age,
+        likes,
+      });
+    });
+
+    it('should exclude some keys when transforming them (incomplete paths)', () => {
+      // Given
+      const first = 'Rosario';
+      const nickname = 'Charito';
+      const age = 3;
+      const likes = 'ice-cream';
+      const target = {
+        name: {
+          first,
+          nickname,
+        },
+        age,
+        likes,
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.formatKeys(
+        target,
+        /^\w/,
+        (letter) => letter.toUpperCase(),
+        [],
+        ['name.first.', '.name.nickname.', '.likes']
+      );
+      // Then
+      expect(result).toEqual({
+        Name: {
+          first,
+          nickname,
+        },
+        Age: age,
+        likes,
+      });
+    });
+  });
+
+  describe('lowerCamelToSnakeKeys', () => {
+    it('should transform all keys to snake case', () => {
+      // Given
+      const firstName = 'Rosario';
+      const nickName = 'Charito';
+      const target = {
+        firstName,
+        nickName,
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.lowerCamelToSnakeKeys(target);
+      // Then
+      expect(result).toEqual({
+        first_name: firstName,
+        nick_name: nickName,
+      });
+    });
+
+    it('should transform specific keys to snake case', () => {
+      // Given
+      const firstName = 'Rosario';
+      const nickName = 'Charito';
+      const target = {
+        name: {
+          firstName,
+          nickName,
+        },
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.lowerCamelToSnakeKeys(target, ['name.firstName']);
+      // Then
+      expect(result).toEqual({
+        name: {
+          first_name: firstName,
+          nickName,
+        },
+      });
+    });
+
+    it('should transform all keys to snake case except one', () => {
+      // Given
+      const firstName = 'Rosario';
+      const nickName = 'Charito';
+      const target = {
+        nameInfo: {
+          firstName,
+          nickName,
+        },
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.lowerCamelToSnakeKeys(target, [], ['nameInfo.firstName']);
+      // Then
+      expect(result).toEqual({
+        name_info: {
+          firstName,
+          nick_name: nickName,
+        },
+      });
+    });
+  });
+
+  describe('lowerCamelToDashKeys', () => {
+    it('should transform all keys to dash case', () => {
+      // Given
+      const firstName = 'Rosario';
+      const nickName = 'Charito';
+      const target = {
+        firstName,
+        nickName,
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.lowerCamelToDashKeys(target);
+      // Then
+      expect(result).toEqual({
+        'first-name': firstName,
+        'nick-name': nickName,
+      });
+    });
+
+    it('should transform specific keys to dash case', () => {
+      // Given
+      const firstName = 'Rosario';
+      const nickName = 'Charito';
+      const target = {
+        name: {
+          firstName,
+          nickName,
+        },
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.lowerCamelToDashKeys(target, ['name.firstName']);
+      // Then
+      expect(result).toEqual({
+        name: {
+          'first-name': firstName,
+          nickName,
+        },
+      });
+    });
+
+    it('should transform all keys to dash case except one', () => {
+      // Given
+      const firstName = 'Rosario';
+      const nickName = 'Charito';
+      const target = {
+        nameInfo: {
+          firstName,
+          nickName,
+        },
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.lowerCamelToDashKeys(target, [], ['nameInfo.firstName']);
+      // Then
+      expect(result).toEqual({
+        'name-info': {
+          firstName,
+          'nick-name': nickName,
+        },
+      });
+    });
+  });
+
+  describe('snakeToLowerCamelKeys', () => {
+    it('should transform all keys to lower camel case', () => {
+      // Given
+      const firstName = 'Rosario';
+      const nickName = 'Charito';
+      const target = {
+        first_name: firstName,
+        nick_name: nickName,
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.snakeToLowerCamelKeys(target);
+      // Then
+      expect(result).toEqual({
+        firstName,
+        nickName,
+      });
+    });
+
+    it('should transform specific keys to lower camel case', () => {
+      // Given
+      const firstName = 'Rosario';
+      const nickName = 'Charito';
+      const target = {
+        name: {
+          first_name: firstName,
+          nick_name: nickName,
+        },
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.snakeToLowerCamelKeys(target, ['name.first_name']);
+      // Then
+      expect(result).toEqual({
+        name: {
+          firstName,
+          nick_name: nickName,
+        },
+      });
+    });
+
+    it('should transform all keys to lower camel case except one', () => {
+      // Given
+      const firstName = 'Rosario';
+      const nickName = 'Charito';
+      const target = {
+        name_info: {
+          first_name: firstName,
+          nick_name: nickName,
+        },
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.snakeToLowerCamelKeys(target, [], ['name_info.first_name']);
+      // Then
+      expect(result).toEqual({
+        nameInfo: {
+          first_name: firstName,
+          nickName,
+        },
+      });
+    });
+  });
+
+  describe('snakeToDashKeys', () => {
+    it('should transform all keys to dash case', () => {
+      // Given
+      const firstName = 'Rosario';
+      const nickName = 'Charito';
+      const target = {
+        first_name: firstName,
+        nick_name: nickName,
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.snakeToDashKeys(target);
+      // Then
+      expect(result).toEqual({
+        'first-name': firstName,
+        'nick-name': nickName,
+      });
+    });
+
+    it('should transform specific keys to dash case', () => {
+      // Given
+      const firstName = 'Rosario';
+      const nickName = 'Charito';
+      const target = {
+        name: {
+          first_name: firstName,
+          nick_name: nickName,
+        },
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.snakeToDashKeys(target, ['name.first_name']);
+      // Then
+      expect(result).toEqual({
+        name: {
+          'first-name': firstName,
+          nick_name: nickName,
+        },
+      });
+    });
+
+    it('should transform all keys to dash case except one', () => {
+      // Given
+      const firstName = 'Rosario';
+      const nickName = 'Charito';
+      const target = {
+        name_info: {
+          first_name: firstName,
+          nick_name: nickName,
+        },
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.snakeToDashKeys(target, [], ['name_info.first_name']);
+      // Then
+      expect(result).toEqual({
+        'name-info': {
+          first_name: firstName,
+          'nick-name': nickName,
+        },
+      });
+    });
+  });
+
+  describe('dashToLowerCamelKeys', () => {
+    it('should transform all keys to lower camel case', () => {
+      // Given
+      const firstName = 'Rosario';
+      const nickName = 'Charito';
+      const target = {
+        'first-name': firstName,
+        'nick-name': nickName,
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.dashToLowerCamelKeys(target);
+      // Then
+      expect(result).toEqual({
+        firstName,
+        nickName,
+      });
+    });
+
+    it('should transform specific keys to lower camel case', () => {
+      // Given
+      const firstName = 'Rosario';
+      const nickName = 'Charito';
+      const target = {
+        name: {
+          'first-name': firstName,
+          'nick-name': nickName,
+        },
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.dashToLowerCamelKeys(target, ['name.first-name']);
+      // Then
+      expect(result).toEqual({
+        name: {
+          firstName,
+          'nick-name': nickName,
+        },
+      });
+    });
+
+    it('should transform all keys to lower camel case except one', () => {
+      // Given
+      const firstName = 'Rosario';
+      const nickName = 'Charito';
+      const target = {
+        'name-info': {
+          'first-name': firstName,
+          'nick-name': nickName,
+        },
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.dashToLowerCamelKeys(target, [], ['name-info.first-name']);
+      // Then
+      expect(result).toEqual({
+        nameInfo: {
+          'first-name': firstName,
+          nickName,
+        },
+      });
+    });
+  });
+
+  describe('dashToSnakeKeys', () => {
+    it('should transform all keys to snake case', () => {
+      // Given
+      const firstName = 'Rosario';
+      const nickName = 'Charito';
+      const target = {
+        'first-name': firstName,
+        'nick-name': nickName,
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.dashToSnakeKeys(target);
+      // Then
+      expect(result).toEqual({
+        first_name: firstName,
+        nick_name: nickName,
+      });
+    });
+
+    it('should transform specific keys to snake case', () => {
+      // Given
+      const firstName = 'Rosario';
+      const nickName = 'Charito';
+      const target = {
+        name: {
+          'first-name': firstName,
+          'nick-name': nickName,
+        },
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.dashToSnakeKeys(target, ['name.first-name']);
+      // Then
+      expect(result).toEqual({
+        name: {
+          first_name: firstName,
+          'nick-name': nickName,
+        },
+      });
+    });
+
+    it('should transform all keys to snake case except one', () => {
+      // Given
+      const firstName = 'Rosario';
+      const nickName = 'Charito';
+      const target = {
+        'name-info': {
+          'first-name': firstName,
+          'nick-name': nickName,
+        },
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.dashToSnakeKeys(target, [], ['name-info.first-name']);
+      // Then
+      expect(result).toEqual({
+        name_info: {
+          'first-name': firstName,
+          nick_name: nickName,
+        },
+      });
+    });
+  });
 });
