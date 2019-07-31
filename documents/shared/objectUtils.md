@@ -131,9 +131,38 @@ console.log(ObjectUtils.unflat(target);
 // Will output { propOne: { propOneSub: 'Charito!' }, 'propTwo': '!!!' }
 ```
 
+### `formatKeys`
+
+Formats all the keys on an object using a way similar to `.replace(regexp, ...)` but that also works recursively and with _"object paths"_.
+
+```js
+const target = {
+  prop_one: 'Charito!',
+};
+console.log(ObjectUtils.formatKeys(
+  target,
+  // Find all the keys with snake case.
+  /([a-z])_([a-z])/g,
+  // Using the same .replace style callback, replace it with lower camel case.
+  (fullMatch, firstLetter, secondLetter) => {
+    const newSecondLetter = secondLetter.toUpperCase();
+    return `${firstLetter}${newSecondLetter}`;
+  }
+));
+```
+
+`ObjectUtils` also provides a few "shorthand implementations" of `formatKeys`:
+
+- `lowerCamelToSnakeKeys(...)`
+- `lowerCamelToDashKeys(...)`
+- `snakeToLowerCamelKeys(...)`
+- `snakeToDashKeys(...)`
+- `dashToLowerCamelKeys(...)`
+- `dashToSnakeKeys(...)`
+
 ## Technical documentation
 
-The code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/class/wootils/shared/eventsHub.js~EventsHub.html) or generate it yourself using:
+The code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/class/wootils/shared/objectUtils.js~ObjectUtils.html) or generate it yourself using:
 
 ```bash
 # You can either use npm or yarn, it doesn't matter
