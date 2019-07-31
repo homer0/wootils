@@ -360,6 +360,385 @@ class ObjectUtils {
       {}
     );
   }
+  /**
+   * Formats all the keys on an object using a way similar to `.replace(regexp, ...)` but that
+   * also works recursively and with _"object paths"_.
+   * @example
+   * const target = {
+   *   prop_one: 'Charito!',
+   * };
+   * console.log(ObjectUtils.formatKeys(
+   *   target,
+   *   // Find all the keys with snake case.
+   *   /([a-z])_([a-z])/g,
+   *   // Using the same .replace style callback, replace it with lower camel case.
+   *   (fullMatch, firstLetter, secondLetter) => {
+   *     const newSecondLetter = secondLetter.toUpperCase();
+   *     return `${firstLetter}${newSecondLetter}`;
+   *   }
+   * ));
+   * // Will output { propOne: 'Charito!}.
+   *
+   * @param {Object}   target              The object for format.
+   * @param {RegExp}   searchExpression    The regular expression the method will use "match" the
+   *                                       keys.
+   * @param {Function} replaceWith         The callback the method will call when formatting a
+   *                                       replace. Think of `searchExpression` and `replaceWith`
+   *                                       as the parameters of a `.replace` call, where the
+   *                                       object is the key.
+   * @param {Array}    [include=[]]        A list of keys or paths where the transformation will
+   *                                       be made. If not specified, the method will use all the
+   *                                       keys from the object.
+   * @param {Array}    [exclude=[]]        A list of keys or paths where the transformation won't
+   *                                       be made.
+   * @param {string}   [pathDelimiter='.'] The delimiter that will separate the path components
+   *                                       for both `include` and `exclude`.
+   * @return {Object}
+   */
+  static formatKeys(
+    target,
+    searchExpression,
+    replaceWith,
+    include = [],
+    exclude = [],
+    pathDelimiter = '.'
+  ) {
+    // First of all, get all the keys from the target.
+    const keys = Object.keys(target);
+    /**
+     * Then, check which keys are parent to other objects.
+     * This is saved on a dictionary not only because it makes it easier to check if the method
+     * should make a recursive call for a key, but also because when parsing the `exclude`
+     * parameter, if one of items is a key (and not an specific path), the method won't make the
+     * recursive call.
+     */
+    const hasChildrenByKey = {};
+    keys.forEach((key) => {
+      const value = target[key];
+      hasChildrenByKey[key] = !!(
+        typeof value === 'object' &&
+        !Array.isArray(value) &&
+        Object.keys(value)
+      );
+    });
+    /**
+     * Escape the path delimiter and create two regular expression: One that removes the path
+     * delimiter from the start of a path and one that removes it from the end.
+     * They are later used to normalize paths in order to avoid "incomplete paths" (paths that
+     * end or start with the delimiter).
+     */
+    const escapedPathDelimiter = pathDelimiter.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+    const cleanPathStartExpression = new RegExp(`^${escapedPathDelimiter}`, 'i');
+    const cleanPathEndExpression = new RegExp(`${escapedPathDelimiter}$`, 'i');
+    /**
+     * This dictionary will be used to save the `include` parameter that will be sent for specific
+     * keys on recursive calls.
+     * If `include` has a path like `myKey.mySubKey`, `myKey` is not transformed, but `mySubKey`
+     * is saved on this dictionary (`{ myKey: ['mySubKey']}`) and when the method applies the
+     * formatting to the object, if `myKey` has an object, it will make a recursive all and
+     * send `['mySubKey]` as its `include` parameter.
+     */
+    const subIncludeByKey = {};
+    /**
+     * This will be an array containing the final list of `keys` that should be tranformed.
+     * To be clear, these keys will be from the top level, so, they won't be paths.
+     * Thd following blocks will parse `include` and `exclude` in order to extract the real keys,
+     * prepare the `include` and `exclude` for recursive calls, and save the actual keys
+     * from the object "at the current level of this call" (no, it's not thinking about the
+     * children :P).
+     */
+    let keysToFormat;
+    // If the `include` parameter has paths/keys...
+    if (include.length) {
+      keysToFormat = include
+      .map((includePath) => {
+        // Normalize the path/key.
+        const useIncludePath = includePath
+        .replace(cleanPathStartExpression, '')
+        .replace(cleanPathEndExpression, '');
+        // Define the variable that will, eventually, have the real key.
+        let key;
+        // If the value is a path...
+        if (useIncludePath.includes(pathDelimiter)) {
+          // Split all its components.
+          const pathParts = useIncludePath.split(pathDelimiter);
+          // Get the first component, a.k.a. the real key.
+          const pathKey = pathParts.shift();
+          /**
+           * This is very important: Since the path was specified with sub components (like
+           * `myProp.mySubProp`), the method won't format the key, but the sub key(s)
+           * (`mySubProp`).
+           * The `key` is set to `false` so it will be later removed using `.filter`.
+           */
+          key = false;
+          /**
+           * If there's no array for the key on the "`include` dictionary for recursive calls",
+           * create an empty one.
+           */
+          if (!subIncludeByKey[pathKey]) {
+            subIncludeByKey[pathKey] = [];
+          }
+          // Save the rest of the path to be sent on the recursive call as `include`.
+          subIncludeByKey[pathKey].push(pathParts.join(pathDelimiter));
+        } else {
+          // If the value wasn't a path, assume it's a key, and set it to be returned.
+          key = useIncludePath;
+        }
+
+        return key;
+      })
+      // Remove any `false` keys.
+      .filter((key) => key);
+    } else {
+      // There's nothing on the `include` parameter, so use all the keys.
+      keysToFormat = keys;
+    }
+    /**
+     * Similar to `subIncludeByKey`, this dictionary will be used to save the `exclude` parameter
+     * that will be sent for specific keys on recursive calls.
+     * If `exclude` has a path like `myKey.mySubKey`, `myKey` will be transformed, but `mySubKey`
+     * is saved on this dictionary (`{ myKey: ['mySubKey']}`) and when the method applies the
+     * formatting to the object, if `myKey` has an object, it will make a recursive all and
+     * send `['mySubKey]` as its `exclude` parameter.
+     */
+    const subExcludeByKey = {};
+    // If the `include` parameter has paths/keys...
+    if (exclude.length) {
+      /**
+       * Create a dictionary of keys that should be removed from `keysToFormat`.
+       * It's easier to have them on a list and use `.filter` than actually call `.splice` for
+       * every key that should be removed.
+       */
+      const keysToRemove = [];
+      exclude.forEach((excludePath) => {
+        // Normalize the path/key.
+        const useExcludePath = excludePath
+        .replace(cleanPathStartExpression, '')
+        .replace(cleanPathEndExpression, '');
+        // If the value is a path...
+        if (useExcludePath.includes(pathDelimiter)) {
+          // Split all its components.
+          const pathParts = useExcludePath.split(pathDelimiter);
+          // Get the first component, a.k.a. the real key.
+          const pathKey = pathParts.shift();
+          /**
+           * If there's no array for the key on the "`exclude` dictionary for recursive calls",
+           * create an empty one.
+           */
+          if (!subExcludeByKey[pathKey]) {
+            subExcludeByKey[pathKey] = [];
+          }
+          // Save the rest of the path to be sent on the recursive call as `exclude`.
+          subExcludeByKey[pathKey].push(pathParts.join(pathDelimiter));
+        } else {
+          /**
+           * If the value wasn't a path, assume it's a key, turn the flag on the "children
+           * dictionary" to `false`, to prevent recursive calls, and add the key to the list
+           * of keys that will be removed from `keysToFormat`.
+           * Basically: If it's a key, don't format it and don't make recursive calls for it.
+           */
+          hasChildrenByKey[useExcludePath] = false;
+          keysToRemove.push(useExcludePath);
+        }
+      });
+      // Remove keys that should be excluded.
+      keysToFormat = keysToFormat.filter((key) => !keysToRemove.includes(key));
+    }
+    // "Finally", reduce all the keys from the object and create the new one...
+    return keys.reduce(
+      (newObj, key) => {
+        /**
+         * Define the new key and value for the object property. Depending on the validations,
+         * they may be replaced with formatted ones.
+         */
+        let newKey;
+        let newValue;
+        /**
+         * Get the current value for the key, in case it's needed for a recursive call or just
+         * to send it back because it didn't need any change.
+         */
+        const value = target[key];
+        // If the key should be formatted, apply the formatting; otherwise, keep the original.
+        if (keysToFormat.includes(key)) {
+          newKey = key.replace(searchExpression, replaceWith);
+        } else {
+          newKey = key;
+        }
+        /**
+         * If the paths/keys on `exclude` didn't modify the "children dictionary" for the key and
+         * the value is another object, make a recursive call; otherwise, just use the original
+         * value.
+         */
+        if (hasChildrenByKey[key]) {
+          newValue = this.formatKeys(
+            value,
+            searchExpression,
+            replaceWith,
+            subIncludeByKey[key] || [],
+            subExcludeByKey[key] || [],
+            pathDelimiter
+          );
+        } else {
+          newValue = value;
+        }
+        // "Done", return the new object with the "new key" and the "new value".
+        return Object.assign({}, newObj, {
+          [newKey]: newValue,
+        });
+      },
+      {}
+    );
+  }
+  /**
+   * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
+   * `lowerCamelCase` to `snake_case`.
+   * @param {Object} target              The object for format.
+   * @param {Array}  [include=[]]        A list of keys or paths where the transformation will
+   *                                     be made. If not specified, the method will use all the
+   *                                     keys from the object.
+   * @param {Array}  [exclude=[]]        A list of keys or paths where the transformation won't
+   *                                     be made.
+   * @param {string} [pathDelimiter='.'] The delimiter that will separate the path components
+   *                                     for both `include` and `exclude`.
+   * @return {Object}
+   */
+  static lowerCamelToSnakeKeys(target, include = [], exclude = [], pathDelimiter = '.') {
+    return this.formatKeys(
+      target,
+      /([a-z])([A-Z])/g,
+      (fullMatch, firstLetter, secondLetter) => {
+        const newSecondLetter = secondLetter.toLowerCase();
+        return `${firstLetter}_${newSecondLetter}`;
+      },
+      include,
+      exclude,
+      pathDelimiter
+    );
+  }
+  /**
+   * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
+   * `lowerCamelCase` to `dash-case`.
+   * @param {Object} target              The object for format.
+   * @param {Array}  [include=[]]        A list of keys or paths where the transformation will
+   *                                     be made. If not specified, the method will use all the
+   *                                     keys from the object.
+   * @param {Array}  [exclude=[]]        A list of keys or paths where the transformation won't
+   *                                     be made.
+   * @param {string} [pathDelimiter='.'] The delimiter that will separate the path components
+   *                                     for both `include` and `exclude`.
+   * @return {Object}
+   */
+  static lowerCamelToDashKeys(target, include = [], exclude = [], pathDelimiter = '.') {
+    return this.formatKeys(
+      target,
+      /([a-z])([A-Z])/g,
+      (fullMatch, firstLetter, secondLetter) => {
+        const newSecondLetter = secondLetter.toLowerCase();
+        return `${firstLetter}-${newSecondLetter}`;
+      },
+      include,
+      exclude,
+      pathDelimiter
+    );
+  }
+  /**
+   * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
+   * `snake_case` to `lowerCamelCase`.
+   * @param {Object} target              The object for format.
+   * @param {Array}  [include=[]]        A list of keys or paths where the transformation will
+   *                                     be made. If not specified, the method will use all the
+   *                                     keys from the object.
+   * @param {Array}  [exclude=[]]        A list of keys or paths where the transformation won't
+   *                                     be made.
+   * @param {string} [pathDelimiter='.'] The delimiter that will separate the path components
+   *                                     for both `include` and `exclude`.
+   * @return {Object}
+   */
+  static snakeToLowerCamelKeys(target, include = [], exclude = [], pathDelimiter = '.') {
+    return this.formatKeys(
+      target,
+      /([a-z])_([a-z])/g,
+      (fullMatch, firstLetter, secondLetter) => {
+        const newSecondLetter = secondLetter.toUpperCase();
+        return `${firstLetter}${newSecondLetter}`;
+      },
+      include,
+      exclude,
+      pathDelimiter
+    );
+  }
+  /**
+   * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
+   * `snake_case` to `dash-case`.
+   * @param {Object} target              The object for format.
+   * @param {Array}  [include=[]]        A list of keys or paths where the transformation will
+   *                                     be made. If not specified, the method will use all the
+   *                                     keys from the object.
+   * @param {Array}  [exclude=[]]        A list of keys or paths where the transformation won't
+   *                                     be made.
+   * @param {string} [pathDelimiter='.'] The delimiter that will separate the path components
+   *                                     for both `include` and `exclude`.
+   * @return {Object}
+   */
+  static snakeToDashKeys(target, include = [], exclude = [], pathDelimiter = '.') {
+    return this.formatKeys(
+      target,
+      /([a-z])_([a-z])/g,
+      (fullMatch, firstLetter, secondLetter) => `${firstLetter}-${secondLetter}`,
+      include,
+      exclude,
+      pathDelimiter
+    );
+  }
+  /**
+   * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
+   * `dash-case` to `lowerCamelCase`.
+   * @param {Object} target              The object for format.
+   * @param {Array}  [include=[]]        A list of keys or paths where the transformation will
+   *                                     be made. If not specified, the method will use all the
+   *                                     keys from the object.
+   * @param {Array}  [exclude=[]]        A list of keys or paths where the transformation won't
+   *                                     be made.
+   * @param {string} [pathDelimiter='.'] The delimiter that will separate the path components
+   *                                     for both `include` and `exclude`.
+   * @return {Object}
+   */
+  static dashToLowerCamelKeys(target, include = [], exclude = [], pathDelimiter = '.') {
+    return this.formatKeys(
+      target,
+      /([a-z])-([a-z])/g,
+      (fullMatch, firstLetter, secondLetter) => {
+        const newSecondLetter = secondLetter.toUpperCase();
+        return `${firstLetter}${newSecondLetter}`;
+      },
+      include,
+      exclude,
+      pathDelimiter
+    );
+  }
+  /**
+   * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
+   * `dash-case` to `snake_case`.
+   * @param {Object} target              The object for format.
+   * @param {Array}  [include=[]]        A list of keys or paths where the transformation will
+   *                                     be made. If not specified, the method will use all the
+   *                                     keys from the object.
+   * @param {Array}  [exclude=[]]        A list of keys or paths where the transformation won't
+   *                                     be made.
+   * @param {string} [pathDelimiter='.'] The delimiter that will separate the path components
+   *                                     for both `include` and `exclude`.
+   * @return {Object}
+   */
+  static dashToSnakeKeys(target, include = [], exclude = [], pathDelimiter = '.') {
+    return this.formatKeys(
+      target,
+      /([a-z])-([a-z])/g,
+      (fullMatch, firstLetter, secondLetter) => `${firstLetter}_${secondLetter}`,
+      include,
+      exclude,
+      pathDelimiter
+    );
+  }
 }
 
 module.exports = ObjectUtils;
