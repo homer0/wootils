@@ -1,7 +1,7 @@
 {
   "coverage": "100%",
-  "expectCount": 148,
-  "actualCount": 148,
+  "expectCount": 160,
+  "actualCount": 160,
   "files": {
     "wootils/browser/simpleStorage.js": {
       "expectCount": 42,
@@ -9,13 +9,13 @@
       "undocumentLines": []
     },
     "wootils/node/appConfiguration.js": {
-      "expectCount": 18,
-      "actualCount": 18,
+      "expectCount": 19,
+      "actualCount": 19,
       "undocumentLines": []
     },
     "wootils/node/environmentUtils.js": {
-      "expectCount": 7,
-      "actualCount": 7,
+      "expectCount": 9,
+      "actualCount": 9,
       "undocumentLines": []
     },
     "wootils/node/errorHandler.js": {
@@ -59,8 +59,8 @@
       "undocumentLines": []
     },
     "wootils/shared/objectUtils.js": {
-      "expectCount": 8,
-      "actualCount": 8,
+      "expectCount": 17,
+      "actualCount": 17,
       "undocumentLines": []
     }
   }

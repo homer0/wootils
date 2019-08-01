@@ -50,12 +50,18 @@
     <ul class="manual-toc">
       
     <li data-ice="manualNav" class="indent-h1" data-link="manual/environmentUtils.html"><a href="manual/environmentUtils.html" data-ice="link">EnvironmentUtils</a></li>
-<li data-ice="manualNav" class="indent-h2" data-link="manual/environmentUtils.html"><a href="manual/environmentUtils.html#example" data-ice="link">Example</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/environmentUtils.html"><a href="manual/environmentUtils.html#without-jimple" data-ice="link">Without Jimple</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/environmentUtils.html"><a href="manual/environmentUtils.html#with-jimple" data-ice="link">With Jimple</a></li>
+<li data-ice="manualNav" class="indent-h2" data-link="manual/environmentUtils.html"><a href="manual/environmentUtils.html#examples" data-ice="link">Examples</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/environmentUtils.html"><a href="manual/environmentUtils.html#read" data-ice="link">Read</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/environmentUtils.html"><a href="manual/environmentUtils.html#without-jimple" data-ice="link">Without Jimple</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/environmentUtils.html"><a href="manual/environmentUtils.html#with-jimple" data-ice="link">With Jimple</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/environmentUtils.html"><a href="manual/environmentUtils.html#write" data-ice="link">Write</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/environmentUtils.html"><a href="manual/environmentUtils.html#without-jimple" data-ice="link">Without Jimple</a></li>
+<li data-ice="manualNav" class="indent-h4" data-link="manual/environmentUtils.html"><a href="manual/environmentUtils.html#with-jimple" data-ice="link">With Jimple</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/environmentUtils.html"><a href="manual/environmentUtils.html#features" data-ice="link">Features</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/environmentUtils.html"><a href="manual/environmentUtils.html#reading-variables" data-ice="link">Reading variables</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/environmentUtils.html"><a href="manual/environmentUtils.html#checking-the-environment" data-ice="link">Checking the environment</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/environmentUtils.html"><a href="manual/environmentUtils.html#writing-variables" data-ice="link">Writing variables</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/environmentUtils.html"><a href="manual/environmentUtils.html#validating-variables" data-ice="link">Validating variables</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/environmentUtils.html"><a href="manual/environmentUtils.html#environment-type-validation" data-ice="link">Environment type validation</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/environmentUtils.html"><a href="manual/environmentUtils.html#technical-documentation" data-ice="link">Technical documentation</a></li>
 </ul>
   </div>
@@ -166,6 +172,9 @@
 <li data-ice="manualNav" class="indent-h3" data-link="manual/objectUtils.html"><a href="manual/objectUtils.html#-code-set--code-" data-ice="link">set</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/objectUtils.html"><a href="manual/objectUtils.html#-code-extract--code-" data-ice="link">extract</a></li>
 <li data-ice="manualNav" class="indent-h3" data-link="manual/objectUtils.html"><a href="manual/objectUtils.html#-code-delete--code-" data-ice="link">delete</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/objectUtils.html"><a href="manual/objectUtils.html#-code-flat--code-" data-ice="link">flat</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/objectUtils.html"><a href="manual/objectUtils.html#-code-unflat--code-" data-ice="link">unflat</a></li>
+<li data-ice="manualNav" class="indent-h3" data-link="manual/objectUtils.html"><a href="manual/objectUtils.html#-code-formatkeys--code-" data-ice="link">formatKeys</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/objectUtils.html"><a href="manual/objectUtils.html#technical-documentation" data-ice="link">Technical documentation</a></li>
 </ul>
   </div>
@@ -251,7 +260,51 @@ console.log(ObjectUtils.delete(
 ));
 // Will output { propTwo: &apos;!!!&apos; }</code>
 </code></pre>
-<h2 id="technical-documentation">Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://homer0.github.io/wootils/class/wootils/shared/eventsHub.js~EventsHub.html">online</a> or generate it yourself using:</p>
+<h3 id="-code-flat--code-"><code>flat</code></h3><p>Flatterns an object properties into a single level dictionary.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const target = {
+  propOne: {
+    propOneSub: &apos;Charito!&apos;,
+  },
+  propTwo: &apos;!!!&apos;,
+};
+
+console.log(ObjectUtils.flat(target);
+// Will output { &apos;propOne.propOneSub&apos;: &apos;Charito!&apos;, propTwo: &apos;!!!&apos; }</code>
+</code></pre>
+<h3 id="-code-unflat--code-"><code>unflat</code></h3><p>This method does the exact opposite from <code>flat</code>: It takes an already flattern object and restores it structure.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const target = {
+  &apos;propOne.propOneSub&apos;: &apos;Charito!
+  propTwo: &apos;!!!&apos;,
+};
+
+console.log(ObjectUtils.unflat(target);
+// Will output { propOne: { propOneSub: &apos;Charito!&apos; }, &apos;propTwo&apos;: &apos;!!!&apos; }</code>
+</code></pre>
+<h3 id="-code-formatkeys--code-"><code>formatKeys</code></h3><p>Formats all the keys on an object using a way similar to <code>.replace(regexp, ...)</code> but that also works recursively and with <em>&quot;object paths&quot;</em>.</p>
+<pre><code class="lang-js"><code class="source-code prettyprint">const target = {
+  prop_one: &apos;Charito!&apos;,
+};
+console.log(ObjectUtils.formatKeys(
+  target,
+  // Find all the keys with snake case.
+  /([a-z])_([a-z])/g,
+  // Using the same .replace style callback, replace it with lower camel case.
+  (fullMatch, firstLetter, secondLetter) =&gt; {
+    const newSecondLetter = secondLetter.toUpperCase();
+    return `${firstLetter}${newSecondLetter}`;
+  }
+));</code>
+</code></pre>
+<p><code>ObjectUtils</code> also provides a few &quot;shorthand implementations&quot; of <code>formatKeys</code>:</p>
+<ul>
+<li><code>lowerCamelToSnakeKeys(...)</code></li>
+<li><code>lowerCamelToDashKeys(...)</code></li>
+<li><code>snakeToLowerCamelKeys(...)</code></li>
+<li><code>snakeToDashKeys(...)</code></li>
+<li><code>dashToLowerCamelKeys(...)</code></li>
+<li><code>dashToSnakeKeys(...)</code></li>
+</ul>
+<h2 id="technical-documentation">Technical documentation</h2><p>The code is fully documented with <a href="https://esdoc.org">ESDoc</a> and you can either read the generated documentation <a href="https://homer0.github.io/wootils/class/wootils/shared/objectUtils.js~ObjectUtils.html">online</a> or generate it yourself using:</p>
 <pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
 npm run docs
 open ./docs/index.html</code>

@@ -834,6 +834,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "wootils/node/appconfiguration.js~appconfiguration#setconfig",
+    "class/wootils/node/appConfiguration.js~AppConfiguration.html#instance-method-setConfig",
+    "wootils/node/appConfiguration.js~AppConfiguration#setConfig",
+    "method"
+  ],
+  [
     "wootils/node/appconfiguration.js~appconfiguration#switch",
     "class/wootils/node/appConfiguration.js~AppConfiguration.html#instance-method-switch",
     "wootils/node/appConfiguration.js~AppConfiguration#switch",
@@ -870,6 +876,12 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "wootils/node/environmentutils.js~environmentutils#exists",
+    "class/wootils/node/environmentUtils.js~EnvironmentUtils.html#instance-method-exists",
+    "wootils/node/environmentUtils.js~EnvironmentUtils#exists",
+    "method"
+  ],
+  [
     "wootils/node/environmentutils.js~environmentutils#get",
     "class/wootils/node/environmentUtils.js~EnvironmentUtils.html#instance-method-get",
     "wootils/node/environmentUtils.js~EnvironmentUtils#get",
@@ -880,6 +892,12 @@ window.esdocSearchIndex = [
     "class/wootils/node/environmentUtils.js~EnvironmentUtils.html#instance-member-production",
     "wootils/node/environmentUtils.js~EnvironmentUtils#production",
     "member"
+  ],
+  [
+    "wootils/node/environmentutils.js~environmentutils#set",
+    "class/wootils/node/environmentUtils.js~EnvironmentUtils.html#instance-method-set",
+    "wootils/node/environmentUtils.js~EnvironmentUtils#set",
+    "method"
   ],
   [
     "wootils/node/errorhandler.js",
@@ -1308,6 +1326,18 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "wootils/shared/objectutils.js~objectutils.dashtolowercamelkeys",
+    "class/wootils/shared/objectUtils.js~ObjectUtils.html#static-method-dashToLowerCamelKeys",
+    "wootils/shared/objectUtils.js~ObjectUtils.dashToLowerCamelKeys",
+    "method"
+  ],
+  [
+    "wootils/shared/objectutils.js~objectutils.dashtosnakekeys",
+    "class/wootils/shared/objectUtils.js~ObjectUtils.html#static-method-dashToSnakeKeys",
+    "wootils/shared/objectUtils.js~ObjectUtils.dashToSnakeKeys",
+    "method"
+  ],
+  [
     "wootils/shared/objectutils.js~objectutils.delete",
     "class/wootils/shared/objectUtils.js~ObjectUtils.html#static-method-delete",
     "wootils/shared/objectUtils.js~ObjectUtils.delete",
@@ -1320,9 +1350,33 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "wootils/shared/objectutils.js~objectutils.flat",
+    "class/wootils/shared/objectUtils.js~ObjectUtils.html#static-method-flat",
+    "wootils/shared/objectUtils.js~ObjectUtils.flat",
+    "method"
+  ],
+  [
+    "wootils/shared/objectutils.js~objectutils.formatkeys",
+    "class/wootils/shared/objectUtils.js~ObjectUtils.html#static-method-formatKeys",
+    "wootils/shared/objectUtils.js~ObjectUtils.formatKeys",
+    "method"
+  ],
+  [
     "wootils/shared/objectutils.js~objectutils.get",
     "class/wootils/shared/objectUtils.js~ObjectUtils.html#static-method-get",
     "wootils/shared/objectUtils.js~ObjectUtils.get",
+    "method"
+  ],
+  [
+    "wootils/shared/objectutils.js~objectutils.lowercameltodashkeys",
+    "class/wootils/shared/objectUtils.js~ObjectUtils.html#static-method-lowerCamelToDashKeys",
+    "wootils/shared/objectUtils.js~ObjectUtils.lowerCamelToDashKeys",
+    "method"
+  ],
+  [
+    "wootils/shared/objectutils.js~objectutils.lowercameltosnakekeys",
+    "class/wootils/shared/objectUtils.js~ObjectUtils.html#static-method-lowerCamelToSnakeKeys",
+    "wootils/shared/objectUtils.js~ObjectUtils.lowerCamelToSnakeKeys",
     "method"
   ],
   [
@@ -1335,6 +1389,24 @@ window.esdocSearchIndex = [
     "wootils/shared/objectutils.js~objectutils.set",
     "class/wootils/shared/objectUtils.js~ObjectUtils.html#static-method-set",
     "wootils/shared/objectUtils.js~ObjectUtils.set",
+    "method"
+  ],
+  [
+    "wootils/shared/objectutils.js~objectutils.snaketodashkeys",
+    "class/wootils/shared/objectUtils.js~ObjectUtils.html#static-method-snakeToDashKeys",
+    "wootils/shared/objectUtils.js~ObjectUtils.snakeToDashKeys",
+    "method"
+  ],
+  [
+    "wootils/shared/objectutils.js~objectutils.snaketolowercamelkeys",
+    "class/wootils/shared/objectUtils.js~ObjectUtils.html#static-method-snakeToLowerCamelKeys",
+    "wootils/shared/objectUtils.js~ObjectUtils.snakeToLowerCamelKeys",
+    "method"
+  ],
+  [
+    "wootils/shared/objectutils.js~objectutils.unflat",
+    "class/wootils/shared/objectUtils.js~ObjectUtils.html#static-method-unflat",
+    "wootils/shared/objectUtils.js~ObjectUtils.unflat",
     "method"
   ]
 ]

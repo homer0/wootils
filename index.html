@@ -185,6 +185,8 @@ yarn run hooks</code>
 <h3 id="linting">Linting</h3><p>I use <a href="http://eslint.org">ESlint</a> to validate all our JS code. The configuration file for the project code is on <code>./.eslintrc</code> and for the tests on <code>./tests/.eslintrc</code> (which inherits from the one on the root), there&apos;s also an <code>./.eslintignore</code> to ignore some files on the process, and the script that runs it is on <code>./utils/scripts/lint</code>.</p>
 <h3 id="documentation">Documentation</h3><p>I use <a href="http://esdoc.org">ESDoc</a> to generate HTML documentation for the project. The configuration file is on <code>./.esdocrc</code> and the script that runs it is on <code>./utils/scripts/docs</code>.</p>
 <h3 id="to-dos">To-Dos</h3><p>I use <code>@todo</code> comments to write all the pending improvements and fixes, and <a href="https://yarnpkg.com/en/package/leasot">Leasot</a> to generate a report. The script that runs it is on <code>./utils/scripts/todo</code>.</p>
+<h3 id="windows">Windows</h3><p>You can work with this project on Windows, but it only works if you use <a href="https://yarnpkg.com/en/docs/install">Yarn</a>. The reason is that NPM on Windows doesn&apos;t allow you to use paths like <code>./scripts/something</code> on the <code>package.json</code> scripts, while Yarn does.</p>
+<p>Another alternative if you are using Windows is to use <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">WSL</a>.</p>
 </div>
 </div>
 
