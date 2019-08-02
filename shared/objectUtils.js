@@ -416,7 +416,9 @@ class ObjectUtils {
     keys.forEach((key) => {
       const value = target[key];
       hasChildrenByKey[key] = !!(
+        value &&
         typeof value === 'object' &&
+        value !== null &&
         !Array.isArray(value) &&
         Object.keys(value)
       );
