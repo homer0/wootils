@@ -594,6 +594,40 @@ describe('APIClient', () => {
     });
   });
 
+  it('shouldn\'t encode the body if is not an object literal', () => {
+    // Given
+    const requestURL = 'http://example.com';
+    const requestMethod = 'post';
+    class CustomFormData {}
+    const requestBody = new CustomFormData();
+    const requestResponseData = {
+      message: 'hello-world',
+    };
+    const requestResponse = {
+      status: 200,
+      json: jest.fn(() => Promise.resolve(requestResponseData)),
+    };
+    const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
+    const headers = {
+      'Content-Type': 'application/custom-form-data',
+    };
+    let sut = null;
+    // When
+    sut = new APIClient('', '', fetchClient);
+    return sut.post(requestURL, requestBody, { headers })
+    .then((response) => {
+      // Then
+      expect(response).toEqual(requestResponseData);
+      expect(requestResponse.json).toHaveBeenCalledTimes(1);
+      expect(fetchClient).toHaveBeenCalledTimes(1);
+      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+        headers,
+        method: requestMethod.toUpperCase(),
+        body: requestBody,
+      });
+    });
+  });
+
   it('should make a successfully PUT request using the shortcut method', () => {
     // Given
     const requestURL = 'http://example.com';

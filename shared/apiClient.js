@@ -311,9 +311,12 @@ class APIClient {
       }
       // If the body is an object...
       if (typeof opts.body === 'object') {
-        // ...encode it.
-        opts.body = JSON.stringify(opts.body);
-        // And if no `Content-Type` was defined, let's assume is a JSON request.
+        // ...and if it's an object literal...
+        if (Object.getPrototypeOf(opts.body).constructor.name === 'Object') {
+          // ...encode it.
+          opts.body = JSON.stringify(opts.body);
+        }
+        // If no `Content-Type` was defined, let's assume is a JSON request.
         if (!hasContentType) {
           opts.headers['Content-Type'] = 'application/json';
         }
