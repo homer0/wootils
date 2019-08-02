@@ -771,6 +771,37 @@ describe('ObjectUtils', () => {
       });
     });
 
+    it('should make all keys first letters into upper case (null and undefined)', () => {
+      // Given
+      const name = 'Rosario';
+      const nickname = 'Charito';
+      const age = 3;
+      const likes = null;
+      const hates = undefined;
+      const target = {
+        name,
+        nickname,
+        age,
+        likes,
+        hates,
+      };
+      let result = null;
+      // When
+      result = ObjectUtils.formatKeys(
+        target,
+        /^\w/,
+        (letter) => letter.toUpperCase()
+      );
+      // Then
+      expect(result).toEqual({
+        Name: name,
+        Nickname: nickname,
+        Age: age,
+        Likes: likes,
+        Hates: hates,
+      });
+    });
+
     it('should make specific keys first letters into upper case', () => {
       // Given
       const first = 'Rosario';
