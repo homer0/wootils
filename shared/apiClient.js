@@ -329,13 +329,24 @@ class APIClient {
     .then((response) => {
       // Capture the response status.
       responseStatus = response.status;
-      /**
-       * If the response should be handled as JSON and it has a `json()` method, return the
-       * promise of the decoded content, otherwise just return the same object.
-       */
-      return handleAsJSON && response.json ?
-        response.json() :
-        response;
+      let nextStep;
+      // If the response should be handled as JSON and it has a `json()` method...
+      if (handleAsJSON && typeof response.json === 'function') {
+        /**
+         * Make sure there's a response to be parsed, otherwise just set to return an empty
+         * object.
+         */
+        if (typeof response.size === 'undefined' || response.size > 0) {
+          nextStep = response.json();
+        } else {
+          nextStep = {};
+        }
+      } else {
+        // If the response shouldn't be handled as JSON, set to return the raw object.
+        nextStep = response;
+      }
+
+      return nextStep;
     })
     .then((response) => (
       /**

@@ -342,6 +342,30 @@ describe('APIClient', () => {
     });
   });
 
+  it('should make a successfully GET request without decoding an empty response', () => {
+    // Given
+    const requestURL = 'http://example.com';
+    const requestResponse = {
+      status: 200,
+      size: 0,
+      json: jest.fn(),
+    };
+    const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
+    let sut = null;
+    // When
+    sut = new APIClient('', '', fetchClient);
+    return sut.fetch({ url: requestURL })
+    .then((response) => {
+      // Then
+      expect(response).toEqual({});
+      expect(requestResponse.json).toHaveBeenCalledTimes(0);
+      expect(fetchClient).toHaveBeenCalledTimes(1);
+      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+        method: 'GET',
+      });
+    });
+  });
+
   it('should make a successfully POST request', () => {
     // Given
     const requestURL = 'http://example.com';
