@@ -336,7 +336,16 @@ class APIClient {
          * Make sure there's a response to be parsed, otherwise just set to return an empty
          * object.
          */
-        if (typeof response.size === 'undefined' || response.size > 0) {
+        if (
+          // First validate if the `content-length` header is available.
+          (
+            response.headers &&
+            response.headers.get &&
+            Number(response.headers.get('content-length')) > 0
+          ) ||
+          // If not, try to use the `size` property.
+          (typeof response.size === 'undefined' || response.size > 0)
+        ) {
           nextStep = response.json();
         } else {
           nextStep = {};
