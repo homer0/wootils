@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 const fs = require('fs-extra');
 const { Logger } = require('../../node/logger');
 const packageInfo = require('../../package.json');

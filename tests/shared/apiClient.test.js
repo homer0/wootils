@@ -366,6 +366,40 @@ describe('APIClient', () => {
     });
   });
 
+  it('should make a successfully GET request and decode a response with content-length', () => {
+    // Given
+    const requestURL = 'http://example.com';
+    const contentLength = 2509;
+    const headers = {
+      get: jest.fn(() => contentLength),
+    };
+    const requestResponseData = {
+      message: 'hello-world',
+    };
+    const requestResponse = {
+      headers,
+      status: 200,
+      size: 0,
+      json: jest.fn(() => Promise.resolve(requestResponseData)),
+    };
+    const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
+    let sut = null;
+    // When
+    sut = new APIClient('', '', fetchClient);
+    return sut.fetch({ url: requestURL })
+    .then((response) => {
+      // Then
+      expect(response).toEqual(requestResponseData);
+      expect(requestResponse.json).toHaveBeenCalledTimes(1);
+      expect(fetchClient).toHaveBeenCalledTimes(1);
+      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+        method: 'GET',
+      });
+      expect(headers.get).toHaveBeenCalledTimes(1);
+      expect(headers.get).toHaveBeenCalledWith('content-length');
+    });
+  });
+
   it('should make a successfully POST request', () => {
     // Given
     const requestURL = 'http://example.com';

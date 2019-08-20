@@ -30,6 +30,7 @@ class EnvironmentUtils {
   get(name, defaultValue = '', required = false) {
     let value;
     if (this.exists(name)) {
+      // eslint-disable-next-line no-process-env
       value = process.env[name];
     } else {
       if (required) {
@@ -52,6 +53,7 @@ class EnvironmentUtils {
   set(name, value, overwrite = false) {
     let result;
     if (!this.exists(name) || overwrite) {
+      // eslint-disable-next-line no-process-env
       process.env[name] = value;
       result = true;
     } else {
@@ -66,6 +68,7 @@ class EnvironmentUtils {
    * @return {boolean}
    */
   exists(name) {
+    // eslint-disable-next-line no-process-env
     return typeof process.env[name] !== 'undefined';
   }
   /**

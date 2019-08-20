@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 const { JestExRunner } = require('jest-ex');
 const { Logger } = require('../../node/logger');
 const packageInfo = require('../../package.json');
@@ -15,5 +13,6 @@ new JestExRunner('./.jestrc.json', {
 .then(() => logger.success('Yay! all the unit tests passed!'))
 .catch(() => {
   logger.error('Damn... something went wrong with the unit tests');
+  // eslint-disable-next-line
   process.exit(1);
 });
