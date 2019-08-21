@@ -15,7 +15,7 @@
     "extend": "^3.0.2"
   },
   "devDependencies": {
-    "eslint": "^6.2.0",
+    "eslint": "^6.2.1",
     "eslint-plugin-homer0": "^2.0.0",
     "jest-ex": "^6.1.1",
     "jest-cli": "^24.9.0",
