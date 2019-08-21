@@ -333,23 +333,10 @@ class APIClient {
       // If the response should be handled as JSON and it has a `json()` method...
       if (handleAsJSON && typeof response.json === 'function') {
         /**
-         * Make sure there's a response to be parsed, otherwise just set to return an empty
-         * object.
+         * Since some clients fail to decode an empty response, we'll try to decode it, but if it
+         * fails, it will return an empty object.
          */
-        if (
-          // First validate if the `content-length` header is available.
-          (
-            response.headers &&
-            response.headers.get &&
-            Number(response.headers.get('content-length')) > 0
-          ) ||
-          // If not, try to use the `size` property.
-          (typeof response.size === 'undefined' || response.size > 0)
-        ) {
-          nextStep = response.json();
-        } else {
-          nextStep = {};
-        }
+        nextStep = response.json().catch(() => ({}));
       } else {
         // If the response shouldn't be handled as JSON, set to return the raw object.
         nextStep = response;
