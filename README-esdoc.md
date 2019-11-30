@@ -101,6 +101,12 @@ A small implementation of a pubsub service for handling events on an app.
 
 [Read more about EventsHub](manual/eventsHub.html)
 
+#### extendPromise
+
+A way to extend promise chains by _injecting_ custom properties.
+
+[Read more about extendPromise](manual/extendPromise.html)
+
 #### ObjectUtils
 
 A small collection of utility methods to work with objects.
