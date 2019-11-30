@@ -96,6 +96,12 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "wootils/wootils/shared/extendpromise.js~extendpromise",
+    "function/index.html#static-function-extendPromise",
+    "<span>extendPromise</span> <span class=\"search-result-import-path\">wootils/wootils/shared/extendPromise.js</span>",
+    "function"
+  ],
+  [
     "wootils/wootils/node/logger.js~logger",
     "variable/index.html#static-variable-logger",
     "<span>logger</span> <span class=\"search-result-import-path\">wootils/wootils/node/logger.js</span>",
@@ -1306,6 +1312,12 @@ window.esdocSearchIndex = [
     "class/wootils/shared/eventsHub.js~EventsHub.html#instance-method-subscribers",
     "wootils/shared/eventsHub.js~EventsHub#subscribers",
     "method"
+  ],
+  [
+    "wootils/shared/extendpromise.js",
+    "file/wootils/shared/extendPromise.js.html",
+    "wootils/shared/extendPromise.js",
+    "file"
   ],
   [
     "wootils/shared/index.js",

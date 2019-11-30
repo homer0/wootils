@@ -67,6 +67,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/shared/eventsHub.js~EventsHub.html">EventsHub</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/shared/objectUtils.js~ObjectUtils.html">ObjectUtils</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-deferred">deferred</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extendPromise">extendPromise</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-APIClientEndpoint">APIClientEndpoint</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-APIClientEndpoints">APIClientEndpoints</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-FetchClient">FetchClient</a></span></span></li>
@@ -108,6 +109,7 @@ class EnvironmentUtils {
   get(name, defaultValue = &apos;&apos;, required = false) {
     let value;
     if (this.exists(name)) {
+      // eslint-disable-next-line no-process-env
       value = process.env[name];
     } else {
       if (required) {
@@ -130,6 +132,7 @@ class EnvironmentUtils {
   set(name, value, overwrite = false) {
     let result;
     if (!this.exists(name) || overwrite) {
+      // eslint-disable-next-line no-process-env
       process.env[name] = value;
       result = true;
     } else {
@@ -144,6 +147,7 @@ class EnvironmentUtils {
    * @return {boolean}
    */
   exists(name) {
+    // eslint-disable-next-line no-process-env
     return typeof process.env[name] !== &apos;undefined&apos;;
   }
   /**

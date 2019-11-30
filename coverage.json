@@ -1,7 +1,7 @@
 {
   "coverage": "100%",
-  "expectCount": 160,
-  "actualCount": 160,
+  "expectCount": 167,
+  "actualCount": 167,
   "files": {
     "wootils/browser/simpleStorage.js": {
       "expectCount": 42,
@@ -56,6 +56,11 @@
     "wootils/shared/eventsHub.js": {
       "expectCount": 9,
       "actualCount": 9,
+      "undocumentLines": []
+    },
+    "wootils/shared/extendPromise.js": {
+      "expectCount": 7,
+      "actualCount": 7,
       "undocumentLines": []
     },
     "wootils/shared/objectUtils.js": {

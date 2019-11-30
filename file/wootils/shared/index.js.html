@@ -67,6 +67,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/shared/eventsHub.js~EventsHub.html">EventsHub</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/shared/objectUtils.js~ObjectUtils.html">ObjectUtils</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-deferred">deferred</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extendPromise">extendPromise</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-APIClientEndpoint">APIClientEndpoint</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-APIClientEndpoints">APIClientEndpoints</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-FetchClient">FetchClient</a></span></span></li>
@@ -79,12 +80,14 @@
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const APIClient = require(&apos;./apiClient&apos;);
 const deferred = require(&apos;./deferred&apos;);
 const EventsHub = require(&apos;./eventsHub&apos;);
+const extendPromise = require(&apos;./extendPromise&apos;);
 const ObjectUtils = require(&apos;./objectUtils&apos;);
 
 module.exports = {
   APIClient,
   deferred,
   EventsHub,
+  extendPromise,
   ObjectUtils,
 };
 </code></pre>

@@ -67,6 +67,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/shared/eventsHub.js~EventsHub.html">EventsHub</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/shared/objectUtils.js~ObjectUtils.html">ObjectUtils</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-deferred">deferred</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extendPromise">extendPromise</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-APIClientEndpoint">APIClientEndpoint</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-APIClientEndpoints">APIClientEndpoints</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-FetchClient">FetchClient</a></span></span></li>
@@ -389,9 +390,12 @@ class APIClient {
       }
       // If the body is an object...
       if (typeof opts.body === &apos;object&apos;) {
-        // ...encode it.
-        opts.body = JSON.stringify(opts.body);
-        // And if no `Content-Type` was defined, let&apos;s assume is a JSON request.
+        // ...and if it&apos;s an object literal...
+        if (Object.getPrototypeOf(opts.body).constructor.name === &apos;Object&apos;) {
+          // ...encode it.
+          opts.body = JSON.stringify(opts.body);
+        }
+        // If no `Content-Type` was defined, let&apos;s assume is a JSON request.
         if (!hasContentType) {
           opts.headers[&apos;Content-Type&apos;] = &apos;application/json&apos;;
         }
@@ -404,13 +408,20 @@ class APIClient {
     .then((response) =&gt; {
       // Capture the response status.
       responseStatus = response.status;
-      /**
-       * If the response should be handled as JSON and it has a `json()` method, return the
-       * promise of the decoded content, otherwise just return the same object.
-       */
-      return handleAsJSON &amp;&amp; response.json ?
-        response.json() :
-        response;
+      let nextStep;
+      // If the response should be handled as JSON and it has a `json()` method...
+      if (handleAsJSON &amp;&amp; typeof response.json === &apos;function&apos;) {
+        /**
+         * Since some clients fail to decode an empty response, we&apos;ll try to decode it, but if it
+         * fails, it will return an empty object.
+         */
+        nextStep = response.json().catch(() =&gt; ({}));
+      } else {
+        // If the response shouldn&apos;t be handled as JSON, set to return the raw object.
+        nextStep = response;
+      }
+
+      return nextStep;
     })
     .then((response) =&gt; (
       /**
