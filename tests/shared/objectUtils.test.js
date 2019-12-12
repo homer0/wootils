@@ -553,6 +553,7 @@ describe('ObjectUtils', () => {
       // Given
       const name = 'Rosario';
       const nickname = 'Charito';
+      const alias = null;
       const age = 3;
       const total = 1;
       const numbers = [
@@ -567,6 +568,7 @@ describe('ObjectUtils', () => {
           names: {
             name,
             nickname,
+            alias,
           },
           numbers,
         },
@@ -578,6 +580,7 @@ describe('ObjectUtils', () => {
           'person.age': age,
           'person.names.name': name,
           'person.names.nickname': nickname,
+          'person.names.alias': alias,
         },
         numbers.reduce(
           (acc, item, index) => Object.assign({}, acc, {
