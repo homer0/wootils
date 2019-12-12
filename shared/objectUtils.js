@@ -325,7 +325,8 @@ class ObjectUtils {
       const name = `${namePrefix}${key}`;
       const value = target[key];
       const valueType = typeof value;
-      if (valueType === 'object' && (!shouldFlattern || shouldFlattern(key, value))) {
+      const isObject = valueType === 'object' && value !== null;
+      if (isObject && (!shouldFlattern || shouldFlattern(key, value))) {
         result = this.merge(result, this.flat(
           value,
           pathDelimiter,
@@ -333,7 +334,7 @@ class ObjectUtils {
           shouldFlattern
         ));
       } else {
-        result[name] = valueType === 'object' ? this.copy(value) : value;
+        result[name] = isObject ? this.copy(value) : value;
       }
     });
 
