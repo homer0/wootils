@@ -22,7 +22,7 @@ There are two rules I followed when I had to decide what to put and what to keep
 |--------------|--------------------------------------------------------------------|
 | Package      | wootils                                                            |
 | Description  | A set of Javascript utilities for building Node and browser apps.  |
-| Node Version | >= v8.0.0                                                         |
+| Node Version | >= v10.0.0                                                         |
 
 ## Usage
 
