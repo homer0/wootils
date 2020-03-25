@@ -8,7 +8,7 @@
   "license": "MIT",
   "dependencies": {
     "jimple": "^1.5.0",
-    "fs-extra": "^8.1.0",
+    "fs-extra": "^9.0.0",
     "colors": "^1.4.0",
     "urijs": "^1.19.2",
     "statuses": "^1.5.0",
@@ -16,18 +16,18 @@
   },
   "devDependencies": {
     "eslint": "^6.8.0",
-    "eslint-plugin-homer0": "^3.0.0",
-    "jest-ex": "^7.0.1",
-    "jest-cli": "^24.9.0",
+    "eslint-plugin-homer0": "^3.0.2",
+    "jest-ex": "^8.0.0",
+    "jest-cli": "^25.1.0",
     "jasmine-expect": "^4.0.3",
-    "@babel/preset-env": "7.7.7",
-    "@babel/core": "7.7.7",
-    "@babel/plugin-transform-runtime": "7.7.6",
+    "@babel/preset-env": "7.9.0",
+    "@babel/core": "7.9.0",
+    "@babel/plugin-transform-runtime": "7.9.0",
     "esdoc": "^1.1.0",
     "esdoc-standard-plugin": "^1.0.0",
     "esdoc-node": "1.0.4",
-    "leasot": "^9.3.1",
-    "coveralls": "^3.0.9"
+    "leasot": "^10.1.0",
+    "coveralls": "^3.0.11"
   },
   "engine-strict": true,
   "engines": {
