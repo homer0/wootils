@@ -349,7 +349,7 @@ class APIClient {
        * If the response status is from an Error, format and return the error; otherwise, return
        * the same response.
        */
-      responseStatus >= statuses['Bad Request'] ?
+      responseStatus >= statuses('bad request') ?
         Promise.reject(this.error(response, responseStatus)) :
         response
     ));
