@@ -163,7 +163,6 @@ describe('EventsHub', () => {
     expect(subscriber).toHaveBeenCalledTimes(eventNames.length);
   });
 
-
   it('should allow new subscribers for reduced events (number)', () => {
     // Given
     const eventName = 'THE EVENT';
