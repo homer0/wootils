@@ -107,11 +107,10 @@ describe('AppConfiguration', () => {
     };
     let sut = null;
     let result = null;
-    const expectedConfig = Object.assign(
-      {},
-      newConfigOneSettings,
-      newConfigTwoSettings
-    );
+    const expectedConfig = {
+      ...newConfigOneSettings,
+      ...newConfigTwoSettings,
+    };
     delete expectedConfig.extends;
     // When
     sut = new AppConfiguration(environmentUtils, rootRequire);
@@ -210,11 +209,10 @@ describe('AppConfiguration', () => {
     rootRequire.mockImplementationOnce(() => newConfigOneSettings);
     let sut = null;
     let result = null;
-    const expectedConfig = Object.assign(
-      {},
-      newConfigOneSettings,
-      newConfigTwoSettings
-    );
+    const expectedConfig = {
+      ...newConfigOneSettings,
+      ...newConfigTwoSettings,
+    };
     delete expectedConfig.extends;
     const expectedFileInfoOne = getDefaultFileInfo(newConfigOneName);
     const expectedFileInfoTwo = getDefaultFileInfo(newConfigTwoName);
@@ -356,7 +354,7 @@ describe('AppConfiguration', () => {
     sut.load(newConfigName, newConfigSettings);
     result = sut.setConfig(updatedSettings, newConfigName);
     // Then
-    expect(result).toEqual(Object.assign({}, newConfigSettings, updatedSettings));
+    expect(result).toEqual({ ...newConfigSettings, ...updatedSettings });
   });
 
   it('should overwrite an entire configuration by its name', () => {
@@ -630,7 +628,7 @@ describe('AppConfiguration', () => {
     let sut = null;
     let resultAfterLoad = null;
     let resultAfterSet = null;
-    const expectedSettingsAfterSet = Object.assign({}, newSettingValue, newSettingExtendedValue);
+    const expectedSettingsAfterSet = { ...newSettingValue, ...newSettingExtendedValue };
     // When
     sut = new AppConfiguration(environmentUtils, rootRequire);
     sut.load(newConfigName, newConfigSettings);

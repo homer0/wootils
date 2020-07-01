@@ -130,7 +130,7 @@ class SimpleStorage {
     // Validate that it's being extended.
     if (new.target === SimpleStorage) {
       throw new TypeError(
-        'SimpleStorage is an abstract class, it can\'t be instantiated directly'
+        'SimpleStorage is an abstract class, it can\'t be instantiated directly',
       );
     }
     /**
@@ -211,114 +211,6 @@ class SimpleStorage {
     }
   }
   /**
-   * This method _"initializes" the class by validating custom options, loading the reference for
-   * the required storage and synchronizing the data with the storage.
-   * @access protected
-   */
-  _initialize() {
-    this._validateOptions();
-    this._storage = this._initializeStorage();
-    this._data = this._initializeStorageData();
-  }
-  /**
-   * This method is called when the storage is deleted or resetted and if entries are disabled.
-   * It can be used to define the initial value of the data the class saves on the storage.
-   * @return {Object}
-   * @access protected
-   */
-  _getInitialData() {
-    return {};
-  }
-  /**
-   * Access the data the class saves on the storage.
-   * @return {Object}
-   * @access protected
-   */
-  _getData() {
-    return this._data;
-  }
-  /**
-   * Overwrites the data reference the class has and, if `save` is used, it also saves it into
-   * the storage.
-   * @param {Object|Promise}  data        The new data, or a {@link Promise} that resolves into the
-   *                                      new data.
-   * @param {boolean}         [save=true] Whether or not the class should save the data into the
-   *                                      storage.
-   * @return {Object\Promise} If `data` is an {@link Object}, it will return the same object; but
-   *                          if `data` is a {@link Promise}, it will return the _"promise chain"_.
-   * @access protected
-   */
-  _setData(data, save = true) {
-    return this._isPromise(data) ?
-      data.then((realData) => this._setResolvedData(realData, save)) :
-      this._setResolvedData(data, save);
-  }
-  /**
-   * This is the real method behind `_setData`. It overwrites the data reference the class
-   * has and, if `save` is used, it also saves it into the storage.
-   * The reason that there are two methods for this is, is because `_setData` can receive a
-   * {@link Promise}, and in that case, this method gets called after it gets resolved.
-   * @param {Object}  data The new data.
-   * @param {boolean} save Whether or not the class should save the data into the storage.
-   * @return {Object} The same data that was saved.
-   * @access protected
-   */
-  _setResolvedData(data, save) {
-    this._data = this._copy(data);
-    if (save) {
-      this._save();
-    }
-
-    return data;
-  }
-  /**
-   * Resets the data on the class; If entries are enabled, the data will become an empty
-   * {@link Object}; otherwise, it will call {@link this#_getInitialData}.
-   * @param {boolean} [save=true] Whether or not the class should save the data into the storage.
-   * @access protected
-   */
-  _resetData(save = true) {
-    const data = this._options.entries.enabled ? {} : this._getInitialData();
-    return this._setData(data, save);
-  }
-  /**
-   * Gets an entry from the storage dictionary.
-   * @param  {string} key The entry key.
-   * @return {SimpleStorageEntry} Whatever is on the storage.
-   * @throws {Error} If entries are not enabled.
-   * @access protected
-   */
-  _getEntry(key) {
-    const { entries } = this._options;
-    // Validate if the feature is enabled and fail with an error if it isn't.
-    if (!entries.enabled) {
-      throw new Error('Entries are not enabled for this storage');
-    }
-    // Get the entry from the data reference.
-    let entry = this._data[key];
-    // If an entry was found and the setting to delete entries when expired is enabled...
-    if (entry && entries.deleteExpired) {
-      // ...validate if the entry is expired.
-      ({ entry } = this._deleteExpiredEntries({ entry }, entries.expiration));
-      // ... and if the entry is expired, delete it.
-      if (!entry) {
-        this._deleteEntry(key, entries.saveWhenDeletingExpired);
-      }
-    }
-    // Return either the entry it found or `null`.
-    return entry || null;
-  }
-  /**
-   * Gets the value of an entry.
-   * @param {string} key The entry key.
-   * @return {?Object}
-   * @access protected
-   */
-  _getEntryValue(key) {
-    const entry = this._getEntry(key);
-    return entry ? entry.value : entry;
-  }
-  /**
    * Adds a new entry to the class data, and if `save` is used, saves it into the storage.
    * @param {string}         key         The entry key.
    * @param {Object|Promise} value       The entry value, or a {@link Promise} that resolves into
@@ -359,6 +251,37 @@ class SimpleStorage {
     return value;
   }
   /**
+   * Makes a deep copy of an object.
+   * @param {Object|Array} obj The object to copy.
+   * @return {Object|Array}
+   * @access protected
+   */
+  _copy(obj) {
+    let result;
+    if (Array.isArray(obj)) {
+      ({ obj: result } = extend(true, {}, { obj }));
+    } else {
+      result = extend(true, {}, obj);
+    }
+
+    return result;
+  }
+  /**
+   * Deletes the class data from the storage.
+   * @param {boolean} [reset=true] Whether or not to reset the data to the initial data
+   *                               (`_getInitialData`), if entries area disabled, or to an empty
+   *                               object, if they are enabled.
+   * @access protected
+   */
+  _delete(reset = true) {
+    delete this._storage.delete(this._options.storage.key);
+    if (reset) {
+      this._setData(this._getInitialData(), false);
+    } else {
+      this._setData({}, false);
+    }
+  }
+  /**
    * Deletes an entry from the class data, and if `save` is used, the changes will be saved on
    * the storage.
    * @param {string}  key         The entry key.
@@ -379,6 +302,134 @@ class SimpleStorage {
     return exists;
   }
   /**
+   * Filters out a dictionary of entries by checking if they expired or not.
+   * @param {Object}  entries    A dictionary of key-value, where the value is a
+   *                             {@link SimpleStorageEntry}.
+   * @param  {number} expiration The amount of seconds that need to have passed in order to
+   *                             consider an entry expired.
+   * @return {Object} A new dictionary without the expired entries.
+   * @access protected
+   */
+  _deleteExpiredEntries(entries, expiration) {
+    const result = {};
+    const now = this._now();
+    Object.keys(entries).forEach((key) => {
+      const entry = entries[key];
+      if ((now - entry.time) < expiration) {
+        result[key] = entry;
+      }
+    });
+
+    return result;
+  }
+  /**
+   * Deletes an object from the `localStorage`.
+   * @param {string} key The object key.
+   * @access protected
+   */
+  _deleteFromLocalStorage(key) {
+    delete this._options.window.localStorage[key];
+  }
+  /**
+   * Deletes an object from the `sessionStorage`.
+   * @param {string} key The object key.
+   * @access protected
+   */
+  _deleteFromSessionStorage(key) {
+    delete this._options.window.sessionStorage[key];
+  }
+  /**
+   * Deletes an object from the _"temp storage"_.
+   * @param {string} key The object key.
+   * @access protected
+   */
+  _deleteFromTempStorage(key) {
+    delete this._options.tempStorage[key];
+  }
+  /**
+   * Access the data the class saves on the storage.
+   * @return {Object}
+   * @access protected
+   */
+  _getData() {
+    return this._data;
+  }
+  /**
+   * Gets an entry from the storage dictionary.
+   * @param  {string} key The entry key.
+   * @return {SimpleStorageEntry} Whatever is on the storage.
+   * @throws {Error} If entries are not enabled.
+   * @access protected
+   */
+  _getEntry(key) {
+    const { entries } = this._options;
+    // Validate if the feature is enabled and fail with an error if it isn't.
+    if (!entries.enabled) {
+      throw new Error('Entries are not enabled for this storage');
+    }
+    // Get the entry from the data reference.
+    let entry = this._data[key];
+    // If an entry was found and the setting to delete entries when expired is enabled...
+    if (entry && entries.deleteExpired) {
+      // ...validate if the entry is expired.
+      ({ entry } = this._deleteExpiredEntries({ entry }, entries.expiration));
+      // ... and if the entry is expired, delete it.
+      if (!entry) {
+        this._deleteEntry(key, entries.saveWhenDeletingExpired);
+      }
+    }
+    // Return either the entry it found or `null`.
+    return entry || null;
+  }
+  /**
+   * Gets the value of an entry.
+   * @param {string} key The entry key.
+   * @return {?Object}
+   * @access protected
+   */
+  _getEntryValue(key) {
+    const entry = this._getEntry(key);
+    return entry ? entry.value : entry;
+  }
+  /**
+   * Gets an object from `localStorage`.
+   * @param {string} key The key used to save the object.
+   * @return {Object}
+   * @access protected
+   */
+  _getFromLocalStorage(key) {
+    const value = this._options.window.localStorage[key];
+    return value ? JSON.parse(value) : null;
+  }
+  /**
+   * Gets an object from `sessionStorage`.
+   * @param {string} key The key used to save the object.
+   * @return {Object}
+   * @access protected
+   */
+  _getFromSessionStorage(key) {
+    const value = this._options.window.sessionStorage[key];
+    return value ? JSON.parse(value) : null;
+  }
+  /**
+   * Gets an object from the _"temp storage"_.
+   * @param {string} key The key used to save the object.
+   * @return {Object}
+   * @access protected
+   */
+  _getFromTempStorage(key) {
+    return this._options.tempStorage[key];
+  }
+  /**
+   * This method is called when the storage is deleted or resetted and if entries are disabled.
+   * It can be used to define the initial value of the data the class saves on the storage.
+   * @return {Object}
+   * @access protected
+   */
+  _getInitialData() {
+    return {};
+  }
+  /**
    * Checks whether an entry exists or not.
    * @param {string} key The entry key.
    * @return {boolean}
@@ -388,93 +439,14 @@ class SimpleStorage {
     return !!this._data[key];
   }
   /**
-   * Deletes the class data from the storage.
-   * @param {boolean} [reset=true] Whether or not to reset the data to the initial data
-   *                               (`_getInitialData`), if entries area disabled, or to an empty
-   *                               object, if they are enabled.
+   * This method _"initializes" the class by validating custom options, loading the reference for
+   * the required storage and synchronizing the data with the storage.
    * @access protected
    */
-  _delete(reset = true) {
-    delete this._storage.delete(this._options.storage.key);
-    if (reset) {
-      this._setData(this._getInitialData(), false);
-    } else {
-      this._setData({}, false);
-    }
-  }
-  /**
-   * Saves the data from the class into the storage.
-   * @access protected
-   */
-  _save() {
-    this._storage.set(this._options.storage.key, this._data);
-  }
-  /**
-   * Merges the class default options with the custom ones that can be sent to the constructor.
-   * The reason there's a method for this is because some of the options can be functions, and
-   * deep merges with functions can go wrong (and are expensive), so this methods takes out the
-   * functions first, does the merge and then adds them again.
-   * Similar to what it does for fuctions, it also takes out arrays: Merging arrays not always work
-   * as expected if the base array has some values already. Instead of the base values being
-   * overwritten, they are replaced with the amount of values specified on the _"overwrite array"_.
-   * Is easy to understand the reason, but nonetheless, it makes it confussing for an option to
-   * behave like that.
-   * @param {SimpleStorageOptions} defaults The class default options.
-   * @param {SimpleStorageOptions} custom   The custom options sent to the constructor.
-   * @return {SimpleStorageOptions}
-   * @access protected
-   */
-  _mergeOptions(defaults, custom) {
-    const newDefaults = Object.assign({}, defaults);
-    const newCustom = Object.assign({}, custom);
-    const fnOptions = {};
-    ['window', 'logger', 'tempStorage'].forEach((fnOptionName) => {
-      fnOptions[fnOptionName] = newCustom[fnOptionName] || newDefaults[fnOptionName];
-      delete newDefaults[fnOptionName];
-      delete newCustom[fnOptionName];
-    });
-    let newStorageTypePriority;
-    if (newCustom.storage && newCustom.storage.typePriority) {
-      newStorageTypePriority = newCustom.storage.typePriority;
-    }
-
-    const newOptions = extend(
-      true,
-      newDefaults,
-      newCustom
-    );
-
-    Object.keys(fnOptions).forEach((fnOptionName) => {
-      newOptions[fnOptionName] = fnOptions[fnOptionName];
-    });
-
-    if (newStorageTypePriority) {
-      newOptions.storage.typePriority = newStorageTypePriority;
-    }
-
-    return newOptions;
-  }
-  /**
-   * Validates the class options before loading the storage and the data.
-   * @throws {Error} If either `storage.name` or `storage.key` are missing from the options.
-   * @throws {Error} If the options have a custom logger but it doesn't have `warn` nor `warning`
-   *                 methods.
-   * @access protected
-   */
-  _validateOptions() {
-    const { storage, logger } = this._options;
-
-    const missing = ['name', 'key'].find((key) => typeof storage[key] !== 'string');
-    if (missing) {
-      throw new Error(`Missing required configuration setting: ${missing}`);
-    }
-
-    if (logger && (
-      typeof logger.warn !== 'function' &&
-      typeof logger.warning !== 'function'
-    )) {
-      throw new Error('The logger must implement a `warn` or `warning` method');
-    }
+  _initialize() {
+    this._validateOptions();
+    this._storage = this._initializeStorage();
+    this._data = this._initializeStorageData();
   }
   /**
    * This method checks the list of priorities from the `storage.typePriority` option and tries
@@ -521,25 +493,213 @@ class SimpleStorage {
     return data;
   }
   /**
-   * Filters out a dictionary of entries by checking if they expired or not.
-   * @param {Object}  entries    A dictionary of key-value, where the value is a
-   *                             {@link SimpleStorageEntry}.
-   * @param  {number} expiration The amount of seconds that need to have passed in order to
-   *                             consider an entry expired.
-   * @return {Object} A new dictionary without the expired entries.
+   * Checks whether `localStorage` is available or not.
+   * @param {string} [fallbackFrom] In case it's being used as a fallback, this will be the name
+   *                                of the storage that wasn't available.
+   * @return {boolean}
    * @access protected
    */
-  _deleteExpiredEntries(entries, expiration) {
-    const result = {};
-    const now = this._now();
-    Object.keys(entries).forEach((key) => {
-      const entry = entries[key];
-      if ((now - entry.time) < expiration) {
-        result[key] = entry;
-      }
+  _isLocalStorageAvailable(fallbackFrom) {
+    if (fallbackFrom) {
+      this._warnStorageFallback(fallbackFrom, 'localStorage');
+    }
+
+    return !!this._options.window.localStorage;
+  }
+  /**
+   * Checkes whether an object is a Promise or not.
+   * @param {Object} obj The object to test.
+   * @return {boolean}
+   * @access protected
+   */
+  _isPromise(obj) {
+    return (
+      typeof obj === 'object' &&
+      typeof obj.then === 'function' &&
+      typeof obj.catch === 'function'
+    );
+  }
+  /**
+   * Checks whether `sessionStorage` is available or not.
+   * @param {string} [fallbackFrom] In case it's being used as a fallback, this will be the name
+   *                                of the storage that wasn't available.
+   * @return {boolean}
+   * @access protected
+   */
+  _isSessionStorageAvailable(fallbackFrom) {
+    if (fallbackFrom) {
+      this._warnStorageFallback(fallbackFrom, 'sessionStorage');
+    }
+
+    return !!this._options.window.sessionStorage;
+  }
+  /**
+   * This method is just here to comply with the {@link SimpleStorageStorage} _"interface"_ as
+   * the temp storage is always available.
+   * @param {string} [fallbackFrom] In case it's being used as a fallback, this will be the name
+   *                                of the storage that wasn't available.
+   * @return {boolean}
+   * @access protected
+   */
+  _isTempStorageAvailable(fallbackFrom) {
+    if (fallbackFrom) {
+      this._warnStorageFallback(fallbackFrom, 'tempStorage');
+    }
+
+    return true;
+  }
+  /**
+   * Merges the class default options with the custom ones that can be sent to the constructor.
+   * The reason there's a method for this is because some of the options can be functions, and
+   * deep merges with functions can go wrong (and are expensive), so this methods takes out the
+   * functions first, does the merge and then adds them again.
+   * Similar to what it does for fuctions, it also takes out arrays: Merging arrays not always work
+   * as expected if the base array has some values already. Instead of the base values being
+   * overwritten, they are replaced with the amount of values specified on the _"overwrite array"_.
+   * Is easy to understand the reason, but nonetheless, it makes it confussing for an option to
+   * behave like that.
+   * @param {SimpleStorageOptions} defaults The class default options.
+   * @param {SimpleStorageOptions} custom   The custom options sent to the constructor.
+   * @return {SimpleStorageOptions}
+   * @access protected
+   */
+  _mergeOptions(defaults, custom) {
+    const newDefaults = { ...defaults };
+    const newCustom = { ...custom };
+    const fnOptions = {};
+    ['window', 'logger', 'tempStorage'].forEach((fnOptionName) => {
+      fnOptions[fnOptionName] = newCustom[fnOptionName] || newDefaults[fnOptionName];
+      delete newDefaults[fnOptionName];
+      delete newCustom[fnOptionName];
+    });
+    let newStorageTypePriority;
+    if (newCustom.storage && newCustom.storage.typePriority) {
+      newStorageTypePriority = newCustom.storage.typePriority;
+    }
+
+    const newOptions = extend(
+      true,
+      newDefaults,
+      newCustom,
+    );
+
+    Object.keys(fnOptions).forEach((fnOptionName) => {
+      newOptions[fnOptionName] = fnOptions[fnOptionName];
     });
 
-    return result;
+    if (newStorageTypePriority) {
+      newOptions.storage.typePriority = newStorageTypePriority;
+    }
+
+    return newOptions;
+  }
+  /**
+   * Helper method to get the current timestamp in seconds.
+   * @return {number}
+   * @access protected
+   */
+  _now() {
+    return Math.floor(Date.now() / 1000);
+  }
+  /**
+   * Resets the data on the class; If entries are enabled, the data will become an empty
+   * {@link Object}; otherwise, it will call {@link this#_getInitialData}.
+   * @param {boolean} [save=true] Whether or not the class should save the data into the storage.
+   * @access protected
+   */
+  _resetData(save = true) {
+    const data = this._options.entries.enabled ? {} : this._getInitialData();
+    return this._setData(data, save);
+  }
+  /**
+   * Saves the data from the class into the storage.
+   * @access protected
+   */
+  _save() {
+    this._storage.set(this._options.storage.key, this._data);
+  }
+  /**
+   * Overwrites the data reference the class has and, if `save` is used, it also saves it into
+   * the storage.
+   * @param {Object|Promise}  data        The new data, or a {@link Promise} that resolves into the
+   *                                      new data.
+   * @param {boolean}         [save=true] Whether or not the class should save the data into the
+   *                                      storage.
+   * @return {Object\Promise} If `data` is an {@link Object}, it will return the same object; but
+   *                          if `data` is a {@link Promise}, it will return the _"promise chain"_.
+   * @access protected
+   */
+  _setData(data, save = true) {
+    return this._isPromise(data) ?
+      data.then((realData) => this._setResolvedData(realData, save)) :
+      this._setResolvedData(data, save);
+  }
+  /**
+   * Sets an object into the `localStorage`.
+   * @param {string} key   The object key.
+   * @param {Object} value The object to save.
+   * @access protected
+   */
+  _setOnLocalStorage(key, value) {
+    this._options.window.localStorage[key] = JSON.stringify(value);
+  }
+  /**
+   * Sets an object into the `sessionStorage`.
+   * @param {string} key   The object key.
+   * @param {Object} value The object to save.
+   * @access protected
+   */
+  _setOnSessionStorage(key, value) {
+    this._options.window.sessionStorage[key] = JSON.stringify(value);
+  }
+  /**
+   * Sets an object into the _"temp storage"_.
+   * @param {string} key   The object key.
+   * @param {Object} value The object to save.
+   * @access protected
+   */
+  _setOnTempStorage(key, value) {
+    this._options.tempStorage[key] = value;
+  }
+  /**
+   * This is the real method behind `_setData`. It overwrites the data reference the class
+   * has and, if `save` is used, it also saves it into the storage.
+   * The reason that there are two methods for this is, is because `_setData` can receive a
+   * {@link Promise}, and in that case, this method gets called after it gets resolved.
+   * @param {Object}  data The new data.
+   * @param {boolean} save Whether or not the class should save the data into the storage.
+   * @return {Object} The same data that was saved.
+   * @access protected
+   */
+  _setResolvedData(data, save) {
+    this._data = this._copy(data);
+    if (save) {
+      this._save();
+    }
+
+    return data;
+  }
+  /**
+   * Validates the class options before loading the storage and the data.
+   * @throws {Error} If either `storage.name` or `storage.key` are missing from the options.
+   * @throws {Error} If the options have a custom logger but it doesn't have `warn` nor `warning`
+   *                 methods.
+   * @access protected
+   */
+  _validateOptions() {
+    const { storage, logger } = this._options;
+
+    const missing = ['name', 'key'].find((key) => typeof storage[key] !== 'string');
+    if (missing) {
+      throw new Error(`Missing required configuration setting: ${missing}`);
+    }
+
+    if (logger && (
+      typeof logger.warn !== 'function' &&
+      typeof logger.warning !== 'function'
+    )) {
+      throw new Error('The logger must implement a `warn` or `warning` method');
+    }
   }
   /**
    * Prints out a warning message. The method will first check if there's a custom logger (from
@@ -561,43 +721,6 @@ class SimpleStorage {
     }
   }
   /**
-   * Makes a deep copy of an object.
-   * @param {Object|Array} obj The object to copy.
-   * @return {Object|Array}
-   * @access protected
-   */
-  _copy(obj) {
-    let result;
-    if (Array.isArray(obj)) {
-      ({ obj: result } = extend(true, {}, { obj }));
-    } else {
-      result = extend(true, {}, obj);
-    }
-
-    return result;
-  }
-  /**
-   * Helper method to get the current timestamp in seconds.
-   * @return {number}
-   * @access protected
-   */
-  _now() {
-    return Math.floor(Date.now() / 1000);
-  }
-  /**
-   * Checkes whether an object is a Promise or not.
-   * @param {Object} obj The object to test.
-   * @return {boolean}
-   * @access protected
-   */
-  _isPromise(obj) {
-    return (
-      typeof obj === 'object' &&
-      typeof obj.then === 'function' &&
-      typeof obj.catch === 'function'
-    );
-  }
-  /**
    * Prints out a message saying that the class is doing a fallback from a storage to another
    * one.
    * @param {string} from The name of the storage that's not available.
@@ -606,129 +729,6 @@ class SimpleStorage {
    */
   _warnStorageFallback(from, to) {
     this._warn(`${from} is not available; switching to ${to}`);
-  }
-  /**
-   * Checks whether `localStorage` is available or not.
-   * @param {string} [fallbackFrom] In case it's being used as a fallback, this will be the name
-   *                                of the storage that wasn't available.
-   * @return {boolean}
-   * @access protected
-   */
-  _isLocalStorageAvailable(fallbackFrom) {
-    if (fallbackFrom) {
-      this._warnStorageFallback(fallbackFrom, 'localStorage');
-    }
-
-    return !!this._options.window.localStorage;
-  }
-  /**
-   * Gets an object from `localStorage`.
-   * @param {string} key The key used to save the object.
-   * @return {Object}
-   * @access protected
-   */
-  _getFromLocalStorage(key) {
-    const value = this._options.window.localStorage[key];
-    return value ? JSON.parse(value) : null;
-  }
-  /**
-   * Sets an object into the `localStorage`.
-   * @param {string} key   The object key.
-   * @param {Object} value The object to save.
-   * @access protected
-   */
-  _setOnLocalStorage(key, value) {
-    this._options.window.localStorage[key] = JSON.stringify(value);
-  }
-  /**
-   * Deletes an object from the `localStorage`.
-   * @param {string} key The object key.
-   * @access protected
-   */
-  _deleteFromLocalStorage(key) {
-    delete this._options.window.localStorage[key];
-  }
-  /**
-   * Checks whether `sessionStorage` is available or not.
-   * @param {string} [fallbackFrom] In case it's being used as a fallback, this will be the name
-   *                                of the storage that wasn't available.
-   * @return {boolean}
-   * @access protected
-   */
-  _isSessionStorageAvailable(fallbackFrom) {
-    if (fallbackFrom) {
-      this._warnStorageFallback(fallbackFrom, 'sessionStorage');
-    }
-
-    return !!this._options.window.sessionStorage;
-  }
-  /**
-   * Gets an object from `sessionStorage`.
-   * @param {string} key The key used to save the object.
-   * @return {Object}
-   * @access protected
-   */
-  _getFromSessionStorage(key) {
-    const value = this._options.window.sessionStorage[key];
-    return value ? JSON.parse(value) : null;
-  }
-  /**
-   * Sets an object into the `sessionStorage`.
-   * @param {string} key   The object key.
-   * @param {Object} value The object to save.
-   * @access protected
-   */
-  _setOnSessionStorage(key, value) {
-    this._options.window.sessionStorage[key] = JSON.stringify(value);
-  }
-  /**
-   * Deletes an object from the `sessionStorage`.
-   * @param {string} key The object key.
-   * @access protected
-   */
-  _deleteFromSessionStorage(key) {
-    delete this._options.window.sessionStorage[key];
-  }
-  /**
-   * This method is just here to comply with the {@link SimpleStorageStorage} _"interface"_ as
-   * the temp storage is always available.
-   * @param {string} [fallbackFrom] In case it's being used as a fallback, this will be the name
-   *                                of the storage that wasn't available.
-   * @return {boolean}
-   * @access protected
-   */
-  _isTempStorageAvailable(fallbackFrom) {
-    if (fallbackFrom) {
-      this._warnStorageFallback(fallbackFrom, 'tempStorage');
-    }
-
-    return true;
-  }
-  /**
-   * Gets an object from the _"temp storage"_.
-   * @param {string} key The key used to save the object.
-   * @return {Object}
-   * @access protected
-   */
-  _getFromTempStorage(key) {
-    return this._options.tempStorage[key];
-  }
-  /**
-   * Sets an object into the _"temp storage"_.
-   * @param {string} key   The object key.
-   * @param {Object} value The object to save.
-   * @access protected
-   */
-  _setOnTempStorage(key, value) {
-    this._options.tempStorage[key] = value;
-  }
-  /**
-   * Deletes an object from the _"temp storage"_.
-   * @param {string} key The object key.
-   * @access protected
-   */
-  _deleteFromTempStorage(key) {
-    delete this._options.tempStorage[key];
   }
 }
 

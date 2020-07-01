@@ -95,93 +95,6 @@ class APIClient {
     this.authorizationToken = '';
   }
   /**
-   * Takes a dictionary of endpoints and flatten them on a single level.
-   * The method just calls {@link ObjectUtils.flat}.
-   * @param {APIClientEndpoints} endpoints A dictionary of named endpoints.
-   * @return {Object}
-   */
-  flattenEndpoints(endpoints) {
-    return ObjectUtils.flat(
-      endpoints,
-      '.',
-      '',
-      (ignore, value) => typeof value.path === 'undefined'
-    );
-  }
-  /**
-   * Sets a bearer token for all the requests.
-   * @param {String} [token=''] The new authorization token. If the value is empty, it will remove
-   *                            any token previously saved.
-   */
-  setAuthorizationToken(token = '') {
-    this.authorizationToken = token;
-  }
-  /**
-   * Sets the default headers for the requests.
-   * @param {Object}  [headers={}]     The new default headers.
-   * @param {Boolean} [overwrite=true] If `false`, it will merge the new default headers with
-   *                                   the current ones.
-   */
-  setDefaultHeaders(headers = {}, overwrite = true) {
-    this.defaultHeaders = Object.assign(
-      {},
-      (overwrite ? {} : this.defaultHeaders),
-      headers
-    );
-  }
-  /**
-   * Makes a `GET` request.
-   * @param {String}       url          The request URL.
-   * @param {FetchOptions} [options={}] The request options.
-   * @return {Promise<Object,Error>}
-   */
-  get(url, options = {}) {
-    return this.fetch(Object.assign({ url }, options));
-  }
-  /**
-   * Makes a `HEAD` request.
-   * @param {String}       url          The request URL.
-   * @param {FetchOptions} [options={}] The request options.
-   * @return {Promise<Object,Error>}
-   */
-  head(url, options = {}) {
-    return this.get(url, Object.assign({}, options, { method: 'head' }));
-  }
-  /**
-   * Makes a `POST` request.
-   * @param {String}       url          The request URL.
-   * @param {Object}       body         The request body.
-   * @param {FetchOptions} [options={}] The request options.
-   * @return {Promise<Object,Error>}
-   */
-  post(url, body, options = {}) {
-    return this.fetch(Object.assign({
-      url,
-      body,
-      method: 'post',
-    }, options));
-  }
-  /**
-   * Makes a `PUT` request.
-   * @param {String}       url          The request URL.
-   * @param {Object}       body         The request body.
-   * @param {FetchOptions} [options={}] The request options.
-   * @return {Promise<Object,Error>}
-   */
-  put(url, body, options = {}) {
-    return this.post(url, body, Object.assign({}, options, { method: 'put' }));
-  }
-  /**
-   * Makes a `PATCH` request.
-   * @param {String}       url          The request URL.
-   * @param {Object}       body         The request body.
-   * @param {FetchOptions} [options={}] The request options.
-   * @return {Promise<Object,Error>}
-   */
-  patch(url, body, options = {}) {
-    return this.post(url, body, Object.assign({}, options, { method: 'patch' }));
-  }
-  /**
    * Makes a `DELETE` request.
    * @param {String}       url          The request URL.
    * @param {Object}       body         The request body.
@@ -189,7 +102,7 @@ class APIClient {
    * @return {Promise<Object,Error>}
    */
   delete(url, body = {}, options = {}) {
-    return this.post(url, body, Object.assign({}, options, { method: 'delete' }));
+    return this.post(url, body, { method: 'delete', ...options });
   }
   /**
    * Generates an endpoint URL.
@@ -207,7 +120,7 @@ class APIClient {
       throw new Error(`Trying to request unknown endpoint: ${name}`);
     }
     // Get a new reference for the parameters.
-    const params = Object.assign({}, parameters);
+    const params = { ...parameters };
     // If the endpoint is a string, format it into an object with `path`.
     const endpoint = typeof info === 'string' ? { path: info } : info;
     // Define the object that will have the query string.
@@ -257,19 +170,12 @@ class APIClient {
     return uri.toString();
   }
   /**
-   * Generates a dictionary of headers using the service `defaultHeaders` property as base.
-   * If a token was set using `setAuthorizationToken`, the method will add an `Authorization`
-   * header for the bearer token.
-   * @param {Object} [overwrites={}] Extra headers to add.
-   * @return {Object}
+   * Formats an error response into a proper Error object.
+   * @param {Object} response A received response from a request.
+   * @return {Error}
    */
-  headers(overwrites = {}) {
-    const headers = Object.assign({}, this.defaultHeaders);
-    if (this.authorizationToken) {
-      headers.Authorization = `Bearer ${this.authorizationToken}`;
-    }
-
-    return Object.assign({}, headers, overwrites);
+  error(response) {
+    return new Error(response.error);
   }
   /**
    * Makes a request.
@@ -284,7 +190,7 @@ class APIClient {
    */
   fetch(options) {
     // Get a new reference of the request options.
-    const opts = Object.assign({}, options);
+    const opts = { ...options };
     // Format the request method and check if it should use the default.
     opts.method = opts.method ? opts.method.toUpperCase() : 'GET';
     // Get the request headers.
@@ -355,12 +261,106 @@ class APIClient {
     ));
   }
   /**
-   * Formats an error response into a proper Error object.
-   * @param {Object} response A received response from a request.
-   * @return {Error}
+   * Takes a dictionary of endpoints and flatten them on a single level.
+   * The method just calls {@link ObjectUtils.flat}.
+   * @param {APIClientEndpoints} endpoints A dictionary of named endpoints.
+   * @return {Object}
    */
-  error(response) {
-    return new Error(response.error);
+  flattenEndpoints(endpoints) {
+    return ObjectUtils.flat(
+      endpoints,
+      '.',
+      '',
+      (ignore, value) => typeof value.path === 'undefined',
+    );
+  }
+  /**
+   * Makes a `GET` request.
+   * @param {String}       url          The request URL.
+   * @param {FetchOptions} [options={}] The request options.
+   * @return {Promise<Object,Error>}
+   */
+  get(url, options = {}) {
+    return this.fetch({ url, ...options });
+  }
+  /**
+   * Makes a `HEAD` request.
+   * @param {String}       url          The request URL.
+   * @param {FetchOptions} [options={}] The request options.
+   * @return {Promise<Object,Error>}
+   */
+  head(url, options = {}) {
+    return this.get(url, { ...options, method: 'head' });
+  }
+  /**
+   * Generates a dictionary of headers using the service `defaultHeaders` property as base.
+   * If a token was set using `setAuthorizationToken`, the method will add an `Authorization`
+   * header for the bearer token.
+   * @param {Object} [overwrites={}] Extra headers to add.
+   * @return {Object}
+   */
+  headers(overwrites = {}) {
+    const headers = { ...this.defaultHeaders };
+    if (this.authorizationToken) {
+      headers.Authorization = `Bearer ${this.authorizationToken}`;
+    }
+
+    return { ...headers, ...overwrites };
+  }
+  /**
+   * Makes a `PATCH` request.
+   * @param {String}       url          The request URL.
+   * @param {Object}       body         The request body.
+   * @param {FetchOptions} [options={}] The request options.
+   * @return {Promise<Object,Error>}
+   */
+  patch(url, body, options = {}) {
+    return this.post(url, body, { method: 'patch', ...options });
+  }
+  /**
+   * Makes a `POST` request.
+   * @param {String}       url          The request URL.
+   * @param {Object}       body         The request body.
+   * @param {FetchOptions} [options={}] The request options.
+   * @return {Promise<Object,Error>}
+   */
+  post(url, body, options = {}) {
+    return this.fetch({
+      url,
+      body,
+      method: 'post',
+      ...options,
+    });
+  }
+  /**
+   * Makes a `PUT` request.
+   * @param {String}       url          The request URL.
+   * @param {Object}       body         The request body.
+   * @param {FetchOptions} [options={}] The request options.
+   * @return {Promise<Object,Error>}
+   */
+  put(url, body, options = {}) {
+    return this.post(url, body, { method: 'put', ...options });
+  }
+  /**
+   * Sets a bearer token for all the requests.
+   * @param {String} [token=''] The new authorization token. If the value is empty, it will remove
+   *                            any token previously saved.
+   */
+  setAuthorizationToken(token = '') {
+    this.authorizationToken = token;
+  }
+  /**
+   * Sets the default headers for the requests.
+   * @param {Object}  [headers={}]     The new default headers.
+   * @param {Boolean} [overwrite=true] If `false`, it will merge the new default headers with
+   *                                   the current ones.
+   */
+  setDefaultHeaders(headers = {}, overwrite = true) {
+    this.defaultHeaders = {
+      ...(overwrite ? {} : this.defaultHeaders),
+      ...headers,
+    };
   }
 }
 

@@ -22,22 +22,6 @@ class Logger {
     this.showTime = showTime;
   }
   /**
-   * Logs a warning (yellow) message or messages on the console.
-   * @param {string|Array} message A single message of a list of them. See the `log()` documentation
-   *                               to see all the supported properties for the `message` parameter.
-   */
-  warning(message) {
-    this.log(message, 'yellow');
-  }
-  /**
-   * Logs a success (green) message or messages on the console.
-   * @param {string|Array} message A single message of a list of them. See the `log()` documentation
-   *                               to see all the supported properties for the `message` parameter.
-   */
-  success(message) {
-    this.log(message, 'green');
-  }
-  /**
    * Logs an error (red) message or messages on the console.
    * @param {string|Array|Error} message          A single message of a list of them. See the
    *                                              `log()` documentation to see all the supported
@@ -142,6 +126,23 @@ class Logger {
     parts.push(text);
     // Join the list into a single text message.
     return parts.join(' ').trim();
+  }
+  /**
+   * Logs a success (green) message or messages on the console.
+   * @param {string|Array} message A single message of a list of them. See the `log()` documentation
+   *                               to see all the supported properties for the `message` parameter.
+   */
+  success(message) {
+    this.log(message, 'green');
+  }
+  /**
+   * Logs a warning (yellow) message or messages on the console.
+   * @param {string|Array} message A single message of a list of them. See the `log()` documentation
+   *                               to see all the supported properties for the `message` parameter.
+   * @todo Add `warn` alias.
+   */
+  warning(message) {
+    this.log(message, 'yellow');
   }
   /**
    * Gets a function to modify the color of a string. The reason for this _"proxy method"_ is that

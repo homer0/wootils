@@ -82,16 +82,16 @@ describe('APIClient', () => {
     // When
     sut = new APIClient('', {}, () => {});
     sut.setDefaultHeaders(baseHeaders);
-    headersAfterFirstSet = Object.assign({}, sut.defaultHeaders);
+    headersAfterFirstSet = { ...sut.defaultHeaders };
     sut.setDefaultHeaders(extraHeaders, false);
-    headersAfterSecondSet = Object.assign({}, sut.defaultHeaders);
+    headersAfterSecondSet = { ...sut.defaultHeaders };
     sut.setDefaultHeaders(baseHeaders);
-    headersAfterSetWithOverwrite = Object.assign({}, sut.defaultHeaders);
+    headersAfterSetWithOverwrite = { ...sut.defaultHeaders };
     sut.setDefaultHeaders();
-    headersAfterRemove = Object.assign({}, sut.defaultHeaders);
+    headersAfterRemove = { ...sut.defaultHeaders };
     // Then
     expect(headersAfterFirstSet).toEqual(baseHeaders);
-    expect(headersAfterSecondSet).toEqual(Object.assign({}, baseHeaders, extraHeaders));
+    expect(headersAfterSecondSet).toEqual({ ...baseHeaders, ...extraHeaders });
     expect(headersAfterSetWithOverwrite).toEqual(baseHeaders);
     expect(headersAfterRemove).toEqual({});
   });
@@ -219,31 +219,29 @@ describe('APIClient', () => {
     let headersAfterRemovingDefaults = null;
     // When
     sut = new APIClient('', {}, () => {});
-    headersByDefault = Object.assign({}, sut.headers());
-    headersWithOverwrites = Object.assign({}, sut.headers(extraHeaders));
+    headersByDefault = { ...sut.headers() };
+    headersWithOverwrites = { ...sut.headers(extraHeaders) };
     sut.setAuthorizationToken(token);
-    headersAfterAddingToken = Object.assign({}, sut.headers(extraHeaders));
+    headersAfterAddingToken = { ...sut.headers(extraHeaders) };
     sut.setDefaultHeaders(baseHeaders);
-    headersAfterAddingDefaults = Object.assign({}, sut.headers(extraHeaders));
+    headersAfterAddingDefaults = { ...sut.headers(extraHeaders) };
     sut.setAuthorizationToken();
-    headersAfterRemovingToken = Object.assign({}, sut.headers(extraHeaders));
+    headersAfterRemovingToken = { ...sut.headers(extraHeaders) };
     sut.setDefaultHeaders();
-    headersAfterRemovingDefaults = Object.assign({}, sut.headers(extraHeaders));
+    headersAfterRemovingDefaults = { ...sut.headers(extraHeaders) };
     // Then
     expect(headersByDefault).toEqual({});
     expect(headersWithOverwrites).toEqual(extraHeaders);
-    expect(headersAfterAddingToken).toEqual(Object.assign({}, authorizationHeader, extraHeaders));
-    expect(headersAfterAddingDefaults).toEqual(Object.assign(
-      {},
-      baseHeaders,
-      authorizationHeader,
-      extraHeaders
-    ));
-    expect(headersAfterRemovingToken).toEqual(Object.assign(
-      {},
-      baseHeaders,
-      extraHeaders
-    ));
+    expect(headersAfterAddingToken).toEqual({ ...authorizationHeader, ...extraHeaders });
+    expect(headersAfterAddingDefaults).toEqual({
+      ...baseHeaders,
+      ...authorizationHeader,
+      ...extraHeaders,
+    });
+    expect(headersAfterRemovingToken).toEqual({
+      ...baseHeaders,
+      ...extraHeaders,
+    });
     expect(headersAfterRemovingDefaults).toEqual(extraHeaders);
   });
 
@@ -439,13 +437,10 @@ describe('APIClient', () => {
       expect(requestResponse.json).toHaveBeenCalledTimes(1);
       expect(fetchClient).toHaveBeenCalledTimes(1);
       expect(fetchClient).toHaveBeenCalledWith(requestURL, {
-        headers: Object.assign(
-          {},
-          {
-            'Content-Type': 'application/json',
-          },
-          requestHeaders
-        ),
+        headers: {
+          'Content-Type': 'application/json',
+          ...requestHeaders,
+        },
         method: requestMethod.toUpperCase(),
         body: JSON.stringify(requestBody),
       });

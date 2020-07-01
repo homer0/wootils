@@ -36,22 +36,6 @@ class ErrorHandler {
     this.handler = this.handle.bind(this);
   }
   /**
-   * Starts listening for unhandled errors.
-   */
-  listen() {
-    this.eventsNames.forEach((eventName) => {
-      process.on(eventName, this.handler);
-    });
-  }
-  /**
-   * Stops listening for unhandled errors.
-   */
-  stopListening() {
-    this.eventsNames.forEach((eventName) => {
-      process.removeListener(eventName, this.handler);
-    });
-  }
-  /**
    * This is called by the process listeners when an uncaught exception is thrown or a rejected
    * promise is not handled. It logs the error on detail.
    * The process exits when after logging an error.
@@ -80,6 +64,22 @@ class ErrorHandler {
       process.exit(1);
     }
   }
+  /**
+   * Starts listening for unhandled errors.
+   */
+  listen() {
+    this.eventsNames.forEach((eventName) => {
+      process.on(eventName, this.handler);
+    });
+  }
+  /**
+   * Stops listening for unhandled errors.
+   */
+  stopListening() {
+    this.eventsNames.forEach((eventName) => {
+      process.removeListener(eventName, this.handler);
+    });
+  }
 }
 /**
  * Generates a `Provider` with an already defined flag to exit or not the process when after
@@ -98,7 +98,7 @@ const errorHandlerWithOptions = (exitOnError) => provider((app) => {
 
     return new ErrorHandler(
       logger,
-      exitOnError
+      exitOnError,
     );
   });
 });

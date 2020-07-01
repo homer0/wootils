@@ -9,7 +9,7 @@ fs.readFile('./README.md', 'utf-8')
 .then((contents) => {
   const newContents = contents.replace(
     /(?:\.\/documents\/\w+\/(\w+)\.md)/ig,
-    'manual/$1.html'
+    'manual/$1.html',
   );
   return fs.writeFile(`./${file}`, newContents);
 })

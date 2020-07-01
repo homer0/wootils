@@ -211,11 +211,11 @@ describe('EventsHub', () => {
     // Given
     const eventName = 'THE EVENT';
     const targetInitialValue = { one: 1, two: 2 };
-    const target = Object.assign({}, targetInitialValue);
+    const target = { ...targetInitialValue };
     const newValue = { three: 3 };
     let result = null;
     let unsubscribe = null;
-    const subscriber = jest.fn((toReduce) => Object.assign({}, toReduce, newValue));
+    const subscriber = jest.fn((toReduce) => ({ ...toReduce, ...newValue }));
     // When
     const sut = new EventsHub();
     unsubscribe = sut.on(eventName, subscriber);
@@ -224,7 +224,7 @@ describe('EventsHub', () => {
     // Then
     expect(unsubscribe).toBeFunction();
     expect(subscriber).toHaveBeenCalledTimes(1);
-    expect(result).toEqual(Object.assign({}, targetInitialValue, newValue));
+    expect(result).toEqual({ ...targetInitialValue, ...newValue });
     expect(target).toEqual(targetInitialValue);
   });
 
@@ -305,14 +305,14 @@ describe('EventsHub', () => {
     const eventTwoName = 'SECOND EVENT';
     const eventNames = [eventOneName, eventTwoName];
     const targetInitialValue = { one: 1, two: 2 };
-    const target = Object.assign({}, targetInitialValue);
+    const target = { ...targetInitialValue };
     let result = null;
     let unsubscribe = null;
     let counter = -1;
     const newValues = [{ three: 3 }, { four: 4 }];
     const subscriber = jest.fn((toReduce) => {
       counter++;
-      return Object.assign({}, toReduce, newValues[counter]);
+      return { ...toReduce, ...newValues[counter] };
     });
     // When
     const sut = new EventsHub();

@@ -62,6 +62,14 @@ class PathUtils {
     return location;
   }
   /**
+   * Alias to `joinFrom` that uses the `home` location by default.
+   * @param {Array} paths The rest of the path components to join.
+   * @return {string}
+   */
+  join(...paths) {
+    return this.joinFrom('home', ...paths);
+  }
+  /**
    * Build a path using a location path as base.
    * @param {string} location The location name.
    * @param {Array}  paths    The rest of the path components to join.
@@ -72,12 +80,11 @@ class PathUtils {
     return path.join(locationPath, ...paths);
   }
   /**
-   * Alias to `joinFrom` that uses the `home` location by default.
-   * @param {Array} paths The rest of the path components to join.
+   * Get the path to the directory where the app executable is located.
    * @return {string}
    */
-  join(...paths) {
-    return this.joinFrom('home', ...paths);
+  get app() {
+    return this.getLocation('app');
   }
   /**
    * Get the project root path.
@@ -85,13 +92,6 @@ class PathUtils {
    */
   get home() {
     return this.getLocation('home');
-  }
-  /**
-   * Get the path to the directory where the app executable is located.
-   * @return {string}
-   */
-  get app() {
-    return this.getLocation('app');
   }
   /**
    * Find and register the location for the app executable directory.

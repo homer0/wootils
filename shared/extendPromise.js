@@ -100,7 +100,7 @@ class PromiseExtender {
  */
 const extendPromise = (
   promise,
-  properties
+  properties,
 ) => (new PromiseExtender(promise, properties)).promise;
 
 module.exports = extendPromise;

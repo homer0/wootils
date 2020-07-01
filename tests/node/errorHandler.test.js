@@ -32,11 +32,11 @@ describe('ErrorHandler', () => {
     expect(onMock).toHaveBeenCalledTimes(2);
     expect(onMock).toHaveBeenCalledWith(
       'uncaughtException',
-      sut.handler
+      sut.handler,
     );
     expect(onMock).toHaveBeenCalledWith(
       'unhandledRejection',
-      sut.handler
+      sut.handler,
     );
   });
 
@@ -55,20 +55,20 @@ describe('ErrorHandler', () => {
     expect(onMock).toHaveBeenCalledTimes(2);
     expect(onMock).toHaveBeenCalledWith(
       'uncaughtException',
-      sut.handler
+      sut.handler,
     );
     expect(onMock).toHaveBeenCalledWith(
       'unhandledRejection',
-      sut.handler
+      sut.handler,
     );
     expect(removeListenerMock).toHaveBeenCalledTimes(2);
     expect(removeListenerMock).toHaveBeenCalledWith(
       'uncaughtException',
-      sut.handler
+      sut.handler,
     );
     expect(removeListenerMock).toHaveBeenCalledWith(
       'unhandledRejection',
-      sut.handler
+      sut.handler,
     );
   });
 
@@ -111,7 +111,7 @@ describe('ErrorHandler', () => {
     expect(logMock).toHaveBeenCalledTimes(1);
     expect(logMock).toHaveBeenCalledWith(
       expect.stringMatching(/^\[\d+-\d+-\d+ \d+:\d+:\d+]/),
-      exception
+      exception,
     );
     expect(exitMock).toHaveBeenCalledTimes(1);
     expect(exitMock).toHaveBeenCalledWith(1);

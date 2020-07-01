@@ -31,7 +31,7 @@ describe('SimpleStorage', () => {
   };
 
   const getStorageProxy = (initialData = {}) => {
-    const data = Object.assign({}, initialData);
+    const data = { ...initialData };
     return new Proxy({}, {
       mocks: {
         get: jest.fn((name) => data[name]),
@@ -460,7 +460,7 @@ describe('SimpleStorage', () => {
       expect(mStorage.mocks.set).toHaveBeenCalledTimes(1);
       expect(mStorage.mocks.set).toHaveBeenCalledWith(
         options.storage.key,
-        JSON.stringify(initialData)
+        JSON.stringify(initialData),
       );
     });
 
@@ -751,7 +751,7 @@ describe('SimpleStorage', () => {
             time: currentTime,
             value: entryValue,
           },
-        })
+        }),
       );
     });
 
@@ -802,7 +802,7 @@ describe('SimpleStorage', () => {
             time: currentTime,
             value: entryValue,
           },
-        })
+        }),
       );
     });
 
@@ -900,7 +900,7 @@ describe('SimpleStorage', () => {
               time: currentTime,
               value: entryValue,
             },
-          })
+          }),
         );
       })
       .catch((error) => {
@@ -958,7 +958,7 @@ describe('SimpleStorage', () => {
             time: currentTime,
             value: entryValue,
           },
-        })
+        }),
       );
       expect(mStorage.mocks.set).toHaveBeenCalledWith(options.storage.key, '{}');
     });
@@ -1013,7 +1013,7 @@ describe('SimpleStorage', () => {
             time: currentTime,
             value: entryValue,
           },
-        })
+        }),
       );
     });
 

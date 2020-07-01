@@ -4,34 +4,6 @@ const extend = require('extend');
  */
 class ObjectUtils {
   /**
-   * @throws {Error} is called. This class is meant to be have only static methods.
-   * @ignore
-   */
-  constructor() {
-    throw new Error('ObjectUtils is a static class');
-  }
-  /**
-   * This method makes a deep merge of a list of objects into a new one. The method also supports
-   * arrays.
-   * @example
-   * const objA = { a: 'first' };
-   * const objB = { b: 'second' };
-   * console.log(ObjectUtils.merge(objA, objB));
-   * // Will output { a: 'first', b: 'second' }
-   * @example
-   * const arrA = [{ a: 'first' }];
-   * const arrB = [{ b: 'second' }];
-   * console.log(ObjectUtils.merge(objA, objB));
-   * // Will output [{ a: 'first', b: 'second' }]
-   * @param {...{Object}} targets The objects to merge.
-   * @return {Object}
-   */
-  static merge(...targets) {
-    const [firstTarget] = targets;
-    const base = Array.isArray(firstTarget) ? [] : {};
-    return extend(true, base, ...targets);
-  }
-  /**
    * Creates a deep copy of a given object.
    * @param {Object} target The object to copy.
    * @return {Object}
@@ -40,114 +12,113 @@ class ObjectUtils {
     return this.merge(target);
   }
   /**
-   * Returns the value of an object property using a path.
+   * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
+   * `dash-case` to `lowerCamelCase`.
+   * @param {Object} target              The object for format.
+   * @param {Array}  [include=[]]        A list of keys or paths where the transformation will
+   *                                     be made. If not specified, the method will use all the
+   *                                     keys from the object.
+   * @param {Array}  [exclude=[]]        A list of keys or paths where the transformation won't
+   *                                     be made.
+   * @param {string} [pathDelimiter='.'] The delimiter that will separate the path components
+   *                                     for both `include` and `exclude`.
+   * @return {Object}
+   */
+  static dashToLowerCamelKeys(target, include = [], exclude = [], pathDelimiter = '.') {
+    return this.formatKeys(
+      target,
+      /([a-z])-([a-z])/g,
+      (fullMatch, firstLetter, secondLetter) => {
+        const newSecondLetter = secondLetter.toUpperCase();
+        return `${firstLetter}${newSecondLetter}`;
+      },
+      include,
+      exclude,
+      pathDelimiter,
+    );
+  }
+  /**
+   * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
+   * `dash-case` to `snake_case`.
+   * @param {Object} target              The object for format.
+   * @param {Array}  [include=[]]        A list of keys or paths where the transformation will
+   *                                     be made. If not specified, the method will use all the
+   *                                     keys from the object.
+   * @param {Array}  [exclude=[]]        A list of keys or paths where the transformation won't
+   *                                     be made.
+   * @param {string} [pathDelimiter='.'] The delimiter that will separate the path components
+   *                                     for both `include` and `exclude`.
+   * @return {Object}
+   */
+  static dashToSnakeKeys(target, include = [], exclude = [], pathDelimiter = '.') {
+    return this.formatKeys(
+      target,
+      /([a-z])-([a-z])/g,
+      (fullMatch, firstLetter, secondLetter) => `${firstLetter}_${secondLetter}`,
+      include,
+      exclude,
+      pathDelimiter,
+    );
+  }
+  /**
+   * Deletes a property of an object using a path.
    * @example
-   * const obj = {
+   * const target = {
    *   propOne: {
    *     propOneSub: 'Charito!',
    *   },
    *   propTwo: '!!!',
    * };
-   * console.log(ObjectUtils.get(
-   *   obj,
+   * console.log(ObjectUtils.delete(
+   *   target,
    *   'propOne.propOneSub'
    * ));
-   * // Will output 'Charito!'
+   * // Will output { propTwo: '!!!' }
    *
-   * @param {Object}  target                The object from where the property will be read.
-   * @param {string}  objPath               The path to the property.
-   * @param {string}  [pathDelimiter='.']   The delimiter that will separate the path components.
-   * @param {boolean} [failWithError=false] Whether or not to throw an error when the path is
-   *                                        invalid. If this is `false`, the method will silently
-   *                                        fail and return `undefined`.
-   * @return {*}
-   * @throws {Error} If the path is invalid and `failWithError` is set to `true`.
+   * @param {Object}  target                      The object from where the property will be
+   *                                              removed.
+   * @param {string}  objPath                     The path to the property.
+   * @param {String}  [pathDelimiter='.']         The delimiter that will separate the path
+   *                                              components.
+   * @param {Boolean} [cleanEmptyProperties=true] If this flag is `true` and after removing the
+   *                                              property the parent object is empty, it will
+   *                                              remove it recursively until a non empty parent
+   *                                              object is found.
+   * @param {boolean} [failWithError=false]       Whether or not to throw an error when the path
+   *                                              is invalid. If this is `false`, the method will
+   *                                              silently fail.
+   * @return {Object} A copy of the original object with the removed property/properties.
    */
-  static get(target, objPath, pathDelimiter = '.', failWithError = false) {
-    const parts = objPath.split(pathDelimiter);
-    const first = parts.shift();
-    let currentElement = target[first];
-    if (typeof currentElement === 'undefined') {
-      if (failWithError) {
-        throw new Error(`There's nothing on '${objPath}'`);
-      }
-    } else if (parts.length) {
-      let currentPath = first;
-      parts.some((currentPart) => {
-        let breakLoop = false;
-        currentPath += `${pathDelimiter}${currentPart}`;
-        currentElement = currentElement[currentPart];
-        if (typeof currentElement === 'undefined') {
-          if (failWithError) {
-            throw new Error(`There's nothing on '${currentPath}'`);
-          } else {
-            breakLoop = true;
-          }
-        }
-
-        return breakLoop;
-      });
-    }
-
-    return currentElement;
-  }
-  /**
-   * Sets a property on an object using a path. If the path doesn't exist, it will be created.
-   * @example
-   * const target = {};
-   * console.log(ObjectUtils.set(target, 'some.prop.path', 'some-value'));
-   * // Will output { some: { prop: { path: 'some-value' } } }
-   *
-   * @param {Object}  target                The object where the property will be set.
-   * @param {string}  objPath               The path for the property.
-   * @param {*}       value                 The value to set on the property.
-   * @param {string}  [pathDelimiter='.']   The delimiter that will separate the path components.
-   * @param {boolean} [failWithError=false] Whether or not to throw an error when the path is
-   *                                        invalid. If this is `false`, the method will silently
-   *                                        fail and return `undefined`.
-   * @return {Object} A copy of the original object with the added property/properties.
-   * @throws {Error} If one of the path components is for a non-object property and
-   *                 `failWithError` is set to `true`.
-   */
-  static set(
+  static delete(
     target,
     objPath,
-    value,
     pathDelimiter = '.',
-    failWithError = false
+    cleanEmptyProperties = true,
+    failWithError = false,
   ) {
+    const parts = objPath.split(pathDelimiter);
+    const last = parts.pop();
     let result = this.copy(target);
-    if (objPath.includes(pathDelimiter)) {
-      const parts = objPath.split(pathDelimiter);
-      const last = parts.pop();
-      let currentElement = result;
-      let currentPath = '';
-      parts.forEach((part) => {
-        currentPath += `${pathDelimiter}${part}`;
-        const element = currentElement[part];
-        const elementType = typeof element;
-        if (elementType === 'undefined') {
-          currentElement[part] = {};
-          currentElement = currentElement[part];
-        } else if (elementType === 'object') {
-          currentElement = currentElement[part];
-        } else {
-          const errorPath = currentPath.substr(pathDelimiter.length);
-          if (failWithError) {
-            throw new Error(
-              `There's already an element of type '${elementType}' on '${errorPath}'`
-            );
-          } else {
-            result = undefined;
-          }
-        }
-      });
-
-      if (result) {
-        currentElement[last] = value;
+    if (parts.length) {
+      const parentPath = parts.join(pathDelimiter);
+      const parentObj = this.get(
+        result,
+        parentPath,
+        pathDelimiter,
+        failWithError,
+      );
+      delete parentObj[last];
+      if (cleanEmptyProperties && !Object.keys(parentObj).length) {
+        result = this.delete(
+          result,
+          parentPath,
+          pathDelimiter,
+          cleanEmptyProperties,
+          failWithError,
+        );
       }
     } else {
-      result[objPath] = value;
+      delete result[last];
     }
 
     return result;
@@ -227,69 +198,6 @@ class ObjectUtils {
     return result;
   }
   /**
-   * Deletes a property of an object using a path.
-   * @example
-   * const target = {
-   *   propOne: {
-   *     propOneSub: 'Charito!',
-   *   },
-   *   propTwo: '!!!',
-   * };
-   * console.log(ObjectUtils.delete(
-   *   target,
-   *   'propOne.propOneSub'
-   * ));
-   * // Will output { propTwo: '!!!' }
-   *
-   * @param {Object}  target                      The object from where the property will be
-   *                                              removed.
-   * @param {string}  objPath                     The path to the property.
-   * @param {String}  [pathDelimiter='.']         The delimiter that will separate the path
-   *                                              components.
-   * @param {Boolean} [cleanEmptyProperties=true] If this flag is `true` and after removing the
-   *                                              property the parent object is empty, it will
-   *                                              remove it recursively until a non empty parent
-   *                                              object is found.
-   * @param {boolean} [failWithError=false]       Whether or not to throw an error when the path
-   *                                              is invalid. If this is `false`, the method will
-   *                                              silently fail.
-   * @return {Object} A copy of the original object with the removed property/properties.
-   */
-  static delete(
-    target,
-    objPath,
-    pathDelimiter = '.',
-    cleanEmptyProperties = true,
-    failWithError = false
-  ) {
-    const parts = objPath.split(pathDelimiter);
-    const last = parts.pop();
-    let result = this.copy(target);
-    if (parts.length) {
-      const parentPath = parts.join(pathDelimiter);
-      const parentObj = this.get(
-        result,
-        parentPath,
-        pathDelimiter,
-        failWithError
-      );
-      delete parentObj[last];
-      if (cleanEmptyProperties && !Object.keys(parentObj).length) {
-        result = this.delete(
-          result,
-          parentPath,
-          pathDelimiter,
-          cleanEmptyProperties,
-          failWithError
-        );
-      }
-    } else {
-      delete result[last];
-    }
-
-    return result;
-  }
-  /**
    * Flatterns an object properties into a single level dictionary.
    * @example
    * const target = {
@@ -331,7 +239,7 @@ class ObjectUtils {
           value,
           pathDelimiter,
           name,
-          shouldFlattern
+          shouldFlattern,
         ));
       } else {
         result[name] = isObject ? this.copy(value) : value;
@@ -339,27 +247,6 @@ class ObjectUtils {
     });
 
     return result;
-  }
-  /**
-   * This method does the exact opposite from `flat`: It takes an already flattern object and
-   * restores it structure.
-   * @example
-   * const target = {
-   *   'propOne.propOneSub': 'Charito!
-   *   propTwo: '!!!',
-   * };
-   * console.log(ObjectUtils.unflat(target);
-   * // Will output { propOne: { propOneSub: 'Charito!' }, 'propTwo': '!!!' }
-   *
-   * @param {Object} target                The object to transform.
-   * @param {String} [pathDelimiter='.']   The delimiter that will separate the path components.
-   * @return {Object}
-   */
-  static unflat(target, pathDelimiter = '.') {
-    return Object.keys(target).reduce(
-      (current, key) => this.set(current, key, target[key], pathDelimiter),
-      {}
-    );
   }
   /**
    * Formats all the keys on an object using a way similar to `.replace(regexp, ...)` but that
@@ -402,7 +289,7 @@ class ObjectUtils {
     replaceWith,
     include = [],
     exclude = [],
-    pathDelimiter = '.'
+    pathDelimiter = '.',
   ) {
     // First of all, get all the keys from the target.
     const keys = Object.keys(target);
@@ -579,17 +466,93 @@ class ObjectUtils {
             replaceWith,
             subIncludeByKey[key] || [],
             subExcludeByKey[key] || [],
-            pathDelimiter
+            pathDelimiter,
           );
         } else {
           newValue = value;
         }
         // "Done", return the new object with the "new key" and the "new value".
-        return Object.assign({}, newObj, {
-          [newKey]: newValue,
-        });
+        return { ...newObj, [newKey]: newValue };
       },
-      {}
+      {},
+    );
+  }
+  /**
+   * Returns the value of an object property using a path.
+   * @example
+   * const obj = {
+   *   propOne: {
+   *     propOneSub: 'Charito!',
+   *   },
+   *   propTwo: '!!!',
+   * };
+   * console.log(ObjectUtils.get(
+   *   obj,
+   *   'propOne.propOneSub'
+   * ));
+   * // Will output 'Charito!'
+   *
+   * @param {Object}  target                The object from where the property will be read.
+   * @param {string}  objPath               The path to the property.
+   * @param {string}  [pathDelimiter='.']   The delimiter that will separate the path components.
+   * @param {boolean} [failWithError=false] Whether or not to throw an error when the path is
+   *                                        invalid. If this is `false`, the method will silently
+   *                                        fail and return `undefined`.
+   * @return {*}
+   * @throws {Error} If the path is invalid and `failWithError` is set to `true`.
+   */
+  static get(target, objPath, pathDelimiter = '.', failWithError = false) {
+    const parts = objPath.split(pathDelimiter);
+    const first = parts.shift();
+    let currentElement = target[first];
+    if (typeof currentElement === 'undefined') {
+      if (failWithError) {
+        throw new Error(`There's nothing on '${objPath}'`);
+      }
+    } else if (parts.length) {
+      let currentPath = first;
+      parts.some((currentPart) => {
+        let breakLoop = false;
+        currentPath += `${pathDelimiter}${currentPart}`;
+        currentElement = currentElement[currentPart];
+        if (typeof currentElement === 'undefined') {
+          if (failWithError) {
+            throw new Error(`There's nothing on '${currentPath}'`);
+          } else {
+            breakLoop = true;
+          }
+        }
+
+        return breakLoop;
+      });
+    }
+
+    return currentElement;
+  }
+  /**
+   * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
+   * `lowerCamelCase` to `dash-case`.
+   * @param {Object} target              The object for format.
+   * @param {Array}  [include=[]]        A list of keys or paths where the transformation will
+   *                                     be made. If not specified, the method will use all the
+   *                                     keys from the object.
+   * @param {Array}  [exclude=[]]        A list of keys or paths where the transformation won't
+   *                                     be made.
+   * @param {string} [pathDelimiter='.'] The delimiter that will separate the path components
+   *                                     for both `include` and `exclude`.
+   * @return {Object}
+   */
+  static lowerCamelToDashKeys(target, include = [], exclude = [], pathDelimiter = '.') {
+    return this.formatKeys(
+      target,
+      /([a-z])([A-Z])/g,
+      (fullMatch, firstLetter, secondLetter) => {
+        const newSecondLetter = secondLetter.toLowerCase();
+        return `${firstLetter}-${newSecondLetter}`;
+      },
+      include,
+      exclude,
+      pathDelimiter,
     );
   }
   /**
@@ -615,12 +578,94 @@ class ObjectUtils {
       },
       include,
       exclude,
-      pathDelimiter
+      pathDelimiter,
     );
   }
   /**
+   * This method makes a deep merge of a list of objects into a new one. The method also supports
+   * arrays.
+   * @example
+   * const objA = { a: 'first' };
+   * const objB = { b: 'second' };
+   * console.log(ObjectUtils.merge(objA, objB));
+   * // Will output { a: 'first', b: 'second' }
+   * @example
+   * const arrA = [{ a: 'first' }];
+   * const arrB = [{ b: 'second' }];
+   * console.log(ObjectUtils.merge(objA, objB));
+   * // Will output [{ a: 'first', b: 'second' }]
+   * @param {...{Object}} targets The objects to merge.
+   * @return {Object}
+   */
+  static merge(...targets) {
+    const [firstTarget] = targets;
+    const base = Array.isArray(firstTarget) ? [] : {};
+    return extend(true, base, ...targets);
+  }
+  /**
+   * Sets a property on an object using a path. If the path doesn't exist, it will be created.
+   * @example
+   * const target = {};
+   * console.log(ObjectUtils.set(target, 'some.prop.path', 'some-value'));
+   * // Will output { some: { prop: { path: 'some-value' } } }
+   *
+   * @param {Object}  target                The object where the property will be set.
+   * @param {string}  objPath               The path for the property.
+   * @param {*}       value                 The value to set on the property.
+   * @param {string}  [pathDelimiter='.']   The delimiter that will separate the path components.
+   * @param {boolean} [failWithError=false] Whether or not to throw an error when the path is
+   *                                        invalid. If this is `false`, the method will silently
+   *                                        fail and return `undefined`.
+   * @return {Object} A copy of the original object with the added property/properties.
+   * @throws {Error} If one of the path components is for a non-object property and
+   *                 `failWithError` is set to `true`.
+   */
+  static set(
+    target,
+    objPath,
+    value,
+    pathDelimiter = '.',
+    failWithError = false,
+  ) {
+    let result = this.copy(target);
+    if (objPath.includes(pathDelimiter)) {
+      const parts = objPath.split(pathDelimiter);
+      const last = parts.pop();
+      let currentElement = result;
+      let currentPath = '';
+      parts.forEach((part) => {
+        currentPath += `${pathDelimiter}${part}`;
+        const element = currentElement[part];
+        const elementType = typeof element;
+        if (elementType === 'undefined') {
+          currentElement[part] = {};
+          currentElement = currentElement[part];
+        } else if (elementType === 'object') {
+          currentElement = currentElement[part];
+        } else {
+          const errorPath = currentPath.substr(pathDelimiter.length);
+          if (failWithError) {
+            throw new Error(
+              `There's already an element of type '${elementType}' on '${errorPath}'`,
+            );
+          } else {
+            result = undefined;
+          }
+        }
+      });
+
+      if (result) {
+        currentElement[last] = value;
+      }
+    } else {
+      result[objPath] = value;
+    }
+
+    return result;
+  }
+  /**
    * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
-   * `lowerCamelCase` to `dash-case`.
+   * `snake_case` to `dash-case`.
    * @param {Object} target              The object for format.
    * @param {Array}  [include=[]]        A list of keys or paths where the transformation will
    *                                     be made. If not specified, the method will use all the
@@ -631,17 +676,14 @@ class ObjectUtils {
    *                                     for both `include` and `exclude`.
    * @return {Object}
    */
-  static lowerCamelToDashKeys(target, include = [], exclude = [], pathDelimiter = '.') {
+  static snakeToDashKeys(target, include = [], exclude = [], pathDelimiter = '.') {
     return this.formatKeys(
       target,
-      /([a-z])([A-Z])/g,
-      (fullMatch, firstLetter, secondLetter) => {
-        const newSecondLetter = secondLetter.toLowerCase();
-        return `${firstLetter}-${newSecondLetter}`;
-      },
+      /([a-z])_([a-z])/g,
+      (fullMatch, firstLetter, secondLetter) => `${firstLetter}-${secondLetter}`,
       include,
       exclude,
-      pathDelimiter
+      pathDelimiter,
     );
   }
   /**
@@ -667,80 +709,36 @@ class ObjectUtils {
       },
       include,
       exclude,
-      pathDelimiter
+      pathDelimiter,
     );
   }
   /**
-   * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
-   * `snake_case` to `dash-case`.
-   * @param {Object} target              The object for format.
-   * @param {Array}  [include=[]]        A list of keys or paths where the transformation will
-   *                                     be made. If not specified, the method will use all the
-   *                                     keys from the object.
-   * @param {Array}  [exclude=[]]        A list of keys or paths where the transformation won't
-   *                                     be made.
-   * @param {string} [pathDelimiter='.'] The delimiter that will separate the path components
-   *                                     for both `include` and `exclude`.
+   * This method does the exact opposite from `flat`: It takes an already flattern object and
+   * restores it structure.
+   * @example
+   * const target = {
+   *   'propOne.propOneSub': 'Charito!
+   *   propTwo: '!!!',
+   * };
+   * console.log(ObjectUtils.unflat(target);
+   * // Will output { propOne: { propOneSub: 'Charito!' }, 'propTwo': '!!!' }
+   *
+   * @param {Object} target                The object to transform.
+   * @param {String} [pathDelimiter='.']   The delimiter that will separate the path components.
    * @return {Object}
    */
-  static snakeToDashKeys(target, include = [], exclude = [], pathDelimiter = '.') {
-    return this.formatKeys(
-      target,
-      /([a-z])_([a-z])/g,
-      (fullMatch, firstLetter, secondLetter) => `${firstLetter}-${secondLetter}`,
-      include,
-      exclude,
-      pathDelimiter
+  static unflat(target, pathDelimiter = '.') {
+    return Object.keys(target).reduce(
+      (current, key) => this.set(current, key, target[key], pathDelimiter),
+      {},
     );
   }
   /**
-   * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
-   * `dash-case` to `lowerCamelCase`.
-   * @param {Object} target              The object for format.
-   * @param {Array}  [include=[]]        A list of keys or paths where the transformation will
-   *                                     be made. If not specified, the method will use all the
-   *                                     keys from the object.
-   * @param {Array}  [exclude=[]]        A list of keys or paths where the transformation won't
-   *                                     be made.
-   * @param {string} [pathDelimiter='.'] The delimiter that will separate the path components
-   *                                     for both `include` and `exclude`.
-   * @return {Object}
+   * @throws {Error} is called. This class is meant to be have only static methods.
+   * @ignore
    */
-  static dashToLowerCamelKeys(target, include = [], exclude = [], pathDelimiter = '.') {
-    return this.formatKeys(
-      target,
-      /([a-z])-([a-z])/g,
-      (fullMatch, firstLetter, secondLetter) => {
-        const newSecondLetter = secondLetter.toUpperCase();
-        return `${firstLetter}${newSecondLetter}`;
-      },
-      include,
-      exclude,
-      pathDelimiter
-    );
-  }
-  /**
-   * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
-   * `dash-case` to `snake_case`.
-   * @param {Object} target              The object for format.
-   * @param {Array}  [include=[]]        A list of keys or paths where the transformation will
-   *                                     be made. If not specified, the method will use all the
-   *                                     keys from the object.
-   * @param {Array}  [exclude=[]]        A list of keys or paths where the transformation won't
-   *                                     be made.
-   * @param {string} [pathDelimiter='.'] The delimiter that will separate the path components
-   *                                     for both `include` and `exclude`.
-   * @return {Object}
-   */
-  static dashToSnakeKeys(target, include = [], exclude = [], pathDelimiter = '.') {
-    return this.formatKeys(
-      target,
-      /([a-z])-([a-z])/g,
-      (fullMatch, firstLetter, secondLetter) => `${firstLetter}_${secondLetter}`,
-      include,
-      exclude,
-      pathDelimiter
-    );
+  constructor() {
+    throw new Error('ObjectUtils is a static class');
   }
 }
 

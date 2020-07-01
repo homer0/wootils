@@ -19,6 +19,15 @@ class EnvironmentUtils {
     this.production = this.env === 'production';
   }
   /**
+   * Checks whether an environment variable exists or not.
+   * @param {string} name The name of the variable.
+   * @return {boolean}
+   */
+  exists(name) {
+    // eslint-disable-next-line no-process-env
+    return typeof process.env[name] !== 'undefined';
+  }
+  /**
    * Gets the value of an environment variable.
    * @param {string}  name              The name of the variable.
    * @param {string}  [defaultValue=''] A fallback value in case the variable is `undefined`
@@ -61,15 +70,6 @@ class EnvironmentUtils {
     }
 
     return result;
-  }
-  /**
-   * Checks whether an environment variable exists or not.
-   * @param {string} name The name of the variable.
-   * @return {boolean}
-   */
-  exists(name) {
-    // eslint-disable-next-line no-process-env
-    return typeof process.env[name] !== 'undefined';
   }
   /**
    * Check whether or not the environment is for development.
