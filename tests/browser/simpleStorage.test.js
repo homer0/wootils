@@ -6,13 +6,29 @@ const SimpleStorage = require('/browser/simpleStorage');
 const originalDate = global.Date;
 
 describe('SimpleStorage', () => {
+  /**
+   * Generates a proxied version of {@link SimpleStorage} for testing purposes.
+   *
+   * @param {SimpleStorageOptions} options             The options for {@link SimpleStorage}.
+   * @param {?Object}              [initialData=null]  The data for when the storage gets
+   *                                                   initialized.
+   * @returns {Proxy<SimpleStorage>}
+   */
   const getSutProxy = (options, initialData = null) => {
+    /**
+     * A subclass to avoid the abstract error.
+     */
     class Sut extends SimpleStorage {}
     const sut = new Sut(options);
     return new Proxy(sut, {
       get(target, name) {
         let result;
         if (name === '_getInitialData' && initialData !== null) {
+          /**
+           * A fake {@link SimpleStorage#_getInitialData} that would return our object.
+           *
+           * @returns {Object}
+           */
           result = () => initialData;
         } else if (target[name]) {
           result = target[name];
@@ -29,7 +45,13 @@ describe('SimpleStorage', () => {
       },
     });
   };
-
+  /**
+   * Generates an object with the same signature as LocalStorage and SessionStorage that the
+   * test cases can use.
+   *
+   * @param {Object} initialData  The data "currently" on the storage.
+   * @returns {Object}
+   */
   const getStorageProxy = (initialData = {}) => {
     const data = { ...initialData };
     return new Proxy({}, {

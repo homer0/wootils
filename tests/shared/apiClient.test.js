@@ -616,6 +616,9 @@ describe('APIClient', () => {
     // Given
     const requestURL = 'http://example.com';
     const requestMethod = 'post';
+    /**
+     * A custom format that the API won't try to encode.
+     */
     class CustomFormData {}
     const requestBody = new CustomFormData();
     const requestResponseData = {

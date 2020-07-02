@@ -1,6 +1,7 @@
 /**
  * Create a deferred promise using a native Promise.
- * @return {Object}
+ *
+ * @returns {Object}
  * @property {Promise}  promise The deferred promise.
  * @property {Function} resolve The functon to resolve the promise.
  * @property {Function} reject  The functon to reject the promise.

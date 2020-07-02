@@ -11,6 +11,12 @@ const {
 const { provider } = require('jimple');
 
 describe('AppConfiguration', () => {
+  /**
+   * Generates a dictinoary of all the expected properties of a {@link AppConfiguartion} class
+   * when the defaults are not customized.
+   *
+   * @returns {Object}
+   */
   const getExpectedDefaults = () => ({
     options: {
       defaultConfigurationName: 'default',
@@ -24,7 +30,13 @@ describe('AppConfiguration', () => {
     activeConfiguration: 'default',
     allowConfigurationSwitch: false,
   });
-
+  /**
+   * Generates the information of the default configuration file based on the value of the
+   * `name` option that will be sent to {@link AppConfiguration}.
+   *
+   * @param {string} name  The name of the configuration.
+   * @returns {Object}
+   */
   const getDefaultFileInfo = (name) => ({
     path: path.join('config', 'app', `app.${name}.config.js`),
     name: `app.${name}.config.js`,

@@ -1,12 +1,21 @@
 const extend = require('extend');
+
+/**
+ * @typedef {Function} ObjectUtilsShouldFlatFn
+ * @param {string} key
+ * @param {Object} value
+ * @returns {boolean} Whether or not the method should flat a sub object.
+ */
+
 /**
  * A small collection of utility methods to work with objects.
  */
 class ObjectUtils {
   /**
    * Creates a deep copy of a given object.
+   *
    * @param {Object} target The object to copy.
-   * @return {Object}
+   * @returns {Object}
    */
   static copy(target) {
     return this.merge(target);
@@ -14,6 +23,7 @@ class ObjectUtils {
   /**
    * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
    * `dash-case` to `lowerCamelCase`.
+   *
    * @param {Object} target              The object for format.
    * @param {Array}  [include=[]]        A list of keys or paths where the transformation will
    *                                     be made. If not specified, the method will use all the
@@ -22,7 +32,7 @@ class ObjectUtils {
    *                                     be made.
    * @param {string} [pathDelimiter='.'] The delimiter that will separate the path components
    *                                     for both `include` and `exclude`.
-   * @return {Object}
+   * @returns {Object}
    */
   static dashToLowerCamelKeys(target, include = [], exclude = [], pathDelimiter = '.') {
     return this.formatKeys(
@@ -40,6 +50,7 @@ class ObjectUtils {
   /**
    * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
    * `dash-case` to `snake_case`.
+   *
    * @param {Object} target              The object for format.
    * @param {Array}  [include=[]]        A list of keys or paths where the transformation will
    *                                     be made. If not specified, the method will use all the
@@ -48,7 +59,7 @@ class ObjectUtils {
    *                                     be made.
    * @param {string} [pathDelimiter='.'] The delimiter that will separate the path components
    *                                     for both `include` and `exclude`.
-   * @return {Object}
+   * @returns {Object}
    */
   static dashToSnakeKeys(target, include = [], exclude = [], pathDelimiter = '.') {
     return this.formatKeys(
@@ -62,6 +73,7 @@ class ObjectUtils {
   }
   /**
    * Deletes a property of an object using a path.
+   *
    * @example
    * const target = {
    *   propOne: {
@@ -78,16 +90,16 @@ class ObjectUtils {
    * @param {Object}  target                      The object from where the property will be
    *                                              removed.
    * @param {string}  objPath                     The path to the property.
-   * @param {String}  [pathDelimiter='.']         The delimiter that will separate the path
+   * @param {string}  [pathDelimiter='.']         The delimiter that will separate the path
    *                                              components.
-   * @param {Boolean} [cleanEmptyProperties=true] If this flag is `true` and after removing the
+   * @param {boolean} [cleanEmptyProperties=true] If this flag is `true` and after removing the
    *                                              property the parent object is empty, it will
    *                                              remove it recursively until a non empty parent
    *                                              object is found.
    * @param {boolean} [failWithError=false]       Whether or not to throw an error when the path
    *                                              is invalid. If this is `false`, the method will
    *                                              silently fail.
-   * @return {Object} A copy of the original object with the removed property/properties.
+   * @returns {Object} A copy of the original object with the removed property/properties.
    */
   static delete(
     target,
@@ -125,6 +137,7 @@ class ObjectUtils {
   }
   /**
    * Extracts a property or properties from an object in order to create a new one.
+   *
    * @example
    * const target = {
    *   name: {
@@ -155,7 +168,7 @@ class ObjectUtils {
    * @param {boolean}             [failWithError=false] Whether or not to throw an error when the
    *                                                    path is invalid. If this is `false`, the
    *                                                    method will silently fail an empty object.
-   * @return {Object}
+   * @returns {Object}
    */
   static extract(target, objPaths, pathDelimiter = '.', failWithError = false) {
     const copied = this.copy(target);
@@ -197,8 +210,10 @@ class ObjectUtils {
 
     return result;
   }
+
   /**
    * Flatterns an object properties into a single level dictionary.
+   *
    * @example
    * const target = {
    *   propOne: {
@@ -209,22 +224,21 @@ class ObjectUtils {
    * console.log(ObjectUtils.flat(target);
    * // Will output { 'propOne.propOneSub': 'Charito!', propTwo: '!!!' }
    *
-   * @param {Object}                      target                The object to transform.
-   * @param {String}                      [pathDelimiter='.']   The delimiter that will separate
-   *                                                            the path components.
-   * @param {String}                      [prefix='']           A custom prefix to be added before
-   *                                                            the name of the properties. This
-   *                                                            can be used on custom cases and
-   *                                                            it's also used when the method
-   *                                                            calls itself in order to flattern
-   *                                                            a sub object.
-   * @param {?Function(String,*):Boolean} [shouldFlattern=null] A custom function that can be used
-   *                                                            in order to tell the method whether
-   *                                                            an Object or an Array property
-   *                                                            should be flattern or not. It will
-   *                                                            receive the key for the property
-   *                                                            and the Object/Array itself.
-   * @return {Object}
+   * @param {Object}                  target                The object to transform.
+   * @param {string}                  [pathDelimiter='.']   The delimiter that will separate the
+   *                                                        path components.
+   * @param {string}                  [prefix='']           A custom prefix to be added before the
+   *                                                        name of the properties. This can be
+   *                                                        used on custom cases and it's also
+   *                                                        used when the method calls itself in
+   *                                                        order to flattern a sub object.
+   * @param {ObjectUtilsShouldFlatFn} [shouldFlattern=null] A custom function that can be used in
+   *                                                        order to tell the method whether an
+   *                                                        Object or an Array property should be
+   *                                                        flattern or not. It will receive the
+   *                                                        key for the property and the
+   *                                                        Object/Array itself.
+   * @returns {Object}
    */
   static flat(target, pathDelimiter = '.', prefix = '', shouldFlattern = null) {
     let result = {};
@@ -251,6 +265,7 @@ class ObjectUtils {
   /**
    * Formats all the keys on an object using a way similar to `.replace(regexp, ...)` but that
    * also works recursively and with _"object paths"_.
+   *
    * @example
    * const target = {
    *   prop_one: 'Charito!',
@@ -281,7 +296,7 @@ class ObjectUtils {
    *                                       be made.
    * @param {string}   [pathDelimiter='.'] The delimiter that will separate the path components
    *                                       for both `include` and `exclude`.
-   * @return {Object}
+   * @returns {Object}
    */
   static formatKeys(
     target,
@@ -479,6 +494,7 @@ class ObjectUtils {
   }
   /**
    * Returns the value of an object property using a path.
+   *
    * @example
    * const obj = {
    *   propOne: {
@@ -498,7 +514,7 @@ class ObjectUtils {
    * @param {boolean} [failWithError=false] Whether or not to throw an error when the path is
    *                                        invalid. If this is `false`, the method will silently
    *                                        fail and return `undefined`.
-   * @return {*}
+   * @returns {*}
    * @throws {Error} If the path is invalid and `failWithError` is set to `true`.
    */
   static get(target, objPath, pathDelimiter = '.', failWithError = false) {
@@ -532,6 +548,7 @@ class ObjectUtils {
   /**
    * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
    * `lowerCamelCase` to `dash-case`.
+   *
    * @param {Object} target              The object for format.
    * @param {Array}  [include=[]]        A list of keys or paths where the transformation will
    *                                     be made. If not specified, the method will use all the
@@ -540,7 +557,7 @@ class ObjectUtils {
    *                                     be made.
    * @param {string} [pathDelimiter='.'] The delimiter that will separate the path components
    *                                     for both `include` and `exclude`.
-   * @return {Object}
+   * @returns {Object}
    */
   static lowerCamelToDashKeys(target, include = [], exclude = [], pathDelimiter = '.') {
     return this.formatKeys(
@@ -558,6 +575,7 @@ class ObjectUtils {
   /**
    * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
    * `lowerCamelCase` to `snake_case`.
+   *
    * @param {Object} target              The object for format.
    * @param {Array}  [include=[]]        A list of keys or paths where the transformation will
    *                                     be made. If not specified, the method will use all the
@@ -566,7 +584,7 @@ class ObjectUtils {
    *                                     be made.
    * @param {string} [pathDelimiter='.'] The delimiter that will separate the path components
    *                                     for both `include` and `exclude`.
-   * @return {Object}
+   * @returns {Object}
    */
   static lowerCamelToSnakeKeys(target, include = [], exclude = [], pathDelimiter = '.') {
     return this.formatKeys(
@@ -584,6 +602,7 @@ class ObjectUtils {
   /**
    * This method makes a deep merge of a list of objects into a new one. The method also supports
    * arrays.
+   *
    * @example
    * const objA = { a: 'first' };
    * const objB = { b: 'second' };
@@ -595,7 +614,7 @@ class ObjectUtils {
    * console.log(ObjectUtils.merge(objA, objB));
    * // Will output [{ a: 'first', b: 'second' }]
    * @param {...{Object}} targets The objects to merge.
-   * @return {Object}
+   * @returns {Object}
    */
   static merge(...targets) {
     const [firstTarget] = targets;
@@ -604,6 +623,7 @@ class ObjectUtils {
   }
   /**
    * Sets a property on an object using a path. If the path doesn't exist, it will be created.
+   *
    * @example
    * const target = {};
    * console.log(ObjectUtils.set(target, 'some.prop.path', 'some-value'));
@@ -616,7 +636,7 @@ class ObjectUtils {
    * @param {boolean} [failWithError=false] Whether or not to throw an error when the path is
    *                                        invalid. If this is `false`, the method will silently
    *                                        fail and return `undefined`.
-   * @return {Object} A copy of the original object with the added property/properties.
+   * @returns {Object} A copy of the original object with the added property/properties.
    * @throws {Error} If one of the path components is for a non-object property and
    *                 `failWithError` is set to `true`.
    */
@@ -666,6 +686,7 @@ class ObjectUtils {
   /**
    * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
    * `snake_case` to `dash-case`.
+   *
    * @param {Object} target              The object for format.
    * @param {Array}  [include=[]]        A list of keys or paths where the transformation will
    *                                     be made. If not specified, the method will use all the
@@ -674,7 +695,7 @@ class ObjectUtils {
    *                                     be made.
    * @param {string} [pathDelimiter='.'] The delimiter that will separate the path components
    *                                     for both `include` and `exclude`.
-   * @return {Object}
+   * @returns {Object}
    */
   static snakeToDashKeys(target, include = [], exclude = [], pathDelimiter = '.') {
     return this.formatKeys(
@@ -689,6 +710,7 @@ class ObjectUtils {
   /**
    * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
    * `snake_case` to `lowerCamelCase`.
+   *
    * @param {Object} target              The object for format.
    * @param {Array}  [include=[]]        A list of keys or paths where the transformation will
    *                                     be made. If not specified, the method will use all the
@@ -697,7 +719,7 @@ class ObjectUtils {
    *                                     be made.
    * @param {string} [pathDelimiter='.'] The delimiter that will separate the path components
    *                                     for both `include` and `exclude`.
-   * @return {Object}
+   * @returns {Object}
    */
   static snakeToLowerCamelKeys(target, include = [], exclude = [], pathDelimiter = '.') {
     return this.formatKeys(
@@ -715,6 +737,7 @@ class ObjectUtils {
   /**
    * This method does the exact opposite from `flat`: It takes an already flattern object and
    * restores it structure.
+   *
    * @example
    * const target = {
    *   'propOne.propOneSub': 'Charito!
@@ -724,8 +747,8 @@ class ObjectUtils {
    * // Will output { propOne: { propOneSub: 'Charito!' }, 'propTwo': '!!!' }
    *
    * @param {Object} target                The object to transform.
-   * @param {String} [pathDelimiter='.']   The delimiter that will separate the path components.
-   * @return {Object}
+   * @param {string} [pathDelimiter='.']   The delimiter that will separate the path components.
+   * @returns {Object}
    */
   static unflat(target, pathDelimiter = '.') {
     return Object.keys(target).reduce(
@@ -734,7 +757,7 @@ class ObjectUtils {
     );
   }
   /**
-   * @throws {Error} is called. This class is meant to be have only static methods.
+   * @throws {Error} If instantiated. This class is meant to be have only static methods.
    * @ignore
    */
   constructor() {

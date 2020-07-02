@@ -9,19 +9,22 @@ class EnvironmentUtils {
   constructor() {
     /**
      * The current `NODE_ENV`. If the variable is empty, the value will be `development`.
+     *
      * @type {string}
      */
     this.env = this.get('NODE_ENV', 'development');
     /**
      * Whether or not the environment is production.
+     *
      * @type {boolean}
      */
     this.production = this.env === 'production';
   }
   /**
    * Checks whether an environment variable exists or not.
+   *
    * @param {string} name The name of the variable.
-   * @return {boolean}
+   * @returns {boolean}
    */
   exists(name) {
     // eslint-disable-next-line no-process-env
@@ -29,12 +32,13 @@ class EnvironmentUtils {
   }
   /**
    * Gets the value of an environment variable.
+   *
    * @param {string}  name              The name of the variable.
-   * @param {string}  [defaultValue=''] A fallback value in case the variable is `undefined`
+   * @param {string}  [defaultValue=''] A fallback value in case the variable is `undefined`.
    * @param {boolean} [required=false]  If the variable is required and `undefined`, it will throw
    *                                    an error.
-   * @return {string}
-   * @throws {Error} if `required` is set to `true` and the variable is `undefined`.
+   * @returns {string}
+   * @throws {Error} If `required` is set to `true` and the variable is `undefined`.
    */
   get(name, defaultValue = '', required = false) {
     let value;
@@ -53,11 +57,12 @@ class EnvironmentUtils {
   }
   /**
    * Sets the value of an environment variable.
-   * @param {string} name              The name of the variable
+   *
+   * @param {string} name              The name of the variable.
    * @param {string} value             The value of the variable.
    * @param {string} [overwrite=false] If the variable already exists, the method won't overwrite
    *                                   it, unless you set this parameter to `true`.
-   * @return {boolean} Whether or not the variable was set.
+   * @returns {boolean} Whether or not the variable was set.
    */
   set(name, value, overwrite = false) {
     let result;
@@ -73,7 +78,8 @@ class EnvironmentUtils {
   }
   /**
    * Check whether or not the environment is for development.
-   * @return {boolean}
+   *
+   * @returns {boolean}
    */
   get development() {
     return !this.production;
@@ -82,18 +88,18 @@ class EnvironmentUtils {
 /**
  * The service provider that once registered on the app container will set an instance of
  * `EnvironmentUtils` as the `environmentUtils` service.
+ *
  * @example
  * // Register it on the container
  * container.register(environmentUtils);
  * // Getting access to the service instance
  * const environmentUtils = container.get('environmentUtils');
+ *
  * @type {Provider}
  */
 const environmentUtils = provider((app) => {
   app.set('environmentUtils', () => new EnvironmentUtils());
 });
 
-module.exports = {
-  EnvironmentUtils,
-  environmentUtils,
-};
+module.exports.EnvironmentUtils = EnvironmentUtils;
+module.exports.environmentUtils = environmentUtils;

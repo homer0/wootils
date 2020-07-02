@@ -6,18 +6,19 @@ const { provider } = require('jimple');
  */
 class PathUtils {
   /**
-   * Class constructor.
    * @param {string} [home=''] The location of the project's `home`(root) directory. By default
    *                           it uses `process.cwd()`.
    */
   constructor(home = '') {
     /**
      * The root path from where the app is being executed.
+     *
      * @type {string}
      */
     this.path = process.cwd();
     /**
      * A dictionary of different path locations.
+     *
      * @type {Object}
      */
     this.locations = {};
@@ -27,6 +28,7 @@ class PathUtils {
   }
   /**
    * Add a new location.
+   *
    * @param {string} name         The reference name.
    * @param {string} locationPath The path of the location. It must be inside the path from the
    *                              app is being executed.
@@ -49,8 +51,9 @@ class PathUtils {
   }
   /**
    * Get a location path by its name.
+   *
    * @param {string} name The location name.
-   * @return {string}
+   * @returns {string}
    * @throws {Error} If there location hasn't been added.
    */
   getLocation(name) {
@@ -63,17 +66,19 @@ class PathUtils {
   }
   /**
    * Alias to `joinFrom` that uses the `home` location by default.
+   *
    * @param {Array} paths The rest of the path components to join.
-   * @return {string}
+   * @returns {string}
    */
   join(...paths) {
     return this.joinFrom('home', ...paths);
   }
   /**
    * Build a path using a location path as base.
+   *
    * @param {string} location The location name.
    * @param {Array}  paths    The rest of the path components to join.
-   * @return {string}
+   * @returns {string}
    */
   joinFrom(location, ...paths) {
     const locationPath = this.getLocation(location);
@@ -81,22 +86,25 @@ class PathUtils {
   }
   /**
    * Get the path to the directory where the app executable is located.
-   * @return {string}
+   *
+   * @returns {string}
    */
   get app() {
     return this.getLocation('app');
   }
   /**
    * Get the project root path.
-   * @return {string}
+   *
+   * @returns {string}
    */
   get home() {
     return this.getLocation('home');
   }
   /**
    * Find and register the location for the app executable directory.
-   * @ignore
+   *
    * @access protected
+   * @ignore
    */
   _addAppLocation() {
     let current = module;
@@ -112,6 +120,7 @@ class PathUtils {
 }
 /**
  * Generates a `Provider` with an already defined `home` location.
+ *
  * @example
  * // Generate the provider
  * const provider = pathUtilsWithHome('my-path');
@@ -119,8 +128,9 @@ class PathUtils {
  * container.register(provider);
  * // Getting access to the service instance
  * const pathUtils = container.get('pathUtils');
+ *
  * @param {string} [home] The path to the new home location.
- * @return {Provider}
+ * @returns {Provider}
  */
 const pathUtilsWithHome = (home) => provider((app) => {
   app.set('pathUtils', () => new PathUtils(home));
@@ -128,6 +138,7 @@ const pathUtilsWithHome = (home) => provider((app) => {
 /**
  * The service provider that once registered on the app container will set an instance of
  * `PathUtils` as the `pathUtils` service.
+ *
  * @example
  * // Register it on the container
  * container.register(pathUtils);
@@ -137,8 +148,6 @@ const pathUtilsWithHome = (home) => provider((app) => {
  */
 const pathUtils = pathUtilsWithHome();
 
-module.exports = {
-  PathUtils,
-  pathUtils,
-  pathUtilsWithHome,
-};
+module.exports.PathUtils = PathUtils;
+module.exports.pathUtils = pathUtils;
+module.exports.pathUtilsWithHome = pathUtilsWithHome;

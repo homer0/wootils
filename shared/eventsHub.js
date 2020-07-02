@@ -3,20 +3,22 @@
  */
 class EventsHub {
   /**
-   * Class constructor.
    * @ignore
    */
   constructor() {
     /**
      * A dictionary of the events and their listeners.
+     *
      * @type {Object}
+     * @access protected
      * @ignore
      */
     this._events = {};
   }
   /**
    * Emits an event and call all its listeners.
-   * @param {String|Array} event An event name or a list of them.
+   *
+   * @param {string|Array} event An event name or a list of them.
    * @param {Array}        args  A list of parameters to send to the listeners.
    */
   emit(event, ...args) {
@@ -38,11 +40,12 @@ class EventsHub {
   }
   /**
    * Removes an event listener.
-   * @param {String|Array} event An event name or a list of them.
+   *
+   * @param {string|Array} event An event name or a list of them.
    * @param {Function}     fn    The listener function.
-   * @return {Boolean|Array} If `event` was a `string`, it will return whether or not the listener
-   *                         was found and removed; but if `event` was an `Array`, it will return
-   *                         a list of boolean values.
+   * @returns {boolean|Array} If `event` was a `string`, it will return whether or not the listener
+   *                          was found and removed; but if `event` was an `Array`, it will return
+   *                          a list of boolean values.
    */
   off(event, fn) {
     const isArray = Array.isArray(event);
@@ -63,9 +66,10 @@ class EventsHub {
   }
   /**
    * Adds a new event listener.
-   * @param {String|Array} event An event name or a list of them.
+   *
+   * @param {string|Array} event An event name or a list of them.
    * @param {Function}     fn    The listener function.
-   * @return {Function} An unsubscribe function to remove the listener or listeners.
+   * @returns {Function} An unsubscribe function to remove the listener or listeners.
    */
   on(event, fn) {
     const events = Array.isArray(event) ? event : [event];
@@ -80,9 +84,10 @@ class EventsHub {
   }
   /**
    * Adds an event listener that will only be executed once.
-   * @param {String|Array} event An event name or a list of them.
+   *
+   * @param {string|Array} event An event name or a list of them.
    * @param {Function}     fn    The listener function.
-   * @return {Function} An unsubscribe function to remove the listener.
+   * @returns {Function} An unsubscribe function to remove the listener.
    */
   once(event, fn) {
     // eslint-disable-next-line no-param-reassign
@@ -92,10 +97,11 @@ class EventsHub {
   /**
    * Reduce a target using an event. It's like emit, but the events listener return
    * a modified (or not) version of the `target`.
-   * @param {String|Array} event  An event name or a list of them.
+   *
+   * @param {string|Array} event  An event name or a list of them.
    * @param {*}            target The variable to reduce with the listeners.
    * @param {Array}        args   A list of parameters to send to the listeners.
-   * @return {*} A version of the `target` processed by the listeners.
+   * @returns {*} A version of the `target` processed by the listeners.
    */
   reduce(event, target, ...args) {
     const events = Array.isArray(event) ? event : [event];
@@ -132,8 +138,9 @@ class EventsHub {
   }
   /**
    * Get all the listeners for an event.
-   * @param {String} event The name of the event.
-   * @return {Array}
+   *
+   * @param {string} event The name of the event.
+   * @returns {Array}
    */
   subscribers(event) {
     if (!this._events[event]) {
