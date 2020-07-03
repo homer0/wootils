@@ -1,7 +1,7 @@
 const { provider } = require('jimple');
 
 /**
- * @typedef {Function} RootRequireFn
+ * @callback RootRequireFn
  * @param {string} path  The path to the file, relative to the project root directory.
  * @returns {Object}
  */

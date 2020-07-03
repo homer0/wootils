@@ -1,6 +1,12 @@
 const path = require('path');
 const { provider } = require('jimple');
 const ObjectUtils = require('../shared/objectUtils');
+
+/**
+ * @typedef {import('./environmentUtils').EnvironmentUtils} EnvironmentUtils
+ * @typedef {import('./rootRequire').RootRequireFn} RootRequireFn
+ */
+
 /**
  * @typedef {Object} AppConfigurationOptions
  * @property {string} [defaultConfigurationName='default']           The name of the default
@@ -29,15 +35,15 @@ class AppConfiguration {
    * @param {EnvironmentUtils}        environmentUtils          Required to read the environment
    *                                                            variables and determine which
    *                                                            configuration to use.
-   * @param {Function}                rootRequire               Necessary to be able to require the
+   * @param {RootRequireFn}           rootRequire               Necessary to be able to require the
    *                                                            configuration files with paths
    *                                                            relative to the app root directory.
    * @param {string}                  [appName='app']           The name of the app using this
    *                                                            service.
    *                                                            It's also used as part of the name
    *                                                            of the configuration files.
-   * @param {Object}                  [defaultConfiguration={}] The default configuration the others
-   *                                                            will extend.
+   * @param {Object}                  [defaultConfiguration={}] The default configuration the
+   *                                                            others will extend.
    * @param {AppConfigurationOptions} [options={}]              Options to customize the service.
    */
   constructor(
@@ -57,7 +63,7 @@ class AppConfiguration {
      * The function that allows the service to `require` a configuration file with a path relative
      * to the app root directory.
      *
-     * @type {Function}
+     * @type {RootRequireFn}
      */
     this.rootRequire = rootRequire;
     /**
@@ -75,7 +81,7 @@ class AppConfiguration {
      * A dictionary with all the loaded configurations. It uses the names of the configurations
      * as keys.
      *
-     * @type {Object}
+     * @type {Object.<string,Object>}
      */
     this.configurations = {
       [this.options.defaultConfigurationName]: defaultConfiguration,
@@ -117,10 +123,10 @@ class AppConfiguration {
    * // Use paths
    * const subValue = appConfiguration.get('settingOne.subSetting');
    *
-   * @param {string|Array} setting         A setting path or a list of them.
-   * @param {boolean}      [asArray=false] When `setting` is an Array, if this is `true`, instead
-   *                                       of returning an object, it will return an array of
-   *                                       settings.
+   * @param {string|Array<string>} setting         A setting path or a list of them.
+   * @param {boolean}              [asArray=false] When `setting` is an Array, if this is `true`,
+   *                                               instead of returning an object, it will return
+   *                                               an array of settings.
    * @returns {*}
    */
   get(setting, asArray = false) {
@@ -250,10 +256,10 @@ class AppConfiguration {
    *   settingTwo: 'valueTwo',
    * })
    *
-   * @param {string|Object} setting The name of the setting to update or a dictionary of settings
-   *                                and their values.
-   * @param {*}             value   The value of the setting. This is only used when `setting` is
-   *                                a string.
+   * @param {string|Object.<string,*>} setting The name of the setting to update or a dictionary of
+   *                                           settings and their values.
+   * @param {*}                        [value] The value of the setting. This is only used when
+   *                                           `setting` is a string.
    * @throws {Error} If `setting` is not a dictionary and `value` is undefined.
    */
   set(setting, value) {

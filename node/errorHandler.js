@@ -1,4 +1,9 @@
 const { provider } = require('jimple');
+
+/**
+ * @typedef {import('./logger').Logger} Logger
+ */
+
 /**
  * An error handler that captures uncaught exceptions and unhandled rejections in order to log
  * them with detail.
@@ -25,7 +30,7 @@ class ErrorHandler {
     /**
      * The list of events this handler will listen for in order to catch errors.
      *
-     * @type {Array}
+     * @type {Array<string>}
      */
     this.eventsNames = [
       'uncaughtException',

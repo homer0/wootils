@@ -19,7 +19,7 @@ class PathUtils {
     /**
      * A dictionary of different path locations.
      *
-     * @type {Object}
+     * @type {Object.<string,string>}
      */
     this.locations = {};
 
@@ -67,7 +67,7 @@ class PathUtils {
   /**
    * Alias to `joinFrom` that uses the `home` location by default.
    *
-   * @param {Array} paths The rest of the path components to join.
+   * @param {...string} paths The rest of the path components to join.
    * @returns {string}
    */
   join(...paths) {
@@ -76,8 +76,8 @@ class PathUtils {
   /**
    * Build a path using a location path as base.
    *
-   * @param {string} location The location name.
-   * @param {Array}  paths    The rest of the path components to join.
+   * @param {string}    location The location name.
+   * @param {...string} paths    The rest of the path components to join.
    * @returns {string}
    */
   joinFrom(location, ...paths) {

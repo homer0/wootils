@@ -1,10 +1,10 @@
 /**
- * @external Jimple
+ * @typedef {import('jimple')} Jimple
  * @see https://yarnpkg.com/en/package/jimple
  */
 
 /**
- * @typedef {Function} ProviderRegisterMethod
+ * @callback ProviderRegisterMethod
  * @param {Jimple} app A reference to the dependency injection container.
  */
 

@@ -1,10 +1,15 @@
 const fs = require('fs-extra');
 const { provider } = require('jimple');
 /**
+ * @typedef {import('./pathUtils').PathUtils} PathUtils
+ */
+
+/**
  * Returns the contents of the project `package.json`.
  *
  * @param {PathUtils} pathUtils To build the path to the `package.json`.
  * @returns {Object}
+ * @todo This should be async, or at least have an async alternative.
  */
 const packageInfo = (pathUtils) => fs.readJsonSync(pathUtils.join('package.json'));
 /**

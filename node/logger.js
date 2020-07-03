@@ -1,5 +1,14 @@
 const colors = require('colors/safe');
 const { provider } = require('jimple');
+
+/**
+ * This can be either a message to log, or an array where the first item is the message and the
+ * second one is the color it should be used to log it.
+ *
+ * @typedef {string|Array<string>} LogContents
+ * @typedef {string|Array<LogContents>} LogMessage
+ */
+
 /**
  * A utility service to log messages on the console.
  */
@@ -25,15 +34,14 @@ class Logger {
   /**
    * Logs an error (red) message or messages on the console.
    *
-   * @param {string|Array|Error} message          A single message of a list of them. See the
-   *                                              `log()` documentation to see all the supported
-   *                                              properties for the `message` parameter. Different
-   *                                              from the other log methods, you can use an
-   *                                              `Error` object and the method will take care of
-   *                                              extracting the message and the stack information.
-   * @param {Object}             [exception=null] If the exception has a `stack` property, the
-   *                                              method will log each of the stack calls using
-   *                                              `info()`.
+   * @param {LogMessage|Error} message
+   * A single message of a list of them. See the `log()` documentation to see all the supported
+   * properties for the `message` parameter. Different from the other log methods, you can use an
+   * `Error` object and the method will take care of extracting the message and the stack
+   * information.
+   * @param {Object} [exception=null]
+   * If the exception has a `stack` property, the method will log each of the stack calls using
+   * `info()`.
    */
   error(message, exception = null) {
     if (message instanceof Error) {
@@ -57,8 +65,8 @@ class Logger {
   /**
    * Logs an information (gray) message or messages on the console.
    *
-   * @param {string|Array} message A single message of a list of them. See the `log()` documentation
-   *                               to see all the supported properties for the `message` parameter.
+   * @param {LogMessage} message A single message of a list of them. See the `log()` documentation
+   *                             to see all the supported properties for the `message` parameter.
    */
   info(message) {
     this.log(message, 'grey');
@@ -81,10 +89,10 @@ class Logger {
    *     ['R\'lyeh wgah\'nagl fhtagn', 'red']
    * ], 'grey');
    *
-   * @param {string|Array} message A text message to log or a list of them.
-   * @param {string}       color   Optional. The color of the message (the default is 'white').
-   *                               This can be overwritten line by line when the message is an
-   *                               array, take a look at the example.
+   * @param {LogMessage} message       A text message to log or a list of them.
+   * @param {string}     [color='raw'] Optional. The color of the message (the default is 'white').
+   *                                   This can be overwritten line by line when the message is an
+   *                                   array, take a look at the example.
    */
   log(message, color = 'raw') {
     const lines = [];
@@ -135,8 +143,8 @@ class Logger {
   /**
    * Logs a success (green) message or messages on the console.
    *
-   * @param {string|Array} message A single message of a list of them. See the `log()` documentation
-   *                               to see all the supported properties for the `message` parameter.
+   * @param {LogMessage} message A single message of a list of them. See the `log()` documentation
+   *                             to see all the supported properties for the `message` parameter.
    */
   success(message) {
     this.log(message, 'green');
@@ -144,8 +152,8 @@ class Logger {
   /**
    * Logs a warning (yellow) message or messages on the console.
    *
-   * @param {string|Array} message A single message of a list of them. See the `log()` documentation
-   *                               to see all the supported properties for the `message` parameter.
+   * @param {LogMessage} message A single message of a list of them. See the `log()` documentation
+   *                             to see all the supported properties for the `message` parameter.
    * @todo Add `warn` alias.
    */
   warning(message) {
