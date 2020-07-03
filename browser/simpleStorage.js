@@ -1,21 +1,30 @@
 const extend = require('extend');
 
 /**
+ * @callback LoggerWarnFn
+ * @param {string} message The message to log the warning for.
+ */
+
+/**
  * @typedef {Object} SimpleStorageStorageLogger
- * @property {?Function} warn    Prints out a warning message. Either this or `warning` MUST be
- *                               present.
- * @property {?Function} warning Prints out a warning message. Either this or `warn` MUST be
- *                               present.
+ * @property {?LoggerWarnFn} warn    Prints out a warning message. Either this or `warning` MUST be
+ *                                   present.
+ * @property {?LoggerWarnFn} warning Prints out a warning message. Either this or `warn` MUST be
+ *                                   present.
  */
 
 /**
  * @typedef {Object} SimpleStorageStorageOptions
- * @property {string} [name='simpleStorage']                      A reference name for the storage.
- * @property {string} [key='simpleStorage']                       The key the class will use to
- *                                                                store the data on the storage.
- * @property {Array}  [typePriority=['local', 'session', 'temp']] The priority list of types of
- *                                                                storage the service will try to
- *                                                                use when initialized.
+ * @property {string} [name='simpleStorage']
+ * A reference name for the storage.
+ * @property {string} [key='simpleStorage']
+ * The key the class will use to store the data on the storage.
+ * @property {Array<string>} [typePriority=['local', 'session', 'temp']]
+ * The priority list of types of storage the service will try to use when initialized.
+ */
+
+/**
+ * @typedef {Object.<string,*>} StorageDictionary
  */
 
 /**
@@ -61,7 +70,7 @@ const extend = require('extend');
  *                                                           using entries you can access them by
  *                                                           name and even define expiration time
  *                                                           so they'll be removed after a while.
- * @property {Object}                      [tempStorage={}]  The `tempStorage` is the storage the
+ * @property {StorageDictionary}           [tempStorage={}]  The `tempStorage` is the storage the
  *                                                           class uses when none of the others
  *                                                           are available. Is just a simple
  *                                                           object, so when the class gets
@@ -70,32 +79,32 @@ const extend = require('extend');
  */
 
 /**
- * @typedef {Function} SimpleStorageStorageAvailableMethod
+ * @callback SimpleStorageStorageAvailableMethod
  * @param {string} [fallbackFrom] If the storage is being used as a fallback from another one that
  *                                is not available, this parameter will have its name.
  * @returns {boolean} Whether or not the storage is available.
  */
 
 /**
- * @typedef {Function} SimpleStorageStorageGetMethod
+ * @callback SimpleStorageStorageGetMethod
  * @param {string} key The key used by the class to save data on the storage.
- * @returns {Object} The contents from the storage.
+ * @returns {StorageDictionary} The contents from the storage.
  */
 
 /**
- * @typedef {Function} SimpleStorageStorageSetMethod
+ * @callback SimpleStorageStorageSetMethod
  * @param {string} key The key used by the class to save data on the storage.
  * @param {Object} value The data to save on the storage.
  */
 
 /**
- * @typedef {Function} SimpleStorageStorageDeleteMethod
+ * @callback SimpleStorageStorageDeleteMethod
  * @param {string} key The key used by the class to save data on the storage.
  */
 
 /**
  * @typedef {Object} SimpleStorageStorage
- * @property {string} name The name of the storage.
+ * @property {string}                              name      The name of the storage.
  * @property {SimpleStorageStorageAvailableMethod} available The method to check if the storage can
  *                                                           be used or not.
  * @property {SimpleStorageStorageGetMethod}       get       The method used to read from the
@@ -164,7 +173,7 @@ class SimpleStorage {
     /**
      * A dictionary with the storage types the class supports.
      *
-     * @type {Object}
+     * @type {Object.<string,SimpleStorageStorage>}
      * @property {SimpleStorageStorage} local   The methods to work with `localStorage`.
      * @property {SimpleStorageStorage} session The methods to work with `sessionStorage`.
      * @property {SimpleStorageStorage} temp    The methods to work with the _"temp storage"_.
@@ -205,7 +214,7 @@ class SimpleStorage {
      * This is the object/dictionary the class will use to sync the content of the storage. That
      * way you won't need to write/read/parse from the storage every time you need to do something.
      *
-     * @type {Object}
+     * @type {StorageDictionary}
      * @access protected
      */
     this._data = {};
@@ -262,6 +271,7 @@ class SimpleStorage {
    * @param {Object|Array} obj The object to copy.
    * @returns {Object|Array}
    * @access protected
+   * @todo Use ObjectUtils.
    */
   _copy(obj) {
     let result;
@@ -313,10 +323,10 @@ class SimpleStorage {
   /**
    * Filters out a dictionary of entries by checking if they expired or not.
    *
-   * @param {Object}  entries    A dictionary of key-value, where the value is a
-   *                             {@link SimpleStorageEntry}.
-   * @param  {number} expiration The amount of seconds that need to have passed in order to
-   *                             consider an entry expired.
+   * @param {Object} entries    A dictionary of key-value, where the value is a
+   *                            {@link SimpleStorageEntry}.
+   * @param {number} expiration The amount of seconds that need to have passed in order to
+   *                            consider an entry expired.
    * @returns {Object} A new dictionary without the expired entries.
    * @access protected
    */
@@ -372,7 +382,7 @@ class SimpleStorage {
    * Gets an entry from the storage dictionary.
    *
    * @param  {string} key The entry key.
-   * @returns {SimpleStorageEntry} Whatever is on the storage.
+   * @returns {?SimpleStorageEntry} Whatever is on the storage, or `null`.
    * @throws {Error} If entries are not enabled.
    * @access protected
    */
@@ -400,7 +410,7 @@ class SimpleStorage {
    * Gets the value of an entry.
    *
    * @param {string} key The entry key.
-   * @returns {?Object}
+   * @returns {?StorageDictionary}
    * @access protected
    */
   _getEntryValue(key) {
@@ -411,7 +421,7 @@ class SimpleStorage {
    * Gets an object from `localStorage`.
    *
    * @param {string} key The key used to save the object.
-   * @returns {Object}
+   * @returns {?StorageDictionary}
    * @access protected
    */
   _getFromLocalStorage(key) {
@@ -422,7 +432,7 @@ class SimpleStorage {
    * Gets an object from `sessionStorage`.
    *
    * @param {string} key The key used to save the object.
-   * @returns {Object}
+   * @returns {?StorageDictionary}
    * @access protected
    */
   _getFromSessionStorage(key) {
@@ -433,7 +443,7 @@ class SimpleStorage {
    * Gets an object from the _"temp storage"_.
    *
    * @param {string} key The key used to save the object.
-   * @returns {Object}
+   * @returns {?StorageDictionary}
    * @access protected
    */
   _getFromTempStorage(key) {
@@ -443,7 +453,7 @@ class SimpleStorage {
    * This method is called when the storage is deleted or resetted and if entries are disabled.
    * It can be used to define the initial value of the data the class saves on the storage.
    *
-   * @returns {Object}
+   * @returns {StorageDictionary}
    * @access protected
    */
   _getInitialData() {
@@ -534,7 +544,7 @@ class SimpleStorage {
   /**
    * Checkes whether an object is a Promise or not.
    *
-   * @param {Object} obj The object to test.
+   * @param {*} obj The object to test.
    * @returns {boolean}
    * @access protected
    */
