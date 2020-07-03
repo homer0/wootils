@@ -3,13 +3,16 @@
  */
 class EventsHub {
   /**
+   * Class constructor.
+   *
    * @ignore
+   * @todo Remove once the JSDoc plugin rule for constructors is added.
    */
   constructor() {
     /**
      * A dictionary of the events and their listeners.
      *
-     * @type {Object}
+     * @type {Object.<string,Array<Function>>}
      * @access protected
      * @ignore
      */
@@ -88,6 +91,7 @@ class EventsHub {
    * @param {string|Array} event An event name or a list of them.
    * @param {Function}     fn    The listener function.
    * @returns {Function} An unsubscribe function to remove the listener.
+   * @todo Use a wrapper instead of modifying the listener.
    */
   once(event, fn) {
     // eslint-disable-next-line no-param-reassign

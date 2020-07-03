@@ -9,9 +9,9 @@
  */
 class PromiseExtender {
   /**
-   * @param {Promise} promise    The promise to extend.
-   * @param {Object}  properties A dictionary of custom properties to _inject_ in the promise
-   *                             chain.
+   * @param {Promise}           promise    The promise to extend.
+   * @param {Object.<string,*>} properties A dictionary of custom properties to _inject_ in the
+   *                                       promise chain.
    */
   constructor(promise, properties) {
     /**

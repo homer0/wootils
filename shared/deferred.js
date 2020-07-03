@@ -1,10 +1,14 @@
 /**
- * Create a deferred promise using a native Promise.
- *
- * @returns {Object}
+ * @typedef {Object} DeferredPromise
  * @property {Promise}  promise The deferred promise.
  * @property {Function} resolve The functon to resolve the promise.
  * @property {Function} reject  The functon to reject the promise.
+ */
+
+/**
+ * Create a deferred promise using a native Promise.
+ *
+ * @returns {DeferredPromise}
  */
 const deferred = () => {
   let resolve;
