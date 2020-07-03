@@ -251,14 +251,15 @@ describe('APIClient', () => {
     const errorResponse = {
       error: errorMessage,
     };
+    const errorResponseStatus = 404;
     let sut = null;
     let result = null;
     // When
     sut = new APIClient('', {}, () => {});
-    result = sut.error(errorResponse);
+    result = sut.error(errorResponse, errorResponseStatus);
     // Then
     expect(result).toBeInstanceOf(Error);
-    expect(result.message).toBe(errorMessage);
+    expect(result.message).toBe(`[${errorResponseStatus}]: ${errorMessage}`);
   });
 
   it('should make a successfully GET request', () => {
@@ -471,7 +472,7 @@ describe('APIClient', () => {
     .catch((error) => {
       // Then
       expect(error).toBeInstanceOf(Error);
-      expect(error.message).toBe(requestResponseData.error);
+      expect(error.message).toBe(`[${requestResponse.status}]: ${requestResponseData.error}`);
     });
   });
 
