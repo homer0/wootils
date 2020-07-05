@@ -1,34 +1,41 @@
 const extend = require('extend');
+/**
+ * @module browser/simpleStorage
+ */
 
 /**
- * @callback LoggerWarnFn
+ * @callback SimpleStorage.LoggerWarnFn
  * @param {string} message The message to log the warning for.
+ * @memberof module.browser/simpleStorage
  */
 
 /**
- * @typedef {Object} SimpleStorageStorageLogger
- * @property {?LoggerWarnFn} warn    Prints out a warning message. Either this or `warning` MUST be
- *                                   present.
- * @property {?LoggerWarnFn} warning Prints out a warning message. Either this or `warn` MUST be
- *                                   present.
+ * @typedef {Object} SimpleStorage.Logger
+ * @property {?SimpleStorage.LoggerWarnFn} warn    Prints out a warning message. Either this or
+ *                                                 `warning` MUST be present.
+ * @property {?SimpleStorage.LoggerWarnFn} warning Prints out a warning message. Either this or
+ *                                                 `warn` MUST be present.
+ * @memberof module.browser/simpleStorage
  */
 
 /**
- * @typedef {Object} SimpleStorageStorageOptions
+ * @typedef {Object} SimpleStorage.StorageOptions
  * @property {string} [name='simpleStorage']
  * A reference name for the storage.
  * @property {string} [key='simpleStorage']
  * The key the class will use to store the data on the storage.
  * @property {Array<string>} [typePriority=['local', 'session', 'temp']]
  * The priority list of types of storage the service will try to use when initialized.
+ * @memberof module.browser/simpleStorage
  */
 
 /**
- * @typedef {Object.<string,*>} StorageDictionary
+ * @typedef {Object.<string,*>} SimpleStorage.Dictionary
+ * @memberof module.browser/simpleStorage
  */
 
 /**
- * @typedef {Object} SimpleStorageEntriesOptions
+ * @typedef {Object} SimpleStorage.EntriesOptions
  * @property {boolean} [enabled=false]                Whether or not to use the entries
  *                                                    functionality. Enabling it means that all
  *                                                    the _"xxxEntry"_ methods will be available
@@ -42,83 +49,92 @@ const extend = require('extend');
  *                                                    trying to access the entries).
  * @property {boolean} [saveWhenDeletingExpired=true] Whether or not to sync the storage after
  *                                                    deleting an expired entry.
+ * @memberof module.browser/simpleStorage
  */
 
 /**
- * @typedef {Object} SimpleStorageOptions
- * @property {boolean}                     [initialize=true] Whether or not to initialize the
- *                                                           service right from the constructor.
- *                                                           It means that it will validate the
- *                                                           storage, check for existing data and
- *                                                           sync it on the class. This can be
- *                                                           disabled in case you need to do
- *                                                           something between the constructor and
- *                                                           the initialization.
- * @property {Window}                      [window]          The `window`/`global` object the class
- *                                                           will use in order to access
- *                                                           `localStorage` and `sessionStorage`.
- * @property {?SimpleStorageStorageLogger} [logger]          A custom logger to print out the
- *                                                           warnings when the class needs to do a
- *                                                           fallback to a different storage type.
- * @property {SimpleStorageStorageOptions} [storage]         These are all the options related to
- *                                                           the storage itself: The type, the
- *                                                           name and the key.
- * @property {SimpleStorageEntriesOptions} [entries]         These are the options for customizing
- *                                                           the way the service works with entries.
- *                                                           By default, the class saves any kind
- *                                                           of object on the storage, but by
- *                                                           using entries you can access them by
- *                                                           name and even define expiration time
- *                                                           so they'll be removed after a while.
- * @property {StorageDictionary}           [tempStorage={}]  The `tempStorage` is the storage the
- *                                                           class uses when none of the others
- *                                                           are available. Is just a simple
- *                                                           object, so when the class gets
- *                                                           destroyed (browser refreshes the
- *                                                           page), the data goes away.
+ * @typedef {Object} SimpleStorage.Options
+ * @property {boolean}                      [initialize=true] Whether or not to initialize the
+ *                                                            service right from the constructor.
+ *                                                            It means that it will validate the
+ *                                                            storage, check for existing data and
+ *                                                            sync it on the class. This can be
+ *                                                            disabled in case you need to do
+ *                                                            something between the constructor and
+ *                                                            the initialization.
+ * @property {Window}                       [window]          The `window`/`global` object the
+ *                                                            class will use in order to access
+ *                                                            `localStorage` and `sessionStorage`.
+ * @property {?SimpleStorage.Logger}        [logger]          A custom logger to print out the
+ *                                                            warnings when the class needs to do a
+ *                                                            fallback to a different storage type.
+ * @property {SimpleStorage.StorageOptions} [storage]         These are all the options related to
+ *                                                            the storage itself: The type, the
+ *                                                            name and the key.
+ * @property {SimpleStorage.EntriesOptions} [entries]         These are the options for customizing
+ *                                                            the way the service works with
+ *                                                            entries. By default, the class saves
+ *                                                            any kind of object on the storage,
+ *                                                            but by using entries you can access
+ *                                                            them by name and even define
+ *                                                            expiration time so they'll be removed
+ *                                                            after a while.
+ * @property {SimpleStorage.Dictionary}     [tempStorage={}]  The `tempStorage` is the storage the
+ *                                                            class uses when none of the others
+ *                                                            are available. Is just a simple
+ *                                                            object, so when the class gets
+ *                                                            destroyed (browser refreshes the
+ *                                                            page), the data goes away.
+ * @memberof module.browser/simpleStorage
  */
 
 /**
- * @callback SimpleStorageStorageAvailableMethod
+ * @callback SimpleStorage.StorageAvailableMethod
  * @param {string} [fallbackFrom] If the storage is being used as a fallback from another one that
  *                                is not available, this parameter will have its name.
  * @returns {boolean} Whether or not the storage is available.
+ * @memberof module.browser/simpleStorage
  */
 
 /**
- * @callback SimpleStorageStorageGetMethod
+ * @callback SimpleStorage.StorageGetMethod
  * @param {string} key The key used by the class to save data on the storage.
- * @returns {StorageDictionary} The contents from the storage.
+ * @returns {SimpleStorage.Dictionary} The contents from the storage.
+ * @memberof module.browser/simpleStorage
  */
 
 /**
- * @callback SimpleStorageStorageSetMethod
+ * @callback SimpleStorage.StorageSetMethod
  * @param {string} key The key used by the class to save data on the storage.
  * @param {Object} value The data to save on the storage.
+ * @memberof module.browser/simpleStorage
  */
 
 /**
- * @callback SimpleStorageStorageDeleteMethod
+ * @callback SimpleStorage.StorageDeleteMethod
  * @param {string} key The key used by the class to save data on the storage.
+ * @memberof module.browser/simpleStorage
  */
 
 /**
- * @typedef {Object} SimpleStorageStorage
- * @property {string}                              name      The name of the storage.
- * @property {SimpleStorageStorageAvailableMethod} available The method to check if the storage can
- *                                                           be used or not.
- * @property {SimpleStorageStorageGetMethod}       get       The method used to read from the
- *                                                           storage.
- * @property {SimpleStorageStorageSetMethod}       set       The method used to write on the
- *                                                           storage.
- * @property {SimpleStorageStorageDeleteMethod}    delete    The method used to delete data from
- *                                                           the storage.
+ * @typedef {Object} SimpleStorage.Storage
+ * @property {string}                               name      The name of the storage.
+ * @property {SimpleStorage.StorageAvailableMethod} available The method to check if the storage
+ *                                                            can be used or not.
+ * @property {SimpleStorage.StorageGetMethod}       get       The method used to read from the
+ *                                                            storage.
+ * @property {SimpleStorage.StorageSetMethod}       set       The method used to write on the
+ *                                                            storage.
+ * @property {SimpleStorage.StorageDeleteMethod}    delete    The method used to delete data from
+ *                                                            the storage.
+ * @memberof module.browser/simpleStorage
  */
 
 /**
- * @typedef {Object} SimpleStorageEntry
+ * @typedef {Object} SimpleStorage.Entry
  * @property {number} time  The timestamp of when the entry was first created.
  * @property {Object} value The actual data for the entry.
+ * @memberof module.browser/simpleStorage
  */
 
 /**
@@ -127,11 +143,12 @@ const extend = require('extend');
  * You can specify the storage type you want to use, the format in which you want to handle the
  * data and even expiration time for it.
  *
+ * @memberof module.browser/simpleStorage
  * @abstract
  */
 class SimpleStorage {
   /**
-   * @param {SimpleStorageOptions} [options={}] The options to customize the class.
+   * @param {SimpleStorage.Options} [options={}] The options to customize the class.
    * @throws {Error} If instantiated without extending it.
    * @abstract
    */
@@ -146,7 +163,7 @@ class SimpleStorage {
      * These are the options/settings the class uses in order to work the with the storage and
      * the data.
      *
-     * @type {SimpleStorageOptions}
+     * @type {SimpleStorage.Options}
      * @access protected
      */
     this._options = this._mergeOptions({
@@ -173,10 +190,10 @@ class SimpleStorage {
     /**
      * A dictionary with the storage types the class supports.
      *
-     * @type {Object.<string,SimpleStorageStorage>}
-     * @property {SimpleStorageStorage} local   The methods to work with `localStorage`.
-     * @property {SimpleStorageStorage} session The methods to work with `sessionStorage`.
-     * @property {SimpleStorageStorage} temp    The methods to work with the _"temp storage"_.
+     * @type {Object.<string,SimpleStorage.Storage>}
+     * @property {SimpleStorage.Storage} local   The methods to work with `localStorage`.
+     * @property {SimpleStorage.Storage} session The methods to work with `sessionStorage`.
+     * @property {SimpleStorage.Storage} temp    The methods to work with the _"temp storage"_.
      * @access protected
      */
     this._storageTypes = {
@@ -204,9 +221,9 @@ class SimpleStorage {
     };
     /**
      * Once the class is initialized, this property will hold a reference to the
-     * {@link SimpleStorageStorage} being used.
+     * {@link SimpleStorage.Storage} being used.
      *
-     * @type {?SimpleStorageStorage}
+     * @type {?SimpleStorage.Storage}
      * @access protected
      */
     this._storage = null;
@@ -214,7 +231,7 @@ class SimpleStorage {
      * This is the object/dictionary the class will use to sync the content of the storage. That
      * way you won't need to write/read/parse from the storage every time you need to do something.
      *
-     * @type {StorageDictionary}
+     * @type {SimpleStorage.Dictionary}
      * @access protected
      */
     this._data = {};
@@ -324,7 +341,7 @@ class SimpleStorage {
    * Filters out a dictionary of entries by checking if they expired or not.
    *
    * @param {Object} entries    A dictionary of key-value, where the value is a
-   *                            {@link SimpleStorageEntry}.
+   *                            {@link SimpleStorage.Entry}.
    * @param {number} expiration The amount of seconds that need to have passed in order to
    *                            consider an entry expired.
    * @returns {Object} A new dictionary without the expired entries.
@@ -382,7 +399,7 @@ class SimpleStorage {
    * Gets an entry from the storage dictionary.
    *
    * @param  {string} key The entry key.
-   * @returns {?SimpleStorageEntry} Whatever is on the storage, or `null`.
+   * @returns {?SimpleStorage.Entry} Whatever is on the storage, or `null`.
    * @throws {Error} If entries are not enabled.
    * @access protected
    */
@@ -410,7 +427,7 @@ class SimpleStorage {
    * Gets the value of an entry.
    *
    * @param {string} key The entry key.
-   * @returns {?StorageDictionary}
+   * @returns {?SimpleStorage.Dictionary}
    * @access protected
    */
   _getEntryValue(key) {
@@ -421,7 +438,7 @@ class SimpleStorage {
    * Gets an object from `localStorage`.
    *
    * @param {string} key The key used to save the object.
-   * @returns {?StorageDictionary}
+   * @returns {?SimpleStorage.Dictionary}
    * @access protected
    */
   _getFromLocalStorage(key) {
@@ -432,7 +449,7 @@ class SimpleStorage {
    * Gets an object from `sessionStorage`.
    *
    * @param {string} key The key used to save the object.
-   * @returns {?StorageDictionary}
+   * @returns {?SimpleStorage.Dictionary}
    * @access protected
    */
   _getFromSessionStorage(key) {
@@ -443,7 +460,7 @@ class SimpleStorage {
    * Gets an object from the _"temp storage"_.
    *
    * @param {string} key The key used to save the object.
-   * @returns {?StorageDictionary}
+   * @returns {?SimpleStorage.Dictionary}
    * @access protected
    */
   _getFromTempStorage(key) {
@@ -453,7 +470,7 @@ class SimpleStorage {
    * This method is called when the storage is deleted or resetted and if entries are disabled.
    * It can be used to define the initial value of the data the class saves on the storage.
    *
-   * @returns {StorageDictionary}
+   * @returns {SimpleStorage.Dictionary}
    * @access protected
    */
   _getInitialData() {
@@ -484,7 +501,7 @@ class SimpleStorage {
    * This method checks the list of priorities from the `storage.typePriority` option and tries
    * to find the first available storage.
    *
-   * @returns {SimpleStorageStorage}
+   * @returns {SimpleStorage.Storage}
    * @throws {Error} If none of the storage options are available.
    * @access protected
    */
@@ -571,7 +588,7 @@ class SimpleStorage {
     return !!this._options.window.sessionStorage;
   }
   /**
-   * This method is just here to comply with the {@link SimpleStorageStorage} _"interface"_ as
+   * This method is just here to comply with the {@link SimpleStorage.Storage} _"interface"_ as
    * the temp storage is always available.
    *
    * @param {string} [fallbackFrom] In case it's being used as a fallback, this will be the name
@@ -597,9 +614,9 @@ class SimpleStorage {
    * Is easy to understand the reason, but nonetheless, it makes it confussing for an option to
    * behave like that.
    *
-   * @param {SimpleStorageOptions} defaults The class default options.
-   * @param {SimpleStorageOptions} custom   The custom options sent to the constructor.
-   * @returns {SimpleStorageOptions}
+   * @param {SimpleStorage.Options} defaults The class default options.
+   * @param {SimpleStorage.Options} custom   The custom options sent to the constructor.
+   * @returns {SimpleStorage.Options}
    * @access protected
    */
   _mergeOptions(defaults, custom) {

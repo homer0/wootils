@@ -1,16 +1,32 @@
 const colors = require('colors/safe');
 const { provider } = require('jimple');
+/**
+ * @module node/logger
+ */
 
 /**
  * This can be either a message to log, or an array where the first item is the message and the
  * second one is the color it should be used to log it.
  *
- * @typedef {string|Array<string>} LogContents
- * @typedef {string|Array<LogContents>} LogMessage
+ * @example
+ * logger.log('hello world');
+ * // It will log 'hello world' with the default color.
+ * logger.log(['hello world', 'red'])
+ * // It will log 'hello world' in red.
+ *
+ * @typedef {string|Array<string>} Logger.Line
+ * @memberof module.node/logger
+ */
+
+/**
+ * @typedef {string|Array.<Logger.Line>} Logger.Message
+ * @memberof module.node/logger
  */
 
 /**
  * A utility service to log messages on the console.
+ *
+ * @memberof module.node/logger
  */
 class Logger {
   /**
@@ -34,7 +50,7 @@ class Logger {
   /**
    * Logs an error (red) message or messages on the console.
    *
-   * @param {LogMessage|Error} message
+   * @param {Logger.Message|Error} message
    * A single message of a list of them. See the `log()` documentation to see all the supported
    * properties for the `message` parameter. Different from the other log methods, you can use an
    * `Error` object and the method will take care of extracting the message and the stack
@@ -65,8 +81,8 @@ class Logger {
   /**
    * Logs an information (gray) message or messages on the console.
    *
-   * @param {LogMessage} message A single message of a list of them. See the `log()` documentation
-   *                             to see all the supported properties for the `message` parameter.
+   * @param {Logger.Message} message A single message of a list of them.
+   * @see {@link Logger#log}
    */
   info(message) {
     this.log(message, 'grey');
@@ -83,16 +99,16 @@ class Logger {
    * CLILogger.log(['Ph\'nglu', 'mglw\'nafh'], 'grey');
    * // A list of messages with different colors per line
    * CLILogger.log([
-   *     'Ph\'nglu',
-   *     'mglw\'nafh',
-   *     ['Cthulhu', 'green'],
-   *     ['R\'lyeh wgah\'nagl fhtagn', 'red']
+   *   'Ph\'nglu',
+   *   'mglw\'nafh',
+   *   ['Cthulhu', 'green'],
+   *   ['R\'lyeh wgah\'nagl fhtagn', 'red']
    * ], 'grey');
    *
-   * @param {LogMessage} message       A text message to log or a list of them.
-   * @param {string}     [color='raw'] Optional. The color of the message (the default is 'white').
-   *                                   This can be overwritten line by line when the message is an
-   *                                   array, take a look at the example.
+   * @param {Logger.Message} message       A text message to log or a list of them.
+   * @param {string}         [color='raw'] Optional. The color of the message (the default is
+   *                                       'white'). This can be overwritten line by line when the
+   *                                       message is an array, take a look at the example.
    */
   log(message, color = 'raw') {
     const lines = [];
@@ -143,8 +159,8 @@ class Logger {
   /**
    * Logs a success (green) message or messages on the console.
    *
-   * @param {LogMessage} message A single message of a list of them. See the `log()` documentation
-   *                             to see all the supported properties for the `message` parameter.
+   * @param {Logger.Message} message A single message of a list of them.
+   * @see {@link Logger#log}
    */
   success(message) {
     this.log(message, 'green');
@@ -152,8 +168,8 @@ class Logger {
   /**
    * Logs a warning (yellow) message or messages on the console.
    *
-   * @param {LogMessage} message A single message of a list of them. See the `log()` documentation
-   *                             to see all the supported properties for the `message` parameter.
+   * @param {Logger.Message} message A single message of a list of them.
+   * @see {@link Logger#log}
    * @todo Add `warn` alias.
    */
   warning(message) {
@@ -166,8 +182,8 @@ class Logger {
    *
    * @param {string} name The name of the color.
    * @returns {Function} A function that receives a string and returns it colored.
-   * @ignore
    * @access protected
+   * @ignore
    */
   _color(name) {
     return name === 'raw' ? ((str) => str) : colors[name];

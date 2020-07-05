@@ -1,11 +1,15 @@
 /**
+ * @module shared/extendPromise
+ */
+
+/**
  * Helper class to create a proxy for a promise in order to add custom properties.
  *
  * The only reason this class exists is so it can "scope" the necessary methods to extend promise
  * and avoid workarounds in order to declare them, as both methods need to call themselves
  * recursively.
  *
- * @ignore
+ * @memberof module.shared/extendPromise
  */
 class PromiseExtender {
   /**

@@ -1,4 +1,7 @@
 const { provider } = require('jimple');
+/**
+ * @module node/rootRequire
+ */
 
 /**
  * @callback RootRequireFn

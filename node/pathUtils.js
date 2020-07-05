@@ -1,8 +1,14 @@
 const path = require('path');
 const { provider } = require('jimple');
 /**
+ * @module node/pathUtils
+ */
+
+/**
  * A utility services to manage paths on a project. It allows for path building relatives to
  * the project root or from where the app executable is located.
+ *
+ * @memberof module.node/pathUtils
  */
 class PathUtils {
   /**

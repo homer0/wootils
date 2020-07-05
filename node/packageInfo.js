@@ -1,6 +1,10 @@
 const fs = require('fs-extra');
 const { provider } = require('jimple');
 /**
+ * @module node/packageInfo
+ */
+
+/**
  * @typedef {import('./pathUtils').PathUtils} PathUtils
  */
 

@@ -1,6 +1,9 @@
 const path = require('path');
 const { provider } = require('jimple');
 const ObjectUtils = require('../shared/objectUtils');
+/**
+ * @module node/appConfiguration
+ */
 
 /**
  * @typedef {import('./environmentUtils').EnvironmentUtils} EnvironmentUtils
@@ -8,7 +11,7 @@ const ObjectUtils = require('../shared/objectUtils');
  */
 
 /**
- * @typedef {Object} AppConfigurationOptions
+ * @typedef {Object} AppConfiguration.Options
  * @property {string} [defaultConfigurationName='default']           The name of the default
  *                                                                   configuration.
  * @property {string} [environmentVariable='APP_CONFIG']             The name of the variable it
@@ -24,27 +27,30 @@ const ObjectUtils = require('../shared/objectUtils');
  *                                                                   placeholder so the service
  *                                                                   can replace it with the name
  *                                                                   of the configuration.
+ * @memberof module.node/appConfiguration
  */
 
 /**
  * This is a service to manage applications configurations. It takes care of loading, activating,
  * switching and merging configuration files.
+ *
+ * @memberof module.node/appConfiguration
  */
 class AppConfiguration {
   /**
-   * @param {EnvironmentUtils}        environmentUtils          Required to read the environment
-   *                                                            variables and determine which
-   *                                                            configuration to use.
-   * @param {RootRequireFn}           rootRequire               Necessary to be able to require the
-   *                                                            configuration files with paths
-   *                                                            relative to the app root directory.
-   * @param {string}                  [appName='app']           The name of the app using this
-   *                                                            service.
-   *                                                            It's also used as part of the name
-   *                                                            of the configuration files.
-   * @param {Object}                  [defaultConfiguration={}] The default configuration the
-   *                                                            others will extend.
-   * @param {AppConfigurationOptions} [options={}]              Options to customize the service.
+   * @param {EnvironmentUtils}         environmentUtils          Required to read the environment
+   *                                                             variables and determine which
+   *                                                             configuration to use.
+   * @param {RootRequireFn}            rootRequire               Necessary to be able to require the
+   *                                                             configuration files with paths
+   *                                                             relative to the app root directory.
+   * @param {string}                   [appName='app']           The name of the app using this
+   *                                                             service.
+   *                                                             It's also used as part of the name
+   *                                                             of the configuration files.
+   * @param {Object}                   [defaultConfiguration={}] The default configuration the
+   *                                                             others will extend.
+   * @param {AppConfiguration.Options} [options={}]              Options to customize the service.
    */
   constructor(
     environmentUtils,
@@ -69,7 +75,7 @@ class AppConfiguration {
     /**
      * The service customizable options.
      *
-     * @type {AppConfigurationOptions}
+     * @type {AppConfiguration.Options}
      */
     this.options = ObjectUtils.merge(true, {
       defaultConfigurationName: 'default',
@@ -326,8 +332,8 @@ class AppConfiguration {
    *                                  updated with the value of this new configuration setting.
    * @param {boolean} switchTo        Whether or not to switch it to the active configuration
    *                                  after adding it.
-   * @ignore
    * @access protected
+   * @ignore
    */
   _addConfiguration(name, settings, checkSwitchFlag, switchTo) {
     const newSettings = ObjectUtils.copy(settings);
@@ -356,9 +362,9 @@ class AppConfiguration {
  * // Getting access to the service instance
  * const appConfiguration = container.get('appConfiguration');
  *
- * @param {string} [appName]              The name of the app.
- * @param {Object} [defaultConfiguration] The service default configuration.
- * @param {Object} [options]              Options to customize the service.
+ * @param {string}                   [appName]              The name of the app.
+ * @param {AppConfiguration.Options} [defaultConfiguration] The service default configuration.
+ * @param {Object}                   [options]              Options to customize the service.
  * @returns {Provider}
  */
 const appConfiguration = (

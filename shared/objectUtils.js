@@ -1,22 +1,30 @@
 const extend = require('extend');
+/**
+ * @module shared/objectUtils
+ */
 
 /**
- * @callback ObjectUtilsShouldFlatFn
+ * @callback ObjectUtils.ShouldFlatFn
  * @param {string} key
  * @param {Object} value
  * @returns {boolean} Whether or not the method should flat a sub object.
+ * @memberof module.shared/objectUtils
  */
 
 /**
- * @typedef {Object.<string,string>} ExtractPathsDictionary
+ * @typedef {Object.<string,string>} ObjectUtils.ExtractPathsDictionary
+ * @memberof module.shared/objectUtils
  */
 
 /**
- * @typedef {ExtractPathsDictionary|string} ExtractPath
+ * @typedef {ObjectUtils.ExtractPathsDictionary|string} ObjectUtils.ExtractPath
+ * @memberof module.shared/objectUtils
  */
 
 /**
  * A small collection of utility methods to work with objects.
+ *
+ * @memberof module.shared/objectUtils
  */
 class ObjectUtils {
   /**
@@ -164,24 +172,17 @@ class ObjectUtils {
    * ]));
    * // Will output { name: 'Rosario', age: 3, address: { planet: 'earth' } }
    *
-   * @param {Object}                         target                The object from where the
-   *                                                               property/properties will be
-   *                                                               extracted.
-   * @param {ExtractPath|Array<ExtractPath>} objPaths              This can be a single path or a
-   *                                                               list of them. And for this
-   *                                                               method, the paths are not only
-   *                                                               strings but can also be an
-   *                                                               object with a single key, the
-   *                                                               would be the path to where to
-   *                                                               "do the extraction", and the
-   *                                                               value the path on the target
-   *                                                               object.
-   * @param {string}                         [pathDelimiter='.']   The delimiter that will separate
-   *                                                               the path components.
-   * @param {boolean}                        [failWithError=false] Whether or not to throw an error
-   *                                                               when the path is invalid. If
-   *                                                               this is `false`, the method will
-   *                                                               silently fail an empty object.
+   * @param {Object} target
+   * The object from where the property/properties will be extracted.
+   * @param {ObjectUtils.ExtractPath|Array<ObjectUtils.ExtractPath>} objPaths
+   * This can be a single path or a list of them. And for this method, the paths are not only
+   * strings but can also be an object with a single key, the would be the path to where to "do
+   * the extraction", and the value the path on the target object.
+   * @param {string} [pathDelimiter='.']
+   * The delimiter that will separate the path components.
+   * @param {boolean} [failWithError=false]
+   * Whether or not to throw an error when the path is invalid. If this is `false`, the method will
+   * silently fail an empty object.
    * @returns {Object}
    */
   static extract(target, objPaths, pathDelimiter = '.', failWithError = false) {
@@ -238,20 +239,20 @@ class ObjectUtils {
    * console.log(ObjectUtils.flat(target);
    * // Will output { 'propOne.propOneSub': 'Charito!', propTwo: '!!!' }
    *
-   * @param {Object}                   target                The object to transform.
-   * @param {string}                   [pathDelimiter='.']   The delimiter that will separate the
-   *                                                         path components.
-   * @param {string}                   [prefix='']           A custom prefix to be added before the
-   *                                                         name of the properties. This can be
-   *                                                         used on custom cases and it's also
-   *                                                         used when the method calls itself in
-   *                                                         order to flattern a sub object.
-   * @param {?ObjectUtilsShouldFlatFn} [shouldFlattern=null] A custom function that can be used in
-   *                                                         order to tell the method whether an
-   *                                                         Object or an Array property should be
-   *                                                         flattern or not. It will receive the
-   *                                                         key for the property and the
-   *                                                         Object/Array itself.
+   * @param {Object}                   target                 The object to transform.
+   * @param {string}                   [pathDelimiter='.']    The delimiter that will separate the
+   *                                                          path components.
+   * @param {string}                   [prefix='']            A custom prefix to be added before the
+   *                                                          name of the properties. This can be
+   *                                                          used on custom cases and it's also
+   *                                                          used when the method calls itself in
+   *                                                          order to flattern a sub object.
+   * @param {?ObjectUtils.ShouldFlatFn} [shouldFlattern=null] A custom function that can be used in
+   *                                                          order to tell the method whether an
+   *                                                          Object or an Array property should be
+   *                                                          flattern or not. It will receive the
+   *                                                          key for the property and the
+   *                                                          Object/Array itself.
    * @returns {Object}
    */
   static flat(target, pathDelimiter = '.', prefix = '', shouldFlattern = null) {
@@ -328,6 +329,8 @@ class ObjectUtils {
      * should make a recursive call for a key, but also because when parsing the `exclude`
      * parameter, if one of items is a key (and not an specific path), the method won't make the
      * recursive call.
+     *
+     * @ignore
      */
     const hasChildrenByKey = {};
     keys.forEach((key) => {
@@ -388,6 +391,8 @@ class ObjectUtils {
            * `myProp.mySubProp`), the method won't format the key, but the sub key(s)
            * (`mySubProp`).
            * The `key` is set to `false` so it will be later removed using `.filter`.
+           *
+           * @ignore
            */
           key = false;
           /**
@@ -455,6 +460,8 @@ class ObjectUtils {
            * dictionary" to `false`, to prevent recursive calls, and add the key to the list
            * of keys that will be removed from `keysToFormat`.
            * Basically: If it's a key, don't format it and don't make recursive calls for it.
+           *
+           * @ignore
            */
           hasChildrenByKey[useExcludePath] = false;
           keysToRemove.push(useExcludePath);
@@ -774,7 +781,6 @@ class ObjectUtils {
   }
   /**
    * @throws {Error} If instantiated. This class is meant to be have only static methods.
-   * @ignore
    */
   constructor() {
     throw new Error('ObjectUtils is a static class');

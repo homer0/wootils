@@ -1,4 +1,7 @@
 const { provider } = require('jimple');
+/**
+ * @module node/errorHandler
+ */
 
 /**
  * @typedef {import('./logger').Logger} Logger
@@ -7,6 +10,8 @@ const { provider } = require('jimple');
 /**
  * An error handler that captures uncaught exceptions and unhandled rejections in order to log
  * them with detail.
+ *
+ * @memberof module.node/errorHandler
  */
 class ErrorHandler {
   /**

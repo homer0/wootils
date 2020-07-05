@@ -1,11 +1,16 @@
 /**
+ * @module shared/eventsHub
+ */
+
+/**
  * A minimal implementation of an events handler service.
+ *
+ * @memberof module.shared/eventsHub
  */
 class EventsHub {
   /**
    * Class constructor.
    *
-   * @ignore
    * @todo Remove once the JSDoc plugin rule for constructors is added.
    */
   constructor() {
