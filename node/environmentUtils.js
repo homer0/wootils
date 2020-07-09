@@ -6,7 +6,7 @@ const { provider } = require('jimple');
 /**
  * A simple service to avoid calling `process.env` on multiples places of an app.
  *
- * @memberof module.node/environmentUtils
+ * @parent module:node/environmentUtils
  */
 class EnvironmentUtils {
   /**

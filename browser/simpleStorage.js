@@ -6,7 +6,7 @@ const extend = require('extend');
 /**
  * @callback SimpleStorage.LoggerWarnFn
  * @param {string} message The message to log the warning for.
- * @memberof module.browser/simpleStorage
+ * @parent module:browser/simpleStorage
  */
 
 /**
@@ -15,7 +15,7 @@ const extend = require('extend');
  *                                                 `warning` MUST be present.
  * @property {?SimpleStorage.LoggerWarnFn} warning Prints out a warning message. Either this or
  *                                                 `warn` MUST be present.
- * @memberof module.browser/simpleStorage
+ * @parent module:browser/simpleStorage
  */
 
 /**
@@ -26,12 +26,12 @@ const extend = require('extend');
  * The key the class will use to store the data on the storage.
  * @property {Array<string>} [typePriority=['local', 'session', 'temp']]
  * The priority list of types of storage the service will try to use when initialized.
- * @memberof module.browser/simpleStorage
+ * @parent module:browser/simpleStorage
  */
 
 /**
  * @typedef {Object.<string,*>} SimpleStorage.Dictionary
- * @memberof module.browser/simpleStorage
+ * @parent module:browser/simpleStorage
  */
 
 /**
@@ -49,7 +49,7 @@ const extend = require('extend');
  *                                                    trying to access the entries).
  * @property {boolean} [saveWhenDeletingExpired=true] Whether or not to sync the storage after
  *                                                    deleting an expired entry.
- * @memberof module.browser/simpleStorage
+ * @parent module:browser/simpleStorage
  */
 
 /**
@@ -85,7 +85,7 @@ const extend = require('extend');
  *                                                            object, so when the class gets
  *                                                            destroyed (browser refreshes the
  *                                                            page), the data goes away.
- * @memberof module.browser/simpleStorage
+ * @parent module:browser/simpleStorage
  */
 
 /**
@@ -93,27 +93,27 @@ const extend = require('extend');
  * @param {string} [fallbackFrom] If the storage is being used as a fallback from another one that
  *                                is not available, this parameter will have its name.
  * @returns {boolean} Whether or not the storage is available.
- * @memberof module.browser/simpleStorage
+ * @parent module:browser/simpleStorage
  */
 
 /**
  * @callback SimpleStorage.StorageGetMethod
  * @param {string} key The key used by the class to save data on the storage.
  * @returns {SimpleStorage.Dictionary} The contents from the storage.
- * @memberof module.browser/simpleStorage
+ * @parent module:browser/simpleStorage
  */
 
 /**
  * @callback SimpleStorage.StorageSetMethod
  * @param {string} key The key used by the class to save data on the storage.
  * @param {Object} value The data to save on the storage.
- * @memberof module.browser/simpleStorage
+ * @parent module:browser/simpleStorage
  */
 
 /**
  * @callback SimpleStorage.StorageDeleteMethod
  * @param {string} key The key used by the class to save data on the storage.
- * @memberof module.browser/simpleStorage
+ * @parent module:browser/simpleStorage
  */
 
 /**
@@ -127,14 +127,14 @@ const extend = require('extend');
  *                                                            storage.
  * @property {SimpleStorage.StorageDeleteMethod}    delete    The method used to delete data from
  *                                                            the storage.
- * @memberof module.browser/simpleStorage
+ * @parent module:browser/simpleStorage
  */
 
 /**
  * @typedef {Object} SimpleStorage.Entry
  * @property {number} time  The timestamp of when the entry was first created.
  * @property {Object} value The actual data for the entry.
- * @memberof module.browser/simpleStorage
+ * @parent module:browser/simpleStorage
  */
 
 /**
@@ -143,7 +143,7 @@ const extend = require('extend');
  * You can specify the storage type you want to use, the format in which you want to handle the
  * data and even expiration time for it.
  *
- * @memberof module.browser/simpleStorage
+ * @parent module:browser/simpleStorage
  * @abstract
  */
 class SimpleStorage {

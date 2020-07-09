@@ -15,18 +15,18 @@ const { provider } = require('jimple');
  * // It will log 'hello world' in red.
  *
  * @typedef {string|Array<string>} Logger.Line
- * @memberof module.node/logger
+ * @parent module:node/logger
  */
 
 /**
  * @typedef {string|Array.<Logger.Line>} Logger.Message
- * @memberof module.node/logger
+ * @parent module:node/logger
  */
 
 /**
  * A utility service to log messages on the console.
  *
- * @memberof module.node/logger
+ * @parent module:node/logger
  */
 class Logger {
   /**

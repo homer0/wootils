@@ -7,14 +7,14 @@
  * @property {Promise}  promise The deferred promise.
  * @property {Function} resolve The function to resolve the promise.
  * @property {Function} reject  The function to reject the promise.
- * @memberof module.shared/deferred
+ * @parent module:shared/deferred
  */
 
 /**
  * Create a deferred promise using a native Promise.
  *
  * @returns {DeferredPromise}
- * @memberof module.shared/deferred
+ * @parent module:shared/deferred
  */
 const deferred = () => {
   let resolve;

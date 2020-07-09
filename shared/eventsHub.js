@@ -5,7 +5,7 @@
 /**
  * A minimal implementation of an events handler service.
  *
- * @memberof module.shared/eventsHub
+ * @parent module:shared/eventsHub
  */
 class EventsHub {
   /**

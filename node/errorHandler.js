@@ -11,7 +11,7 @@ const { provider } = require('jimple');
  * An error handler that captures uncaught exceptions and unhandled rejections in order to log
  * them with detail.
  *
- * @memberof module.node/errorHandler
+ * @parent module:node/errorHandler
  */
 class ErrorHandler {
   /**

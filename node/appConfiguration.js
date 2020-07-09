@@ -27,14 +27,14 @@ const ObjectUtils = require('../shared/objectUtils');
  *                                                                   placeholder so the service
  *                                                                   can replace it with the name
  *                                                                   of the configuration.
- * @memberof module.node/appConfiguration
+ * @parent module:node/appConfiguration
  */
 
 /**
  * This is a service to manage applications configurations. It takes care of loading, activating,
  * switching and merging configuration files.
  *
- * @memberof module.node/appConfiguration
+ * @parent module:node/appConfiguration
  */
 class AppConfiguration {
   /**

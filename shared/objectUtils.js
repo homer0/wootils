@@ -8,23 +8,23 @@ const extend = require('extend');
  * @param {string} key
  * @param {Object} value
  * @returns {boolean} Whether or not the method should flat a sub object.
- * @memberof module.shared/objectUtils
+ * @parent module:shared/objectUtils
  */
 
 /**
  * @typedef {Object.<string,string>} ObjectUtils.ExtractPathsDictionary
- * @memberof module.shared/objectUtils
+ * @parent module:shared/objectUtils
  */
 
 /**
  * @typedef {ObjectUtils.ExtractPathsDictionary|string} ObjectUtils.ExtractPath
- * @memberof module.shared/objectUtils
+ * @parent module:shared/objectUtils
  */
 
 /**
  * A small collection of utility methods to work with objects.
  *
- * @memberof module.shared/objectUtils
+ * @parent module:shared/objectUtils
  */
 class ObjectUtils {
   /**

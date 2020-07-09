@@ -9,7 +9,7 @@ const ObjectUtils = require('./objectUtils');
  * This kind of dictionary is used for building stuff like query string parameters and headers.
  *
  * @typedef {Object.<string,(string|number)>} APIClient.ParametersDictionary
- * @memberof module.shared/apiClient
+ * @parent module:shared/apiClient
  */
 
 /**
@@ -19,7 +19,7 @@ const ObjectUtils = require('./objectUtils');
  * @property {string}                         [body]    The request body.
  * @property {boolean}                        [json ]   Whether or not the response should _"JSON
  *                                                      decoded"_.
- * @memberof module.shared/apiClient
+ * @parent module:shared/apiClient
  */
 
 /**
@@ -28,7 +28,7 @@ const ObjectUtils = require('./objectUtils');
  * @param {APIClient.FetchOptions} [options] The request options.
  * @returns {Promise<Response>}
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
- * @memberof module.shared/apiClient
+ * @parent module:shared/apiClient
  */
 
 /**
@@ -39,7 +39,7 @@ const ObjectUtils = require('./objectUtils');
  *                                                           _"JSON decoded"_.
  * @property {string}                         [method='GET'] The request method.
  * @property {APIClient.ParametersDictionary} [headers={}]   The request headers.
- * @memberof module.shared/apiClient
+ * @parent module:shared/apiClient
  */
 
 /**
@@ -52,12 +52,12 @@ const ObjectUtils = require('./objectUtils');
  * @property {?APIClient.ParametersDictionary} query A dictionary of query string parameters that
  *                                                   will be added when the endpoint. If the value
  *                                                   of a parameter is `null`, it won't be added.
- * @memberof module.shared/apiClient
+ * @parent module:shared/apiClient
  */
 
 /**
  * @typedef {(string|APIClient.Endpoint)} APIClient.EndpointValue
- * @memberof module.shared/apiClient
+ * @parent module:shared/apiClient
  */
 
 /**
@@ -85,13 +85,13 @@ const ObjectUtils = require('./objectUtils');
  *   },
  * }
  *
- * @memberof module.shared/apiClient
+ * @parent module:shared/apiClient
  */
 
 /**
  * An API client with configurable endpoints.
  *
- * @memberof module.shared/apiClient
+ * @parent module:shared/apiClient
  */
 class APIClient {
   /**

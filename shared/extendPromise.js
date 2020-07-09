@@ -9,7 +9,7 @@
  * and avoid workarounds in order to declare them, as both methods need to call themselves
  * recursively.
  *
- * @memberof module.shared/extendPromise
+ * @parent module:shared/extendPromise
  */
 class PromiseExtender {
   /**

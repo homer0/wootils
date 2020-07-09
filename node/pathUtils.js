@@ -8,7 +8,7 @@ const { provider } = require('jimple');
  * A utility services to manage paths on a project. It allows for path building relatives to
  * the project root or from where the app executable is located.
  *
- * @memberof module.node/pathUtils
+ * @parent module:node/pathUtils
  */
 class PathUtils {
   /**
