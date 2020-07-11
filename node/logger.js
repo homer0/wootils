@@ -14,12 +14,12 @@ const { provider } = require('jimple');
  * logger.log(['hello world', 'red'])
  * // It will log 'hello world' in red.
  *
- * @typedef {string|Array<string>} Logger.Line
+ * @typedef {string|string[]} LoggerLine
  * @parent module:node/logger
  */
 
 /**
- * @typedef {string|Array.<Logger.Line>} Logger.Message
+ * @typedef {string|LoggerLine[]} LoggerMessage
  * @parent module:node/logger
  */
 
@@ -27,6 +27,7 @@ const { provider } = require('jimple');
  * A utility service to log messages on the console.
  *
  * @parent module:node/logger
+ * @tutorial logger
  */
 class Logger {
   /**
@@ -50,7 +51,7 @@ class Logger {
   /**
    * Logs an error (red) message or messages on the console.
    *
-   * @param {Logger.Message|Error} message
+   * @param {LoggerMessage|Error} message
    * A single message of a list of them. See the `log()` documentation to see all the supported
    * properties for the `message` parameter. Different from the other log methods, you can use an
    * `Error` object and the method will take care of extracting the message and the stack
@@ -81,7 +82,7 @@ class Logger {
   /**
    * Logs an information (gray) message or messages on the console.
    *
-   * @param {Logger.Message} message A single message of a list of them.
+   * @param {LoggerMessage} message A single message of a list of them.
    * @see {@link Logger#log}
    */
   info(message) {
@@ -105,10 +106,11 @@ class Logger {
    *   ['R\'lyeh wgah\'nagl fhtagn', 'red']
    * ], 'grey');
    *
-   * @param {Logger.Message} message       A text message to log or a list of them.
-   * @param {string}         [color='raw'] Optional. The color of the message (the default is
-   *                                       'white'). This can be overwritten line by line when the
-   *                                       message is an array, take a look at the example.
+   * @param {LoggerMessage} message       A text message to log or a list of them.
+   * @param {string}        [color='raw'] Optional. The color of the message (the default is
+   *                                      the terminal default). This can be overwritten line by
+   *                                      line when the message is an array, take a look at the
+   *                                      example.
    */
   log(message, color = 'raw') {
     const lines = [];
@@ -159,7 +161,7 @@ class Logger {
   /**
    * Logs a success (green) message or messages on the console.
    *
-   * @param {Logger.Message} message A single message of a list of them.
+   * @param {LoggerMessage} message A single message of a list of them.
    * @see {@link Logger#log}
    */
   success(message) {
@@ -168,7 +170,7 @@ class Logger {
   /**
    * Logs a warning (yellow) message or messages on the console.
    *
-   * @param {Logger.Message} message A single message of a list of them.
+   * @param {LoggerMessage} message A single message of a list of them.
    * @see {@link Logger#log}
    * @todo Add `warn` alias.
    */
@@ -198,11 +200,12 @@ class Logger {
  * // Register it on the container
  * container.register(provider);
  * // Getting access to the service instance
- * const logger = container.get('logger');
+ * const instance = container.get('logger');
  *
  * @param {string}  [messagesPrefix] A prefix to include in front of all the messages.
  * @param {boolean} [showTime]       Whether or not to show the time on each message.
  * @returns {Provider}
+ * @tutorial logger
  */
 const loggerWithOptions = (messagesPrefix, showTime) => provider((app) => {
   app.set('logger', () => new Logger(messagesPrefix, showTime));
@@ -215,9 +218,10 @@ const loggerWithOptions = (messagesPrefix, showTime) => provider((app) => {
  * // Register it on the container
  * container.register(logger);
  * // Getting access to the service instance
- * const logger = container.get('logger');
+ * const instance = container.get('logger');
  *
  * @type {Provider}
+ * @tutorial logger
  */
 const logger = loggerWithOptions();
 /**
@@ -226,6 +230,7 @@ const logger = loggerWithOptions();
  *
  * @param {boolean} [showTime] Whether or not to show the time on each message.
  * @returns {Provider}
+ * @tutorial logger
  */
 const appLoggerWithOptions = (showTime) => provider((app) => {
   app.set('appLogger', () => {
@@ -244,8 +249,9 @@ const appLoggerWithOptions = (showTime) => provider((app) => {
  * // Register it on the container
  * container.register(appLogger);
  * // Getting access to the service instance
- * const appLogger = container.get('appLogger');
+ * const instance = container.get('appLogger');
  * @type {Provider}
+ * @tutorial logger
  */
 const appLogger = appLoggerWithOptions();
 

@@ -6,18 +6,14 @@
  * A minimal implementation of an events handler service.
  *
  * @parent module:shared/eventsHub
+ * @tutorial eventsHub
  */
 class EventsHub {
-  /**
-   * Class constructor.
-   *
-   * @todo Remove once the JSDoc plugin rule for constructors is added.
-   */
   constructor() {
     /**
      * A dictionary of the events and their listeners.
      *
-     * @type {Object.<string,Array<Function>>}
+     * @type {Object.<string,Function[]>}
      * @access protected
      * @ignore
      */
@@ -26,8 +22,8 @@ class EventsHub {
   /**
    * Emits an event and call all its listeners.
    *
-   * @param {string|Array} event An event name or a list of them.
-   * @param {Array}        args  A list of parameters to send to the listeners.
+   * @param {string|string[]} event An event name or a list of them.
+   * @param {...*}            args  A list of parameters to send to the listeners.
    */
   emit(event, ...args) {
     const toClean = [];
@@ -49,11 +45,11 @@ class EventsHub {
   /**
    * Removes an event listener.
    *
-   * @param {string|Array} event An event name or a list of them.
-   * @param {Function}     fn    The listener function.
-   * @returns {boolean|Array} If `event` was a `string`, it will return whether or not the listener
-   *                          was found and removed; but if `event` was an `Array`, it will return
-   *                          a list of boolean values.
+   * @param {string|string[]} event An event name or a list of them.
+   * @param {Function}        fn    The listener function.
+   * @returns {boolean|boolean[]} If `event` was a `string`, it will return whether or not the
+   *                              listener was found and removed; but if `event` was an `Array`, it
+   *                              will return a list of boolean values.
    */
   off(event, fn) {
     const isArray = Array.isArray(event);
@@ -75,8 +71,8 @@ class EventsHub {
   /**
    * Adds a new event listener.
    *
-   * @param {string|Array} event An event name or a list of them.
-   * @param {Function}     fn    The listener function.
+   * @param {string|string[]} event An event name or a list of them.
+   * @param {Function}        fn    The listener function.
    * @returns {Function} An unsubscribe function to remove the listener or listeners.
    */
   on(event, fn) {
@@ -93,8 +89,8 @@ class EventsHub {
   /**
    * Adds an event listener that will only be executed once.
    *
-   * @param {string|Array} event An event name or a list of them.
-   * @param {Function}     fn    The listener function.
+   * @param {string|string[]} event An event name or a list of them.
+   * @param {Function}        fn    The listener function.
    * @returns {Function} An unsubscribe function to remove the listener.
    * @todo Use a wrapper instead of modifying the listener.
    */
@@ -104,12 +100,12 @@ class EventsHub {
     return this.on(event, fn);
   }
   /**
-   * Reduce a target using an event. It's like emit, but the events listener return
+   * Reduces a target using an event. It's like emit, but the events listener return
    * a modified (or not) version of the `target`.
    *
-   * @param {string|Array} event  An event name or a list of them.
-   * @param {*}            target The variable to reduce with the listeners.
-   * @param {Array}        args   A list of parameters to send to the listeners.
+   * @param {string|string[]} event  An event name or a list of them.
+   * @param {*}               target The variable to reduce with the listeners.
+   * @param {...*}            args   A list of parameters to send to the listeners.
    * @returns {*} A version of the `target` processed by the listeners.
    */
   reduce(event, target, ...args) {
@@ -146,10 +142,10 @@ class EventsHub {
     return result;
   }
   /**
-   * Get all the listeners for an event.
+   * Gets all the listeners for an event.
    *
    * @param {string} event The name of the event.
-   * @returns {Array}
+   * @returns {Function[]}
    */
   subscribers(event) {
     if (!this._events[event]) {

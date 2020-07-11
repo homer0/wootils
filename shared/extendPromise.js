@@ -3,13 +3,14 @@
  */
 
 /**
- * Helper class to create a proxy for a promise in order to add custom properties.
+ * Helper class that creates a proxy for a {@link Promise} in order to add custom properties.
  *
- * The only reason this class exists is so it can "scope" the necessary methods to extend promise
- * and avoid workarounds in order to declare them, as both methods need to call themselves
- * recursively.
+ * The only reason this class exists is so it can "scope" the necessary methods to extend
+ * {@link Promise} and avoid workarounds in order to declare them, as both methods need to call
+ * themselves recursively.
  *
  * @parent module:shared/extendPromise
+ * @tutorial extendPromise
  */
 class PromiseExtender {
   /**
@@ -107,6 +108,7 @@ class PromiseExtender {
  * @throws {Error} If `promise` is not a valid instance of {@link Promise}.
  * @throws {Error} If `properties` is not an object or if it doesn't have any properties.
  * @returns {Proxy<Promise>}
+ * @tutorial extendPromise
  */
 const extendPromise = (
   promise,

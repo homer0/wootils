@@ -4,20 +4,20 @@ const extend = require('extend');
  */
 
 /**
- * @callback ObjectUtils.ShouldFlatFn
- * @param {string} key
- * @param {Object} value
+ * @callback ObjectUtilsShouldFlatFn
+ * @param {string} key   The key for the property object that is being parsed.
+ * @param {Object} value The value of the property object that is being parsed.
  * @returns {boolean} Whether or not the method should flat a sub object.
  * @parent module:shared/objectUtils
  */
 
 /**
- * @typedef {Object.<string,string>} ObjectUtils.ExtractPathsDictionary
+ * @typedef {Object.<string,string>} ObjectUtilsExtractPathsDictionary
  * @parent module:shared/objectUtils
  */
 
 /**
- * @typedef {ObjectUtils.ExtractPathsDictionary|string} ObjectUtils.ExtractPath
+ * @typedef {ObjectUtilsExtractPathsDictionary|string} ObjectUtilsExtractPath
  * @parent module:shared/objectUtils
  */
 
@@ -25,6 +25,7 @@ const extend = require('extend');
  * A small collection of utility methods to work with objects.
  *
  * @parent module:shared/objectUtils
+ * @tutorial objectUtils
  */
 class ObjectUtils {
   /**
@@ -40,14 +41,14 @@ class ObjectUtils {
    * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
    * `dash-case` to `lowerCamelCase`.
    *
-   * @param {Object}        target              The object for format.
-   * @param {Array<string>} [include=[]]        A list of keys or paths where the transformation
-   *                                            will be made. If not specified, the method will
-   *                                            use all the keys from the object.
-   * @param {Array<string>} [exclude=[]]        A list of keys or paths where the transformation
-   *                                            won't be made.
-   * @param {string}        [pathDelimiter='.'] The delimiter that will separate the path
-   *                                            components for both `include` and `exclude`.
+   * @param {Object}   target              The object for format.
+   * @param {string[]} [include=[]]        A list of keys or paths where the transformation
+   *                                       will be made. If not specified, the method will
+   *                                       use all the keys from the object.
+   * @param {string[]} [exclude=[]]        A list of keys or paths where the transformation
+   *                                       won't be made.
+   * @param {string}   [pathDelimiter='.'] The delimiter that will separate the path
+   *                                       components for both `include` and `exclude`.
    * @returns {Object}
    */
   static dashToLowerCamelKeys(target, include = [], exclude = [], pathDelimiter = '.') {
@@ -67,14 +68,14 @@ class ObjectUtils {
    * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
    * `dash-case` to `snake_case`.
    *
-   * @param {Object}        target              The object for format.
-   * @param {Array<string>} [include=[]]        A list of keys or paths where the transformation
-   *                                            will be made. If not specified, the method will
-   *                                            use all the keys from the object.
-   * @param {Array<string>} [exclude=[]]        A list of keys or paths where the transformation
-   *                                            won't be made.
-   * @param {string}        [pathDelimiter='.'] The delimiter that will separate the path
-   *                                            components for both `include` and `exclude`.
+   * @param {Object}   target              The object for format.
+   * @param {string[]} [include=[]]        A list of keys or paths where the transformation
+   *                                       will be made. If not specified, the method will
+   *                                       use all the keys from the object.
+   * @param {string[]} [exclude=[]]        A list of keys or paths where the transformation
+   *                                       won't be made.
+   * @param {string}   [pathDelimiter='.'] The delimiter that will separate the path
+   *                                       components for both `include` and `exclude`.
    * @returns {Object}
    */
   static dashToSnakeKeys(target, include = [], exclude = [], pathDelimiter = '.') {
@@ -174,7 +175,7 @@ class ObjectUtils {
    *
    * @param {Object} target
    * The object from where the property/properties will be extracted.
-   * @param {ObjectUtils.ExtractPath|Array<ObjectUtils.ExtractPath>} objPaths
+   * @param {ObjectUtilsExtractPath|ObjectUtilsExtractPath[]} objPaths
    * This can be a single path or a list of them. And for this method, the paths are not only
    * strings but can also be an object with a single key, the would be the path to where to "do
    * the extraction", and the value the path on the target object.
@@ -239,20 +240,20 @@ class ObjectUtils {
    * console.log(ObjectUtils.flat(target);
    * // Will output { 'propOne.propOneSub': 'Charito!', propTwo: '!!!' }
    *
-   * @param {Object}                   target                 The object to transform.
-   * @param {string}                   [pathDelimiter='.']    The delimiter that will separate the
-   *                                                          path components.
-   * @param {string}                   [prefix='']            A custom prefix to be added before the
-   *                                                          name of the properties. This can be
-   *                                                          used on custom cases and it's also
-   *                                                          used when the method calls itself in
-   *                                                          order to flattern a sub object.
-   * @param {?ObjectUtils.ShouldFlatFn} [shouldFlattern=null] A custom function that can be used in
-   *                                                          order to tell the method whether an
-   *                                                          Object or an Array property should be
-   *                                                          flattern or not. It will receive the
-   *                                                          key for the property and the
-   *                                                          Object/Array itself.
+   * @param {Object}                   target                The object to transform.
+   * @param {string}                   [pathDelimiter='.']   The delimiter that will separate the
+   *                                                         path components.
+   * @param {string}                   [prefix='']           A custom prefix to be added before the
+   *                                                         name of the properties. This can be
+   *                                                         used on custom cases and it's also
+   *                                                         used when the method calls itself in
+   *                                                         order to flattern a sub object.
+   * @param {?ObjectUtilsShouldFlatFn} [shouldFlattern=null] A custom function that can be used in
+   *                                                         order to tell the method whether an
+   *                                                         Object or an Array property should be
+   *                                                         flattern or not. It will receive the
+   *                                                         key for the property and the
+   *                                                         Object/Array itself.
    * @returns {Object}
    */
   static flat(target, pathDelimiter = '.', prefix = '', shouldFlattern = null) {
@@ -304,10 +305,10 @@ class ObjectUtils {
    *                                       replacement. Think of `searchExpression` and
    *                                       `replaceWith` as the parameters of a `.replace` call,
    *                                       where the object is the key.
-   * @param {Array}    [include=[]]        A list of keys or paths where the transformation will
+   * @param {string[]} [include=[]]        A list of keys or paths where the transformation will
    *                                       be made. If not specified, the method will use all the
    *                                       keys from the object.
-   * @param {Array}    [exclude=[]]        A list of keys or paths where the transformation won't
+   * @param {string[]} [exclude=[]]        A list of keys or paths where the transformation won't
    *                                       be made.
    * @param {string}   [pathDelimiter='.'] The delimiter that will separate the path components
    *                                       for both `include` and `exclude`.
@@ -570,14 +571,14 @@ class ObjectUtils {
    * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
    * `lowerCamelCase` to `dash-case`.
    *
-   * @param {Object}        target              The object for format.
-   * @param {Array<string>} [include=[]]        A list of keys or paths where the transformation
-   *                                            will be made. If not specified, the method will
-   *                                            use all the keys from the object.
-   * @param {Array<string>} [exclude=[]]        A list of keys or paths where the transformation
-   *                                            won't be made.
-   * @param {string}        [pathDelimiter='.'] The delimiter that will separate the path
-   *                                            components for both `include` and `exclude`.
+   * @param {Object}   target              The object for format.
+   * @param {string[]} [include=[]]        A list of keys or paths where the transformation
+   *                                       will be made. If not specified, the method will
+   *                                       use all the keys from the object.
+   * @param {string[]} [exclude=[]]        A list of keys or paths where the transformation
+   *                                       won't be made.
+   * @param {string}   [pathDelimiter='.'] The delimiter that will separate the path
+   *                                       components for both `include` and `exclude`.
    * @returns {Object}
    */
   static lowerCamelToDashKeys(target, include = [], exclude = [], pathDelimiter = '.') {
@@ -597,14 +598,14 @@ class ObjectUtils {
    * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
    * `lowerCamelCase` to `snake_case`.
    *
-   * @param {Object}        target              The object for format.
-   * @param {Array<string>} [include=[]]        A list of keys or paths where the transformation
-   *                                            will be made. If not specified, the method will use
-   *                                            all the keys from the object.
-   * @param {Array<string>} [exclude=[]]        A list of keys or paths where the transformation
-   *                                            won't be made.
-   * @param {string}        [pathDelimiter='.'] The delimiter that will separate the path
-   *                                            components for both `include` and `exclude`.
+   * @param {Object}   target              The object for format.
+   * @param {string[]} [include=[]]        A list of keys or paths where the transformation
+   *                                       will be made. If not specified, the method will use
+   *                                       all the keys from the object.
+   * @param {string[]} [exclude=[]]        A list of keys or paths where the transformation
+   *                                       won't be made.
+   * @param {string}   [pathDelimiter='.'] The delimiter that will separate the path
+   *                                       components for both `include` and `exclude`.
    * @returns {Object}
    */
   static lowerCamelToSnakeKeys(target, include = [], exclude = [], pathDelimiter = '.') {
@@ -710,14 +711,14 @@ class ObjectUtils {
    * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
    * `snake_case` to `dash-case`.
    *
-   * @param {Object}        target              The object for format.
-   * @param {Array<string>} [include=[]]        A list of keys or paths where the transformation
-   *                                            will be made. If not specified, the method will
-   *                                            use all the keys from the object.
-   * @param {Array<string>} [exclude=[]]        A list of keys or paths where the transformation
-   *                                            won't be made.
-   * @param {string}        [pathDelimiter='.'] The delimiter that will separate the path
-   *                                            components for both `include` and `exclude`.
+   * @param {Object}   target              The object for format.
+   * @param {string[]} [include=[]]        A list of keys or paths where the transformation
+   *                                       will be made. If not specified, the method will
+   *                                       use all the keys from the object.
+   * @param {string[]} [exclude=[]]        A list of keys or paths where the transformation
+   *                                       won't be made.
+   * @param {string}   [pathDelimiter='.'] The delimiter that will separate the path
+   *                                       components for both `include` and `exclude`.
    * @returns {Object}
    */
   static snakeToDashKeys(target, include = [], exclude = [], pathDelimiter = '.') {
@@ -734,14 +735,14 @@ class ObjectUtils {
    * A shorthand method for {@link ObjectUtils.formatKeys} that transforms the keys from
    * `snake_case` to `lowerCamelCase`.
    *
-   * @param {Object}        target              The object for format.
-   * @param {Array<string>} [include=[]]        A list of keys or paths where the transformation
-   *                                            will be made. If not specified, the method will
-   *                                            use all the keys from the object.
-   * @param {Array<string>} [exclude=[]]        A list of keys or paths where the transformation
-   *                                            won't be made.
-   * @param {string}        [pathDelimiter='.'] The delimiter that will separate the path
-   *                                            components for both `include` and `exclude`.
+   * @param {Object}   target              The object for format.
+   * @param {string[]} [include=[]]        A list of keys or paths where the transformation
+   *                                       will be made. If not specified, the method will
+   *                                       use all the keys from the object.
+   * @param {string[]} [exclude=[]]        A list of keys or paths where the transformation
+   *                                       won't be made.
+   * @param {string}   [pathDelimiter='.'] The delimiter that will separate the path
+   *                                       components for both `include` and `exclude`.
    * @returns {Object}
    */
   static snakeToLowerCamelKeys(target, include = [], exclude = [], pathDelimiter = '.') {

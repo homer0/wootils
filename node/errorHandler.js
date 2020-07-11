@@ -12,6 +12,7 @@ const { provider } = require('jimple');
  * them with detail.
  *
  * @parent module:node/errorHandler
+ * @tutorial errorHandler
  */
 class ErrorHandler {
   /**
@@ -35,7 +36,7 @@ class ErrorHandler {
     /**
      * The list of events this handler will listen for in order to catch errors.
      *
-     * @type {Array<string>}
+     * @type {string[]}
      */
     this.eventsNames = [
       'uncaughtException',
@@ -101,6 +102,7 @@ class ErrorHandler {
  *
  * @param {boolean} [exitOnError] Whether or not to exit the process after receiving an error.
  * @returns {Provider}
+ * @tutorial errorHandler
  */
 const errorHandlerWithOptions = (exitOnError) => provider((app) => {
   app.set('errorHandler', () => {
@@ -125,9 +127,10 @@ const errorHandlerWithOptions = (exitOnError) => provider((app) => {
  * // Register it on the container
  * container.register(errorHandler);
  * // Getting access to the service instance
- * const errorHandler = container.get('errorHandler');
+ * const instance = container.get('errorHandler');
  *
  * @type {Provider}
+ * @tutorial errorHandler
  */
 const errorHandler = errorHandlerWithOptions();
 

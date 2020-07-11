@@ -1,5 +1,6 @@
 /**
  * @typedef {import('jimple')} Jimple
+ * @external Jimple
  * @see https://yarnpkg.com/en/package/jimple
  */
 

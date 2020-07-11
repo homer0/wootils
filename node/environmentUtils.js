@@ -7,11 +7,9 @@ const { provider } = require('jimple');
  * A simple service to avoid calling `process.env` on multiples places of an app.
  *
  * @parent module:node/environmentUtils
+ * @tutorial environmentUtils
  */
 class EnvironmentUtils {
-  /**
-   * Class constructor.
-   */
   constructor() {
     /**
      * The current `NODE_ENV`. If the variable is empty, the value will be `development`.
@@ -83,9 +81,9 @@ class EnvironmentUtils {
     return result;
   }
   /**
-   * Check whether or not the environment is for development.
+   * Whether or not the environment is for development.
    *
-   * @returns {boolean}
+   * @type {boolean}
    */
   get development() {
     return !this.production;
@@ -93,15 +91,16 @@ class EnvironmentUtils {
 }
 /**
  * The service provider that once registered on the app container will set an instance of
- * `EnvironmentUtils` as the `environmentUtils` service.
+ * {@link EnvironmentUtils} as the `environmentUtils` service.
  *
  * @example
  * // Register it on the container
  * container.register(environmentUtils);
  * // Getting access to the service instance
- * const environmentUtils = container.get('environmentUtils');
+ * const instance = container.get('environmentUtils');
  *
  * @type {Provider}
+ * @tutorial environmentUtils
  */
 const environmentUtils = provider((app) => {
   app.set('environmentUtils', () => new EnvironmentUtils());

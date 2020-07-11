@@ -11,7 +11,7 @@ const ObjectUtils = require('../shared/objectUtils');
  */
 
 /**
- * @typedef {Object} AppConfiguration.Options
+ * @typedef {Object} AppConfigurationOptions
  * @property {string} [defaultConfigurationName='default']           The name of the default
  *                                                                   configuration.
  * @property {string} [environmentVariable='APP_CONFIG']             The name of the variable it
@@ -35,22 +35,23 @@ const ObjectUtils = require('../shared/objectUtils');
  * switching and merging configuration files.
  *
  * @parent module:node/appConfiguration
+ * @tutorial appConfiguration
  */
 class AppConfiguration {
   /**
-   * @param {EnvironmentUtils}         environmentUtils          Required to read the environment
-   *                                                             variables and determine which
-   *                                                             configuration to use.
-   * @param {RootRequireFn}            rootRequire               Necessary to be able to require the
-   *                                                             configuration files with paths
-   *                                                             relative to the app root directory.
-   * @param {string}                   [appName='app']           The name of the app using this
-   *                                                             service.
-   *                                                             It's also used as part of the name
-   *                                                             of the configuration files.
-   * @param {Object}                   [defaultConfiguration={}] The default configuration the
-   *                                                             others will extend.
-   * @param {AppConfiguration.Options} [options={}]              Options to customize the service.
+   * @param {EnvironmentUtils}        environmentUtils          Required to read the environment
+   *                                                            variables and determine which
+   *                                                            configuration to use.
+   * @param {RootRequireFn}           rootRequire               Necessary to be able to require the
+   *                                                            configuration files with paths
+   *                                                            relative to the app root directory.
+   * @param {string}                  [appName='app']           The name of the app using this
+   *                                                            service.
+   *                                                            It's also used as part of the name
+   *                                                            of the configuration files.
+   * @param {Object}                  [defaultConfiguration={}] The default configuration the
+   *                                                            others will extend.
+   * @param {AppConfigurationOptions} [options={}]              Options to customize the service.
    */
   constructor(
     environmentUtils,
@@ -75,9 +76,9 @@ class AppConfiguration {
     /**
      * The service customizable options.
      *
-     * @type {AppConfiguration.Options}
+     * @type {AppConfigurationOptions}
      */
-    this.options = ObjectUtils.merge(true, {
+    this.options = ObjectUtils.merge({
       defaultConfigurationName: 'default',
       environmentVariable: 'APP_CONFIG',
       path: `./config/${appName}`,
@@ -106,7 +107,7 @@ class AppConfiguration {
     this.allowConfigurationSwitch = !!this.get('allowConfigurationSwitch');
   }
   /**
-   * Check whether the service can switch configurations or not.
+   * Checks whether the service can switch configurations or not.
    *
    * @returns {boolean}
    */
@@ -114,7 +115,7 @@ class AppConfiguration {
     return this.allowConfigurationSwitch;
   }
   /**
-   * Get a setting or settings from the active configuration.
+   * Gets a setting or settings from the active configuration.
    *
    * @example
    * // To get a single setting
@@ -129,10 +130,10 @@ class AppConfiguration {
    * // Use paths
    * const subValue = appConfiguration.get('settingOne.subSetting');
    *
-   * @param {string|Array<string>} setting         A setting path or a list of them.
-   * @param {boolean}              [asArray=false] When `setting` is an Array, if this is `true`,
-   *                                               instead of returning an object, it will return
-   *                                               an array of settings.
+   * @param {string|string[]} setting         A setting path or a list of them.
+   * @param {boolean}         [asArray=false] When `setting` is an Array, if this is `true`,
+   *                                          instead of returning an object, it will return an
+   *                                          array of settings.
    * @returns {*}
    */
   get(setting, asArray = false) {
@@ -153,7 +154,7 @@ class AppConfiguration {
     return result;
   }
   /**
-   * Get a configuration settings. If no name is specified, it will return the settings of the
+   * Gets a configuration settings. If no name is specified, it will return the settings of the
    * active configuration.
    *
    * @param {string} [name=''] The name of the configuration.
@@ -194,7 +195,7 @@ class AppConfiguration {
     return this.getConfig(name);
   }
   /**
-   * Check if there's a configuration name on the environment variable and if there is, try to load
+   * Checks if there's a configuration name on the environment variable and if there is, try to load
    * the configuration file for it.
    *
    * @returns {Object} The loaded configuration or an empty object if the variable was empty.
@@ -209,7 +210,7 @@ class AppConfiguration {
     return result;
   }
   /**
-   * Load a configuration from a file.
+   * Loads a configuration from a file.
    *
    * @param {string}  name                   The name of the configuration.
    * @param {boolean} [switchTo=true]        If the service should switch to the new configuration
@@ -249,7 +250,7 @@ class AppConfiguration {
     return this.getConfig(name);
   }
   /**
-   * Set the value of a setting or settings from the active configuration.
+   * Sets the value of a setting or settings from the active configuration.
    * If both the current and the new value of a setting are objects, then instead of overwriting
    * it, the method will merge them.
    *
@@ -303,7 +304,7 @@ class AppConfiguration {
     return this.configurations[key];
   }
   /**
-   * Switch to a different configuration. If the configuration is not registered, it will try to
+   * Switchs to a different configuration. If the configuration is not registered, it will try to
    * load from a file.
    *
    * @param {string}  name          The new of the configuration to switch to.
@@ -360,12 +361,13 @@ class AppConfiguration {
  * // Register it on the container
  * container.register(provider);
  * // Getting access to the service instance
- * const appConfiguration = container.get('appConfiguration');
+ * const instance = container.get('appConfiguration');
  *
- * @param {string}                   [appName]              The name of the app.
- * @param {AppConfiguration.Options} [defaultConfiguration] The service default configuration.
- * @param {Object}                   [options]              Options to customize the service.
+ * @param {string}                  [appName]              The name of the app.
+ * @param {AppConfigurationOptions} [defaultConfiguration] The service default configuration.
+ * @param {Object}                  [options]              Options to customize the service.
  * @returns {Provider}
+ * @tutorial appConfiguration
  */
 const appConfiguration = (
   appName,

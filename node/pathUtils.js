@@ -9,6 +9,7 @@ const { provider } = require('jimple');
  * the project root or from where the app executable is located.
  *
  * @parent module:node/pathUtils
+ * @tutorial pathUtils
  */
 class PathUtils {
   /**
@@ -33,7 +34,7 @@ class PathUtils {
     this.addLocation('home', home || this.path);
   }
   /**
-   * Add a new location.
+   * Adds a new location.
    *
    * @param {string} name         The reference name.
    * @param {string} locationPath The path of the location. It must be inside the path from the
@@ -56,7 +57,7 @@ class PathUtils {
     this.locations[name] = location;
   }
   /**
-   * Get a location path by its name.
+   * Gets a location path by its name.
    *
    * @param {string} name The location name.
    * @returns {string}
@@ -80,7 +81,7 @@ class PathUtils {
     return this.joinFrom('home', ...paths);
   }
   /**
-   * Build a path using a location path as base.
+   * Builds a path using a location path as base.
    *
    * @param {string}    location The location name.
    * @param {...string} paths    The rest of the path components to join.
@@ -91,23 +92,23 @@ class PathUtils {
     return path.join(locationPath, ...paths);
   }
   /**
-   * Get the path to the directory where the app executable is located.
+   * The path to the directory where the app executable is located.
    *
-   * @returns {string}
+   * @type {string}
    */
   get app() {
     return this.getLocation('app');
   }
   /**
-   * Get the project root path.
+   * The project root path.
    *
-   * @returns {string}
+   * @type {string}
    */
   get home() {
     return this.getLocation('home');
   }
   /**
-   * Find and register the location for the app executable directory.
+   * Finds and register the location for the app executable directory.
    *
    * @access protected
    * @ignore
@@ -125,7 +126,8 @@ class PathUtils {
   }
 }
 /**
- * Generates a `Provider` with an already defined `home` location.
+ * Generates a {@link Provider} for {@link PathUtils}, with an already defined `home`
+ * location.
  *
  * @example
  * // Generate the provider
@@ -133,24 +135,26 @@ class PathUtils {
  * // Register it on the container
  * container.register(provider);
  * // Getting access to the service instance
- * const pathUtils = container.get('pathUtils');
+ * const instance = container.get('pathUtils');
  *
  * @param {string} [home] The path to the new home location.
  * @returns {Provider}
+ * @tutorial pathUtils
  */
 const pathUtilsWithHome = (home) => provider((app) => {
   app.set('pathUtils', () => new PathUtils(home));
 });
 /**
  * The service provider that once registered on the app container will set an instance of
- * `PathUtils` as the `pathUtils` service.
+ * {@link PathUtils} as the `pathUtils` service.
  *
  * @example
  * // Register it on the container
  * container.register(pathUtils);
  * // Getting access to the service instance
- * const pathUtils = container.get('pathUtils');
+ * const instance = container.get('pathUtils');
  * @type {Provider}
+ * @tutorial pathUtils
  */
 const pathUtils = pathUtilsWithHome();
 
