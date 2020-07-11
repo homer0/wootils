@@ -4,7 +4,7 @@ The name leaves nothing to the imagination. As you may have guessed, this is ser
 
 It's not uncommon for Node apps to be logging information into the console all the time: success messages, warnings and even errors; and if you don't have an already implemented solution for logging, you are probably calling `console.[log|info|error]` on a bunch of places, which is probably not a great thing to do.
 
-`Logger` is not a super complete logging system with multiple logging levels and stuff like that, it's just a simple tool for logging colored messages on the console. 
+`Logger` is not a super complete logging system with multiple logging levels and stuff like that, it's just a simple tool for logging colored messages on the console.
 
 ## Example
 
@@ -245,10 +245,15 @@ There's also `appLoggerWithOptions` that allows you to enable or disabled the da
 
 ## Technical documentation
 
-The code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/class/wootils/node/logger.js~Logger.html) or generate it yourself using:
+- Class: {@link Logger}
+- Provider: {@link module:node/logger~logger|logger}
+- Provider generator: {@link module:node/errorHandler~errorHandlerWithOptions|errorHandlerWithOptions}
+- Provider with app name as prefix: {@link module:node/logger~appLogger|appLogger}
+- Provider generator for {@link module:node/logger~appLogger|appLogger}: {@link module:node/logger~appLoggerWithOptions|appLoggerWithOptions}
 
-```bash
-# You can either use npm or yarn, it doesn't matter
-npm run docs
-open ./docs/index.html
-```
+> If you are reading this form the markdown document, you can go to the [online version](https://homer0.github.io/wootils); or you can generate the documentation site yourself by running the `docs` command:
+>
+> ```bash
+> # You can either use npm or yarn, it doesn't matter
+> npm run docs && open ./docs/index.html;
+> ```
