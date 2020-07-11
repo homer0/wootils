@@ -6,7 +6,7 @@
  * Helper class that creates a proxy for a {@link Promise} in order to add custom properties.
  *
  * The only reason this class exists is so it can "scope" the necessary methods to extend
- * {@link Promise} and avoid workarounds in order to declare them, as both methods need to call
+ * {@link Promise} and avoid workarounds in order to declare them, as they need to call
  * themselves recursively.
  *
  * @parent module:shared/extendPromise

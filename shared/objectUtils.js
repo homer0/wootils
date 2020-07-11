@@ -764,10 +764,10 @@ class ObjectUtils {
    *
    * @example
    * const target = {
-   *   'propOne.propOneSub': 'Charito!
+   *   'propOne.propOneSub': 'Charito!',
    *   propTwo: '!!!',
    * };
-   * console.log(ObjectUtils.unflat(target);
+   * console.log(ObjectUtils.unflat(target));
    * // Will output { propOne: { propOneSub: 'Charito!' }, 'propTwo': '!!!' }
    *
    * @param {Object} target              The object to transform.
