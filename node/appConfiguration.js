@@ -39,19 +39,18 @@ const ObjectUtils = require('../shared/objectUtils');
  */
 class AppConfiguration {
   /**
-   * @param {EnvironmentUtils}        environmentUtils          Required to read the environment
-   *                                                            variables and determine which
-   *                                                            configuration to use.
-   * @param {RootRequireFn}           rootRequire               Necessary to be able to require the
-   *                                                            configuration files with paths
-   *                                                            relative to the app root directory.
-   * @param {string}                  [appName='app']           The name of the app using this
-   *                                                            service.
-   *                                                            It's also used as part of the name
-   *                                                            of the configuration files.
-   * @param {Object}                  [defaultConfiguration={}] The default configuration the
-   *                                                            others will extend.
-   * @param {AppConfigurationOptions} [options={}]              Options to customize the service.
+   * @param {EnvironmentUtils} environmentUtils
+   * Required to read the environment variables and determine which configuration to use.
+   * @param {RootRequireFn} rootRequire
+   * Necessary to be able to require the configuration files with paths relative to the app root
+   * directory.
+   * @param {string} [appName='app']
+   * The name of the app using this service. It's also used as part of the name of the
+   * configuration files.
+   * @param {Object} [defaultConfiguration={}]
+   * The default configuration the others will extend.
+   * @param {Partial<AppConfigurationOptions>} [options={}]
+   * Options to customize the service.
    */
   constructor(
     environmentUtils,
@@ -363,9 +362,11 @@ class AppConfiguration {
  * // Getting access to the service instance
  * const instance = container.get('appConfiguration');
  *
- * @param {string}                  [appName]              The name of the app.
- * @param {AppConfigurationOptions} [defaultConfiguration] The service default configuration.
- * @param {Object}                  [options]              Options to customize the service.
+ * @param {string}                           [appName]              The name of the app.
+ * @param {Partial<AppConfigurationOptions>} [defaultConfiguration] The service default
+ *                                                                  configuration.
+ * @param {Object}                           [options]              Options to customize the
+ *                                                                  service.
  * @returns {Provider}
  * @tutorial appConfiguration
  */

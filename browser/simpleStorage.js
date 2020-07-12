@@ -165,7 +165,7 @@ const extend = require('extend');
  */
 class SimpleStorage {
   /**
-   * @param {SimpleStorageOptions} [options={}] The options to customize the class.
+   * @param {Partial<SimpleStorageOptions>} [options={}] The options to customize the class.
    * @throws {Error} If instantiated without extending it.
    */
   constructor(options = {}) {

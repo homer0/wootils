@@ -325,7 +325,7 @@ class APIClient {
   /**
    * Makes a `GET` request.
    *
-   * @param {string}                 url          The request URL.
+   * @param {string}                url          The request URL.
    * @param {APIClientFetchOptions} [options={}] The request options.
    * @returns {Promise<Response>}
    */
@@ -335,7 +335,7 @@ class APIClient {
   /**
    * Makes a `HEAD` request.
    *
-   * @param {string}                 url          The request URL.
+   * @param {string}                url          The request URL.
    * @param {APIClientFetchOptions} [options={}] The request options.
    * @returns {Promise<Response>}
    */
@@ -361,8 +361,8 @@ class APIClient {
   /**
    * Makes a `PATCH` request.
    *
-   * @param {string}                 url          The request URL.
-   * @param {Object}                 body         The request body.
+   * @param {string}                url          The request URL.
+   * @param {Object}                body         The request body.
    * @param {APIClientFetchOptions} [options={}] The request options.
    * @returns {Promise<Response>}
    */
@@ -372,8 +372,8 @@ class APIClient {
   /**
    * Makes a `POST` request.
    *
-   * @param {string}                 url          The request URL.
-   * @param {Object}                 body         The request body.
+   * @param {string}                url          The request URL.
+   * @param {Object}                body         The request body.
    * @param {APIClientFetchOptions} [options={}] The request options.
    * @returns {Promise<Response>}
    */
@@ -388,8 +388,8 @@ class APIClient {
   /**
    * Makes a `PUT` request.
    *
-   * @param {string}                 url          The request URL.
-   * @param {Object}                 body         The request body.
+   * @param {string}                url          The request URL.
+   * @param {Object}                body         The request body.
    * @param {APIClientFetchOptions} [options={}] The request options.
    * @returns {Promise<Response>}
    */
@@ -409,9 +409,9 @@ class APIClient {
    * Sets the default headers for the requests.
    *
    * @param {APIClientParametersDictionary} [headers={}]     The new default headers.
-   * @param {boolean}                        [overwrite=true] If `false`, it will merge the new
-   *                                                          default headers with the current
-   *                                                          ones.
+   * @param {boolean}                       [overwrite=true] If `false`, it will merge the new
+   *                                                         default headers with the current
+   *                                                         ones.
    */
   setDefaultHeaders(headers = {}, overwrite = true) {
     this.defaultHeaders = {
