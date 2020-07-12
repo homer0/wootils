@@ -32,13 +32,14 @@ const ObjectUtils = require('./objectUtils');
  */
 
 /**
- * @typedef {Object} APIClientRequestOptions
- * @property {string}                        url            The request URL.
- * @property {string}                        [body]         The request body.
- * @property {boolean}                       [json]         Whether or not the response should
- *                                                          _"JSON decoded"_.
- * @property {string}                        [method='GET'] The request method.
- * @property {APIClientParametersDictionary} [headers={}]   The request headers.
+ * @typedef {APIClientFetchOptions & APIClientRequestOptionsProperties} APIClientRequestOptions
+ * @parent module:shared/apiClient
+ */
+
+/**
+ * @typedef {Object} APIClientRequestOptionsProperties
+ * @property {string} url The request URL.
+ * @augments APIClientFetchOptions
  * @parent module:shared/apiClient
  */
 
@@ -92,7 +93,7 @@ const ObjectUtils = require('./objectUtils');
  * An API client with configurable endpoints.
  *
  * @parent module:shared/apiClient
- * @tutorial apiClient
+ * @tutorial APIClient
  */
 class APIClient {
   /**
