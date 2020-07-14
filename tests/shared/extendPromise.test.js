@@ -1,7 +1,6 @@
-jest.unmock('/shared/extendPromise');
+jest.unmock('../../shared/extendPromise');
 
-require('jasmine-expect');
-const extendPromise = require('/shared/extendPromise');
+const extendPromise = require('../../shared/extendPromise');
 
 describe('ExtendPromise', () => {
   it('should throw an error when called with anything but a promise', () => {

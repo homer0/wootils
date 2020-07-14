@@ -1,14 +1,13 @@
 /* eslint-disable no-process-env */
 
-jest.unmock('/node/environmentUtils.js');
 jest.mock('jimple', () => ({ provider: jest.fn(() => 'provider') }));
+jest.unmock('../../node/environmentUtils.js');
 
-require('jasmine-expect');
+const { provider } = require('jimple');
 const {
   EnvironmentUtils,
   environmentUtils,
-} = require('/node/environmentUtils');
-const { provider } = require('jimple');
+} = require('../../node/environmentUtils');
 
 const originalEnv = process.env;
 
@@ -25,8 +24,8 @@ describe('EnvironmentUtils', () => {
     const envUtils = new EnvironmentUtils();
     // Then
     expect(envUtils.env).toBe(env);
-    expect(envUtils.production).toBeTrue();
-    expect(envUtils.development).toBeFalse();
+    expect(envUtils.production).toBe(true);
+    expect(envUtils.development).toBe(false);
   });
 
   it('should fallback to `development` if NODE_ENV is not production', () => {
@@ -36,8 +35,8 @@ describe('EnvironmentUtils', () => {
     const envUtils = new EnvironmentUtils();
     // Then
     expect(envUtils.env).toBe('development');
-    expect(envUtils.production).toBeFalse();
-    expect(envUtils.development).toBeTrue();
+    expect(envUtils.production).toBe(false);
+    expect(envUtils.development).toBe(true);
   });
 
   it('should allow you to access environment variables', () => {
@@ -60,7 +59,7 @@ describe('EnvironmentUtils', () => {
     const envUtils = new EnvironmentUtils();
     result = envUtils.get('Charito');
     // Then
-    expect(result).toBeEmptyString();
+    expect(result).toBe('');
   });
 
   it('should throw an error if a required variable doesn\'t exist', () => {
@@ -82,7 +81,7 @@ describe('EnvironmentUtils', () => {
     result = envUtils.set(varName, varValue);
     saved = envUtils.get(varName);
     // Then
-    expect(result).toBeTrue();
+    expect(result).toBe(true);
     expect(saved).toBe(varValue);
   });
 
@@ -99,7 +98,7 @@ describe('EnvironmentUtils', () => {
     result = envUtils.set(varName, varValue);
     saved = envUtils.get(varName);
     // Then
-    expect(result).toBeFalse();
+    expect(result).toBe(false);
     expect(saved).toBe(varOriginalValue);
   });
 
@@ -116,7 +115,7 @@ describe('EnvironmentUtils', () => {
     result = envUtils.set(varName, varValue, true);
     saved = envUtils.get(varName);
     // Then
-    expect(result).toBeTrue();
+    expect(result).toBe(true);
     expect(saved).toBe(varValue);
   });
 
@@ -138,7 +137,6 @@ describe('EnvironmentUtils', () => {
     expect(environmentUtils).toBe('provider');
     expect(provider).toHaveBeenCalledTimes(1);
     expect(serviceName).toBe('environmentUtils');
-    expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(EnvironmentUtils);
   });
 });

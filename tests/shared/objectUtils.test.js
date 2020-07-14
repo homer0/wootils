@@ -1,7 +1,6 @@
-jest.unmock('/shared/objectUtils');
+jest.unmock('../../shared/objectUtils');
 
-require('jasmine-expect');
-const ObjectUtils = require('/shared/objectUtils');
+const ObjectUtils = require('../../shared/objectUtils');
 
 describe('ObjectUtils', () => {
   it('should throw an error when instantiated', () => {

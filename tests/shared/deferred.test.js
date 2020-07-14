@@ -1,41 +1,33 @@
-jest.unmock('/shared/deferred');
-
-require('jasmine-expect');
-const deferred = require('/shared/deferred');
+jest.unmock('../../shared/deferred');
+const deferred = require('../../shared/deferred');
 
 describe('Deferred', () => {
-  it('should be able to resolve a deferred promise', () => {
+  it('should be able to resolve a deferred promise', async () => {
     // Given
     const value = 'hello!';
     const delay = 1;
     const defer = deferred();
+    let result = null;
     // When
     setTimeout(() => defer.resolve(value), delay);
+    result = await defer.promise;
     // Then
-    return defer.promise
-    .then((resolved) => {
-      expect(resolved).toBe(value);
-    })
-    .catch((error) => {
-      throw error;
-    });
+    expect(result).toBe(value);
   });
 
-  it('should be able to reject a deferred promise', () => {
+  it('should be able to reject a deferred promise', async () => {
     // Given
     const value = new Error('Something went terribly wrong');
     const delay = 1;
     const defer = deferred();
     // When
     setTimeout(() => defer.reject(value), delay);
-    // Then
-    return defer.promise
-    .then(() => {
-      throw new Error('This test should resolve on the catch');
-    })
-    .catch((error) => {
+    try {
+      await defer.promise;
+    } catch (error) {
+      // Then
       expect(error).toBeInstanceOf(Error);
       expect(error).toEqual(value);
-    });
+    }
   });
 });

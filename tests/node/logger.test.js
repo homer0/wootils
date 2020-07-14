@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-jest.unmock('/node/logger');
 jest.mock('jimple', () => ({ provider: jest.fn(() => 'provider') }));
 jest.mock('colors/safe', () => new Proxy({}, {
   mocks: {},
@@ -23,15 +22,15 @@ jest.mock('colors/safe', () => new Proxy({}, {
     return result;
   },
 }));
+jest.unmock('../../node/logger');
 
-require('jasmine-expect');
+const colors = require('colors/safe');
+const { provider } = require('jimple');
 const {
   Logger,
   logger,
   appLogger,
-} = require('/node/logger');
-const colors = require('colors/safe');
-const { provider } = require('jimple');
+} = require('../../node/logger');
 
 const originalConsoleLog = console.log;
 
@@ -62,7 +61,7 @@ describe('Logger', () => {
     // When
     sut = new Logger(prefix, true);
     // Then
-    expect(sut.showTime).toBeTrue();
+    expect(sut.showTime).toBe(true);
     expect(sut.prefix(message)).toMatch(/\[\w+\] \[\d+-\d+-\d+ \d+:\d+:\d+] \w+/);
   });
 
@@ -73,8 +72,8 @@ describe('Logger', () => {
     // When
     sut = new Logger();
     // Then
-    expect(sut.messagesPrefix).toBeEmptyString();
-    expect(sut.prefix()).toBeEmptyString();
+    expect(sut.messagesPrefix).toBe('');
+    expect(sut.prefix()).toBe('');
     expect(sut.prefix(message)).toBe(message);
   });
 
@@ -320,7 +319,6 @@ describe('Logger', () => {
     expect(logger).toBe('provider');
     expect(provider).toHaveBeenCalledTimes(['logger', 'appLogger'].length);
     expect(serviceName).toBe('logger');
-    expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(Logger);
   });
 
@@ -344,7 +342,6 @@ describe('Logger', () => {
     expect(appLogger).toBe('provider');
     expect(provider).toHaveBeenCalledTimes(['logger', 'appLogger'].length);
     expect(serviceName).toBe('appLogger');
-    expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(Logger);
     expect(sut.messagesPrefix).toBe(appName);
   });
@@ -369,7 +366,6 @@ describe('Logger', () => {
     expect(appLogger).toBe('provider');
     expect(provider).toHaveBeenCalledTimes(['logger', 'appLogger'].length);
     expect(serviceName).toBe('appLogger');
-    expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(Logger);
     expect(sut.messagesPrefix).toBe(nameForCLI);
   });

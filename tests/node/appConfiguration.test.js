@@ -1,14 +1,13 @@
-jest.unmock('/shared/objectUtils');
-jest.unmock('/node/appConfiguration');
+jest.unmock('../../shared/objectUtils');
+jest.unmock('../../node/appConfiguration');
 jest.mock('jimple', () => ({ provider: jest.fn(() => 'provider') }));
 
-require('jasmine-expect');
 const path = require('path');
+const { provider } = require('jimple');
 const {
   AppConfiguration,
   appConfiguration,
-} = require('/node/appConfiguration');
-const { provider } = require('jimple');
+} = require('../../node/appConfiguration');
 
 describe('AppConfiguration', () => {
   /**
@@ -78,7 +77,7 @@ describe('AppConfiguration', () => {
     expect(result).toEqual(newConfigSettings);
     expect(sut.configurations[newConfigName]).toEqual(newConfigSettings);
     expect(sut.activeConfiguration).toBe(newConfigName);
-    expect(sut.allowConfigurationSwitch).toBeTrue();
+    expect(sut.allowConfigurationSwitch).toBe(true);
   });
 
   it('should load a new configuration without switch to it', () => {
@@ -133,7 +132,7 @@ describe('AppConfiguration', () => {
     expect(sut.configurations[newConfigOneName]).toEqual(newConfigOneSettings);
     expect(sut.configurations[newConfigTwoName]).toEqual(expectedConfig);
     expect(sut.activeConfiguration).toBe(newConfigTwoName);
-    expect(sut.allowConfigurationSwitch).toBeFalse();
+    expect(sut.allowConfigurationSwitch).toBe(false);
   });
 
   it('should throw an error when trying to extend an unknown configuration', () => {
@@ -173,7 +172,7 @@ describe('AppConfiguration', () => {
     expect(result).toEqual(newConfigSettings);
     expect(sut.configurations[newConfigName]).toEqual(newConfigSettings);
     expect(sut.activeConfiguration).toBe(newConfigName);
-    expect(sut.allowConfigurationSwitch).toBeTrue();
+    expect(sut.allowConfigurationSwitch).toBe(true);
     expect(rootRequire).toHaveBeenCalledTimes(1);
     expect(rootRequire).toHaveBeenCalledWith(expectedFileInfo.path);
   });
@@ -236,7 +235,7 @@ describe('AppConfiguration', () => {
     expect(sut.configurations[newConfigOneName]).toEqual(newConfigOneSettings);
     expect(sut.configurations[newConfigTwoName]).toEqual(expectedConfig);
     expect(sut.activeConfiguration).toBe(newConfigTwoName);
-    expect(sut.allowConfigurationSwitch).toBeFalse();
+    expect(sut.allowConfigurationSwitch).toBe(false);
     expect(rootRequire).toHaveBeenCalledTimes([
       newConfigOneName,
       newConfigTwoName,
@@ -285,7 +284,7 @@ describe('AppConfiguration', () => {
     expect(result).toEqual(newConfigSettings);
     expect(sut.configurations[newConfigName]).toEqual(newConfigSettings);
     expect(sut.activeConfiguration).toBe(newConfigName);
-    expect(sut.allowConfigurationSwitch).toBeTrue();
+    expect(sut.allowConfigurationSwitch).toBe(true);
     expect(rootRequire).toHaveBeenCalledTimes(1);
     expect(rootRequire).toHaveBeenCalledWith(expectedFileInfo.path);
   });
@@ -716,9 +715,9 @@ describe('AppConfiguration', () => {
     canSwitchAfterSwitch = sut.canSwitch();
     // Then
     expect(resultAfterLoad).toEqual(newConfigOneSettings);
-    expect(canSwitchAfterLoad).toBeTrue();
+    expect(canSwitchAfterLoad).toBe(true);
     expect(resultAfterSwitch).toEqual(newConfigTwoSettings);
-    expect(canSwitchAfterSwitch).toBeTrue();
+    expect(canSwitchAfterSwitch).toBe(true);
   });
 
   it('should include a provider for the DIC', () => {
@@ -742,7 +741,6 @@ describe('AppConfiguration', () => {
     // Then
     expect(registerResult).toBe('provider');
     expect(serviceName).toBe('appConfiguration');
-    expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(AppConfiguration);
     expect(sut.environmentUtils).toBe('environmentUtils');
     expect(sut.rootRequire).toBe('rootRequire');

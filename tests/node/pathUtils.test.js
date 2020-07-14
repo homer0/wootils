@@ -1,14 +1,13 @@
-jest.unmock('/node/pathUtils');
 jest.mock('jimple', () => ({ provider: jest.fn(() => 'provider') }));
+jest.unmock('../../node/pathUtils');
 
-require('jasmine-expect');
 const path = require('path');
+const { provider } = require('jimple');
 const {
   PathUtils,
   pathUtils,
   pathUtilsWithHome,
-} = require('/node/pathUtils');
-const { provider } = require('jimple');
+} = require('../../node/pathUtils');
 
 const originalProcesssCwd = process.cwd;
 
@@ -118,7 +117,6 @@ describe('PathUtils', () => {
     expect(pathUtils).toBe('provider');
     expect(provider).toHaveBeenCalledTimes(1);
     expect(serviceName).toBe('pathUtils');
-    expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(PathUtils);
   });
 
@@ -148,7 +146,6 @@ describe('PathUtils', () => {
     // Then
     expect(registerResult).toBe('provider');
     expect(serviceName).toBe('pathUtils');
-    expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(PathUtils);
     expect(sut.path).toBe(home);
     expect(sut.home).toBe(path.join(home, customHome));

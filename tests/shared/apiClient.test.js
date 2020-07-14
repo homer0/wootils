@@ -1,8 +1,7 @@
-jest.unmock('/shared/objectUtils');
-jest.unmock('/shared/apiClient');
+jest.unmock('../../shared/objectUtils');
+jest.unmock('../../shared/apiClient');
 
-require('jasmine-expect');
-const APIClient = require('/shared/apiClient');
+const APIClient = require('../../shared/apiClient');
 
 describe('APIClient', () => {
   it('should be instantiated with a base URL, endpoints and a fetch client', () => {
@@ -63,7 +62,7 @@ describe('APIClient', () => {
     tokenAfterRemove = sut.authorizationToken;
     // Then
     expect(tokenAfterSet).toBe(token);
-    expect(tokenAfterRemove).toBeEmptyString();
+    expect(tokenAfterRemove).toBe('');
   });
 
   it('should be able to set and remove custom base headers', () => {

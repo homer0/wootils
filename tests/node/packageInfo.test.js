@@ -1,14 +1,13 @@
-jest.unmock('/node/packageInfo');
 jest.mock('fs-extra');
 jest.mock('jimple', () => ({ provider: jest.fn(() => 'provider') }));
+jest.unmock('../../node/packageInfo');
 
-require('jasmine-expect');
 const fs = require('fs-extra');
+const { provider } = require('jimple');
 const {
   packageInfo,
   packageInfoProvider,
-} = require('/node/packageInfo');
-const { provider } = require('jimple');
+} = require('../../node/packageInfo');
 
 describe('packageInfo', () => {
   it('should give you the contents of the package.json', () => {
@@ -62,7 +61,6 @@ describe('packageInfo', () => {
     expect(packageInfoProvider).toBe('provider');
     expect(provider).toHaveBeenCalledTimes(1);
     expect(serviceName).toBe('packageInfo');
-    expect(serviceFn).toBeFunction();
     expect(sut).toEqual(mockedPackage);
     expect(container.get).toHaveBeenCalledTimes(1);
     expect(container.get).toHaveBeenCalledWith('pathUtils');

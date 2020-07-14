@@ -1,7 +1,6 @@
-jest.unmock('/browser/simpleStorage');
+jest.unmock('../../browser/simpleStorage');
 
-require('jasmine-expect');
-const SimpleStorage = require('/browser/simpleStorage');
+const SimpleStorage = require('../../browser/simpleStorage');
 
 const originalDate = global.Date;
 
@@ -967,7 +966,7 @@ describe('SimpleStorage', () => {
       resultAfterDeleting = sut.getEntryValue(entryKey);
       // Then
       expect(resultBeforeDeleting).toEqual(entryValue);
-      expect(resultFromDeleting).toBeTrue();
+      expect(resultFromDeleting).toBe(true);
       expect(resultAfterDeleting).toBeNull();
       expect(mStorage.mocks.get).toHaveBeenCalledTimes(1);
       expect(mStorage.mocks.get).toHaveBeenCalledWith(options.storage.key);
@@ -1022,7 +1021,7 @@ describe('SimpleStorage', () => {
       resultAfterDeleting = sut.getEntryValue(entryKey);
       // Then
       expect(resultBeforeDeleting).toEqual(entryValue);
-      expect(resultFromDeleting).toBeTrue();
+      expect(resultFromDeleting).toBe(true);
       expect(resultAfterDeleting).toBeNull();
       expect(mStorage.mocks.get).toHaveBeenCalledTimes(1);
       expect(mStorage.mocks.get).toHaveBeenCalledWith(options.storage.key);
@@ -1061,7 +1060,7 @@ describe('SimpleStorage', () => {
       sut = getSutProxy(options);
       result = sut.deleteEntry('randomKey');
       // Then
-      expect(result).toBeFalse();
+      expect(result).toBe(false);
     });
   });
 
