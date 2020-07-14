@@ -20,14 +20,14 @@ describe('Deferred', () => {
     const value = new Error('Something went terribly wrong');
     const delay = 1;
     const defer = deferred();
+    expect.assertions(2);
     // When
     setTimeout(() => defer.reject(value), delay);
-    try {
-      await defer.promise;
-    } catch (error) {
+    return defer.promise
+    .catch((error) => {
       // Then
       expect(error).toBeInstanceOf(Error);
       expect(error).toEqual(value);
-    }
+    });
   });
 });
