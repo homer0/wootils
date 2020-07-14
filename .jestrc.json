@@ -1,6 +1,0 @@
-{
-  "automock": true,
-  "unmockedModulePathPatterns": ["/node_modules/"],
-  "collectCoverage": true,
-  "testPathIgnorePatterns": ["/node_modules/", "/utils/scripts"]
-}
