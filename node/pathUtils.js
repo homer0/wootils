@@ -1,24 +1,32 @@
 const path = require('path');
 const { provider } = require('jimple');
 /**
+ * @module node/pathUtils
+ */
+
+/**
  * A utility services to manage paths on a project. It allows for path building relatives to
  * the project root or from where the app executable is located.
+ *
+ * @parent module:node/pathUtils
+ * @tutorial pathUtils
  */
 class PathUtils {
   /**
-   * Class constructor.
    * @param {string} [home=''] The location of the project's `home`(root) directory. By default
    *                           it uses `process.cwd()`.
    */
   constructor(home = '') {
     /**
      * The root path from where the app is being executed.
+     *
      * @type {string}
      */
     this.path = process.cwd();
     /**
      * A dictionary of different path locations.
-     * @type {Object}
+     *
+     * @type {Object.<string,string>}
      */
     this.locations = {};
 
@@ -26,7 +34,8 @@ class PathUtils {
     this.addLocation('home', home || this.path);
   }
   /**
-   * Add a new location.
+   * Adds a new location.
+   *
    * @param {string} name         The reference name.
    * @param {string} locationPath The path of the location. It must be inside the path from the
    *                              app is being executed.
@@ -48,9 +57,10 @@ class PathUtils {
     this.locations[name] = location;
   }
   /**
-   * Get a location path by its name.
+   * Gets a location path by its name.
+   *
    * @param {string} name The location name.
-   * @return {string}
+   * @returns {string}
    * @throws {Error} If there location hasn't been added.
    */
   getLocation(name) {
@@ -62,41 +72,46 @@ class PathUtils {
     return location;
   }
   /**
-   * Build a path using a location path as base.
-   * @param {string} location The location name.
-   * @param {Array}  paths    The rest of the path components to join.
-   * @return {string}
+   * Alias to `joinFrom` that uses the `home` location by default.
+   *
+   * @param {...string} paths The rest of the path components to join.
+   * @returns {string}
+   */
+  join(...paths) {
+    return this.joinFrom('home', ...paths);
+  }
+  /**
+   * Builds a path using a location path as base.
+   *
+   * @param {string}    location The location name.
+   * @param {...string} paths    The rest of the path components to join.
+   * @returns {string}
    */
   joinFrom(location, ...paths) {
     const locationPath = this.getLocation(location);
     return path.join(locationPath, ...paths);
   }
   /**
-   * Alias to `joinFrom` that uses the `home` location by default.
-   * @param {Array} paths The rest of the path components to join.
-   * @return {string}
-   */
-  join(...paths) {
-    return this.joinFrom('home', ...paths);
-  }
-  /**
-   * Get the project root path.
-   * @return {string}
-   */
-  get home() {
-    return this.getLocation('home');
-  }
-  /**
-   * Get the path to the directory where the app executable is located.
-   * @return {string}
+   * The path to the directory where the app executable is located.
+   *
+   * @type {string}
    */
   get app() {
     return this.getLocation('app');
   }
   /**
-   * Find and register the location for the app executable directory.
-   * @ignore
+   * The project root path.
+   *
+   * @type {string}
+   */
+  get home() {
+    return this.getLocation('home');
+  }
+  /**
+   * Finds and register the location for the app executable directory.
+   *
    * @access protected
+   * @ignore
    */
   _addAppLocation() {
     let current = module;
@@ -111,34 +126,38 @@ class PathUtils {
   }
 }
 /**
- * Generates a `Provider` with an already defined `home` location.
+ * Generates a {@link Provider} for {@link PathUtils}, with an already defined `home`
+ * location.
+ *
  * @example
  * // Generate the provider
  * const provider = pathUtilsWithHome('my-path');
  * // Register it on the container
  * container.register(provider);
  * // Getting access to the service instance
- * const pathUtils = container.get('pathUtils');
+ * const instance = container.get('pathUtils');
+ *
  * @param {string} [home] The path to the new home location.
- * @return {Provider}
+ * @returns {Provider}
+ * @tutorial pathUtils
  */
 const pathUtilsWithHome = (home) => provider((app) => {
   app.set('pathUtils', () => new PathUtils(home));
 });
 /**
  * The service provider that once registered on the app container will set an instance of
- * `PathUtils` as the `pathUtils` service.
+ * {@link PathUtils} as the `pathUtils` service.
+ *
  * @example
  * // Register it on the container
  * container.register(pathUtils);
  * // Getting access to the service instance
- * const pathUtils = container.get('pathUtils');
+ * const instance = container.get('pathUtils');
  * @type {Provider}
+ * @tutorial pathUtils
  */
 const pathUtils = pathUtilsWithHome();
 
-module.exports = {
-  PathUtils,
-  pathUtils,
-  pathUtilsWithHome,
-};
+module.exports.PathUtils = PathUtils;
+module.exports.pathUtils = pathUtils;
+module.exports.pathUtilsWithHome = pathUtilsWithHome;

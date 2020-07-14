@@ -151,7 +151,9 @@ I use [ESlint](http://eslint.org) to validate all our JS code. The configuration
 
 ### Documentation
 
-I use [ESDoc](http://esdoc.org) to generate HTML documentation for the project. The configuration file is on `./.esdocrc` and the script that runs it is on `./utils/scripts/docs`.
+I use [JSDoc](https://jsdoc.app) to generate an HTML documentation site for the project.
+
+The configuration file is on `./.jsdoc.js` and the script that runs it is on `./utils/scripts/docs`.
 
 ### To-Dos
 

@@ -1,76 +1,29 @@
 /**
+ * @module shared/eventsHub
+ */
+
+/**
  * A minimal implementation of an events handler service.
+ *
+ * @parent module:shared/eventsHub
+ * @tutorial eventsHub
  */
 class EventsHub {
-  /**
-   * Class constructor.
-   * @ignore
-   */
   constructor() {
     /**
      * A dictionary of the events and their listeners.
-     * @type {Object}
+     *
+     * @type {Object.<string,Function[]>}
+     * @access protected
      * @ignore
      */
     this._events = {};
   }
   /**
-   * Adds a new event listener.
-   * @param {String|Array} event An event name or a list of them.
-   * @param {Function}     fn    The listener function.
-   * @return {Function} An unsubscribe function to remove the listener or listeners.
-   */
-  on(event, fn) {
-    const events = Array.isArray(event) ? event : [event];
-    events.forEach((name) => {
-      const subscribers = this.subscribers(name);
-      if (!subscribers.includes(fn)) {
-        subscribers.push(fn);
-      }
-    });
-
-    return () => this.off(event, fn);
-  }
-  /**
-   * Adds an event listener that will only be executed once.
-   * @param {String|Array} event An event name or a list of them.
-   * @param {Function}     fn    The listener function.
-   * @return {Function} An unsubscribe function to remove the listener.
-   */
-  once(event, fn) {
-    // eslint-disable-next-line no-param-reassign
-    fn.once = true;
-    return this.on(event, fn);
-  }
-  /**
-   * Removes an event listener.
-   * @param {String|Array} event An event name or a list of them.
-   * @param {Function}     fn    The listener function.
-   * @return {Boolean|Array} If `event` was a `string`, it will return whether or not the listener
-   *                         was found and removed; but if `event` was an `Array`, it will return
-   *                         a list of boolean values.
-   */
-  off(event, fn) {
-    const isArray = Array.isArray(event);
-    const events = isArray ? event : [event];
-    const result = events.map((name) => {
-      const subscribers = this.subscribers(name);
-      let found = false;
-      const index = subscribers.indexOf(fn);
-      if (index > -1) {
-        found = true;
-        subscribers.splice(index, 1);
-      }
-
-      return found;
-    });
-
-    return isArray ? result : result[0];
-  }
-  /**
    * Emits an event and call all its listeners.
-   * @param {String|Array} event An event name or a list of them.
-   * @param {Array}        args  A list of parameters to send to the listeners.
+   *
+   * @param {string|string[]} event An event name or a list of them.
+   * @param {...*}            args  A list of parameters to send to the listeners.
    */
   emit(event, ...args) {
     const toClean = [];
@@ -90,12 +43,70 @@ class EventsHub {
     toClean.forEach((info) => this.off(info.event, info.fn));
   }
   /**
-   * Reduce a target using an event. It's like emit, but the events listener return
+   * Removes an event listener.
+   *
+   * @param {string|string[]} event An event name or a list of them.
+   * @param {Function}        fn    The listener function.
+   * @returns {boolean|boolean[]} If `event` was a `string`, it will return whether or not the
+   *                              listener was found and removed; but if `event` was an `Array`, it
+   *                              will return a list of boolean values.
+   */
+  off(event, fn) {
+    const isArray = Array.isArray(event);
+    const events = isArray ? event : [event];
+    const result = events.map((name) => {
+      const subscribers = this.subscribers(name);
+      let found = false;
+      const index = subscribers.indexOf(fn);
+      if (index > -1) {
+        found = true;
+        subscribers.splice(index, 1);
+      }
+
+      return found;
+    });
+
+    return isArray ? result : result[0];
+  }
+  /**
+   * Adds a new event listener.
+   *
+   * @param {string|string[]} event An event name or a list of them.
+   * @param {Function}        fn    The listener function.
+   * @returns {Function} An unsubscribe function to remove the listener or listeners.
+   */
+  on(event, fn) {
+    const events = Array.isArray(event) ? event : [event];
+    events.forEach((name) => {
+      const subscribers = this.subscribers(name);
+      if (!subscribers.includes(fn)) {
+        subscribers.push(fn);
+      }
+    });
+
+    return () => this.off(event, fn);
+  }
+  /**
+   * Adds an event listener that will only be executed once.
+   *
+   * @param {string|string[]} event An event name or a list of them.
+   * @param {Function}        fn    The listener function.
+   * @returns {Function} An unsubscribe function to remove the listener.
+   * @todo Use a wrapper instead of modifying the listener.
+   */
+  once(event, fn) {
+    // eslint-disable-next-line no-param-reassign
+    fn.once = true;
+    return this.on(event, fn);
+  }
+  /**
+   * Reduces a target using an event. It's like emit, but the events listener return
    * a modified (or not) version of the `target`.
-   * @param {String|Array} event  An event name or a list of them.
-   * @param {*}            target The variable to reduce with the listeners.
-   * @param {Array}        args   A list of parameters to send to the listeners.
-   * @return {*} A version of the `target` processed by the listeners.
+   *
+   * @param {string|string[]} event  An event name or a list of them.
+   * @param {*}               target The variable to reduce with the listeners.
+   * @param {...*}            args   A list of parameters to send to the listeners.
+   * @returns {*} A version of the `target` processed by the listeners.
    */
   reduce(event, target, ...args) {
     const events = Array.isArray(event) ? event : [event];
@@ -108,7 +119,7 @@ class EventsHub {
         if (Array.isArray(result)) {
           processed = result.slice();
         } else if (typeof result === 'object') {
-          processed = Object.assign({}, result);
+          processed = { ...result };
         } else {
           processed = result;
         }
@@ -131,9 +142,10 @@ class EventsHub {
     return result;
   }
   /**
-   * Get all the listeners for an event.
-   * @param {String} event The name of the event.
-   * @return {Array}
+   * Gets all the listeners for an event.
+   *
+   * @param {string} event The name of the event.
+   * @returns {Function[]}
    */
   subscribers(event) {
     if (!this._events[event]) {

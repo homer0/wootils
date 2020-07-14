@@ -1,11 +1,21 @@
 const { provider } = require('jimple');
 /**
+ * @module node/errorHandler
+ */
+
+/**
+ * @typedef {import('./logger').Logger} Logger
+ */
+
+/**
  * An error handler that captures uncaught exceptions and unhandled rejections in order to log
  * them with detail.
+ *
+ * @parent module:node/errorHandler
+ * @tutorial errorHandler
  */
 class ErrorHandler {
   /**
-   * Class constructor.
    * @param {Logger}  appLogger          To log the detail of the erros.
    * @param {boolean} [exitOnError=true] Whether or not to exit the process after receiving an
    *                                     error.
@@ -13,17 +23,20 @@ class ErrorHandler {
   constructor(appLogger, exitOnError = true) {
     /**
      * A local reference for the `appLogger` service.
+     *
      * @type {Logger}
      */
     this.appLogger = appLogger;
     /**
      * Whether or not to exit the process after receiving an error.
+     *
      * @type {boolean}
      */
     this.exitOnError = exitOnError;
     /**
      * The list of events this handler will listen for in order to catch errors.
-     * @type {Array}
+     *
+     * @type {string[]}
      */
     this.eventsNames = [
       'uncaughtException',
@@ -31,30 +44,16 @@ class ErrorHandler {
     ];
     /**
      * Bind the handler method so it can be used on the calls to `process`.
+     *
      * @ignore
      */
     this.handler = this.handle.bind(this);
   }
   /**
-   * Starts listening for unhandled errors.
-   */
-  listen() {
-    this.eventsNames.forEach((eventName) => {
-      process.on(eventName, this.handler);
-    });
-  }
-  /**
-   * Stops listening for unhandled errors.
-   */
-  stopListening() {
-    this.eventsNames.forEach((eventName) => {
-      process.removeListener(eventName, this.handler);
-    });
-  }
-  /**
    * This is called by the process listeners when an uncaught exception is thrown or a rejected
    * promise is not handled. It logs the error on detail.
    * The process exits when after logging an error.
+   *
    * @param {Error} error The unhandled error.
    */
   handle(error) {
@@ -80,12 +79,30 @@ class ErrorHandler {
       process.exit(1);
     }
   }
+  /**
+   * Starts listening for unhandled errors.
+   */
+  listen() {
+    this.eventsNames.forEach((eventName) => {
+      process.on(eventName, this.handler);
+    });
+  }
+  /**
+   * Stops listening for unhandled errors.
+   */
+  stopListening() {
+    this.eventsNames.forEach((eventName) => {
+      process.removeListener(eventName, this.handler);
+    });
+  }
 }
 /**
  * Generates a `Provider` with an already defined flag to exit or not the process when after
  * handling an error.
+ *
  * @param {boolean} [exitOnError] Whether or not to exit the process after receiving an error.
- * @return {Provider}
+ * @returns {Provider}
+ * @tutorial errorHandler
  */
 const errorHandlerWithOptions = (exitOnError) => provider((app) => {
   app.set('errorHandler', () => {
@@ -98,24 +115,25 @@ const errorHandlerWithOptions = (exitOnError) => provider((app) => {
 
     return new ErrorHandler(
       logger,
-      exitOnError
+      exitOnError,
     );
   });
 });
 /**
  * The service provider that once registered on the app container will set an instance of
  * `ErrorHandler` as the `errorHandler` service.
+ *
  * @example
  * // Register it on the container
  * container.register(errorHandler);
  * // Getting access to the service instance
- * const errorHandler = container.get('errorHandler');
+ * const instance = container.get('errorHandler');
+ *
  * @type {Provider}
+ * @tutorial errorHandler
  */
 const errorHandler = errorHandlerWithOptions();
 
-module.exports = {
-  ErrorHandler,
-  errorHandlerWithOptions,
-  errorHandler,
-};
+module.exports.ErrorHandler = ErrorHandler;
+module.exports.errorHandlerWithOptions = errorHandlerWithOptions;
+module.exports.errorHandler = errorHandler;

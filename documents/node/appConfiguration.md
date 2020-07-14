@@ -242,13 +242,14 @@ console.log(appConfiguration.get('person'));
 
 There's a special rule behind this feature: The default configuration and/or the first configuration loaded needs to have a key name `allowConfigurationSwitch` set to `true` in order switch configurations. The reason of this rule is **security**: If you deployed to production and the you didn't turn off whatever you have that makes the service switch configurations, other people can use it. This way, you can have this enabled only on specifics configuration and disabled on others.
 
-
 ## Technical documentation
 
-The code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/class/wootils/node/appConfiguration.js~AppConfiguration.html) or generate it yourself using:
+- Class: {@link AppConfiguration}
+- Provider generator: {@link module:node/appConfiguration~appConfiguration|appConfiguration}
 
-```bash
-# You can either use npm or yarn, it doesn't matter
-npm run docs
-open ./docs/index.html
-```
+> If you are reading this form the markdown document, you can go to the [online version](https://homer0.github.io/wootils); or you can generate the documentation site yourself by running the `docs` command:
+>
+> ```bash
+> # You can either use npm or yarn, it doesn't matter
+> npm run docs && open ./docs/index.html;
+> ```

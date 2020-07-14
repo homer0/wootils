@@ -11,6 +11,12 @@ const {
 const { provider } = require('jimple');
 
 describe('AppConfiguration', () => {
+  /**
+   * Generates a dictinoary of all the expected properties of a {@link AppConfiguartion} class
+   * when the defaults are not customized.
+   *
+   * @returns {Object}
+   */
   const getExpectedDefaults = () => ({
     options: {
       defaultConfigurationName: 'default',
@@ -24,7 +30,13 @@ describe('AppConfiguration', () => {
     activeConfiguration: 'default',
     allowConfigurationSwitch: false,
   });
-
+  /**
+   * Generates the information of the default configuration file based on the value of the
+   * `name` option that will be sent to {@link AppConfiguration}.
+   *
+   * @param {string} name  The name of the configuration.
+   * @returns {Object}
+   */
   const getDefaultFileInfo = (name) => ({
     path: path.join('config', 'app', `app.${name}.config.js`),
     name: `app.${name}.config.js`,
@@ -107,11 +119,10 @@ describe('AppConfiguration', () => {
     };
     let sut = null;
     let result = null;
-    const expectedConfig = Object.assign(
-      {},
-      newConfigOneSettings,
-      newConfigTwoSettings
-    );
+    const expectedConfig = {
+      ...newConfigOneSettings,
+      ...newConfigTwoSettings,
+    };
     delete expectedConfig.extends;
     // When
     sut = new AppConfiguration(environmentUtils, rootRequire);
@@ -210,11 +221,10 @@ describe('AppConfiguration', () => {
     rootRequire.mockImplementationOnce(() => newConfigOneSettings);
     let sut = null;
     let result = null;
-    const expectedConfig = Object.assign(
-      {},
-      newConfigOneSettings,
-      newConfigTwoSettings
-    );
+    const expectedConfig = {
+      ...newConfigOneSettings,
+      ...newConfigTwoSettings,
+    };
     delete expectedConfig.extends;
     const expectedFileInfoOne = getDefaultFileInfo(newConfigOneName);
     const expectedFileInfoTwo = getDefaultFileInfo(newConfigTwoName);
@@ -356,7 +366,7 @@ describe('AppConfiguration', () => {
     sut.load(newConfigName, newConfigSettings);
     result = sut.setConfig(updatedSettings, newConfigName);
     // Then
-    expect(result).toEqual(Object.assign({}, newConfigSettings, updatedSettings));
+    expect(result).toEqual({ ...newConfigSettings, ...updatedSettings });
   });
 
   it('should overwrite an entire configuration by its name', () => {
@@ -630,7 +640,7 @@ describe('AppConfiguration', () => {
     let sut = null;
     let resultAfterLoad = null;
     let resultAfterSet = null;
-    const expectedSettingsAfterSet = Object.assign({}, newSettingValue, newSettingExtendedValue);
+    const expectedSettingsAfterSet = { ...newSettingValue, ...newSettingExtendedValue };
     // When
     sut = new AppConfiguration(environmentUtils, rootRequire);
     sut.load(newConfigName, newConfigSettings);

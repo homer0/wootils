@@ -1,9 +1,22 @@
 /**
- * Create a deferred promise using a native Promise.
- * @return {Object}
+ * @module shared/deferred
+ */
+
+/**
+ * @typedef {Object} DeferredPromise
  * @property {Promise}  promise The deferred promise.
- * @property {Function} resolve The functon to resolve the promise.
- * @property {Function} reject  The functon to reject the promise.
+ * @property {Function} resolve The function to resolve the promise.
+ * @property {Function} reject  The function to reject the promise.
+ * @parent module:shared/deferred
+ * @tutorial deferred
+ */
+
+/**
+ * Creates a deferred promise using a native {@link Promise}.
+ *
+ * @returns {DeferredPromise}
+ * @parent module:shared/deferred
+ * @tutorial deferred
  */
 const deferred = () => {
   let resolve;

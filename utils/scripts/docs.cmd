@@ -1,1 +1,1 @@
-esdoc -c esdoc.json && del /F /Q docs\package.json
+jsdoc -c .jsdoc.js
