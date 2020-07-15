@@ -1,8 +1,0 @@
-#!/bin/sh
-# husky
-
-# Created by Husky v4.2.5 (https://github.com/typicode/husky#readme)
-#   At: 7/15/2020, 12:13:38 AM
-#   From: /Users/homer0/CODE/node/wootils/node_modules/husky (https://github.com/typicode/husky#readme)
-
-. "$(dirname "$0")/husky.sh"
