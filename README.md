@@ -9,20 +9,12 @@ A set of Javascript utilities for building Node and browser apps.
 
 ## Motivation/Introduction
 
-The idea was to take all those small thing I'm always rewriting on every project and move them to a single package so I can not only stop copying & pasting them all over the place but also maintain them all together.
+The idea was to take all those small thing I'm always rewriting on every project and move them to a single package so I can, not only stop copying & pasting them all over the place, but also maintain them all together.
 
 There are two rules I followed when I had to decide what to put and what to keep somewhere else:
 
 1. The utility needs to fit on a single file.
 2. It shouldn't include any specific business logic from any other project.
-
-## Information
-
-| -            | -                                                                  |
-|--------------|--------------------------------------------------------------------|
-| Package      | wootils                                                            |
-| Description  | A set of Javascript utilities for building Node and browser apps.  |
-| Node Version | >= v10.0.0                                                         |
 
 ## Usage
 
@@ -121,6 +113,22 @@ An **abstract** class allows you to build services that relay on browser storage
 
 [Read more about SimpleStorage](./documents/shared/simpleStorage.md)
 
+## ES Modules
+
+All files are written using commonjs, as I targeted the oldest Node LTS and it doesn't support modules (without a flag) yet, but you can use it with ESM.
+
+When the package gets published, an ESM version is generated on the path `/esm`. If you are using the latest version of Node, or a module bundler (like [projext](https://projextjs.com) :D), instead of requiring from the package's root path, you should do it from the `/esm` sub path:
+
+```js
+// commonjs
+const ObjectUtils = require('wootils/shared/objectUtils');
+
+// ESM
+import ObjectUtils from 'wootils/esm/shared/objectUtils';
+```
+
+Since the next LTS to become "the oldest" is 12, which still uses the flag, I still have no plans on going with ESM by default.
+
 ## Development
 
 ### NPM/Yarn Tasks
@@ -130,6 +138,7 @@ An **abstract** class allows you to build services that relay on browser storage
 | `docs`     | Generates the project documentation. |
 | `lint`     | Lints the staged files.              |
 | `lint:all` | Lints the entire project code.       |
+| `prepare`  | Generates the project ESM version.   |
 | `test`     | Runs the project unit tests.         |
 | `todo`     | Lists all the pending to-do's.       |
 

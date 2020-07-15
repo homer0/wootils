@@ -107,6 +107,29 @@ Done! If you run the same code now, this is the kind of logged information you'l
 [my-app] at startup (bootstrap_node.js:149:9)
 ```
 
+## ES Modules
+
+If you are using ESM, you can import the class, the provider and the provider generator from the `/esm` sub path:
+
+```js
+import {
+  ErrorHandler,
+  errorHandler,
+  errorHandlerWithOptions,
+} from 'wootils/esm/node/errorHandler';
+
+// just the class
+
+import { ErrorHandler } from 'wootils/esm/node';
+
+// just the provider and/or the generator
+
+import {
+  errorHandler,
+  errorHandlerWithOptions,
+} from 'wootils/esm/node/providers';
+```
+
 ## Technical documentation
 
 - Class: {@link ErrorHandler}

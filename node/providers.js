@@ -11,17 +11,15 @@ const { packageInfoProvider } = require('./packageInfo');
 const { pathUtils, pathUtilsWithHome } = require('./pathUtils');
 const { rootRequireProvider } = require('./rootRequire');
 
-module.exports = {
-  appConfiguration,
-  environmentUtils,
-  errorHandlerWithOptions,
-  errorHandler,
-  loggerWithOptions,
-  logger,
-  appLoggerWithOptions,
-  appLogger,
-  packageInfo: packageInfoProvider,
-  pathUtils,
-  pathUtilsWithHome,
-  rootRequire: rootRequireProvider,
-};
+module.exports.appConfiguration = appConfiguration;
+module.exports.environmentUtils = environmentUtils;
+module.exports.errorHandlerWithOptions = errorHandlerWithOptions;
+module.exports.errorHandler = errorHandler;
+module.exports.loggerWithOptions = loggerWithOptions;
+module.exports.logger = logger;
+module.exports.appLoggerWithOptions = appLoggerWithOptions;
+module.exports.appLogger = appLogger;
+module.exports.packageInfo = packageInfoProvider;
+module.exports.pathUtils = pathUtils;
+module.exports.pathUtilsWithHome = pathUtilsWithHome;
+module.exports.rootRequire = rootRequireProvider;

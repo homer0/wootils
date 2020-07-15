@@ -15,12 +15,16 @@
     "extend": "^3.0.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "5to6-codemod": "1.8.0",
     "commitizen": "^4.1.2",
     "cz-conventional-changelog": "^3.2.0",
     "eslint": "^7.4.0",
     "eslint-plugin-homer0": "^5.0.0",
     "husky": "^4.2.5",
     "jest": "^26.1.0",
+    "jscodeshift": "0.10.0",
     "jsdoc": "^3.6.4",
     "jsdoc-ts-utils": "^1.0.0",
     "docdash": "homer0/docdash#semver:^2.0.0",
@@ -41,9 +45,8 @@
   "lint-staged": {
     "*.js": "eslint"
   },
-  "main": "src/index.js",
   "scripts": {
-    "hooks": "./utils/hooks/install",
+    "prepare": "./utils/scripts/prepare",
     "test": "./utils/scripts/test",
     "lint": "./utils/scripts/lint",
     "lint:all": "./utils/scripts/lint-all",

@@ -222,6 +222,18 @@ getUserUISettings(userId) {
 
 Done! Now the request will only trigger if there's nothing on the storage (this includes entries that were deleted because they expired.
 
+## ES Modules
+
+If you are using ESM, you can import the class from the `/esm` sub path:
+
+```js
+import SimpleStorage from 'wootils/esm/browser/simpleStorage';
+
+// or
+
+import { SimpleStorage } from 'wootils/esm/browser';
+```
+
 ## Technical documentation
 
 - Class: {@link SimpleStorage}

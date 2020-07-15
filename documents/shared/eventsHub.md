@@ -84,6 +84,18 @@ console.log(newUsersList);
 
 > `reduce` also supports sending any number of parameters after the target variable.
 
+## ES Modules
+
+If you are using ESM, you can import the class from the `/esm` sub path:
+
+```js
+import EventsHub from 'wootils/esm/shared/eventsHub';
+
+// or
+
+import { EventsHub } from 'wootils/esm/shared';
+```
+
 ## Technical documentation
 
 - Class: {@link EventsHub}

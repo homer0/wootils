@@ -162,6 +162,18 @@ client.setAuthorizationToken('some-token');
 
 Done, all the requests will include `Authorization: Bearer some-token`.
 
+## ES Modules
+
+If you are using ESM, you can import the class from the `/esm` sub path:
+
+```js
+import APIClient from 'wootils/esm/shared/apiClient';
+
+// or
+
+import { APIClient } from 'wootils/esm/shared';
+```
+
 ## Technical documentation
 
 - Class: {@link APIClient}

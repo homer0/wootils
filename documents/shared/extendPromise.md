@@ -71,6 +71,18 @@ const req = makeTheRequest()
 setTimeout(() => req.abort(), 1000);
 ```
 
+## ES Modules
+
+If you are using ESM, you can import the function from the `/esm` sub path:
+
+```js
+import extendPromise from 'wootils/esm/shared/extendPromise';
+
+// or
+
+import { extendPromise } from 'wootils/esm/shared';
+```
+
 ## Technical documentation
 
 - Function: {@link module:shared/extendPromise~extendPromise|extendPromise}

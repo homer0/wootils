@@ -149,6 +149,25 @@ You can call `.exists()` with the name of the variable and the service will tell
 
 No more `if (process.env.NODE_ENV ...`, `EnvironmentUtils` does it once when you instantiate it and then gives you `production()` and `development()` for you to use.
 
+## ES Modules
+
+If you are using ESM, you can import the class and the provider from the `/esm` sub path:
+
+```js
+import {
+  EnvironmentUtils,
+  environmentUtils,
+} from 'wootils/esm/node/environmentUtils';
+
+// just the class
+
+import { EnvironmentUtils } from 'wootils/esm/node';
+
+// just the provider
+
+import { environmentUtils } from 'wootils/esm/node/providers';
+```
+
 ## Technical documentation
 
 - Class: {@link EnvironmentUtils}
