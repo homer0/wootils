@@ -133,6 +133,12 @@ An **abstract** class allows you to build services that relay on browser storage
 | `test`     | Runs the project unit tests.         |
 | `todo`     | Lists all the pending to-do's.       |
 
+### Repository hooks
+
+I use [`husky`](https://yarnpkg.com/package/husky) to automatically install the repository hooks so the code will be tested and linted before any commit and the dependencies updated after every merge.
+
+The configuration is on the `husky` property of the `package.json` and the hooks' files are on `./utils/hooks`.
+
 ### Testing
 
 I use [Jest](https://facebook.github.io/jest/) to test the project.

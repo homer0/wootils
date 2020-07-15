@@ -1,9 +1,8 @@
-#!/bin/bash -e
+#!/bin/sh
+# husky
 
-if hash yarn 2>/dev/null; then
-  yarn run lint
-  yarn test
-else
-  npm run lint
-  npm test
-fi
+# Created by Husky v4.2.5 (https://github.com/typicode/husky#readme)
+#   At: 7/15/2020, 12:13:38 AM
+#   From: /Users/homer0/CODE/node/wootils/node_modules/husky (https://github.com/typicode/husky#readme)
+
+. "$(dirname "$0")/husky.sh"
