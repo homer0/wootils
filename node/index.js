@@ -1,17 +1,7 @@
-const { AppConfiguration } = require('./appConfiguration');
-const { EnvironmentUtils } = require('./environmentUtils');
-const { ErrorHandler } = require('./errorHandler');
-const { Logger } = require('./logger');
-const { packageInfo } = require('./packageInfo');
-const { PathUtils } = require('./pathUtils');
-const { rootRequire } = require('./rootRequire');
-
-module.exports = {
-  AppConfiguration,
-  EnvironmentUtils,
-  ErrorHandler,
-  Logger,
-  packageInfo,
-  PathUtils,
-  rootRequire,
-};
+module.exports.AppConfiguration = require('./appConfiguration').AppConfiguration;
+module.exports.EnvironmentUtils = require('./environmentUtils').EnvironmentUtils;
+module.exports.ErrorHandler = require('./errorHandler').ErrorHandler;
+module.exports.Logger = require('./logger').Logger;
+module.exports.packageInfo = require('./packageInfo').packageInfo;
+module.exports.PathUtils = require('./pathUtils').PathUtils;
+module.exports.rootRequire = require('./rootRequire').rootRequire;

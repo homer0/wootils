@@ -1,5 +1,1 @@
-const SimpleStorage = require('./simpleStorage');
-
-module.exports = {
-  SimpleStorage,
-};
+module.exports.SimpleStorage = require('./simpleStorage');
