@@ -25,8 +25,7 @@
     "jsdoc-ts-utils": "^1.0.0",
     "docdash": "homer0/docdash#semver:^2.0.0",
     "leasot": "^11.0.0",
-    "lint-staged": "^10.2.11",
-    "coveralls": "^3.1.0"
+    "lint-staged": "^10.2.11"
   },
   "engine-strict": true,
   "engines": {
