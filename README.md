@@ -1,6 +1,6 @@
 # Wootils
 
-[![Travis](https://img.shields.io/travis/homer0/wootils.svg?style=flat-square)](https://travis-ci.org/homer0/wootils)
+[![GitHub Workflow Status (master)](https://img.shields.io/github/workflow/status/homer0/wootils/Test/master?style=flat-square)](https://github.com/homer0/wootils/actions?query=workflow%3ATest)
 [![Coveralls github](https://img.shields.io/coveralls/github/homer0/wootils.svg?style=flat-square)](https://coveralls.io/github/homer0/wootils?branch=master)
 [![David](https://img.shields.io/david/homer0/wootils.svg?style=flat-square)](https://david-dm.org/homer0/wootils)
 [![David](https://img.shields.io/david/dev/homer0/wootils.svg?style=flat-square)](https://david-dm.org/homer0/wootils)
