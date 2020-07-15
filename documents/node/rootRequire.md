@@ -78,6 +78,25 @@ const config = app.get('rootRequire')('config/development');
 
 Done, `config` now has the contents of `config/development`, and this will work no matter where the app file is located.
 
+## ES Modules
+
+If you are using ESM, you can import the function and the provider from the `/esm` sub path:
+
+```js
+import {
+  rootRequire,
+  rootRequireProvider,
+} from 'wootils/esm/node/rootRequire';
+
+// just the function
+
+import { rootRequire } from 'wootils/esm/node';
+
+// just the provider
+
+import { rootRequireProvider } from 'wootils/esm/node/providers';
+```
+
 ## Technical documentation
 
 - Function: {@link module:node/rootRequire~rootRequire|rootRequire}

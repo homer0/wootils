@@ -242,6 +242,25 @@ console.log(appConfiguration.get('person'));
 
 There's a special rule behind this feature: The default configuration and/or the first configuration loaded needs to have a key name `allowConfigurationSwitch` set to `true` in order switch configurations. The reason of this rule is **security**: If you deployed to production and the you didn't turn off whatever you have that makes the service switch configurations, other people can use it. This way, you can have this enabled only on specifics configuration and disabled on others.
 
+## ES Modules
+
+If you are using ESM, you can import the class and the provider generator from the `/esm` sub path:
+
+```js
+import {
+  AppConfiguration,
+  appConfiguration,
+} from 'wootils/esm/node/appConfiguration';
+
+// just the class
+
+import { AppConfiguration } from 'wootils/esm/node';
+
+// just the provider generator
+
+import { appConfiguration } from 'wootils/esm/node/providers';
+```
+
 ## Technical documentation
 
 - Class: {@link AppConfiguration}

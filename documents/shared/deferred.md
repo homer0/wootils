@@ -56,6 +56,18 @@ Ok, there's a lot going on this example, let's break it:
 
 I wanted to keep the example small, but on a real app, `getFileContents` is probably called by other service that has no idea the instance was just created or that `loadTheFile` hasn't been called yet.
 
+## ES Modules
+
+If you are using ESM, you can import the function from the `/esm` sub path:
+
+```js
+import deferred from 'wootils/esm/shared/deferred';
+
+// or
+
+import { deferred } from 'wootils/esm/shared';
+```
+
 ## Technical documentation
 
 - Function: {@link module:shared/deferred.deferred|deferred}

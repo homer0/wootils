@@ -160,6 +160,18 @@ console.log(ObjectUtils.formatKeys(
 - `dashToLowerCamelKeys(...)`
 - `dashToSnakeKeys(...)`
 
+## ES Modules
+
+If you are using ESM, you can import the class from the `/esm` sub path:
+
+```js
+import ObjectUtils from 'wootils/esm/shared/objectUtils';
+
+// or
+
+import { ObjectUtils } from 'wootils/esm/shared';
+```
+
 ## Technical documentation
 
 - Class: {@link ObjectUtils}

@@ -104,6 +104,29 @@ And finally, to use those locations, you use `joinFrom` instead of `join`:
 const pathToFile = pathUtils.joinFrom('my-location', 'some-file.js');
 ```
 
+## ES Modules
+
+If you are using ESM, you can import the class, the provider and the provider generator from the `/esm` sub path:
+
+```js
+import {
+  PathUtils,
+  pathUtils,
+  pathUtilsWithHome,
+} from 'wootils/esm/node/pathUtils';
+
+// just the class
+
+import { PathUtils } from 'wootils/esm/node';
+
+// just the provider and/or the generator
+
+import {
+  pathUtils,
+  pathUtilsWithHome,
+} from 'wootils/esm/node/providers';
+```
+
 ## Technical documentation
 
 - Class: {@link PathUtils}

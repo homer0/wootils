@@ -243,11 +243,38 @@ app.get('appLogger').success('The instance was created!');
 
 There's also `appLoggerWithOptions` that allows you to enable or disabled the date and time for the messages.
 
+## ES Modules
+
+If you are using ESM, you can import the class, the providers and the provider generators from the `/esm` sub path:
+
+```js
+import {
+  Logger,
+  logger,
+  loggerWithOptions,
+  appLogger,
+  appLoggerWithOptions,
+} from 'wootils/esm/node/logger';
+
+// just the class
+
+import { Logger } from 'wootils/esm/node';
+
+// just the providers and/or the generators
+
+import {
+  logger,
+  loggerWithOptions,
+  appLogger,
+  appLoggerWithOptions,
+} from 'wootils/esm/node/providers';
+```
+
 ## Technical documentation
 
 - Class: {@link Logger}
 - Provider: {@link module:node/logger~logger|logger}
-- Provider generator: {@link module:node/errorHandler~errorHandlerWithOptions|errorHandlerWithOptions}
+- Provider generator: {@link module:node/logger~loggerWithOptions|loggerWithOptions}
 - Provider with app name as prefix: {@link module:node/logger~appLogger|appLogger}
 - Provider generator for {@link module:node/logger~appLogger|appLogger}: {@link module:node/logger~appLoggerWithOptions|appLoggerWithOptions}
 

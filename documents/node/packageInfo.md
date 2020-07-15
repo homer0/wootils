@@ -47,6 +47,25 @@ const packageJson = app.get('packageInfo');
 
 Done, `packageJson` now has all the contents of your `package.json`, as an Object; and the file won't be read more than once.
 
+## ES Modules
+
+If you are using ESM, you can import the function and the provider from the `/esm` sub path:
+
+```js
+import {
+  packageInfo,
+  packageInfoProvider,
+} from 'wootils/esm/node/packageInfo';
+
+// just the function
+
+import { packageInfo } from 'wootils/esm/node';
+
+// just the provider
+
+import { packageInfoProvider } from 'wootils/esm/node/providers';
+```
+
 ## Technical documentation
 
 - Function: {@link module:node/packageInfo~packageInfo|packageInfo}
