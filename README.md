@@ -123,23 +123,15 @@ An **abstract** class allows you to build services that relay on browser storage
 
 ## Development
 
-Before doing anything, install the repository hooks:
-
-```bash
-# You can either use npm or yarn, it doesn't matter
-yarn run hooks
-```
-
 ### NPM/Yarn Tasks
 
-| Task                     | Description                         |
-|--------------------------|-------------------------------------|
-| `yarn run hooks`         | Install the GIT repository hooks.   |
-| `yarn test`              | Run the project unit tests.         |
-| `yarn run lint`          | Lint the modified files.            |
-| `yarn run lint:full`     | Lint the project code.              |
-| `yarn run docs`          | Generate the project documentation. |
-| `yarn run todo`          | List all the pending to-do's.       |
+| Task       | Description                          |
+|------------|--------------------------------------|
+| `docs`     | Generates the project documentation. |
+| `lint`     | Lints the staged files.              |
+| `lint:all` | Lints the entire project code.       |
+| `test`     | Runs the project unit tests.         |
+| `todo`     | Lists all the pending to-do's.       |
 
 ### Testing
 
@@ -149,7 +141,9 @@ The configuration file is on `./.jestrc.json`, the tests are on `./tests` and th
 
 ### Linting
 
-I use [ESlint](http://eslint.org) to validate all our JS code. The configuration file for the project code is on `./.eslintrc` and for the tests on `./tests/.eslintrc` (which inherits from the one on the root), there's also an `./.eslintignore` to ignore some files on the process, and the script that runs it is on `./utils/scripts/lint`.
+I use [ESlint](https://eslint.org) with [my own custom configuration](https://yarnpkg.com/package/eslint-plugin-homer0) to validate all the JS code and the JSDoc comments.
+
+The configuration file for the project code is on `./.eslintrc` and the one for the tests is on `./tests/.eslintrc`, and there's also an `./.eslintignore` to exclude some files on the process. The script that runs it is on `./utils/scripts/lint`.
 
 ### Documentation
 
@@ -163,6 +157,4 @@ I use `@todo` comments to write all the pending improvements and fixes, and [Lea
 
 ### Windows
 
-You can work with this project on Windows, but it only works if you use [Yarn](https://yarnpkg.com/en/docs/install). The reason is that NPM on Windows doesn't allow you to use paths like `./scripts/something` on the `package.json` scripts, while Yarn does.
-
-Another alternative if you are using Windows is to use [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+This project uses bash scripts for development, so if you want to develop on Windows, you need to do it with [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
