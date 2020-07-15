@@ -47,7 +47,7 @@
     "hooks": "./utils/hooks/install",
     "test": "./utils/scripts/test",
     "lint": "./utils/scripts/lint",
-    "lint:full": "./utils/scripts/lint-full",
+    "lint:all": "./utils/scripts/lint-all",
     "docs": "./utils/scripts/docs",
     "todo": "./utils/scripts/todo"
   },
