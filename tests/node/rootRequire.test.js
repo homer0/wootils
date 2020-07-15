@@ -1,14 +1,13 @@
-jest.unmock('/node/rootRequire');
+jest.unmock('../../node/rootRequire');
 jest.mock('jimple', () => ({ provider: jest.fn(() => 'provider') }));
 
 const path = require('path');
-require('jasmine-expect');
 
+const { provider } = require('jimple');
 const {
   rootRequire,
   rootRequireProvider,
-} = require('/node/rootRequire');
-const { provider } = require('jimple');
+} = require('../../node/rootRequire');
 
 describe('rootRequire', () => {
   const pathUtils = {
@@ -22,7 +21,7 @@ describe('rootRequire', () => {
     sut = rootRequire(pathUtils)('node/providers');
     // Then
     // eslint-disable-next-line global-require,import/no-dynamic-require
-    expect(sut).toEqual(require('/node/providers'));
+    expect(sut).toEqual(require('../../node/providers'));
   });
 
   it('should have a Jimple provider to register the service', () => {
@@ -47,10 +46,8 @@ describe('rootRequire', () => {
     expect(provider).toHaveBeenCalledTimes(1);
     expect(container.set).toHaveBeenCalledTimes(1);
     expect(serviceName).toBe('rootRequire');
-    expect(serviceFn).toBeFunction();
-    expect(sut).toBeFunction();
     // eslint-disable-next-line global-require,import/no-dynamic-require
-    expect(result).toEqual(require('/node/providers'));
+    expect(result).toEqual(require('../../node/providers'));
     expect(container.get).toHaveBeenCalledTimes(1);
     expect(container.get).toHaveBeenCalledWith('pathUtils');
   });

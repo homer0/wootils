@@ -1,7 +1,6 @@
-jest.unmock('/shared/eventsHub');
+jest.unmock('../../shared/eventsHub');
 
-require('jasmine-expect');
-const EventsHub = require('/shared/eventsHub');
+const EventsHub = require('../../shared/eventsHub');
 
 describe('EventsHub', () => {
   it('should allow new subscribers for events', () => {
@@ -17,7 +16,6 @@ describe('EventsHub', () => {
     sut.emit(eventName, argOne, argTwo);
     unsubscribe();
     // Then
-    expect(unsubscribe).toBeFunction();
     expect(subscriber).toHaveBeenCalledTimes(1);
     expect(subscriber).toHaveBeenCalledWith(argOne, argTwo);
   });
@@ -37,8 +35,6 @@ describe('EventsHub', () => {
     unsubscribeOne();
     unsubscribeTwo();
     // Then
-    expect(unsubscribeOne).toBeFunction();
-    expect(unsubscribeTwo).toBeFunction();
     expect(subscriberOne).toHaveBeenCalledTimes(1);
     expect(subscriberTwo).toHaveBeenCalledTimes(1);
   });
@@ -56,7 +52,6 @@ describe('EventsHub', () => {
     sut.emit(eventNames);
     unsubscribe();
     // Then
-    expect(unsubscribe).toBeFunction();
     expect(subscriber).toHaveBeenCalledTimes(eventNames.length);
   });
 
@@ -74,8 +69,6 @@ describe('EventsHub', () => {
     unsubscribeOne();
     unsubscribeTwo();
     // Then
-    expect(unsubscribeOne).toBeFunction();
-    expect(unsubscribeTwo).toBeFunction();
     expect(subscriber).toHaveBeenCalledTimes(1);
   });
 
@@ -91,7 +84,6 @@ describe('EventsHub', () => {
     unsubscribe();
     sut.emit(eventName);
     // Then
-    expect(unsubscribe).toBeFunction();
     expect(subscriber).toHaveBeenCalledTimes(1);
   });
 
@@ -177,7 +169,6 @@ describe('EventsHub', () => {
     result = sut.reduce(eventName, target);
     unsubscribe();
     // Then
-    expect(unsubscribe).toBeFunction();
     expect(subscriber).toHaveBeenCalledTimes(1);
     expect(result).toBe(1);
     expect(target).toBe(targetInitialValue);
@@ -201,7 +192,6 @@ describe('EventsHub', () => {
     result = sut.reduce(eventName, target);
     unsubscribe();
     // Then
-    expect(unsubscribe).toBeFunction();
     expect(subscriber).toHaveBeenCalledTimes(1);
     expect(result).toEqual([...targetInitialValue, ...[newValue]]);
     expect(target).toEqual(targetInitialValue);
@@ -222,7 +212,6 @@ describe('EventsHub', () => {
     result = sut.reduce(eventName, target);
     unsubscribe();
     // Then
-    expect(unsubscribe).toBeFunction();
     expect(subscriber).toHaveBeenCalledTimes(1);
     expect(result).toEqual({ ...targetInitialValue, ...newValue });
     expect(target).toEqual(targetInitialValue);
@@ -243,7 +232,6 @@ describe('EventsHub', () => {
     result = sut.reduce(eventName, result);
     unsubscribe();
     // Then
-    expect(unsubscribe).toBeFunction();
     expect(subscriber).toHaveBeenCalledTimes(1);
     expect(result).toBe(1);
     expect(target).toBe(targetInitialValue);
@@ -265,7 +253,6 @@ describe('EventsHub', () => {
     result = sut.reduce(eventNames, target);
     unsubscribe();
     // Then
-    expect(unsubscribe).toBeFunction();
     expect(subscriber).toHaveBeenCalledTimes(eventNames.length);
     expect(result).toBe(targetInitialValue + eventNames.length);
     expect(target).toBe(targetInitialValue);
@@ -293,7 +280,6 @@ describe('EventsHub', () => {
     result = sut.reduce(eventNames, target);
     unsubscribe();
     // Then
-    expect(unsubscribe).toBeFunction();
     expect(subscriber).toHaveBeenCalledTimes(eventNames.length);
     expect(result).toEqual([...targetInitialValue, ...newValues]);
     expect(target).toEqual(targetInitialValue);
@@ -320,7 +306,6 @@ describe('EventsHub', () => {
     result = sut.reduce(eventNames, target);
     unsubscribe();
     // Then
-    expect(unsubscribe).toBeFunction();
     expect(subscriber).toHaveBeenCalledTimes(eventNames.length);
     expect(result).toEqual(Object.assign({}, targetInitialValue, ...newValues));
     expect(target).toEqual(targetInitialValue);
@@ -343,7 +328,6 @@ describe('EventsHub', () => {
     result = sut.reduce(eventNames, result);
     unsubscribe();
     // Then
-    expect(unsubscribe).toBeFunction();
     expect(subscriber).toHaveBeenCalledTimes(eventNames.length);
     expect(result).toBe(targetInitialValue + eventNames.length);
     expect(target).toBe(targetInitialValue);
@@ -377,7 +361,6 @@ describe('EventsHub', () => {
     result = sut.reduce(eventName, target, argOne, argTwo);
     unsubscribe();
     // Then
-    expect(unsubscribe).toBeFunction();
     expect(subscriber).toHaveBeenCalledTimes(1);
     expect(subscriber).toHaveBeenCalledWith(targetInitialValue, argOne, argTwo);
     expect(result).toBe(targetInitialValue + argOne + argTwo);

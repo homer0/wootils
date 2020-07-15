@@ -1,13 +1,12 @@
-jest.unmock('/node/errorHandler.js');
 jest.mock('jimple', () => ({ provider: jest.fn(() => 'provider') }));
+jest.unmock('../../node/errorHandler.js');
 
-require('jasmine-expect');
+const { provider } = require('jimple');
 const {
   ErrorHandler,
   errorHandlerWithOptions,
   errorHandler,
-} = require('/node/errorHandler');
-const { provider } = require('jimple');
+} = require('../../node/errorHandler');
 
 const originalProcessOn = process.on;
 const originalProcessRemoveListener = process.removeListener;
@@ -156,7 +155,6 @@ describe('ErrorHandler', () => {
     expect(errorHandler).toBe('provider');
     expect(provider).toHaveBeenCalledTimes(1);
     expect(serviceName).toBe('errorHandler');
-    expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(ErrorHandler);
     expect(container.get).toHaveBeenCalledTimes(1);
     expect(container.get).toHaveBeenCalledWith('logger');
@@ -187,7 +185,6 @@ describe('ErrorHandler', () => {
     expect(errorHandler).toBe('provider');
     expect(provider).toHaveBeenCalledTimes(1);
     expect(serviceName).toBe('errorHandler');
-    expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(ErrorHandler);
     expect(container.get).toHaveBeenCalledTimes(['logger', 'appLogger'].length);
     expect(container.get).toHaveBeenCalledWith('appLogger');
@@ -218,7 +215,6 @@ describe('ErrorHandler', () => {
     // Then
     expect(registerResult).toBe('provider');
     expect(serviceName).toBe('errorHandler');
-    expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(ErrorHandler);
     expect(sut.exitOnError).toBe(exitOnError);
     expect(container.get).toHaveBeenCalledTimes(1);
