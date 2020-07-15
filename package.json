@@ -15,6 +15,8 @@
     "extend": "^3.0.2"
   },
   "devDependencies": {
+    "commitizen": "^4.1.2",
+    "cz-conventional-changelog": "^3.2.0",
     "eslint": "^7.4.0",
     "eslint-plugin-homer0": "^5.0.0",
     "husky": "^4.2.5",
@@ -23,8 +25,7 @@
     "jsdoc-ts-utils": "^1.0.0",
     "docdash": "homer0/docdash#semver:^2.0.0",
     "leasot": "^11.0.0",
-    "lint-staged": "^10.2.11",
-    "coveralls": "^3.1.0"
+    "lint-staged": "^10.2.11"
   },
   "engine-strict": true,
   "engines": {
@@ -33,7 +34,8 @@
   "husky": {
     "hooks": {
       "pre-commit": "./utils/hooks/pre-commit",
-      "post-merge": "./utils/hooks/post-merge"
+      "post-merge": "./utils/hooks/post-merge",
+      "prepare-commit-msg": "./utils/hooks/prepare-commit-msg"
     }
   },
   "lint-staged": {
@@ -44,8 +46,13 @@
     "hooks": "./utils/hooks/install",
     "test": "./utils/scripts/test",
     "lint": "./utils/scripts/lint",
-    "lint:full": "./utils/scripts/lint-full",
+    "lint:all": "./utils/scripts/lint-all",
     "docs": "./utils/scripts/docs",
     "todo": "./utils/scripts/todo"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   }
 }
