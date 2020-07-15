@@ -143,7 +143,9 @@ yarn run hooks
 
 ### Testing
 
-I use [Jest](https://facebook.github.io/jest/) with [Jest-Ex](https://yarnpkg.com/en/package/jest-ex) to test the project. The configuration file is on `./.jestrc`, the tests and mocks are on `./tests` and the script that runs it is on `./utils/scripts/test`.
+I use [Jest](https://facebook.github.io/jest/) to test the project.
+
+The configuration file is on `./.jestrc.json`, the tests are on `./tests` and the script that runs it is on `./utils/scripts/test`.
 
 ### Linting
 
