@@ -1,0 +1,18 @@
+#!/bin/bash -e
+
+OUTPUT_PATH="./esm"
+SOURCES=("browser" "shared" "node")
+CODEMODS_PATH="node_modules/5to6-codemod/transforms"
+TRANSFORMATIONS=("cjs" "exports")
+
+rm -rf $OUTPUT_PATH && mkdir $OUTPUT_PATH;
+
+for SOURCE in "${SOURCES[@]}";
+  do cp -R "./$SOURCE" "$OUTPUT_PATH/$SOURCE";
+done
+
+find $OUTPUT_PATH -maxdepth 2 -type f -name ".*" -depth -delete;
+
+for TRANSFORMATION in "${TRANSFORMATIONS[@]}";
+  do jscodeshift -t "$CODEMODS_PATH/$TRANSFORMATION.js" $OUTPUT_PATH;
+done
