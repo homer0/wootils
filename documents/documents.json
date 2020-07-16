@@ -39,6 +39,9 @@
       "APIClient": {
         "title": "APIClient"
       },
+      "deepAssign": {
+        "title": "DeepAssign"
+      },
       "deferred": {
         "title": "deferred"
       },

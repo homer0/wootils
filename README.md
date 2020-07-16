@@ -81,6 +81,12 @@ A really basic client to work with an API endpoints requests.
 
 [Read more about APIClient](./documents/shared/APIClient.md)
 
+#### DeepAssign
+
+Deep merge (and copy) of objects(`{}`) and `Array`s using native spread syntax.
+
+[Read more about DeepAssign](./documents/shared/deepAssign.md)
+
 #### deferred
 
 Create a deferred promise using the native `Promise` object.
