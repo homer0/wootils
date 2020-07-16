@@ -100,6 +100,22 @@ describe('EventsHub', () => {
     expect(subscriber).toHaveBeenCalledTimes(1);
   });
 
+  it('shouldn\'t allow a subscriber to subscribe \'once\' more than one time', () => {
+    // Given
+    const eventOneName = 'FIRST EVENT';
+    const eventTwoName = 'SECOND EVENT';
+    const eventNames = [eventOneName, eventTwoName];
+    const subscriber = jest.fn();
+    // When
+    const sut = new EventsHub();
+    sut.once(eventOneName, subscriber);
+    sut.once(eventNames, subscriber);
+    eventNames.forEach((eventName) => sut.emit(eventName));
+    eventNames.forEach((eventName) => sut.emit(eventName));
+    // Then
+    expect(subscriber).toHaveBeenCalledTimes(eventNames.length);
+  });
+
   it('should allow a subscriber to get unsubscribed after executed on multiple events', () => {
     // Given
     const eventOneName = 'FIRST EVENT';
@@ -153,6 +169,24 @@ describe('EventsHub', () => {
     sut.emit(eventOneName);
     // Then
     expect(subscriber).toHaveBeenCalledTimes(eventNames.length);
+  });
+
+  it('should allow a subscriber to unsubscribe before beign triggered (`once`)', () => {
+    // Given
+    const eventName = 'THE EVENT';
+    const subscriberOne = jest.fn();
+    const subscriberTwo = jest.fn();
+    let unsubscribeOne = null;
+    // When
+    const sut = new EventsHub();
+    unsubscribeOne = sut.once(eventName, subscriberOne);
+    unsubscribeOne();
+    sut.once(eventName, subscriberTwo);
+    sut.off(eventName, subscriberTwo);
+    sut.emit(eventName);
+    // Then
+    expect(subscriberOne).toHaveBeenCalledTimes(0);
+    expect(subscriberTwo).toHaveBeenCalledTimes(0);
   });
 
   it('should allow new subscribers for reduced events (number)', () => {
