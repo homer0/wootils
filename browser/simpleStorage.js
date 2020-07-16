@@ -1,4 +1,7 @@
-const extend = require('extend');
+const {
+  deepAssignWithShallowMerge,
+  deepAssignWithOverwrite,
+} = require('../shared/deepAssign');
 /**
  * @module browser/simpleStorage
  */
@@ -286,7 +289,7 @@ class SimpleStorage {
   _addResolvedEntry(key, value, save) {
     this._data[key] = {
       time: this._now(),
-      value: this._copy(value),
+      value: deepAssignWithShallowMerge(value),
     };
 
     if (save) {
@@ -294,24 +297,6 @@ class SimpleStorage {
     }
 
     return value;
-  }
-  /**
-   * Makes a deep copy of an object or an array.
-   *
-   * @param {Object|Array} obj The object to copy.
-   * @returns {Object|Array}
-   * @access protected
-   * @todo Use {@link ObjectUtils}.
-   */
-  _copy(obj) {
-    let result;
-    if (Array.isArray(obj)) {
-      ({ obj: result } = extend(true, {}, { obj }));
-    } else {
-      result = extend(true, {}, obj);
-    }
-
-    return result;
   }
   /**
    * Deletes the class data from the storage.
@@ -618,14 +603,9 @@ class SimpleStorage {
   }
   /**
    * Merges the class default options with the custom ones that can be sent to the constructor.
-   * The reason there's a method for this is because some of the options can be functions, and
-   * deep merges with functions can go wrong (and are expensive), so this methods takes out the
-   * functions first, does the merge and then adds them again.
-   * Similar to what it does for fuctions, it also takes out arrays: Merging arrays not always work
-   * as expected if the base array has some values already. Instead of the base values being
-   * overwritten, they are replaced with the amount of values specified on the _"overwrite array"_.
-   * Is easy to understand the reason, but nonetheless, it makes it confussing for an option to
-   * behave like that.
+   * The reason there's a method for this is because of a specific (edgy) use case: `tempStorage`
+   * can be a Proxy, and a Proxy without defined keys stops working after an
+   * `Object.assign`/spread.
    *
    * @param {SimpleStorageOptions} defaults The class default options.
    * @param {SimpleStorageOptions} custom   The custom options sent to the constructor.
@@ -633,34 +613,13 @@ class SimpleStorage {
    * @access protected
    */
   _mergeOptions(defaults, custom) {
-    const newDefaults = { ...defaults };
-    const newCustom = { ...custom };
-    const fnOptions = {};
-    ['window', 'logger', 'tempStorage'].forEach((fnOptionName) => {
-      fnOptions[fnOptionName] = newCustom[fnOptionName] || newDefaults[fnOptionName];
-      delete newDefaults[fnOptionName];
-      delete newCustom[fnOptionName];
-    });
-    let newStorageTypePriority;
-    if (newCustom.storage && newCustom.storage.typePriority) {
-      newStorageTypePriority = newCustom.storage.typePriority;
+    const { tempStorage } = custom;
+    const options = deepAssignWithOverwrite(defaults, custom);
+    if (tempStorage) {
+      options.tempStorage = tempStorage;
     }
 
-    const newOptions = extend(
-      true,
-      newDefaults,
-      newCustom,
-    );
-
-    Object.keys(fnOptions).forEach((fnOptionName) => {
-      newOptions[fnOptionName] = fnOptions[fnOptionName];
-    });
-
-    if (newStorageTypePriority) {
-      newOptions.storage.typePriority = newStorageTypePriority;
-    }
-
-    return newOptions;
+    return options;
   }
   /**
    * Helper method to get the current timestamp in seconds.
@@ -750,7 +709,7 @@ class SimpleStorage {
    * @access protected
    */
   _setResolvedData(data, save) {
-    this._data = this._copy(data);
+    this._data = deepAssignWithShallowMerge(data);
     if (save) {
       this._save();
     }

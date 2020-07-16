@@ -1,4 +1,5 @@
 jest.unmock('../../browser/simpleStorage');
+jest.unmock('../../shared/deepAssign');
 
 const SimpleStorage = require('../../browser/simpleStorage');
 
