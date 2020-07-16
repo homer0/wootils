@@ -47,6 +47,13 @@ class Logger {
      * @type {boolean}
      */
     this.showTime = showTime;
+    /**
+     * An alias for the {@link Logger#warning} method.
+     *
+     * @type {Function}
+     * @see {@link Logger#warning}
+     */
+    this.warn = this.warning.bind(this);
   }
   /**
    * Logs an error (red) message or messages on the console.
@@ -172,7 +179,6 @@ class Logger {
    *
    * @param {LoggerMessage} message A single message of a list of them.
    * @see {@link Logger#log}
-   * @todo Add `warn` alias.
    */
   warning(message) {
     this.log(message, 'yellow');
