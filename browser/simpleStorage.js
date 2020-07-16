@@ -19,7 +19,7 @@ const extend = require('extend');
  */
 
 /**
- * @typedef {"local" | "session" | "temp"} SimpleStorageStorageType
+ * @typedef {'local'|'session'|'temp'} SimpleStorageStorageType
  * @enum {string}
  * @parent module:browser/simpleStorage
  */
