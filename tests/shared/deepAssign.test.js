@@ -61,6 +61,9 @@ describe('DeepAssign', () => {
       b: 'B',
       [keyOne]: {
         d: 'D',
+        [keyTwo]: {
+          f: 'F',
+        },
       },
       [keyTwo]: 'E',
     };
@@ -84,6 +87,9 @@ describe('DeepAssign', () => {
       [keyOne]: {
         d: 'D',
         dd: 'DD',
+        [keyTwo]: {
+          f: 'F',
+        },
       },
       [keyTwo]: 'E',
     });

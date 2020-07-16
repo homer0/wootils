@@ -181,6 +181,23 @@ describe('Logger', () => {
     expect(colors[color]).toHaveBeenCalledWith(message);
   });
 
+  it('should log a warning message (yellow) using the `warn` alias', () => {
+    // Given
+    const message = 'Something is not working';
+    const color = 'yellow';
+    const log = jest.fn();
+    spyOn(console, 'log').and.callFake(log);
+    let sut = null;
+    // When
+    sut = new Logger();
+    sut.warn(message);
+    // Then
+    expect(log).toHaveBeenCalledTimes(1);
+    expect(log).toHaveBeenCalledWith(message);
+    expect(colors[color]).toHaveBeenCalledTimes(1);
+    expect(colors[color]).toHaveBeenCalledWith(message);
+  });
+
   it('should log a success message (green)', () => {
     // Given
     const message = 'Everything works!';
