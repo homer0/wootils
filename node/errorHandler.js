@@ -123,7 +123,6 @@ class ErrorHandler {
     });
   }
 }
-
 /**
  * The service provider to register an instance of {@link ErrorHandler} on the container.
  *
