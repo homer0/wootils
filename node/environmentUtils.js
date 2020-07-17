@@ -11,8 +11,9 @@ const { providerCreator } = require('../shared/jimpleFns');
 
 /**
  * @typedef {Object} EnvironmentUtilsProviderOptions
- * @property {string} [serviceName='environmentUtils']
- * The name that will be used to register an instance of {@link EnvironmentUtils}.
+ * @property {string} serviceName
+ * The name that will be used to register an instance of {@link EnvironmentUtils}. Its default
+ * value is `environmentUtils`.
  *
  * @parent module:node/environmentUtils
  */
