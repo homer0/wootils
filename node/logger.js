@@ -1,7 +1,52 @@
 const colors = require('colors/safe');
-const { provider } = require('jimple');
+const { providerCreator } = require('../shared/jimpleFns');
+const { deepAssign } = require('../shared/deepAssign');
 /**
  * @module node/logger
+ */
+
+/**
+ * @typedef {import('../shared/jimpleFns').ProviderCreatorWithOptions<O>}
+ * ProviderCreatorWithOptions
+ * @template O
+ */
+
+/**
+ * @typedef {Object} PackageInfo
+ * @property {string} [nameForCLI] A specific name to use on the logger; it overwrites `name`.
+ * @property {string} name         The package name.
+ */
+
+/**
+ * @typedef {Object} AppLoggerServiceMap
+ * @property {string|PackageInfo} [packageInfo]
+ * The name of the service that containers the information of the `package.json`. `packageInfo` by
+ * default.
+ * @parent module:node/logger
+ */
+
+/**
+ * @typedef {Object} AppLoggerProviderOptions
+ * @property {string} serviceName
+ * The name that will be used to register an instance of {@link Logger} with the package name as
+ * prefix. Its default value is `appLogger`.
+ * @property {AppLoggerServiceMap} services
+ * A dictionary with the services that need to be injected.
+ * @property {boolean} [showTime]
+ * Whether or not to show the time on each message.
+ * @parent module:node/logger
+ */
+
+/**
+ * @typedef {Object} LoggerProviderOptions
+ * @property {string} serviceName
+ * The name that will be used to register an instance of {@link Logger}. Its default value is
+ * `logger`.
+ * @property {string} [messagesPrefix]
+ * A prefix to include in front of all the messages.
+ * @property {boolean} [showTime]
+ * Whether or not to show the time on each message.
+ * @parent module:node/logger
  */
 
 /**
@@ -198,71 +243,56 @@ class Logger {
   }
 }
 /**
- * Generates a `Provider` with an already defined message prefix and time setting.
+ * The service provider to register an instance of {@link Logger} on the container.
  *
- * @example
- * // Generate the provider
- * const provider = loggerWithOptions('my-prefix', true);
- * // Register it on the container
- * container.register(provider);
- * // Getting access to the service instance
- * const instance = container.get('logger');
- *
- * @param {string}  [messagesPrefix] A prefix to include in front of all the messages.
- * @param {boolean} [showTime]       Whether or not to show the time on each message.
- * @returns {Provider}
+ * @type {ProviderCreatorWithOptions<LoggerProviderOptions>}
  * @tutorial logger
  */
-const loggerWithOptions = (messagesPrefix, showTime) => provider((app) => {
-  app.set('logger', () => new Logger(messagesPrefix, showTime));
+const logger = providerCreator((options = {}) => (app) => {
+  app.set(options.serviceName || 'logger', () => new Logger(
+    options.messagesPrefix,
+    options.showTime,
+  ));
 });
 /**
- * The service provider that once registered on the app container will set an instance of
- * `Logger` as the `logger` service.
+ * The service provider to register an instance of {@link Logger} with the package name as
+ * messages prefix on the container.
  *
- * @example
- * // Register it on the container
- * container.register(logger);
- * // Getting access to the service instance
- * const instance = container.get('logger');
- *
- * @type {Provider}
+ * @type {ProviderCreatorWithOptions<AppLoggerProviderOptions>}
  * @tutorial logger
  */
-const logger = loggerWithOptions();
-/**
- * Generates a `Provider` with an already defined time setting and that uses the `packageInfo`
- * service in order to retrieve the name of the project and use it as messages prefix.
- *
- * @param {boolean} [showTime] Whether or not to show the time on each message.
- * @returns {Provider}
- * @tutorial logger
- */
-const appLoggerWithOptions = (showTime) => provider((app) => {
-  app.set('appLogger', () => {
-    const packageInfo = app.get('packageInfo');
-    const prefix = packageInfo.nameForCLI || packageInfo.name;
-    return new Logger(prefix, showTime);
+const appLogger = providerCreator((options = {}) => (app) => {
+  app.set(options.serviceName || 'appLogger', () => {
+    /**
+     * @type {AppLoggerProviderOptions}
+     * @ignore
+     */
+    const useOptions = deepAssign(
+      {
+        services: {
+          packageInfo: 'packageInfo',
+        },
+      },
+      options,
+    );
+
+    const { packageInfo } = useOptions.services;
+    /**
+     * @type {PackageInfo}
+     * @ignore
+     */
+    const usePackageInfo = typeof packageInfo === 'string' ?
+      app.get(packageInfo) :
+      packageInfo;
+    const prefix = usePackageInfo.nameForCLI || usePackageInfo.name;
+
+    return new Logger(
+      prefix,
+      useOptions.showTime,
+    );
   });
 });
-/**
- * The service provider that once registered on the app container will set an instance of
- * `Logger` as the `appLogger` service. The difference with the regular `logger` is that this one
- * uses the `packageInfo` service in order to retrieve the name of the project and use it as
- * messages prefix.
- *
- * @example
- * // Register it on the container
- * container.register(appLogger);
- * // Getting access to the service instance
- * const instance = container.get('appLogger');
- * @type {Provider}
- * @tutorial logger
- */
-const appLogger = appLoggerWithOptions();
 
 module.exports.Logger = Logger;
-module.exports.loggerWithOptions = loggerWithOptions;
 module.exports.logger = logger;
-module.exports.appLoggerWithOptions = appLoggerWithOptions;
 module.exports.appLogger = appLogger;
