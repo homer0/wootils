@@ -49,15 +49,16 @@ const { providerCreator } = require('../shared/jimpleFns');
 
 /**
  * @typedef {Object} AppConfigurationProviderOptions
- * @property {string} [serviceName='appConfiguration']
- * The name that will be used to register an instance of {@link AppConfiguration}.
- * @property {string} [appName]
+ * @property {string} serviceName
+ * The name that will be used to register an instance of {@link AppConfiguration}. Its default
+ * value is `appConfiguration`.
+ * @property {string} appName
  * The name of the application.
- * @property {Object} [defaultConfiguration]
+ * @property {Object} defaultConfiguration
  * The service default configuration.
- * @property {Partial<AppConfigurationOptions>} [options]
+ * @property {Partial<AppConfigurationOptions>} options
  * Overwrites for the service customization options.
- * @property {AppConfigurationServiceMap} [services]
+ * @property {AppConfigurationServiceMap} services
  * A dictionary with the services that need to be injected on the class.
  * @parent module:node/appConfiguration
  */
@@ -382,7 +383,6 @@ class AppConfiguration {
   }
 }
 /**
- * Generates a `Provider` with an already defined name, default configuration and options.
  * The service provider to register an instance of {@link AppConfiguration} on the container.
  *
  * @type {ProviderCreatorWithOptions<AppConfigurationProviderOptions>}
