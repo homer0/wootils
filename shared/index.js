@@ -16,6 +16,14 @@ const {
 const deferred = require('./deferred');
 const EventsHub = require('./eventsHub');
 const extendPromise = require('./extendPromise');
+const {
+  resource,
+  resourceCreator,
+  resourcesCollection,
+  provider,
+  providerCreator,
+  providers,
+} = require('./jimpleFns');
 const ObjectUtils = require('./objectUtils');
 
 module.exports.APIClient = APIClient;
@@ -27,4 +35,10 @@ module.exports.deepAssignWithShallowMerge = deepAssignWithShallowMerge;
 module.exports.deferred = deferred;
 module.exports.EventsHub = EventsHub;
 module.exports.extendPromise = extendPromise;
+module.exports.resource = resource;
+module.exports.resourceCreator = resourceCreator;
+module.exports.resourcesCollection = resourcesCollection;
+module.exports.provider = provider;
+module.exports.providerCreator = providerCreator;
+module.exports.providers = providers;
 module.exports.ObjectUtils = ObjectUtils;

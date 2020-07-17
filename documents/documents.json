@@ -51,6 +51,9 @@
       "extendPromise": {
         "title": "extendPromise"
       },
+      "jimpleFns": {
+        "title": "Jimple Functions"
+      },
       "objectUtils": {
         "title": "ObjectUtils"
       }

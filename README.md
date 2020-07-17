@@ -105,6 +105,12 @@ A way to extend promise chains by _injecting_ custom properties.
 
 [Read more about extendPromise](./documents/shared/extendPromise.md)
 
+#### Jimple Functions
+
+A set of utility functions to generate resources that can be used on Jimple or abstractions created from it (like [Jimpex](https://yarnpkg.com/package/jimpex)).
+
+[Read more about the Jimple Functions](./documents/shared/jimpleFns.md)
+
 #### ObjectUtils
 
 A small collection of utility methods to work with objects.
