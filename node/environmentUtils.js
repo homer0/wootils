@@ -1,6 +1,20 @@
-const { provider } = require('jimple');
+const { providerCreator } = require('../shared/jimpleFns');
 /**
  * @module node/environmentUtils
+ */
+
+/**
+ * @typedef {import('../shared/jimpleFns').ProviderCreatorWithOptions<O>}
+ * ProviderCreatorWithOptions
+ * @template O
+ */
+
+/**
+ * @typedef {Object} EnvironmentUtilsProviderOptions
+ * @property {string} [serviceName='environmentUtils']
+ * The name that will be used to register an instance of {@link EnvironmentUtils}.
+ *
+ * @parent module:node/environmentUtils
  */
 
 /**
@@ -90,20 +104,13 @@ class EnvironmentUtils {
   }
 }
 /**
- * The service provider that once registered on the app container will set an instance of
- * {@link EnvironmentUtils} as the `environmentUtils` service.
+ * The service provider to register an instance of {@link EnvironmentUtils} on the container.
  *
- * @example
- * // Register it on the container
- * container.register(environmentUtils);
- * // Getting access to the service instance
- * const instance = container.get('environmentUtils');
- *
- * @type {Provider}
+ * @type {ProviderCreatorWithOptions<EnvironmentUtilsProviderOptions>}
  * @tutorial environmentUtils
  */
-const environmentUtils = provider((app) => {
-  app.set('environmentUtils', () => new EnvironmentUtils());
+const environmentUtils = providerCreator((options = {}) => (app) => {
+  app.set(options.serviceName || 'environmentUtils', () => new EnvironmentUtils());
 });
 
 module.exports.EnvironmentUtils = EnvironmentUtils;
