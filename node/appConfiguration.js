@@ -40,10 +40,10 @@ const { providerCreator } = require('../shared/jimpleFns');
 /**
  * @typedef {Object} AppConfigurationServiceMap
  * @property {string|EnvironmentUtils} [environmentUtils]
- * The name of service for {@link EnvironmentUtils} or an instance of it. `environmentUtils` by
+ * The name of the service for {@link EnvironmentUtils} or an instance of it. `environmentUtils` by
  * default.
  * @property {string|RootRequireFn} [rootRequire]
- * The name of service for {@link RootRequireFn} or an instance of it. `rootRequire` by default.
+ * The name of the service for {@link RootRequireFn} or an instance of it. `rootRequire` by default.
  * @parent module:node/appConfiguration
  */
 

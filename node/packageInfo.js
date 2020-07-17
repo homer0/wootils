@@ -18,7 +18,7 @@ const { deepAssign } = require('../shared/deepAssign');
 /**
  * @typedef {Object} PackageInfoServiceMap
  * @property {string|PathUtils} [pathUtils]
- * The name of service for {@link PathUtils} or an instance of it. `pathUtils` by default.
+ * The name of the service for {@link PathUtils} or an instance of it. `pathUtils` by default.
  * @parent module:node/packageInfo
  */
 
