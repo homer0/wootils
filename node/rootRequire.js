@@ -1,6 +1,34 @@
-const { provider } = require('jimple');
+const { providerCreator } = require('../shared/jimpleFns');
+const { deepAssign } = require('../shared/deepAssign');
 /**
  * @module node/rootRequire
+ */
+
+/**
+ * @typedef {import('./pathUtils').PathUtils} PathUtils
+ */
+
+/**
+ * @typedef {import('../shared/jimpleFns').ProviderCreatorWithOptions<O>}
+ * ProviderCreatorWithOptions
+ * @template O
+ */
+
+/**
+ * @typedef {Object} RootRequireServiceMap
+ * @property {string|PathUtils} [pathUtils]
+ * The name of service for {@link PathUtils} or an instance of it. `pathUtils` by default.
+ * @parent module:node/rootRequire
+ */
+
+/**
+ * @typedef {Object} RootRequireProviderOptions
+ * @property {string} serviceName
+ * The name that will be used to register the result of
+ * {@link module:node/rootRequire~rootRequire|rootRequire}. Its default value is `rootRequire`.
+ * @property {RootRequireServiceMap} services
+ * A dictionary with the services that need to be injected on the function.
+ * @parent module:node/rootRequire
  */
 
 /**
@@ -26,19 +54,33 @@ const rootRequire = (pathUtils) => (path) =>
 
 /**
  * The service provider that once registered on the app container will set the result of
- * {@link module:node/rootRequire~rootRequire|rootRequire} as the `rootRequire` service.
+ * {@link module:node/rootRequire~rootRequire|rootRequire} as a service.
  *
- * @example
- * // Register it on the container
- * container.register(rootRequireProvider);
- * // Getting access to the service instance
- * const rootRequireFn = container.get('rootRequire');
- *
- * @type {Provider}
+ * @type {ProviderCreatorWithOptions<RootRequireProviderOptions>}
  * @tutorial rootRequire
  */
-const rootRequireProvider = provider((app) => {
-  app.set('rootRequire', () => rootRequire(app.get('pathUtils')));
+const rootRequireProvider = providerCreator((options = {}) => (app) => {
+  app.set(options.serviceName || 'rootRequire', () => {
+    /**
+     * @type {RootRequireProviderOptions}
+     * @ignore
+     */
+    const useOptions = deepAssign(
+      {
+        services: {
+          pathUtils: 'pathUtils',
+        },
+      },
+      options,
+    );
+
+    const { pathUtils } = useOptions.services;
+    const usePathUtils = typeof pathUtils === 'string' ?
+      app.get(pathUtils) :
+      pathUtils;
+
+    return rootRequire(usePathUtils);
+  });
 });
 
 module.exports.rootRequire = rootRequire;
