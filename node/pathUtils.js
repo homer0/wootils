@@ -35,14 +35,18 @@ class PathUtils {
      * The root path from where the app is being executed.
      *
      * @type {string}
+     * @access protected
+     * @ignore
      */
-    this.path = process.cwd();
+    this._path = process.cwd();
     /**
      * A dictionary of different path locations.
      *
      * @type {Object.<string,string>}
+     * @access protected
+     * @ignore
      */
-    this.locations = {};
+    this._locations = {};
 
     this._addAppLocation();
     this.addLocation('home', home || this.path);
@@ -120,6 +124,26 @@ class PathUtils {
    */
   get home() {
     return this.getLocation('home');
+  }
+  /**
+   * A dictionary of different path locations.
+   *
+   * @type {Object.<string,string>}
+   * @access protected
+   * @ignore
+   */
+  get locations() {
+    return this._locations;
+  }
+  /**
+   * The root path from where the app is being executed.
+   *
+   * @type {string}
+   * @access protected
+   * @ignore
+   */
+  get path() {
+    return this._path;
   }
   /**
    * Finds and register the location for the app executable directory.

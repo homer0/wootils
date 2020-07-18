@@ -110,32 +110,47 @@ class APIClient {
      * The API entry point.
      *
      * @type {string}
+     * @access protected
+     * @ignore
      */
-    this.url = url;
+    this._url = url;
     /**
      * A dictionary of named endpoints relative to the API entry point.
      *
      * @type {Object.<string,(string|APIClientEndpoint)>}
+     * @access protected
+     * @ignore
      */
-    this.endpoints = this.flattenEndpoints(endpoints);
+    this._endpoints = ObjectUtils.flat(
+      endpoints,
+      '.',
+      '',
+      (ignore, value) => typeof value.path === 'undefined',
+    );
     /**
      * The fetch function that makes the requests.
      *
      * @type {APIClientFetchClient}
+     * @access protected
+     * @ignore
      */
-    this.fetchClient = fetchClient;
+    this._fetchClient = fetchClient;
     /**
      * A dictionary of default headers to include on every request.
      *
      * @type {APIClientParametersDictionary}
+     * @access protected
+     * @ignore
      */
-    this.defaultHeaders = defaultHeaders;
+    this._defaultHeaders = defaultHeaders;
     /**
      * An authorization token to include on the requests.
      *
      * @type {string}
+     * @access protected
+     * @ignore
      */
-    this.authorizationToken = '';
+    this._authorizationToken = '';
   }
   /**
    * Makes a `DELETE` request.
@@ -161,7 +176,7 @@ class APIClient {
    */
   endpoint(name, parameters = {}) {
     // Get the endpoint information.
-    const info = this.endpoints[name];
+    const info = this._endpoints[name];
     // Validate that the endpoint exists.
     if (!info) {
       throw new Error(`Trying to request unknown endpoint: ${name}`);
@@ -208,7 +223,7 @@ class APIClient {
       }
     });
     // Convert the URL into a `urijs` object.
-    const uri = urijs(`${this.url}/${path}`);
+    const uri = urijs(`${this._url}/${path}`);
     // Loop and add all the query string parameters.
     Object.keys(query).forEach((queryName) => {
       uri.addQuery(queryName, query[queryName]);
@@ -277,7 +292,7 @@ class APIClient {
 
     let responseStatus;
     // Make the request.
-    return this.fetchClient(url, opts)
+    return this._fetchClient(url, opts)
     .then((response) => {
       // Capture the response status.
       responseStatus = response.status;
@@ -309,21 +324,6 @@ class APIClient {
     ));
   }
   /**
-   * Takes a dictionary of endpoints and flatten them on a single level.
-   * The method just calls {@link ObjectUtils.flat}.
-   *
-   * @param {APIClientEndpoints} endpoints A dictionary of named endpoints.
-   * @returns {Object.<string,(string|APIClientEndpoint)>}
-   */
-  flattenEndpoints(endpoints) {
-    return ObjectUtils.flat(
-      endpoints,
-      '.',
-      '',
-      (ignore, value) => typeof value.path === 'undefined',
-    );
-  }
-  /**
    * Makes a `GET` request.
    *
    * @param {string}                url          The request URL.
@@ -352,9 +352,9 @@ class APIClient {
    * @returns {Object.<string,(string|number)>}
    */
   headers(overwrites = {}) {
-    const headers = { ...this.defaultHeaders };
-    if (this.authorizationToken) {
-      headers.Authorization = `Bearer ${this.authorizationToken}`;
+    const headers = { ...this._defaultHeaders };
+    if (this._authorizationToken) {
+      headers.Authorization = `Bearer ${this._authorizationToken}`;
     }
 
     return { ...headers, ...overwrites };
@@ -404,7 +404,7 @@ class APIClient {
    *                            any token previously saved.
    */
   setAuthorizationToken(token = '') {
-    this.authorizationToken = token;
+    this._authorizationToken = token;
   }
   /**
    * Sets the default headers for the requests.
@@ -415,10 +415,50 @@ class APIClient {
    *                                                         ones.
    */
   setDefaultHeaders(headers = {}, overwrite = true) {
-    this.defaultHeaders = {
-      ...(overwrite ? {} : this.defaultHeaders),
+    this._defaultHeaders = {
+      ...(overwrite ? {} : this._defaultHeaders),
       ...headers,
     };
+  }
+  /**
+   * An authorization token to include on the requests.
+   *
+   * @type {string}
+   */
+  get authorizationToken() {
+    return this._authorizationToken;
+  }
+  /**
+   * A dictionary of default headers to include on every request.
+   *
+   * @type {APIClientParametersDictionary}
+   */
+  get defaultHeaders() {
+    return { ...this._defaultHeaders };
+  }
+  /**
+   * A dictionary of named endpoints relative to the API entry point.
+   *
+   * @type {Object.<string,(string|APIClientEndpoint)>}
+   */
+  get endpoints() {
+    return { ...this._endpoints };
+  }
+  /**
+   * The fetch function that makes the requests.
+   *
+   * @type {APIClientFetchClient}
+   */
+  get fetchClient() {
+    return this._fetchClient;
+  }
+  /**
+   * The API entry point.
+   *
+   * @type {string}
+   */
+  get url() {
+    return this._url;
   }
 }
 

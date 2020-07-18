@@ -52,20 +52,26 @@ class ErrorHandler {
      * A local reference for the `appLogger` service.
      *
      * @type {Logger}
+     * @access protected
+     * @ignore
      */
-    this.appLogger = appLogger;
+    this._appLogger = appLogger;
     /**
      * Whether or not to exit the process after receiving an error.
      *
      * @type {boolean}
+     * @access protected
+     * @ignore
      */
-    this.exitOnError = exitOnError;
+    this._exitOnError = exitOnError;
     /**
      * The list of events this handler will listen for in order to catch errors.
      *
      * @type {string[]}
+     * @access protected
+     * @ignore
      */
-    this.eventsNames = [
+    this._eventsNames = [
       'uncaughtException',
       'unhandledRejection',
     ];
@@ -85,9 +91,9 @@ class ErrorHandler {
    */
   handle(error) {
     // If the logger is configured to show the time...
-    if (this.appLogger.showTime) {
+    if (this._appLogger.showTime) {
       // ...just send the error.
-      this.appLogger.error(error);
+      this._appLogger.error(error);
     } else {
       // ...otherwise, get the time on a readable format.
       const time = new Date()
@@ -97,11 +103,11 @@ class ErrorHandler {
       // Build the error message with the time.
       const message = `[${time}] ${error.message}`;
       // Log the new message with the exception.
-      this.appLogger.error(message, error);
+      this._appLogger.error(message, error);
     }
 
     // Check if it should exit the process.
-    if (this.exitOnError) {
+    if (this._exitOnError) {
       // eslint-disable-next-line no-process-exit
       process.exit(1);
     }
@@ -110,7 +116,7 @@ class ErrorHandler {
    * Starts listening for unhandled errors.
    */
   listen() {
-    this.eventsNames.forEach((eventName) => {
+    this._eventsNames.forEach((eventName) => {
       process.on(eventName, this.handler);
     });
   }
@@ -118,9 +124,17 @@ class ErrorHandler {
    * Stops listening for unhandled errors.
    */
   stopListening() {
-    this.eventsNames.forEach((eventName) => {
+    this._eventsNames.forEach((eventName) => {
       process.removeListener(eventName, this.handler);
     });
+  }
+  /**
+   * Whether or not the process will exit after receiving an error.
+   *
+   * @type {boolean}
+   */
+  get exitOnError() {
+    return this._exitOnError;
   }
 }
 /**

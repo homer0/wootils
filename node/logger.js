@@ -84,14 +84,18 @@ class Logger {
      * The prefix to include in front of all the messages.
      *
      * @type {string}
+     * @access protected
+     * @ignore
      */
-    this.messagesPrefix = messagesPrefix;
+    this._messagesPrefix = messagesPrefix;
     /**
      * Whether or not to show the time on each message.
      *
      * @type {boolean}
+     * @access protected
+     * @ignore
      */
-    this.showTime = showTime;
+    this._showTime = showTime;
     /**
      * An alias for the {@link Logger#warning} method.
      *
@@ -227,6 +231,22 @@ class Logger {
    */
   warning(message) {
     this.log(message, 'yellow');
+  }
+  /**
+   * The prefix to include in front of all the messages.
+   *
+   * @type {string}
+   */
+  get messagesPrefix() {
+    return this._messagesPrefix;
+  }
+  /**
+   * Whether or not to show the time on each message.
+   *
+   * @type {boolean}
+   */
+  get showTime() {
+    return this._showTime;
   }
   /**
    * Gets a function to modify the color of a string. The reason for this _"proxy method"_ is that
