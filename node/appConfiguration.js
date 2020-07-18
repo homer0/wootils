@@ -96,21 +96,27 @@ class AppConfiguration {
      * A local reference for the `environmentUtils` service.
      *
      * @type {EnvironmentUtils}
+     * @access protected
+     * @ignore
      */
-    this.environmentUtils = environmentUtils;
+    this._environmentUtils = environmentUtils;
     /**
      * The function that allows the service to `require` a configuration file with a path relative
      * to the app root directory.
      *
      * @type {RootRequireFn}
+     * @access protected
+     * @ignore
      */
-    this.rootRequire = rootRequire;
+    this._rootRequire = rootRequire;
     /**
      * The service customizable options.
      *
      * @type {AppConfigurationOptions}
+     * @access protected
+     * @ignore
      */
-    this.options = ObjectUtils.merge({
+    this._options = ObjectUtils.merge({
       defaultConfigurationName: 'default',
       environmentVariable: 'APP_CONFIG',
       path: `./config/${appName}`,
@@ -121,30 +127,28 @@ class AppConfiguration {
      * as keys.
      *
      * @type {Object.<string,Object>}
+     * @access protected
+     * @ignore
      */
-    this.configurations = {
-      [this.options.defaultConfigurationName]: defaultConfiguration,
+    this._configurations = {
+      [this._options.defaultConfigurationName]: defaultConfiguration,
     };
     /**
      * The name of the active configuration.
      *
      * @type {string}
+     * @access protected
+     * @ignore
      */
-    this.activeConfiguration = this.options.defaultConfigurationName;
+    this._activeConfiguration = this._options.defaultConfigurationName;
     /**
      * Whether or not the configuration can be switched.
      *
      * @type {boolean}
+     * @access protected
+     * @ignore
      */
-    this.allowConfigurationSwitch = !!this.get('allowConfigurationSwitch');
-  }
-  /**
-   * Checks whether the service can switch configurations or not.
-   *
-   * @returns {boolean}
-   */
-  canSwitch() {
-    return this.allowConfigurationSwitch;
+    this._allowConfigurationSwitch = !!this.get('allowConfigurationSwitch');
   }
   /**
    * Gets a setting or settings from the active configuration.
@@ -178,7 +182,7 @@ class AppConfiguration {
           {},
         );
     } else if (setting === 'name') {
-      result = this.activeConfiguration;
+      result = this._activeConfiguration;
     } else {
       result = ObjectUtils.get(this.getConfig(), setting);
     }
@@ -190,10 +194,11 @@ class AppConfiguration {
    * active configuration.
    *
    * @param {string} [name=''] The name of the configuration.
-   * @returns {Object}
+   * @returns {?Object}
    */
   getConfig(name = '') {
-    return this.configurations[(name || this.activeConfiguration)];
+    const existing = this._configurations[(name || this._activeConfiguration)];
+    return existing ? ObjectUtils.copy(existing) : null;
   }
   /**
    * Load a new configuration.
@@ -207,7 +212,7 @@ class AppConfiguration {
    */
   load(name, settings, switchTo = true) {
     // Get the name of the configuration it will extend.
-    const extendsFrom = settings.extends || this.options.defaultConfigurationName;
+    const extendsFrom = settings.extends || this._options.defaultConfigurationName;
     // Get the settings of the configuration to extend.
     const baseConfiguration = this.getConfig(extendsFrom);
     // If the base configuration exists...
@@ -233,7 +238,7 @@ class AppConfiguration {
    * @returns {Object} The loaded configuration or an empty object if the variable was empty.
    */
   loadFromEnvironment() {
-    const name = this.environmentUtils.get(this.options.environmentVariable);
+    const name = this._environmentUtils.get(this._options.environmentVariable);
     let result = {};
     if (name) {
       result = this.loadFromFile(name);
@@ -255,20 +260,20 @@ class AppConfiguration {
    */
   loadFromFile(name, switchTo = true, checkSwitchFlag = true) {
     // Format the name of the configuration file.
-    const filename = this.options.filenameFormat.replace(/\[name\]/g, name);
+    const filename = this._options.filenameFormat.replace(/\[name\]/g, name);
     // Build the path to the configuration file.
-    const filepath = path.join(this.options.path, filename);
+    const filepath = path.join(this._options.path, filename);
 
     let settings = {};
     // Try to require it.
     try {
-      settings = this.rootRequire(filepath);
+      settings = this._rootRequire(filepath);
     } catch (error) {
       throw new Error(`The configuration file couldn't be loaded: ${filepath}`);
     }
 
     // Get the name of the configuration it will extend.
-    const extendsFrom = settings.extends || this.options.defaultConfigurationName;
+    const extendsFrom = settings.extends || this._options.defaultConfigurationName;
     // Get the base configuration from either the service or by loading it.
     const baseConfiguration = this.getConfig(extendsFrom) || this.loadFromFile(extendsFrom, false);
     // Add the new configuration with the merged settings.
@@ -329,11 +334,11 @@ class AppConfiguration {
    * @returns {Object} The updated configuration.
    */
   setConfig(config, name = '', merge = true) {
-    const key = (name || this.activeConfiguration);
-    this.configurations[key] = merge ?
-      ObjectUtils.merge(this.configurations[key], config) :
+    const key = (name || this._activeConfiguration);
+    this._configurations[key] = merge ?
+      ObjectUtils.merge(this._configurations[key], config) :
       config;
-    return this.configurations[key];
+    return this._configurations[key];
   }
   /**
    * Switchs to a different configuration. If the configuration is not registered, it will try to
@@ -346,15 +351,48 @@ class AppConfiguration {
    * @throws {Error} If `force` is `false` and the `allowConfigurationSwitch` property is `false`.
    */
   switch(name, force = false) {
-    if (!this.canSwitch() && !force) {
+    if (!this._allowConfigurationSwitch && !force) {
       throw new Error(`You can't switch the configuration to '${name}', the feature is disabled`);
-    } else if (!this.configurations[name]) {
+    } else if (!this._configurations[name]) {
       this.loadFromFile(name, true, false);
     } else {
-      this.activeConfiguration = name;
+      this._activeConfiguration = name;
     }
 
     return this.getConfig();
+  }
+  /**
+   * The name of the active configuration.
+   *
+   * @type {string}
+   */
+  get activeConfiguration() {
+    return this._activeConfiguration;
+  }
+  /**
+   * Whether or not the active configuration can be switched.
+   *
+   * @type {boolean}
+   */
+  get canSwitch() {
+    return this._allowConfigurationSwitch;
+  }
+  /**
+   * A dictionary with all the loaded configurations. It uses the names of the configurations
+   * as keys.
+   *
+   * @type {Object.<string,Object>}
+   */
+  get configurations() {
+    return ObjectUtils.copy(this._configurations);
+  }
+  /**
+   * The service customizable options.
+   *
+   * @type {AppConfigurationOptions}
+   */
+  get options() {
+    return { ...this._options };
   }
   /**
    * Add a new configuration to the service.
@@ -373,10 +411,10 @@ class AppConfiguration {
     delete newSettings.extends;
 
     if (checkSwitchFlag && typeof newSettings.allowConfigurationSwitch === 'boolean') {
-      this.allowConfigurationSwitch = newSettings.allowConfigurationSwitch;
+      this._allowConfigurationSwitch = newSettings.allowConfigurationSwitch;
     }
 
-    this.configurations[name] = newSettings;
+    this._configurations[name] = newSettings;
     if (switchTo) {
       this.switch(name, true);
     }

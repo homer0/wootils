@@ -51,12 +51,10 @@ describe('AppConfiguration', () => {
     sut = new AppConfiguration(environmentUtils, rootRequire);
     // Then
     expect(sut).toBeInstanceOf(AppConfiguration);
-    expect(sut.environmentUtils).toBe(environmentUtils);
-    expect(sut.rootRequire).toBe(rootRequire);
     expect(sut.options).toEqual(expectedDefaults.options);
     expect(sut.configurations).toEqual(expectedDefaults.configurations);
     expect(sut.activeConfiguration).toBe(expectedDefaults.activeConfiguration);
-    expect(sut.allowConfigurationSwitch).toBe(expectedDefaults.allowConfigurationSwitch);
+    expect(sut.canSwitch).toBe(expectedDefaults.allowConfigurationSwitch);
   });
 
   it('should load a new configuration', () => {
@@ -77,7 +75,7 @@ describe('AppConfiguration', () => {
     expect(result).toEqual(newConfigSettings);
     expect(sut.configurations[newConfigName]).toEqual(newConfigSettings);
     expect(sut.activeConfiguration).toBe(newConfigName);
-    expect(sut.allowConfigurationSwitch).toBe(true);
+    expect(sut.canSwitch).toBe(true);
   });
 
   it('should load a new configuration without switch to it', () => {
@@ -132,7 +130,7 @@ describe('AppConfiguration', () => {
     expect(sut.configurations[newConfigOneName]).toEqual(newConfigOneSettings);
     expect(sut.configurations[newConfigTwoName]).toEqual(expectedConfig);
     expect(sut.activeConfiguration).toBe(newConfigTwoName);
-    expect(sut.allowConfigurationSwitch).toBe(false);
+    expect(sut.canSwitch).toBe(false);
   });
 
   it('should throw an error when trying to extend an unknown configuration', () => {
@@ -172,7 +170,7 @@ describe('AppConfiguration', () => {
     expect(result).toEqual(newConfigSettings);
     expect(sut.configurations[newConfigName]).toEqual(newConfigSettings);
     expect(sut.activeConfiguration).toBe(newConfigName);
-    expect(sut.allowConfigurationSwitch).toBe(true);
+    expect(sut.canSwitch).toBe(true);
     expect(rootRequire).toHaveBeenCalledTimes(1);
     expect(rootRequire).toHaveBeenCalledWith(expectedFileInfo.path);
   });
@@ -235,7 +233,7 @@ describe('AppConfiguration', () => {
     expect(sut.configurations[newConfigOneName]).toEqual(newConfigOneSettings);
     expect(sut.configurations[newConfigTwoName]).toEqual(expectedConfig);
     expect(sut.activeConfiguration).toBe(newConfigTwoName);
-    expect(sut.allowConfigurationSwitch).toBe(false);
+    expect(sut.canSwitch).toBe(false);
     expect(rootRequire).toHaveBeenCalledTimes([
       newConfigOneName,
       newConfigTwoName,
@@ -284,7 +282,7 @@ describe('AppConfiguration', () => {
     expect(result).toEqual(newConfigSettings);
     expect(sut.configurations[newConfigName]).toEqual(newConfigSettings);
     expect(sut.activeConfiguration).toBe(newConfigName);
-    expect(sut.allowConfigurationSwitch).toBe(true);
+    expect(sut.canSwitch).toBe(true);
     expect(rootRequire).toHaveBeenCalledTimes(1);
     expect(rootRequire).toHaveBeenCalledWith(expectedFileInfo.path);
   });
@@ -709,10 +707,10 @@ describe('AppConfiguration', () => {
     sut = new AppConfiguration(environmentUtils, rootRequire);
     sut.load(newConfigOneName, newConfigOneSettings);
     resultAfterLoad = sut.getConfig();
-    canSwitchAfterLoad = sut.canSwitch();
+    canSwitchAfterLoad = sut.canSwitch;
     sut.switch(newConfigTwoName);
     resultAfterSwitch = sut.getConfig();
-    canSwitchAfterSwitch = sut.canSwitch();
+    canSwitchAfterSwitch = sut.canSwitch;
     // Then
     expect(resultAfterLoad).toEqual(newConfigOneSettings);
     expect(canSwitchAfterLoad).toBe(true);
@@ -737,12 +735,13 @@ describe('AppConfiguration', () => {
     // Then
     expect(serviceName).toBe('appConfiguration');
     expect(sut).toBeInstanceOf(AppConfiguration);
-    expect(sut.environmentUtils).toBe('environmentUtils');
-    expect(sut.rootRequire).toBe('rootRequire');
     expect(sut.options).toEqual(expectedDefaults.options);
     expect(sut.configurations).toEqual(expectedDefaults.configurations);
     expect(sut.activeConfiguration).toBe(expectedDefaults.activeConfiguration);
-    expect(sut.allowConfigurationSwitch).toBe(expectedDefaults.allowConfigurationSwitch);
+    expect(sut.canSwitch).toBe(expectedDefaults.allowConfigurationSwitch);
+    expect(container.get).toHaveBeenCalledTimes(2);
+    expect(container.get).toHaveBeenNthCalledWith(1, 'environmentUtils');
+    expect(container.get).toHaveBeenNthCalledWith(2, 'rootRequire');
   });
 
   it('should allow custom options on its service provider', () => {
@@ -772,8 +771,6 @@ describe('AppConfiguration', () => {
     // Then
     expect(serviceName).toBe(options.serviceName);
     expect(sut).toBeInstanceOf(AppConfiguration);
-    expect(sut.environmentUtils).toBe(options.services.environmentUtils);
-    expect(sut.rootRequire).toBe('rootRequire');
     expect(sut.options).toEqual({
       defaultConfigurationName: 'default',
       environmentVariable: options.options.environmentVariable,
@@ -782,6 +779,8 @@ describe('AppConfiguration', () => {
     });
     expect(sut.configurations).toEqual(expectedDefaults.configurations);
     expect(sut.activeConfiguration).toBe(expectedDefaults.activeConfiguration);
-    expect(sut.allowConfigurationSwitch).toBe(expectedDefaults.allowConfigurationSwitch);
+    expect(sut.canSwitch).toBe(expectedDefaults.allowConfigurationSwitch);
+    expect(container.get).toHaveBeenCalledTimes(1);
+    expect(container.get).toHaveBeenCalledWith('rootRequire');
   });
 });
