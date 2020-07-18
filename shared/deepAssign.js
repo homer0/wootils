@@ -94,7 +94,7 @@ class DeepAssign {
    * @type {Readonly<DeepAssignOptions>}
    */
   get options() {
-    return Object.freeze(this._options);
+    return { ...this._options };
   }
   /**
    * Checks if an object is a plain `Object` and not an instance of some class.
