@@ -99,6 +99,7 @@ import { rootRequireProvider } from 'wootils/esm/node/providers';
 
 ## Technical documentation
 
+- Module: {@link module:node/rootRequire|node/rootRequire}
 - Function: {@link module:node/rootRequire~rootRequire|rootRequire}
 - Provider: {@link module:node/rootRequire~rootRequireProvider|rootRequireProvider}
 

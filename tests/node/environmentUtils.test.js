@@ -1,9 +1,7 @@
 /* eslint-disable no-process-env */
-
-jest.mock('jimple', () => ({ provider: jest.fn(() => 'provider') }));
 jest.unmock('../../node/environmentUtils.js');
+jest.unmock('../../shared/jimpleFns.js');
 
-const { provider } = require('jimple');
 const {
   EnvironmentUtils,
   environmentUtils,
@@ -119,24 +117,40 @@ describe('EnvironmentUtils', () => {
     expect(saved).toBe(varValue);
   });
 
-  it('should have a Jimple provider to register the service', () => {
+  it('should include a provider for the DIC', () => {
     // Given
     const container = {
       set: jest.fn(),
     };
     let sut = null;
-    let serviceProvider = null;
     let serviceName = null;
     let serviceFn = null;
     // When
-    [[serviceProvider]] = provider.mock.calls;
-    serviceProvider(container);
+    environmentUtils.register(container);
     [[serviceName, serviceFn]] = container.set.mock.calls;
     sut = serviceFn();
     // Then
-    expect(environmentUtils).toBe('provider');
-    expect(provider).toHaveBeenCalledTimes(1);
     expect(serviceName).toBe('environmentUtils');
+    expect(sut).toBeInstanceOf(EnvironmentUtils);
+  });
+
+  it('should allow custom options on its service provider', () => {
+    // Given
+    const container = {
+      set: jest.fn(),
+    };
+    const options = {
+      serviceName: 'myEnv',
+    };
+    let sut = null;
+    let serviceName = null;
+    let serviceFn = null;
+    // When
+    environmentUtils(options).register(container);
+    [[serviceName, serviceFn]] = container.set.mock.calls;
+    sut = serviceFn();
+    // Then
+    expect(serviceName).toBe(options.serviceName);
     expect(sut).toBeInstanceOf(EnvironmentUtils);
   });
 });

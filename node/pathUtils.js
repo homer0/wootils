@@ -1,7 +1,21 @@
 const path = require('path');
-const { provider } = require('jimple');
+const { providerCreator } = require('../shared/jimpleFns');
 /**
  * @module node/pathUtils
+ */
+
+/**
+ * @typedef {import('../shared/jimpleFns').ProviderCreatorWithOptions<O>}
+ * ProviderCreatorWithOptions
+ * @template O
+ */
+
+/**
+ * @typedef {Object} PathUtilsProviderOptions
+ * @property {string} serviceName The name that will be used to register an instance
+ *                                of {@link PathUtils}. Its default value is `pathUtils`.
+ * @property {string} [home]      The path to the new home location.
+ * @parent module:node/pathUtils
  */
 
 /**
@@ -125,39 +139,16 @@ class PathUtils {
     this.addLocation('app', path.dirname(current.filename));
   }
 }
+
 /**
- * Generates a {@link Provider} for {@link PathUtils}, with an already defined `home`
- * location.
+ * The service provider to register an instance of {@link PathUtils} on the container.
  *
- * @example
- * // Generate the provider
- * const provider = pathUtilsWithHome('my-path');
- * // Register it on the container
- * container.register(provider);
- * // Getting access to the service instance
- * const instance = container.get('pathUtils');
- *
- * @param {string} [home] The path to the new home location.
- * @returns {Provider}
+ * @type {ProviderCreatorWithOptions<PathUtilsProviderOptions>}
  * @tutorial pathUtils
  */
-const pathUtilsWithHome = (home) => provider((app) => {
-  app.set('pathUtils', () => new PathUtils(home));
+const pathUtils = providerCreator((options = {}) => (app) => {
+  app.set(options.serviceName || 'pathUtils', () => new PathUtils(options.home));
 });
-/**
- * The service provider that once registered on the app container will set an instance of
- * {@link PathUtils} as the `pathUtils` service.
- *
- * @example
- * // Register it on the container
- * container.register(pathUtils);
- * // Getting access to the service instance
- * const instance = container.get('pathUtils');
- * @type {Provider}
- * @tutorial pathUtils
- */
-const pathUtils = pathUtilsWithHome();
 
 module.exports.PathUtils = PathUtils;
 module.exports.pathUtils = pathUtils;
-module.exports.pathUtilsWithHome = pathUtilsWithHome;

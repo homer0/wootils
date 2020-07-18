@@ -68,6 +68,7 @@ import { packageInfoProvider } from 'wootils/esm/node/providers';
 
 ## Technical documentation
 
+- Module: {@link module:node/packageInfo|node/packageInfo}
 - Function: {@link module:node/packageInfo~packageInfo|packageInfo}
 - Provider: {@link module:node/packageInfo~packageInfoProvider|packageInfoProvider}
 

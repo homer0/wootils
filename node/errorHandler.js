@@ -1,10 +1,37 @@
-const { provider } = require('jimple');
+const { providerCreator } = require('../shared/jimpleFns');
+const { deepAssignWithShallowMerge } = require('../shared/deepAssign');
 /**
  * @module node/errorHandler
  */
 
 /**
  * @typedef {import('./logger').Logger} Logger
+ */
+
+/**
+ * @typedef {import('../shared/jimpleFns').ProviderCreatorWithOptions<O>}
+ * ProviderCreatorWithOptions
+ * @template O
+ */
+
+/**
+ * @typedef {Object} ErrorHandlerServiceMap
+ * @property {string[]|string|Logger} [logger]
+ * A list of loggers' service names from which the service will try to find the first available,
+ * a specific service name, or an instance of {@link Logger}.
+ * @parent module:node/errorHandler
+ */
+
+/**
+ * @typedef {Object} ErrorHandlerProviderOptions
+ * @property {string} serviceName
+ * The name that will be used to register an instance of {@link ErrorHandler}. Its default value
+ * is `errorHandler`.
+ * @property {boolean} exitOnError
+ * Whether or not to exit the process after receiving an error.
+ * @property {ErrorHandlerServiceMap} services
+ * A dictionary with the services that need to be injected on the class.
+ * @parent module:node/errorHandler
  */
 
 /**
@@ -97,43 +124,65 @@ class ErrorHandler {
   }
 }
 /**
- * Generates a `Provider` with an already defined flag to exit or not the process when after
- * handling an error.
+ * The service provider to register an instance of {@link ErrorHandler} on the container.
  *
- * @param {boolean} [exitOnError] Whether or not to exit the process after receiving an error.
- * @returns {Provider}
+ * @throws {Error} If `services.logger` specifies a service that doesn't exist or if it's a falsy
+ *                 value.
+ * @type {ProviderCreatorWithOptions<ErrorHandlerProviderOptions>}
  * @tutorial errorHandler
  */
-const errorHandlerWithOptions = (exitOnError) => provider((app) => {
-  app.set('errorHandler', () => {
-    let logger = null;
-    try {
-      logger = app.get('logger');
-    } catch (ignore) {
-      logger = app.get('appLogger');
+const errorHandler = providerCreator((options = {}) => (app) => {
+  app.set(options.serviceName || 'errorHandler', () => {
+    /**
+     * @type {ErrorHandlerProviderOptions}
+     * @ignore
+     */
+    const useOptions = deepAssignWithShallowMerge(
+      {
+        services: {
+          logger: ['logger', 'appLogger'],
+        },
+      },
+      options,
+    );
+
+    const { logger } = useOptions.services;
+    /**
+     * @type {?Logger}
+     * @ignore
+     */
+    let useLogger;
+    if (Array.isArray(logger)) {
+      useLogger = logger.reduce(
+        (acc, name) => {
+          let nextAcc;
+          if (acc) {
+            nextAcc = acc;
+          } else {
+            try {
+              nextAcc = app.get(name);
+            } catch (ignore) {
+              nextAcc = null;
+            }
+          }
+
+          return nextAcc;
+        },
+        null,
+      );
+    } else if (typeof logger === 'string') {
+      useLogger = app.get(logger);
+    } else {
+      useLogger = logger;
     }
 
-    return new ErrorHandler(
-      logger,
-      exitOnError,
-    );
+    if (!useLogger) {
+      throw new Error('No logger service was found');
+    }
+
+    return new ErrorHandler(useLogger, useOptions.exitOnError);
   });
 });
-/**
- * The service provider that once registered on the app container will set an instance of
- * `ErrorHandler` as the `errorHandler` service.
- *
- * @example
- * // Register it on the container
- * container.register(errorHandler);
- * // Getting access to the service instance
- * const instance = container.get('errorHandler');
- *
- * @type {Provider}
- * @tutorial errorHandler
- */
-const errorHandler = errorHandlerWithOptions();
 
 module.exports.ErrorHandler = ErrorHandler;
-module.exports.errorHandlerWithOptions = errorHandlerWithOptions;
 module.exports.errorHandler = errorHandler;

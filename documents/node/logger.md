@@ -47,6 +47,7 @@ const { Logger } = require('wootils/node');
 // Create an instance
 const logger = new Logger();
 ```
+
 Now let's update the code:
 
 ```js
@@ -54,7 +55,7 @@ logger.log('Starting the app');
 // Will log the message the same way `console.log` would.
 
 if (usingExperimentalFeature()) {
-  logger.warning('WARNING: This feature is experimental');
+  logger.warn('WARNING: This feature is experimental');
   // Will log a yellow message.
 }
 
@@ -102,7 +103,7 @@ log.log('Starting the app');
 // Will log the message the same way `console.log` would.
 
 if (usingExperimentalFeature()) {
-  log.warning('WARNING: This feature is experimental');
+  log.warn('WARNING: This feature is experimental');
   // Will log a yellow message.
 }
 
@@ -134,13 +135,13 @@ Done, with that your app is now logging the messages with a color referencing th
 This was demonstrated on the example above:
 
 1. `success(message)` will log a green message.
-2. `warning(message)` will log a yellow message.
+2. `warn(message)` will log a yellow message.
 3. `error(message)` will log a red message.
 4. `info(message)` will log a gray message.
 
-But they all depend on this method:
+But they all depend on this method: `log(message, color)`; it allows you to specify one of the colors available on the [`colors`](https://yarnpkg.com/package/colors) package.
 
-`log(message, color)` allows you to specify one of the colors available on the [`colors`](https://yarnpkg.com/en/package/colors) package. By default, it uses the console default text color.
+By default, it uses the console default text color.
 
 ### Multiple messages at once
 
@@ -164,7 +165,7 @@ logger.success([
 
 ### Prefix
 
-When constructing the service or when generating the provider, you can specify a `prefix` that will be added to every message:
+When constructing the service or when registering the provider, you can specify a `prefix` that will be added to every message:
 
 #### Without Jimple
 
@@ -182,11 +183,13 @@ logger.success('The instance was created!');
 ```js
 // Import all the required modules
 const Jimple = require('jimple');
-const { loggerWithOptions } = require('wootils/node/providers');
+const { logger } = require('wootils/node/providers');
 // Create a dummy app
 const app = new Jimple();
 // Register the logger
-app.register(loggerWithOptions('my-app'));
+app.register(logger({
+  messagesPrefix: 'my-app',
+}));
 
 app.get('logger').success('The instance was created!');
 // This will log `[my-app] The instance was created!` on green.
@@ -212,11 +215,14 @@ logger.success('The instance was created!');
 ```js
 // Import all the required modules
 const Jimple = require('jimple');
-const { loggerWithOptions } = require('wootils/node/providers');
+const { logger } = require('wootils/node/providers');
 // Create a dummy app
 const app = new Jimple();
 // Register the logger
-app.register(loggerWithOptions('my-app', true));
+app.register(logger({
+  messagesPrefix: 'my-app',
+  showTime: true,
+}));
 
 app.get('logger').success('The instance was created!');
 // This will log `[my-app][YYYY-MM-DD HH:MM:SS] The instance was created!` on green.
@@ -241,42 +247,37 @@ app.get('appLogger').success('The instance was created!');
 // This will log `[skynet] The instance was created!` on green.
 ```
 
-There's also `appLoggerWithOptions` that allows you to enable or disabled the date and time for the messages.
+`appLogger` can also be used as a function, like `logger`, so you can send an options object to enable the `showTime`.
 
 ## ES Modules
 
-If you are using ESM, you can import the class, the providers and the provider generators from the `/esm` sub path:
+If you are using ESM, you can import the class and the providers from the `/esm` sub path:
 
 ```js
 import {
   Logger,
   logger,
-  loggerWithOptions,
   appLogger,
-  appLoggerWithOptions,
 } from 'wootils/esm/node/logger';
 
 // just the class
 
 import { Logger } from 'wootils/esm/node';
 
-// just the providers and/or the generators
+// just the providers
 
 import {
   logger,
-  loggerWithOptions,
   appLogger,
-  appLoggerWithOptions,
 } from 'wootils/esm/node/providers';
 ```
 
 ## Technical documentation
 
+- Module: {@link module:node/logger|node/logger}
 - Class: {@link Logger}
 - Provider: {@link module:node/logger~logger|logger}
-- Provider generator: {@link module:node/logger~loggerWithOptions|loggerWithOptions}
 - Provider with app name as prefix: {@link module:node/logger~appLogger|appLogger}
-- Provider generator for {@link module:node/logger~appLogger|appLogger}: {@link module:node/logger~appLoggerWithOptions|appLoggerWithOptions}
 
 > If you are reading this form the markdown document, you can go to the [online version](https://homer0.github.io/wootils); or you can generate the documentation site yourself by running the `docs` command:
 >

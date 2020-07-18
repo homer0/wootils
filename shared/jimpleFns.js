@@ -1,5 +1,3 @@
-/* eslint-disable jsdoc/require-jsdoc */
-
 /**
  * @module shared/jimpleFns
  */
@@ -30,6 +28,14 @@
  */
 
 /**
+ * @callback ProviderCreatorWithOptions
+ * @param {Partial<O>} [options={}] The options to create the provider.
+ * @returns {Provider}
+ * @template O
+ * @parent module:shared/jimpleFns
+ */
+
+/**
  * @typedef {Object} Resource
  * @property {Function} key  The function (`fn`) sent to the
  *                           {@link module:shared/jimpleFns~resource|resource} function.
@@ -39,7 +45,7 @@
  */
 
 /**
- * @typedef {Proxy<Function>} ResourceCreator
+ * @typedef {Function} ResourceCreator
  * @property {Function} key  The result of the `creatorFn` sent to the
  *                           {@link module:shared/jimpleFns~resourceCreator|resourceCreator}
  *                           function.

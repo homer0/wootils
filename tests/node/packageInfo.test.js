@@ -1,9 +1,9 @@
 jest.mock('fs-extra');
-jest.mock('jimple', () => ({ provider: jest.fn(() => 'provider') }));
 jest.unmock('../../node/packageInfo');
+jest.unmock('../../shared/deepAssign');
+jest.unmock('../../shared/jimpleFns');
 
 const fs = require('fs-extra');
-const { provider } = require('jimple');
 const {
   packageInfo,
   packageInfoProvider,
@@ -32,7 +32,7 @@ describe('packageInfo', () => {
     expect(fs.readJsonSync).toHaveBeenCalledWith('package.json');
   });
 
-  it('should have a Jimple provider to register the service', () => {
+  it('should include a provider for the DIC', () => {
     // Given
     const pathUtils = {
       join: jest.fn((rest) => rest),
@@ -48,21 +48,53 @@ describe('packageInfo', () => {
       get: jest.fn(() => pathUtils),
     };
     let sut = null;
-    let serviceProvider = null;
     let serviceName = null;
     let serviceFn = null;
     fs.readJsonSync.mockReturnValueOnce(mockedPackage);
     // When
-    [[serviceProvider]] = provider.mock.calls;
-    serviceProvider(container);
+    packageInfoProvider.register(container);
     [[serviceName, serviceFn]] = container.set.mock.calls;
     sut = serviceFn();
     // Then
-    expect(packageInfoProvider).toBe('provider');
-    expect(provider).toHaveBeenCalledTimes(1);
     expect(serviceName).toBe('packageInfo');
     expect(sut).toEqual(mockedPackage);
     expect(container.get).toHaveBeenCalledTimes(1);
     expect(container.get).toHaveBeenCalledWith('pathUtils');
+  });
+
+  it('should allow custom options on its service provider', () => {
+    // Given
+    const pathUtils = {
+      join: jest.fn((rest) => rest),
+    };
+    const mockedPackage = {
+      name: 'batman',
+      dependencies: {
+        angular: '0.1',
+      },
+    };
+    const options = {
+      serviceName: 'MyPackageInfo!',
+      services: {
+        pathUtils,
+      },
+    };
+    const container = {
+      set: jest.fn(),
+      get: jest.fn(),
+    };
+    let sut = null;
+    let serviceName = null;
+    let serviceFn = null;
+    fs.readJsonSync.mockReturnValueOnce(mockedPackage);
+    // When
+    packageInfoProvider(options).register(container);
+    [[serviceName, serviceFn]] = container.set.mock.calls;
+    sut = serviceFn();
+    // Then
+    expect(serviceName).toBe(options.serviceName);
+    expect(sut).toEqual(mockedPackage);
+    expect(container.get).toHaveBeenCalledTimes(0);
+    expect(pathUtils.join).toHaveBeenCalledTimes(1);
   });
 });

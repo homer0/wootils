@@ -7,7 +7,6 @@
   "author": "Leonardo Apiwan (@homer0) <me@homer0.com>",
   "license": "MIT",
   "dependencies": {
-    "jimple": "^1.5.0",
     "fs-extra": "^9.0.1",
     "colors": "^1.4.0",
     "urijs": "^1.19.2",

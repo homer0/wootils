@@ -67,9 +67,7 @@ You get the date and time when it happened and the full stack trace of the error
 
 ### With Jimple
 
-When used with Jimple, instead of using the `logger` service, it uses the `logger` service:
-
-> It uses `logger` by default, but if the service is not available, it will try to fallback to `appLogger`, the alternative version of `logger` that prefixes all the messages with the project name.
+> It uses `logger` by default, but if the service is not available, it will try to fallback to `appLogger`, the version of `logger` that prefixes all the messages with the package name.
 
 ```js
 // Import all the required modules
@@ -85,6 +83,17 @@ app.register(logger);
 // Register the ErrorHandler
 app.register(errorHandler);
 ```
+
+You could also configure it so it would exit the process when an error is caught:
+
+```js
+app.register(errorHandler({
+  exitOnError: true,
+}));
+```
+
+> `errorHandler` is a "provider crator", so it can be used as both, a function that generates a provider, and as provider.
+
 Now, we should tell the service to start listening for errors:
 
 ```js
@@ -109,13 +118,12 @@ Done! If you run the same code now, this is the kind of logged information you'l
 
 ## ES Modules
 
-If you are using ESM, you can import the class, the provider and the provider generator from the `/esm` sub path:
+If you are using ESM, you can import the class and the provider from the `/esm` sub path:
 
 ```js
 import {
   ErrorHandler,
   errorHandler,
-  errorHandlerWithOptions,
 } from 'wootils/esm/node/errorHandler';
 
 // just the class
@@ -124,17 +132,14 @@ import { ErrorHandler } from 'wootils/esm/node';
 
 // just the provider and/or the generator
 
-import {
-  errorHandler,
-  errorHandlerWithOptions,
-} from 'wootils/esm/node/providers';
+import { errorHandler } from 'wootils/esm/node/providers';
 ```
 
 ## Technical documentation
 
+- Module: {@link module:node/errorHandler|node/errorHandler}
 - Class: {@link ErrorHandler}
 - Provider: {@link module:node/errorHandler~errorHandler|errorHandler}
-- Provider generator: {@link module:node/errorHandler~errorHandlerWithOptions|errorHandlerWithOptions}
 
 > If you are reading this form the markdown document, you can go to the [online version](https://homer0.github.io/wootils); or you can generate the documentation site yourself by running the `docs` command:
 >

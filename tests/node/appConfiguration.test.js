@@ -1,9 +1,9 @@
 jest.unmock('../../shared/objectUtils');
+jest.unmock('../../shared/deepAssign');
+jest.unmock('../../shared/jimpleFns');
 jest.unmock('../../node/appConfiguration');
-jest.mock('jimple', () => ({ provider: jest.fn(() => 'provider') }));
 
 const path = require('path');
-const { provider } = require('jimple');
 const {
   AppConfiguration,
   appConfiguration,
@@ -727,24 +727,59 @@ describe('AppConfiguration', () => {
       get: jest.fn((service) => service),
     };
     let sut = null;
-    let registerResult = null;
-    let serviceProvider = null;
     let serviceName = null;
     let serviceFn = null;
     const expectedDefaults = getExpectedDefaults();
     // When
-    registerResult = appConfiguration();
-    [[serviceProvider]] = provider.mock.calls;
-    serviceProvider(container);
+    appConfiguration.register(container);
     [[serviceName, serviceFn]] = container.set.mock.calls;
     sut = serviceFn();
     // Then
-    expect(registerResult).toBe('provider');
     expect(serviceName).toBe('appConfiguration');
     expect(sut).toBeInstanceOf(AppConfiguration);
     expect(sut.environmentUtils).toBe('environmentUtils');
     expect(sut.rootRequire).toBe('rootRequire');
     expect(sut.options).toEqual(expectedDefaults.options);
+    expect(sut.configurations).toEqual(expectedDefaults.configurations);
+    expect(sut.activeConfiguration).toBe(expectedDefaults.activeConfiguration);
+    expect(sut.allowConfigurationSwitch).toBe(expectedDefaults.allowConfigurationSwitch);
+  });
+
+  it('should allow custom options on its service provider', () => {
+    // Given
+    const container = {
+      set: jest.fn(),
+      get: jest.fn((service) => service),
+    };
+    const options = {
+      appName: 'myApp',
+      options: {
+        environmentVariable: 'MY_CONFIG',
+      },
+      serviceName: 'myConfig',
+      services: {
+        environmentUtils: true,
+      },
+    };
+    let sut = null;
+    let serviceName = null;
+    let serviceFn = null;
+    const expectedDefaults = getExpectedDefaults();
+    // When
+    appConfiguration(options).register(container);
+    [[serviceName, serviceFn]] = container.set.mock.calls;
+    sut = serviceFn();
+    // Then
+    expect(serviceName).toBe(options.serviceName);
+    expect(sut).toBeInstanceOf(AppConfiguration);
+    expect(sut.environmentUtils).toBe(options.services.environmentUtils);
+    expect(sut.rootRequire).toBe('rootRequire');
+    expect(sut.options).toEqual({
+      defaultConfigurationName: 'default',
+      environmentVariable: options.options.environmentVariable,
+      path: `./config/${options.appName}`,
+      filenameFormat: `${options.appName}.[name].config.js`,
+    });
     expect(sut.configurations).toEqual(expectedDefaults.configurations);
     expect(sut.activeConfiguration).toBe(expectedDefaults.activeConfiguration);
     expect(sut.allowConfigurationSwitch).toBe(expectedDefaults.allowConfigurationSwitch);

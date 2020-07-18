@@ -1,6 +1,7 @@
 const path = require('path');
-const { provider } = require('jimple');
 const ObjectUtils = require('../shared/objectUtils');
+const { deepAssign } = require('../shared/deepAssign');
+const { providerCreator } = require('../shared/jimpleFns');
 /**
  * @module node/appConfiguration
  */
@@ -8,6 +9,12 @@ const ObjectUtils = require('../shared/objectUtils');
 /**
  * @typedef {import('./environmentUtils').EnvironmentUtils} EnvironmentUtils
  * @typedef {import('./rootRequire').RootRequireFn} RootRequireFn
+ */
+
+/**
+ * @typedef {import('../shared/jimpleFns').ProviderCreatorWithOptions<O>}
+ * ProviderCreatorWithOptions
+ * @template O
  */
 
 /**
@@ -27,6 +34,32 @@ const ObjectUtils = require('../shared/objectUtils');
  *                                                                   placeholder so the service
  *                                                                   can replace it with the name
  *                                                                   of the configuration.
+ * @parent module:node/appConfiguration
+ */
+
+/**
+ * @typedef {Object} AppConfigurationServiceMap
+ * @property {string|EnvironmentUtils} [environmentUtils]
+ * The name of the service for {@link EnvironmentUtils} or an instance of it. `environmentUtils` by
+ * default.
+ * @property {string|RootRequireFn} [rootRequire]
+ * The name of the service for {@link RootRequireFn} or an instance of it. `rootRequire` by default.
+ * @parent module:node/appConfiguration
+ */
+
+/**
+ * @typedef {Object} AppConfigurationProviderOptions
+ * @property {string} serviceName
+ * The name that will be used to register an instance of {@link AppConfiguration}. Its default
+ * value is `appConfiguration`.
+ * @property {string} appName
+ * The name of the application.
+ * @property {Object} defaultConfiguration
+ * The service default configuration.
+ * @property {Partial<AppConfigurationOptions>} options
+ * Overwrites for the service customization options.
+ * @property {AppConfigurationServiceMap} services
+ * A dictionary with the services that need to be injected on the class.
  * @parent module:node/appConfiguration
  */
 
@@ -350,38 +383,50 @@ class AppConfiguration {
   }
 }
 /**
- * Generates a `Provider` with an already defined name, default configuration and options.
+ * The service provider to register an instance of {@link AppConfiguration} on the container.
  *
- * @example
- * // Generate the provider
- * const provider = appConfiguration('my-app', {
- *   birthday: '25-09-2015',
- * });
- * // Register it on the container
- * container.register(provider);
- * // Getting access to the service instance
- * const instance = container.get('appConfiguration');
- *
- * @param {string}                           [appName]              The name of the app.
- * @param {Partial<AppConfigurationOptions>} [defaultConfiguration] The service default
- *                                                                  configuration.
- * @param {Object}                           [options]              Options to customize the
- *                                                                  service.
- * @returns {Provider}
+ * @type {ProviderCreatorWithOptions<AppConfigurationProviderOptions>}
  * @tutorial appConfiguration
  */
-const appConfiguration = (
-  appName,
-  defaultConfiguration,
-  options,
-) => provider((app) => {
-  app.set('appConfiguration', () => new AppConfiguration(
-    app.get('environmentUtils'),
-    app.get('rootRequire'),
-    appName,
-    defaultConfiguration,
-    options,
-  ));
+const appConfiguration = providerCreator((options = {}) => (app) => {
+  app.set(options.serviceName || 'appConfiguration', () => {
+    /**
+     * @type {AppConfigurationProviderOptions}
+     * @ignore
+     */
+    const useOptions = deepAssign(
+      {
+        services: {
+          environmentUtils: 'environmentUtils',
+          rootRequire: 'rootRequire',
+        },
+      },
+      options,
+    );
+
+    const services = Object.keys(useOptions.services)
+    .reduce(
+      (acc, key) => {
+        const value = useOptions.services[key];
+        const service = typeof value === 'string' ?
+          app.get(value) :
+          value;
+        return {
+          ...acc,
+          [key]: service,
+        };
+      },
+      {},
+    );
+
+    return new AppConfiguration(
+      services.environmentUtils,
+      services.rootRequire,
+      useOptions.appName,
+      useOptions.defaultConfiguration,
+      useOptions.options,
+    );
+  });
 });
 
 module.exports.AppConfiguration = AppConfiguration;
