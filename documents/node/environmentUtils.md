@@ -170,6 +170,7 @@ import { environmentUtils } from 'wootils/esm/node/providers';
 
 ## Technical documentation
 
+- Module: {@link module:node/environmentUtils|node/environmentUtils}
 - Class: {@link EnvironmentUtils}
 - Provider: {@link module:node/environmentUtils~environmentUtils|environmentUtils}
 

@@ -106,32 +106,28 @@ const pathToFile = pathUtils.joinFrom('my-location', 'some-file.js');
 
 ## ES Modules
 
-If you are using ESM, you can import the class, the provider and the provider generator from the `/esm` sub path:
+If you are using ESM, you can import the class and the provider from the `/esm` sub path:
 
 ```js
 import {
   PathUtils,
   pathUtils,
-  pathUtilsWithHome,
 } from 'wootils/esm/node/pathUtils';
 
 // just the class
 
 import { PathUtils } from 'wootils/esm/node';
 
-// just the provider and/or the generator
+// just the provider
 
-import {
-  pathUtils,
-  pathUtilsWithHome,
-} from 'wootils/esm/node/providers';
+import { pathUtils } from 'wootils/esm/node/providers';
 ```
 
 ## Technical documentation
 
+- Module: {@link module:node/pathUtils|node/pathUtils}
 - Class: {@link PathUtils}
 - Provider: {@link module:node/pathUtils~pathUtils|pathUtils}
-- Provider generator: {@link module:node/pathUtils~pathUtilsWithHome|pathUtilsWithHome}
 
 > If you are reading this form the markdown document, you can go to the [online version](https://homer0.github.io/wootils); or you can generate the documentation site yourself by running the `docs` command:
 >
