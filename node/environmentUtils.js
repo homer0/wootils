@@ -30,14 +30,18 @@ class EnvironmentUtils {
      * The current `NODE_ENV`. If the variable is empty, the value will be `development`.
      *
      * @type {string}
+     * @access protected
+     * @ignore
      */
-    this.env = this.get('NODE_ENV', 'development');
+    this._env = this.get('NODE_ENV', 'development');
     /**
      * Whether or not the environment is production.
      *
      * @type {boolean}
+     * @access protected
+     * @ignore
      */
-    this.production = this.env === 'production';
+    this._production = this.env === 'production';
   }
   /**
    * Checks whether an environment variable exists or not.
@@ -101,7 +105,27 @@ class EnvironmentUtils {
    * @type {boolean}
    */
   get development() {
-    return !this.production;
+    return !this._production;
+  }
+  /**
+   * The current `NODE_ENV`. If the variable is empty, the value will be `development`.
+   *
+   * @type {string}
+   * @access protected
+   * @ignore
+   */
+  get env() {
+    return this._env;
+  }
+  /**
+   * Whether or not the environment is production.
+   *
+   * @type {boolean}
+   * @access protected
+   * @ignore
+   */
+  get production() {
+    return this._production;
   }
 }
 /**
