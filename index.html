@@ -1,156 +1,157 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <base data-ice="baseUrl">
-  <title data-ice="title">Home | wootils</title>
-  <link type="text/css" rel="stylesheet" href="css/style.css">
-  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
-  <script src="script/prettify/prettify.js"></script>
-  <script src="script/manual.js"></script>
-<meta name="description" content="A set of Javascript utilities for building Node and browser apps."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="wootils"><meta property="twitter:description" content="A set of Javascript utilities for building Node and browser apps."></head>
-<body class="layout-container" data-ice="rootContainer">
-
-<header>
-  <a href="./">Home</a>
-  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
-  <a href="identifiers.html">Reference</a>
-  <a href="source.html">Source</a>
-  
-  <div class="search-box">
-  <span>
-    <img src="./image/search.png">
-    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
-  </span>
-    <ul class="search-result"></ul>
-  </div>
-<a style="position:relative; top:3px;" href="https://github.com/homer0/wootils"><img width="20px" src="./image/github.png"></a></header>
-
-<nav class="navigation" data-ice="nav"><div>
-  <ul>
     
-  <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#browser">browser</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/browser/simpleStorage.js~SimpleStorage.html">SimpleStorage</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SimpleStorageEntriesOptions">SimpleStorageEntriesOptions</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SimpleStorageEntry">SimpleStorageEntry</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SimpleStorageOptions">SimpleStorageOptions</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SimpleStorageStorage">SimpleStorageStorage</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SimpleStorageStorageAvailableMethod">SimpleStorageStorageAvailableMethod</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SimpleStorageStorageDeleteMethod">SimpleStorageStorageDeleteMethod</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SimpleStorageStorageGetMethod">SimpleStorageStorageGetMethod</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SimpleStorageStorageLogger">SimpleStorageStorageLogger</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SimpleStorageStorageOptions">SimpleStorageStorageOptions</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SimpleStorageStorageSetMethod">SimpleStorageStorageSetMethod</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#node">node</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/appConfiguration.js~AppConfiguration.html">AppConfiguration</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/environmentUtils.js~EnvironmentUtils.html">EnvironmentUtils</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/errorHandler.js~ErrorHandler.html">ErrorHandler</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/logger.js~Logger.html">Logger</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/node/pathUtils.js~PathUtils.html">PathUtils</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appConfiguration">appConfiguration</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-errorHandlerWithOptions">errorHandlerWithOptions</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-appLoggerWithOptions">appLoggerWithOptions</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-loggerWithOptions">loggerWithOptions</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-packageInfo">packageInfo</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-pathUtilsWithHome">pathUtilsWithHome</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-rootRequire">rootRequire</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-environmentUtils">environmentUtils</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-errorHandler">errorHandler</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-appLogger">appLogger</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-logger">logger</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-packageInfoProvider">packageInfoProvider</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pathUtils">pathUtils</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-rootRequireProvider">rootRequireProvider</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-AppConfigurationOptions">AppConfigurationOptions</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Provider">Provider</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ProviderRegisterMethod">ProviderRegisterMethod</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://yarnpkg.com/en/package/jimple">Jimple</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#shared">shared</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/shared/apiClient.js~APIClient.html">APIClient</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/shared/eventsHub.js~EventsHub.html">EventsHub</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/wootils/shared/objectUtils.js~ObjectUtils.html">ObjectUtils</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-deferred">deferred</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extendPromise">extendPromise</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-APIClientEndpoint">APIClientEndpoint</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-APIClientEndpoints">APIClientEndpoints</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-FetchClient">FetchClient</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-FetchOptions">FetchOptions</a></span></span></li>
-</ul>
-</div>
+    <meta charset="utf-8" />
+    <title>Home - wootils docs</title>
+    
+    
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css" />
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+    <link rel="shortcut icon" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="48x48" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/favicon-72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="icons/favicon-96.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/favicon-144.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="256x256" href="icons/favicon-256.png" />
+    <link rel="apple-touch-icon" sizes="384x384" href="icons/favicon-384.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/favicon-512.png" />
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html" class="home-link">wootils</a></h2><h2><a href="https://github.com/homer0/wootils" target="_blank" >GitHub</a></h2><h3>Modules</h3><ul><li><a href="module-browser_simpleStorage.html">browser/simpleStorage</a></li><li><a href="module-node_appConfiguration.html">node/appConfiguration</a></li><li><a href="module-node_environmentUtils.html">node/environmentUtils</a></li><li><a href="module-node_errorHandler.html">node/errorHandler</a></li><li><a href="module-node_logger.html">node/logger</a></li><li><a href="module-node_packageInfo.html">node/packageInfo</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_packageInfo.html#~packageInfo">packageInfo</a></li></ul></li><li><a href="module-node_pathUtils.html">node/pathUtils</a></li><li><a href="module-node_rootRequire.html">node/rootRequire</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_rootRequire.html#~rootRequire">rootRequire</a></li></ul></li><li><a href="module-shared_apiClient.html">shared/apiClient</a></li><li><a href="module-shared_deepAssign.html">shared/deepAssign</a></li><li><a href="module-shared_deferred.html">shared/deferred</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_deferred.html#.deferred">deferred</a></li></ul></li><li><a href="module-shared_eventsHub.html">shared/eventsHub</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_eventsHub.html#~wrapper">wrapper</a></li></ul></li><li><a href="module-shared_extendPromise.html">shared/extendPromise</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_extendPromise.html#~extendPromise">extendPromise</a></li></ul></li><li><a href="module-shared_jimpleFns.html">shared/jimpleFns</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~provider">provider</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~providerCreator">providerCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resource">resource</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourceCreator">resourceCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourcesCollection">resourcesCollection</a></li></ul></li><li><a href="module-shared_objectUtils.html">shared/objectUtils</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-browser.html">Browser utilities</a></li><li><a href="tutorial-node.html">Node utilities</a></li><li><a href="tutorial-shared.html">Shared utilities</a></li></ul>
 </nav>
 
-<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="wootils">Wootils</h1><p><a href="https://travis-ci.org/homer0/wootils"><img src="https://img.shields.io/travis/homer0/wootils.svg?style=flat-square" alt="Travis"></a>
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+    <section class="package">
+        <h3> </h3>		
+    </section>
+
+
+
+
+
+
+
+
+
+    
+
+
+
+    <section class="readme usertext">
+        <article><h1>Wootils</h1>
+<p><a href="https://github.com/homer0/wootils/actions?query=workflow%3ATest"><img src="https://img.shields.io/github/workflow/status/homer0/wootils/Test/master?style=flat-square" alt="GitHub Workflow Status (master)"></a>
 <a href="https://coveralls.io/github/homer0/wootils?branch=master"><img src="https://img.shields.io/coveralls/github/homer0/wootils.svg?style=flat-square" alt="Coveralls github"></a>
 <a href="https://david-dm.org/homer0/wootils"><img src="https://img.shields.io/david/homer0/wootils.svg?style=flat-square" alt="David"></a>
 <a href="https://david-dm.org/homer0/wootils"><img src="https://img.shields.io/david/dev/homer0/wootils.svg?style=flat-square" alt="David"></a></p>
 <p>A set of Javascript utilities for building Node and browser apps.</p>
-<h2 id="motivation-introduction">Motivation/Introduction</h2><p>The idea was to take all those small thing I&apos;m always rewriting on every project and move them to a single package so I can not only stop copying &amp; pasting them all over the place but also maintain them all together.</p>
+<h2>Motivation/Introduction</h2>
+<p>The idea was to take all those small thing I'm always rewriting on every project and move them to a single package so I can, not only stop copying &amp; pasting them all over the place, but also maintain them all together.</p>
 <p>There are two rules I followed when I had to decide what to put and what to keep somewhere else:</p>
 <ol>
 <li>The utility needs to fit on a single file.</li>
-<li>It shouldn&apos;t include any specific business logic from any other project.</li>
+<li>It shouldn't include any specific business logic from any other project.</li>
 </ol>
-<h2 id="information">Information</h2><table>
-<thead>
-<tr>
-<th>-</th>
-<th>-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Package</td>
-<td>wootils</td>
-</tr>
-<tr>
-<td>Description</td>
-<td>A set of Javascript utilities for building Node and browser apps.</td>
-</tr>
-<tr>
-<td>Node Version</td>
-<td>&gt;= v8.0.0</td>
-</tr>
-</tbody>
-</table>
-<h2 id="usage">Usage</h2><p>The package is divided on 3 folders:</p>
+<h2>Usage</h2>
+<p>The package is divided on 3 folders:</p>
 <ul>
 <li><code>node</code>: Utilities that are only compatible with Node.</li>
 <li><code>shared</code>: Utilities that can work on both browser and Node.</li>
 <li><code>browser</code>: Utilities that can only be used while on a browser.</li>
 </ul>
-<h3 id="node-utilities">Node utilities</h3><p>Two notes about the Node utilities:</p>
+<h3>Node utilities</h3>
+<p>Two notes about the Node utilities:</p>
 <ol>
-<li>I&apos;m a big fan of <a href="https://github.com/fjorgemota/jimple">Jimple</a>, so all the files not only export the utility but also a service provider or a <em>&quot;servicer provider generator&quot;</em> to register the utility on a Jimple app.</li>
+<li>I'm a big fan of <a href="https://github.com/fjorgemota/jimple">Jimple</a>, so all the files not only export the utility but also a service provider or a <em>&quot;servicer provider generator&quot;</em> to register the utility on a Jimple app.</li>
 <li>Some of them may depend on the others.</li>
 </ol>
-<h4 id="appconfiguration">AppConfiguration</h4><p>This is a service to manage applications configurations. It takes care of loading, activating, switching and merging configuration files.</p>
-<p><a href="manual/appConfiguration.html">Read more about AppConfiguration</a></p>
-<h4 id="environmentutils">EnvironmentUtils</h4><p>A really small service to centralize the place where you read environment variables and check if you are running on development or production.</p>
-<p><a href="manual/environmentUtils.html">Read more about EnvironmentUtils</a></p>
-<h4 id="errorhandler">ErrorHandler</h4><p>Listens for uncaught exceptions and unhandled promises rejections, and logs them out with full detail.</p>
-<p><a href="manual/errorHandler.html">Read more about ErrorHandler</a></p>
-<h4 id="logger">Logger</h4><p>The name leaves nothing to the imagination. As you may have guessed, this is service for logging messages into the console.</p>
-<p><a href="manual/logger.html">Read more about Logger</a></p>
-<h4 id="packageinfo">packageInfo</h4><p>A tiny function that reads the contents of the app <code>package.json</code>. This is really useful on an Jimple application where you can register it, because the returned value gets cached and it&apos;s available as a service.</p>
-<p><a href="manual/packageInfo.html">Read more about packageInfo</a></p>
-<h4 id="pathutils">PathUtils</h4><p>An easy way to manage locations and build paths relative to those locations on a Node app.</p>
-<p><a href="manual/pathUtils.html">Read more about PathUtils</a></p>
-<h4 id="rootrequire">rootRequire</h4><p>Is basically <code>require</code> but the path is relative to the project root directory.</p>
-<p><a href="manual/rootRequire.html">Read more about rootRequire</a></p>
-<h3 id="shared-utilities">Shared utilities</h3><h4 id="apiclient">APIClient</h4><p>A really basic client to work with an API endpoints requests.</p>
-<p><a href="manual/APIClient.html">Read more about APIClient</a></p>
-<h4 id="deferred">deferred</h4><p>Create a deferred promise using the native <code>Promise</code> object.</p>
-<p><a href="manual/deferred.html">Read more about deferred</a></p>
-<h4 id="eventshub">EventsHub</h4><p>A small implementation of a pubsub service for handling events on an app.</p>
-<p><a href="manual/eventsHub.html">Read more about EventsHub</a></p>
-<h4 id="extendpromise">extendPromise</h4><p>A way to extend promise chains by <em>injecting</em> custom properties.</p>
-<p><a href="manual/extendPromise.html">Read more about extendPromise</a></p>
-<h4 id="objectutils">ObjectUtils</h4><p>A small collection of utility methods to work with objects.</p>
-<p><a href="manual/objectUtils.html">Read more about ObjectUtils</a></p>
-<h3 id="browser-utilities">Browser utilities</h3><h4 id="simplestorage">SimpleStorage</h4><p>An <strong>abstract</strong> class allows you to build services that relay on browser storage (session/local) and simplifies the way you work it.</p>
-<p><a href="manual/simpleStorage.html">Read more about SimpleStorage</a></p>
-<h2 id="development">Development</h2><p>Before doing anything, install the repository hooks:</p>
-<pre><code class="lang-bash"><code class="source-code prettyprint"># You can either use npm or yarn, it doesn&apos;t matter
-yarn run hooks</code>
+<h4>AppConfiguration</h4>
+<p>This is a service to manage applications configurations. It takes care of loading, activating, switching and merging configuration files.</p>
+<p><a href="tutorial-appConfiguration.html">Read more about AppConfiguration</a></p>
+<h4>EnvironmentUtils</h4>
+<p>A really small service to centralize the place where you read environment variables and check if you are running on development or production.</p>
+<p><a href="tutorial-environmentUtils.html">Read more about EnvironmentUtils</a></p>
+<h4>ErrorHandler</h4>
+<p>Listens for uncaught exceptions and unhandled promises rejections, and logs them out with full detail.</p>
+<p><a href="tutorial-errorHandler.html">Read more about ErrorHandler</a></p>
+<h4>Logger</h4>
+<p>The name leaves nothing to the imagination. As you may have guessed, this is service for logging messages into the console.</p>
+<p><a href="tutorial-logger.html">Read more about Logger</a></p>
+<h4>packageInfo</h4>
+<p>A tiny function that reads the contents of the app <code>package.json</code>. This is really useful on an Jimple application where you can register it, because the returned value gets cached and it's available as a service.</p>
+<p><a href="tutorial-packageInfo.html">Read more about packageInfo</a></p>
+<h4>PathUtils</h4>
+<p>An easy way to manage locations and build paths relative to those locations on a Node app.</p>
+<p><a href="tutorial-pathUtils.html">Read more about PathUtils</a></p>
+<h4>rootRequire</h4>
+<p>Is basically <code>require</code> but the path is relative to the project root directory.</p>
+<p><a href="tutorial-rootRequire.html">Read more about rootRequire</a></p>
+<h3>Shared utilities</h3>
+<h4>APIClient</h4>
+<p>A really basic client to work with an API endpoints requests.</p>
+<p><a href="tutorial-APIClient.html">Read more about APIClient</a></p>
+<h4>DeepAssign</h4>
+<p>Deep merge (and copy) of objects(<code>{}</code>) and <code>Array</code>s using native spread syntax.</p>
+<p><a href="tutorial-deepAssign.html">Read more about DeepAssign</a></p>
+<h4>deferred</h4>
+<p>Create a deferred promise using the native <code>Promise</code> object.</p>
+<p><a href="tutorial-deferred.html">Read more about deferred</a></p>
+<h4>EventsHub</h4>
+<p>A small implementation of a pubsub service for handling events on an app.</p>
+<p><a href="tutorial-eventsHub.html">Read more about EventsHub</a></p>
+<h4>extendPromise</h4>
+<p>A way to extend promise chains by <em>injecting</em> custom properties.</p>
+<p><a href="tutorial-extendPromise.html">Read more about extendPromise</a></p>
+<h4>Jimple Functions</h4>
+<p>A set of utility functions to generate resources that can be used on Jimple or abstractions created from it (like <a href="https://yarnpkg.com/package/jimpex">Jimpex</a>).</p>
+<p><a href="tutorial-jimpleFns.html">Read more about the Jimple Functions</a></p>
+<h4>ObjectUtils</h4>
+<p>A small collection of utility methods to work with objects.</p>
+<p><a href="tutorial-objectUtils.html">Read more about ObjectUtils</a></p>
+<h3>Browser utilities</h3>
+<h4>SimpleStorage</h4>
+<p>An <strong>abstract</strong> class allows you to build services that relay on browser storage (session/local) and simplifies the way you work it.</p>
+<p><a href="tutorial-simpleStorage.html">Read more about SimpleStorage</a></p>
+<h2>ES Modules</h2>
+<p>All files are written using commonjs, as I targeted the oldest Node LTS and it doesn't support modules (without a flag) yet, but you can use it with ESM.</p>
+<p>When the package gets published, an ESM version is generated on the path <code>/esm</code>. If you are using the latest version of Node, or a module bundler (like <a href="https://projextjs.com">projext</a> :D), instead of requiring from the package's root path, you should do it from the <code>/esm</code> sub path:</p>
+<pre class="prettyprint source lang-js"><code>// commonjs
+const ObjectUtils = require('wootils/shared/objectUtils');
+
+// ESM
+import ObjectUtils from 'wootils/esm/shared/objectUtils';
 </code></pre>
-<h3 id="npm-yarn-tasks">NPM/Yarn Tasks</h3><table>
+<p>Since the next LTS to become &quot;the oldest&quot; is 12, which still uses the flag, I still have no plans on going with ESM by default.</p>
+<h2>Development</h2>
+<h3>NPM/Yarn Tasks</h3>
+<table>
 <thead>
 <tr>
 <th>Task</th>
@@ -159,50 +160,77 @@ yarn run hooks</code>
 </thead>
 <tbody>
 <tr>
-<td><code>yarn run hooks</code></td>
-<td>Install the GIT repository hooks.</td>
+<td><code>docs</code></td>
+<td>Generates the project documentation.</td>
 </tr>
 <tr>
-<td><code>yarn test</code></td>
-<td>Run the project unit tests.</td>
+<td><code>lint</code></td>
+<td>Lints the staged files.</td>
 </tr>
 <tr>
-<td><code>yarn run lint</code></td>
-<td>Lint the modified files.</td>
+<td><code>lint:all</code></td>
+<td>Lints the entire project code.</td>
 </tr>
 <tr>
-<td><code>yarn run lint:full</code></td>
-<td>Lint the project code.</td>
+<td><code>prepare</code></td>
+<td>Generates the project ESM version.</td>
 </tr>
 <tr>
-<td><code>yarn run docs</code></td>
-<td>Generate the project documentation.</td>
+<td><code>test</code></td>
+<td>Runs the project unit tests.</td>
 </tr>
 <tr>
-<td><code>yarn run todo</code></td>
-<td>List all the pending to-do&apos;s.</td>
+<td><code>todo</code></td>
+<td>Lists all the pending to-do's.</td>
 </tr>
 </tbody>
 </table>
-<h3 id="testing">Testing</h3><p>I use <a href="https://facebook.github.io/jest/">Jest</a> with <a href="https://yarnpkg.com/en/package/jest-ex">Jest-Ex</a> to test the project. The configuration file is on <code>./.jestrc</code>, the tests and mocks are on <code>./tests</code> and the script that runs it is on <code>./utils/scripts/test</code>.</p>
-<h3 id="linting">Linting</h3><p>I use <a href="http://eslint.org">ESlint</a> to validate all our JS code. The configuration file for the project code is on <code>./.eslintrc</code> and for the tests on <code>./tests/.eslintrc</code> (which inherits from the one on the root), there&apos;s also an <code>./.eslintignore</code> to ignore some files on the process, and the script that runs it is on <code>./utils/scripts/lint</code>.</p>
-<h3 id="documentation">Documentation</h3><p>I use <a href="http://esdoc.org">ESDoc</a> to generate HTML documentation for the project. The configuration file is on <code>./.esdocrc</code> and the script that runs it is on <code>./utils/scripts/docs</code>.</p>
-<h3 id="to-dos">To-Dos</h3><p>I use <code>@todo</code> comments to write all the pending improvements and fixes, and <a href="https://yarnpkg.com/en/package/leasot">Leasot</a> to generate a report. The script that runs it is on <code>./utils/scripts/todo</code>.</p>
-<h3 id="windows">Windows</h3><p>You can work with this project on Windows, but it only works if you use <a href="https://yarnpkg.com/en/docs/install">Yarn</a>. The reason is that NPM on Windows doesn&apos;t allow you to use paths like <code>./scripts/something</code> on the <code>package.json</code> scripts, while Yarn does.</p>
-<p>Another alternative if you are using Windows is to use <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">WSL</a>.</p>
-</div>
+<h3>Repository hooks</h3>
+<p>I use <a href="https://yarnpkg.com/package/husky"><code>husky</code></a> to automatically install the repository hooks so the code will be tested and linted before any commit and the dependencies updated after every merge.</p>
+<p>The configuration is on the <code>husky</code> property of the <code>package.json</code> and the hooks' files are on <code>./utils/hooks</code>.</p>
+<h4>Commits convention</h4>
+<p>I use <a href="https://www.conventionalcommits.org">conventional commits</a> with <a href="https://yarnpkg.com/package/commitizen"><code>commitizen</code></a> in order to support semantic releases. The one that sets it up is actually husky, that installs a script that runs commitizen on the <code>git commit</code> command.</p>
+<p>The hook for this is on <code>./utils/hooks/prepare-commit-msg</code> and the configuration for comitizen is on the <code>config.commitizen</code> property of the <code>package.json</code>.</p>
+<h3>Releases</h3>
+<p>I use <a href="https://yarnpkg.com/package/semantic-release"><code>semantic-release</code></a> and a GitHub action to automatically release on NPM everything that gets merged to master.</p>
+<p>The configuration for <code>semantic-release</code> is on <code>./releaserc</code> and the workflow for the release is on <code>./.github/workflow/release.yml</code>.</p>
+<h3>Testing</h3>
+<p>I use <a href="https://facebook.github.io/jest/">Jest</a> to test the project.</p>
+<p>The configuration file is on <code>./.jestrc.json</code>, the tests are on <code>./tests</code> and the script that runs it is on <code>./utils/scripts/test</code>.</p>
+<h3>Linting</h3>
+<p>I use <a href="https://eslint.org">ESlint</a> with <a href="https://yarnpkg.com/package/eslint-plugin-homer0">my own custom configuration</a> to validate all the JS code and the JSDoc comments.</p>
+<p>The configuration file for the project code is on <code>./.eslintrc</code> and the one for the tests is on <code>./tests/.eslintrc</code>, and there's also an <code>./.eslintignore</code> to exclude some files on the process. The script that runs it is on <code>./utils/scripts/lint</code>.</p>
+<h3>Documentation</h3>
+<p>I use <a href="https://jsdoc.app">JSDoc</a> to generate an HTML documentation site for the project.</p>
+<p>The configuration file is on <code>./.jsdoc.js</code> and the script that runs it is on <code>./utils/scripts/docs</code>.</p>
+<h3>To-Dos</h3>
+<p>I use <code>@todo</code> comments to write all the pending improvements and fixes, and <a href="https://yarnpkg.com/en/package/leasot">Leasot</a> to generate a report. The script that runs it is on <code>./utils/scripts/todo</code>.</p>
+<h3>Windows</h3>
+<p>This project uses bash scripts for development, so if you want to develop on Windows, you need to do it with <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">WSL</a>.</p></article>
+    </section>
+
+
+
+
+
+
+
+    
 </div>
 
-<footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
 </footer>
 
-<script src="script/search_index.js"></script>
-<script src="script/search.js"></script>
-<script src="script/pretty-print.js"></script>
-<script src="script/inherited-summary.js"></script>
-<script src="script/test-summary.js"></script>
-<script src="script/inner-link.js"></script>
-<script src="script/patch-for-local.js"></script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
 </body>
 </html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8" />
+    <title>EnvironmentUtils - wootils docs</title>
+    
+    
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css" />
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+    <link rel="shortcut icon" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="48x48" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/favicon-72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="icons/favicon-96.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/favicon-144.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="256x256" href="icons/favicon-256.png" />
+    <link rel="apple-touch-icon" sizes="384x384" href="icons/favicon-384.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/favicon-512.png" />
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html" class="home-link">wootils</a></h2><h2><a href="https://github.com/homer0/wootils" target="_blank" >GitHub</a></h2><h3>Modules</h3><ul><li><a href="module-browser_simpleStorage.html">browser/simpleStorage</a></li><li><a href="module-node_appConfiguration.html">node/appConfiguration</a></li><li><a href="module-node_environmentUtils.html">node/environmentUtils</a></li><li><a href="module-node_errorHandler.html">node/errorHandler</a></li><li><a href="module-node_logger.html">node/logger</a></li><li><a href="module-node_packageInfo.html">node/packageInfo</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_packageInfo.html#~packageInfo">packageInfo</a></li></ul></li><li><a href="module-node_pathUtils.html">node/pathUtils</a></li><li><a href="module-node_rootRequire.html">node/rootRequire</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_rootRequire.html#~rootRequire">rootRequire</a></li></ul></li><li><a href="module-shared_apiClient.html">shared/apiClient</a></li><li><a href="module-shared_deepAssign.html">shared/deepAssign</a></li><li><a href="module-shared_deferred.html">shared/deferred</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_deferred.html#.deferred">deferred</a></li></ul></li><li><a href="module-shared_eventsHub.html">shared/eventsHub</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_eventsHub.html#~wrapper">wrapper</a></li></ul></li><li><a href="module-shared_extendPromise.html">shared/extendPromise</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_extendPromise.html#~extendPromise">extendPromise</a></li></ul></li><li><a href="module-shared_jimpleFns.html">shared/jimpleFns</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~provider">provider</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~providerCreator">providerCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resource">resource</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourceCreator">resourceCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourcesCollection">resourcesCollection</a></li></ul></li><li><a href="module-shared_objectUtils.html">shared/objectUtils</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-browser.html">Browser utilities</a></li><li><a href="tutorial-node.html">Node utilities</a></li><li><a href="tutorial-shared.html">Shared utilities</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">EnvironmentUtils</h1>
+    
+
+    <section>
+  <header>
+    <h2>EnvironmentUtils</h2>
+  </header>
+  <article class="tutorial">
+    <h1>EnvironmentUtils</h1>
+<p>A really small service to centralize the place where you read and write environment variables, and check if you are running on development or production.</p>
+<p>Is not uncommon nowadays for Node apps to be checking <code>NODE_ENV</code> and other environment variables in order to do or not to do certain things, and having multiple calls to <code>process.env</code> on different places of your app may not be a good idea: It's hard to track and maintain.</p>
+<h2>Examples</h2>
+<h3>Read</h3>
+<p>Let's say your code looks something like this:</p>
+<pre class="prettyprint source lang-js"><code>if (process.env.NODE_ENV !== 'production') {
+  addSomeStuffForDevelopment();
+}
+
+console.log(`Hello ${process.env.NAME}`);
+</code></pre>
+<p>Let's implement the same but with <code>EnvironmentUtils</code>:</p>
+<h4>Without Jimple</h4>
+<blockquote>
+<p>If you haven't tried <a href="https://github.com/fjorgemota/jimple">Jimple</a>, give it a try, it's excellent for organizing your app dependencies and services.</p>
+</blockquote>
+<p>Let's start with the setup:</p>
+<pre class="prettyprint source lang-js"><code>const { EnvironmentUtils } = require('wootils/node');
+// Construct an instance.
+const environmentUtils = new EnvironmentUtils();
+</code></pre>
+<p>Now, to update the code:</p>
+<pre class="prettyprint source lang-js"><code>if (environmentUtils.development) {
+  addSomeStuffForDevelopment();
+}
+// The service allows you to set a default in case the variable is not defined.
+const name = environmentUtils.get('NAME', 'Rosario');
+console.log(`Hello ${name}`);
+</code></pre>
+<p>Done! Now you are not manually checking for <code>NODE_ENV</code> and all your variables are being read on a single place.</p>
+<h4>With Jimple</h4>
+<p>Let's setup a dummy app and register the service:</p>
+<pre class="prettyprint source lang-js"><code>// Import all the required modules
+const Jimple = require('jimple');
+const { environmentUtils } = require('wootils/node/providers');
+// Create a dummy app
+const app = new Jimple();
+
+app.register(environmentUtils);
+</code></pre>
+<p>Now, to update the code:</p>
+<pre class="prettyprint source lang-js"><code>// The imported provider has the same name, that's why I called it `envUtils`.
+const envUtils = app.get('environmentUtils');
+if (envUtils.development()) {
+  addSomeStuffForDevelopment();
+}
+// The service allows you to set a default in case the variable is not defined.
+const name = envUtils.get('NAME', 'Rosario');
+console.log(`Hello ${name}`);
+</code></pre>
+<p>Done! Now you are not manually checking for <code>NODE_ENV</code> and all your variables are being read on a single place.</p>
+<h3>Write</h3>
+<p>Ok, writing on the environment from inside an application is not that common as reading, but there are certain cases where this may come in handy.</p>
+<p>Let's say you are using a library that has a <em>&quot;debug mode&quot;</em> but the only way to enable it is using a environment variable, and for &quot;purposes of debugging&quot;, you want to do it from your code:</p>
+<pre class="prettyprint source lang-js"><code>process.env.DEBUG_MY_LIBRARY = 'true';
+runMyMagicLibrary();
+</code></pre>
+<p>Like for <code>get</code>, <code>set</code> also allows you to centralize where you overwrite your environment variables, but at the same time, it protects you from overwriting something that is already declared: Unless you tell <code>set</code> to overwrite declarations, if the variable already exists, it won't do it.</p>
+<h4>Without Jimple</h4>
+<p>Let's start with the setup:</p>
+<pre class="prettyprint source lang-js"><code>const { EnvironmentUtils } = require('wootils/node');
+// Construct an instance.
+const environmentUtils = new EnvironmentUtils();
+</code></pre>
+<p>Now, to update the code:</p>
+<pre class="prettyprint source lang-js"><code>// If you add a third parameter with `true`, it will overwrite any previous declaration.
+const name = environmentUtils.set('DEBUG_MY_LIBRARY', 'true');
+runMyMagicLibrary();
+</code></pre>
+<p>Done! Now you are not manually updating the environment variable and potentially overwriting something that was already declared.</p>
+<h4>With Jimple</h4>
+<p>Let's setup a dummy app and register the service:</p>
+<pre class="prettyprint source lang-js"><code>// Import all the required modules
+const Jimple = require('jimple');
+const { environmentUtils } = require('wootils/node/providers');
+// Create a dummy app
+const app = new Jimple();
+
+app.register(environmentUtils);
+</code></pre>
+<p>Now, to update the code:</p>
+<pre class="prettyprint source lang-js"><code>// The imported provider has the same name, that's why I called it `envUtils`.
+const envUtils = app.get('environmentUtils');
+// If you add a third parameter with `true`, it will overwrite any previous declaration.
+const name = envUtils.set('DEBUG_MY_LIBRARY', 'true');
+runMyMagicLibrary();
+</code></pre>
+<p>Done! Now you are not manually updating the environment variable and potentially overwriting something that was already declared.</p>
+<h2>Features</h2>
+<h3>Reading variables</h3>
+<p>This was demonstrated on the first example. You just need to <code>.get()</code> with the name of the variable you want to read.</p>
+<h3>Writing variables</h3>
+<p>This was demostrated on the second example. You just need to <code>.set()</code> with the name and the value for the variable.</p>
+<h3>Validating variables</h3>
+<p>You can call <code>.exists()</code> with the name of the variable and the service will tell you if it's defined on the environment.</p>
+<h3>Environment type validation</h3>
+<p>No more <code>if (process.env.NODE_ENV ...</code>, <code>EnvironmentUtils</code> does it once when you instantiate it and then gives you <code>production()</code> and <code>development()</code> for you to use.</p>
+<h2>ES Modules</h2>
+<p>If you are using ESM, you can import the class and the provider from the <code>/esm</code> sub path:</p>
+<pre class="prettyprint source lang-js"><code>import {
+  EnvironmentUtils,
+  environmentUtils,
+} from 'wootils/esm/node/environmentUtils';
+
+// just the class
+
+import { EnvironmentUtils } from 'wootils/esm/node';
+
+// just the provider
+
+import { environmentUtils } from 'wootils/esm/node/providers';
+</code></pre>
+<h2>Technical documentation</h2>
+<ul>
+<li>Module: <a href="module-node_environmentUtils.html"><code>node/environmentUtils</code></a></li>
+<li>Class: <a href="module-node_environmentUtils.EnvironmentUtils.html"><code>EnvironmentUtils</code></a></li>
+<li>Provider: <a href="module-node_environmentUtils.html#~environmentUtils"><code>environmentUtils</code></a></li>
+</ul>
+<blockquote>
+<p>If you are reading this form the markdown document, you can go to the <a href="https://homer0.github.io/wootils">online version</a>; or you can generate the documentation site yourself by running the <code>docs</code> command:</p>
+<pre class="prettyprint source lang-bash"><code># You can either use npm or yarn, it doesn't matter
+npm run docs && open ./docs/index.html;
+</code></pre>
+</blockquote>
+  </article>
+  
+</section>
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8" />
+    <title>Logger - wootils docs</title>
+    
+    
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css" />
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+    <link rel="shortcut icon" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="48x48" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/favicon-72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="icons/favicon-96.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/favicon-144.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="256x256" href="icons/favicon-256.png" />
+    <link rel="apple-touch-icon" sizes="384x384" href="icons/favicon-384.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/favicon-512.png" />
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html" class="home-link">wootils</a></h2><h2><a href="https://github.com/homer0/wootils" target="_blank" >GitHub</a></h2><h3>Modules</h3><ul><li><a href="module-browser_simpleStorage.html">browser/simpleStorage</a></li><li><a href="module-node_appConfiguration.html">node/appConfiguration</a></li><li><a href="module-node_environmentUtils.html">node/environmentUtils</a></li><li><a href="module-node_errorHandler.html">node/errorHandler</a></li><li><a href="module-node_logger.html">node/logger</a></li><li><a href="module-node_packageInfo.html">node/packageInfo</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_packageInfo.html#~packageInfo">packageInfo</a></li></ul></li><li><a href="module-node_pathUtils.html">node/pathUtils</a></li><li><a href="module-node_rootRequire.html">node/rootRequire</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_rootRequire.html#~rootRequire">rootRequire</a></li></ul></li><li><a href="module-shared_apiClient.html">shared/apiClient</a></li><li><a href="module-shared_deepAssign.html">shared/deepAssign</a></li><li><a href="module-shared_deferred.html">shared/deferred</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_deferred.html#.deferred">deferred</a></li></ul></li><li><a href="module-shared_eventsHub.html">shared/eventsHub</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_eventsHub.html#~wrapper">wrapper</a></li></ul></li><li><a href="module-shared_extendPromise.html">shared/extendPromise</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_extendPromise.html#~extendPromise">extendPromise</a></li></ul></li><li><a href="module-shared_jimpleFns.html">shared/jimpleFns</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~provider">provider</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~providerCreator">providerCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resource">resource</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourceCreator">resourceCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourcesCollection">resourcesCollection</a></li></ul></li><li><a href="module-shared_objectUtils.html">shared/objectUtils</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-browser.html">Browser utilities</a></li><li><a href="tutorial-node.html">Node utilities</a></li><li><a href="tutorial-shared.html">Shared utilities</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Logger</h1>
+    
+
+    <section>
+  <header>
+    <h2>Logger</h2>
+  </header>
+  <article class="tutorial">
+    <h1>Logger</h1>
+<p>The name leaves nothing to the imagination. As you may have guessed, this is service for logging messages into the console.</p>
+<p>It's not uncommon for Node apps to be logging information into the console all the time: success messages, warnings and even errors; and if you don't have an already implemented solution for logging, you are probably calling <code>console.[log|info|error]</code> on a bunch of places, which is probably not a great thing to do.</p>
+<p><code>Logger</code> is not a super complete logging system with multiple logging levels and stuff like that, it's just a simple tool for logging colored messages on the console.</p>
+<h2>Example</h2>
+<p>Let's say you scenarios like these:</p>
+<pre class="prettyprint source lang-js"><code>console.log('Starting the app');
+
+if (usingExperimentalFeature()) {
+  console.log('WARNING: This feature is experimental');
+}
+
+if (onDevelopment()) {
+  console.log('Running on a development environment');
+}
+
+if (loadConfiguration()) {
+  console.log('The configuration was successfully loaded');
+}
+
+try {
+  methodThatMayThrowAnError();
+} catch (error) {
+  console.log('Damn it!', error);
+}
+</code></pre>
+<p>Now, let's see how to implement the same messages with <code>Logger</code>:</p>
+<h3>Without Jimple</h3>
+<blockquote>
+<p>If you haven't tried <a href="https://github.com/fjorgemota/jimple">Jimple</a>, give it a try, it's excellent for organizing your app dependencies and services.</p>
+</blockquote>
+<p>Let's start with the setup:</p>
+<blockquote>
+<p>All of this code should be added on top of the already existing code showed above.</p>
+</blockquote>
+<pre class="prettyprint source lang-js"><code>const { Logger } = require('wootils/node');
+// Create an instance
+const logger = new Logger();
+</code></pre>
+<p>Now let's update the code:</p>
+<pre class="prettyprint source lang-js"><code>logger.log('Starting the app');
+// Will log the message the same way `console.log` would.
+
+if (usingExperimentalFeature()) {
+  logger.warn('WARNING: This feature is experimental');
+  // Will log a yellow message.
+}
+
+if (onDevelopment()) {
+  logger.info('Running on a development environment');
+  // Will log a gray message.
+}
+
+if (loadConfiguration()) {
+  logger.success('The configuration was successfully loaded');
+  // Will log a green message
+}
+
+try {
+  methodThatMayThrowAnError();
+} catch (error) {
+  logger.error('Damn it!', error);
+  // Will log `Damn it!` on read and the `error` stack trace information on `gray`.
+}
+</code></pre>
+<p>Done, with that your app is now logging the messages with a color referencing the type of message.</p>
+<h3>With Jimple</h3>
+<p>Let's setup a dummy app and register the service:</p>
+<pre class="prettyprint source lang-js"><code>// Import all the required modules
+const Jimple = require('jimple');
+const { logger } = require('wootils/node/providers');
+// Create a dummy app
+const app = new Jimple();
+// Register the logger
+app.register(logger);
+</code></pre>
+<p>Now let's update the code:</p>
+<pre class="prettyprint source lang-js"><code>// The imported provider is called `logger`, that's why I named the variable `log`.
+const log = app.get('logger');
+
+log.log('Starting the app');
+// Will log the message the same way `console.log` would.
+
+if (usingExperimentalFeature()) {
+  log.warn('WARNING: This feature is experimental');
+  // Will log a yellow message.
+}
+
+if (onDevelopment()) {
+  log.info('Running on a development environment');
+  // Will log a gray message.
+}
+
+if (loadConfiguration()) {
+  log.success('The configuration was successfully loaded');
+  // Will log a green message
+}
+
+try {
+  methodThatMayThrowAnError();
+} catch (error) {
+  logger.error('Damn it!', error);
+  // Will log `Damn it!` on read and the `error` stack trace information on `gray`.
+}
+</code></pre>
+<p>Done, with that your app is now logging the messages with a color referencing the type of message.</p>
+<h2>Features</h2>
+<h3>Colored messages</h3>
+<p>This was demonstrated on the example above:</p>
+<ol>
+<li><code>success(message)</code> will log a green message.</li>
+<li><code>warn(message)</code> will log a yellow message.</li>
+<li><code>error(message)</code> will log a red message.</li>
+<li><code>info(message)</code> will log a gray message.</li>
+</ol>
+<p>But they all depend on this method: <code>log(message, color)</code>; it allows you to specify one of the colors available on the <a href="https://yarnpkg.com/package/colors"><code>colors</code></a> package.</p>
+<p>By default, it uses the console default text color.</p>
+<h3>Multiple messages at once</h3>
+<p>All the methods support both a single message or an <code>Array</code> of them:</p>
+<pre class="prettyprint source lang-js"><code>logger.info(['App running', 'connection detected', 'starting Skynet...']);
+// This will log three gray messages.
+</code></pre>
+<p>You can even specify a color for each message:</p>
+<pre class="prettyprint source lang-js"><code>logger.success([
+  'It works!',
+  ['wait, something is happening', 'gray'],
+  'Nevermind, Skynet is up and running!',
+]);
+// This will log the first and third message on green and the second one on gray.
+</code></pre>
+<h3>Prefix</h3>
+<p>When constructing the service or when registering the provider, you can specify a <code>prefix</code> that will be added to every message:</p>
+<h4>Without Jimple</h4>
+<pre class="prettyprint source lang-js"><code>const { Logger } = require('wootils/node');
+// Create an instance
+const logger = new Logger('my-app');
+
+logger.success('The instance was created!');
+// This will log `[my-app] The instance was created!` on green.
+</code></pre>
+<h4>With Jimple</h4>
+<pre class="prettyprint source lang-js"><code>// Import all the required modules
+const Jimple = require('jimple');
+const { logger } = require('wootils/node/providers');
+// Create a dummy app
+const app = new Jimple();
+// Register the logger
+app.register(logger({
+  messagesPrefix: 'my-app',
+}));
+
+app.get('logger').success('The instance was created!');
+// This will log `[my-app] The instance was created!` on green.
+</code></pre>
+<h3>Date and Time</h3>
+<p>When constructing the service or when generating the provider, you can specify whether or not you would like to show the date and time on every message. By default, it only does it for errors:</p>
+<h4>Without Jimple</h4>
+<pre class="prettyprint source lang-js"><code>const { Logger } = require('wootils/node');
+// Create an instance
+const logger = new Logger('my-app', true);
+
+logger.success('The instance was created!');
+// This will log `[my-app][YYYY-MM-DD HH:MM:SS] The instance was created!` on green.
+</code></pre>
+<h4>With Jimple</h4>
+<pre class="prettyprint source lang-js"><code>// Import all the required modules
+const Jimple = require('jimple');
+const { logger } = require('wootils/node/providers');
+// Create a dummy app
+const app = new Jimple();
+// Register the logger
+app.register(logger({
+  messagesPrefix: 'my-app',
+  showTime: true,
+}));
+
+app.get('logger').success('The instance was created!');
+// This will log `[my-app][YYYY-MM-DD HH:MM:SS] The instance was created!` on green.
+</code></pre>
+<h3>appLogger</h3>
+<p>This is only for Jimple implementations. <code>appLogger</code> is a service provider that uses the service <code>packageInfo</code> to obtain the app name from the <code>package.json</code> and automatically use it as the <code>prefix</code> for every message.</p>
+<p>Let's say the <code>name</code> of your app on your <code>package.json</code> is <code>skynet</code>:</p>
+<pre class="prettyprint source lang-js"><code>// Import all the required modules
+const Jimple = require('jimple');
+const { appLogger } = require('wootils/node/providers');
+// Create a dummy app
+const app = new Jimple();
+// Register the logger
+app.register(appLogger);
+
+app.get('appLogger').success('The instance was created!');
+// This will log `[skynet] The instance was created!` on green.
+</code></pre>
+<p><code>appLogger</code> can also be used as a function, like <code>logger</code>, so you can send an options object to enable the <code>showTime</code>.</p>
+<h2>ES Modules</h2>
+<p>If you are using ESM, you can import the class and the providers from the <code>/esm</code> sub path:</p>
+<pre class="prettyprint source lang-js"><code>import {
+  Logger,
+  logger,
+  appLogger,
+} from 'wootils/esm/node/logger';
+
+// just the class
+
+import { Logger } from 'wootils/esm/node';
+
+// just the providers
+
+import {
+  logger,
+  appLogger,
+} from 'wootils/esm/node/providers';
+</code></pre>
+<h2>Technical documentation</h2>
+<ul>
+<li>Module: <a href="module-node_logger.html"><code>node/logger</code></a></li>
+<li>Class: <a href="module-node_logger.Logger.html"><code>Logger</code></a></li>
+<li>Provider: <a href="module-node_logger.html#~logger"><code>logger</code></a></li>
+<li>Provider with app name as prefix: <a href="module-node_logger.html#~appLogger"><code>appLogger</code></a></li>
+</ul>
+<blockquote>
+<p>If you are reading this form the markdown document, you can go to the <a href="https://homer0.github.io/wootils">online version</a>; or you can generate the documentation site yourself by running the <code>docs</code> command:</p>
+<pre class="prettyprint source lang-bash"><code># You can either use npm or yarn, it doesn't matter
+npm run docs && open ./docs/index.html;
+</code></pre>
+</blockquote>
+  </article>
+  
+</section>
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

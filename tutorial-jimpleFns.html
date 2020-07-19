@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8" />
+    <title>Jimple Functions - wootils docs</title>
+    
+    
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css" />
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+    <link rel="shortcut icon" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="48x48" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/favicon-72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="icons/favicon-96.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/favicon-144.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="256x256" href="icons/favicon-256.png" />
+    <link rel="apple-touch-icon" sizes="384x384" href="icons/favicon-384.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/favicon-512.png" />
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html" class="home-link">wootils</a></h2><h2><a href="https://github.com/homer0/wootils" target="_blank" >GitHub</a></h2><h3>Modules</h3><ul><li><a href="module-browser_simpleStorage.html">browser/simpleStorage</a></li><li><a href="module-node_appConfiguration.html">node/appConfiguration</a></li><li><a href="module-node_environmentUtils.html">node/environmentUtils</a></li><li><a href="module-node_errorHandler.html">node/errorHandler</a></li><li><a href="module-node_logger.html">node/logger</a></li><li><a href="module-node_packageInfo.html">node/packageInfo</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_packageInfo.html#~packageInfo">packageInfo</a></li></ul></li><li><a href="module-node_pathUtils.html">node/pathUtils</a></li><li><a href="module-node_rootRequire.html">node/rootRequire</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_rootRequire.html#~rootRequire">rootRequire</a></li></ul></li><li><a href="module-shared_apiClient.html">shared/apiClient</a></li><li><a href="module-shared_deepAssign.html">shared/deepAssign</a></li><li><a href="module-shared_deferred.html">shared/deferred</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_deferred.html#.deferred">deferred</a></li></ul></li><li><a href="module-shared_eventsHub.html">shared/eventsHub</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_eventsHub.html#~wrapper">wrapper</a></li></ul></li><li><a href="module-shared_extendPromise.html">shared/extendPromise</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_extendPromise.html#~extendPromise">extendPromise</a></li></ul></li><li><a href="module-shared_jimpleFns.html">shared/jimpleFns</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~provider">provider</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~providerCreator">providerCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resource">resource</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourceCreator">resourceCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourcesCollection">resourcesCollection</a></li></ul></li><li><a href="module-shared_objectUtils.html">shared/objectUtils</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-browser.html">Browser utilities</a></li><li><a href="tutorial-node.html">Node utilities</a></li><li><a href="tutorial-shared.html">Shared utilities</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Jimple Functions</h1>
+    
+
+    <section>
+  <header>
+    <h2>Jimple Functions</h2>
+  </header>
+  <article class="tutorial">
+    <h1>Jimple Functions</h1>
+<p>A set of utility functions to generate resources that can be used on <a href="https://github.com/fjorgemota/jimple">Jimple</a> or abstractions created from it (like <a href="https://yarnpkg.com/package/jimpex">Jimpex</a>).</p>
+<h2>Resources and Providers</h2>
+<p>These are the base entities sent to the container; in the case of Jimple, there's only provider, to configure something that gets added to the contianer, but on the case of Jimpex, you have controllers and middlewares.</p>
+<p>These resources have a very simple structure: an object with a function property the container will call when processing it.</p>
+<p>For example, the Jimple provider:</p>
+<pre class="prettyprint source lang-js"><code>const myProvider = {
+  register(app) {
+    // ...
+  }
+}
+</code></pre>
+<p>Then, you send that to the container and the <code>register</code> function gets called with a reference to the container itself.</p>
+<blockquote>
+<p>Jimpex's middlewares are controller are the same, but the function is called <code>connect</code>.</p>
+</blockquote>
+<p>Instead of defining an object, we can use the <code>resource</code> function:</p>
+<pre class="prettyprint source lang-js"><code>const { resource } = require('wootils/shared');
+
+const myProvider = resource('provider', 'register', (app) => {
+  // ...
+});
+</code></pre>
+<p>But if you had to be that verbose, it wouldn't make sense to make these wrappers, so the idea is for the abstractions to create their own resources to just send the function.</p>
+<p>Since I use Jimple <strong>everywhere</strong>, I already added the <code>provider</code> wrapper in here:</p>
+<pre class="prettyprint source lang-js"><code>const { provider } = require('wootils/shared');
+
+const myProvider = provider((app) => {
+  // ...
+});
+</code></pre>
+<blockquote>
+<p>Yes, Jimple already supports the <code>provider</code> shorthand function (I made the PR for that), but once you see the rest of the wrappers, you'll understand why I redefined it in here.</p>
+</blockquote>
+<p>As an extra, on Jimpex, I use it define the following wrappers:</p>
+<pre class="prettyprint source lang-js"><code>const { resource } = require('wootils/shared');
+
+const controller = (connectFn) => resource('controller', 'connect', connectFn);
+const middleware = (connectFn) => resource('middleware', 'connect', connectFn);
+</code></pre>
+<h2>Resources creators and providers creators</h2>
+<p>Let's say you want you resource to be able to take custom options to change its behaviour, for example:</p>
+<pre class="prettyprint source lang-js"><code>const { provider } = require('wootils/shared');
+
+const myProvider = (options = {}) => provider((app) => {
+  // ...
+});
+</code></pre>
+<p>The problem there is that your provider is not longer a provider, but some sort of &quot;provider generator&quot;, as you <strong>have</strong> to run the function in order to get the provider:</p>
+<pre class="prettyprint source lang-js"><code>app.register(myProvider());
+</code></pre>
+<p>The alternative would be to define two providers:</p>
+<pre class="prettyprint source lang-js"><code>const { provider } = require('wootils/shared');
+
+const myProviderWithOptions = (options = {}) => provider((app) => {
+  // ...
+});
+
+const myProvider = myProviderWithOptions();
+</code></pre>
+<p>But now, whoever implements it needs to be aware that there are two different providers for the same resource.</p>
+<p>Here's where a <code>resourceCreator</code> comes in: this wrapper allows you to wrap a function that returns a function to interact with the resource. Let's see an example with a &quot;provider creator&quot;:</p>
+<pre class="prettyprint source lang-js"><code>const { resourceCreator } = require('wootils/shared');
+
+const myProvider = resourceCreator(
+  'provider',
+  'register',
+  (options = {}) => (app) => {
+    // ...
+  },
+);
+</code></pre>
+<p>The <em>magic</em> here is that what you get in return is not a actual provider, but a <a href="external-Proxy.html"><code>Proxy</code></a>. If the proxy <code>register</code> function gets called, it will internally call the &quot;creator function&quot; without parameters; at the same time, you can call the proxy as a function and it will be the same as calling the &quot;creator function&quot;, it will return the provider for you to use:</p>
+<pre class="prettyprint source lang-js"><code>app.register(myProvider);
+// or
+app.register(myProvider({ enabled: true }));
+</code></pre>
+<p>Moving back to Jimple, yes, the <code>providerCreator</code> comes by default:</p>
+<pre class="prettyprint source lang-js"><code>const { providerCreator } = require('wootils/shared');
+
+const myProvider = providerCreator((options = {}) => (app) => {
+  // ...
+});
+</code></pre>
+<h2>Collections</h2>
+<p>Finally, what if we want to group some resources together so the container can interact with all of them at once? That's what resources collections are:</p>
+<pre class="prettyprint source lang-js"><code>const { provider, resourcesCollection } = require('wootils/shared');
+
+const myFirstProvider = provider((app) => { /* .. */ });
+const mySecondProvider = provider((app) => { /* .. */ });
+
+const myProviders = resourcesCollection('providers', 'register')({
+  myFirstProvider,
+  mySecondProvider,
+});
+</code></pre>
+<p>The syntax is a little bit different from the others as it's not strictly a wrapper, it generates a function that you have to later call with a dictionary of resources.</p>
+<p>The collection can be used to interact with all the resources at once, just by calling its function (<code>register</code> in the example), which will take care of calling the function on all its resources with the same arguments it received.</p>
+<pre class="prettyprint source lang-js"><code>app.register(myProviders);
+</code></pre>
+<p>It would be the same as...</p>
+<pre class="prettyprint source lang-js"><code>app.register(myFirstProvider);
+app.register(mySecondProvider);
+</code></pre>
+<p>You can even access the resources by their keys:</p>
+<pre class="prettyprint source lang-js"><code>app.register(myProviders.myFirstProvider);
+</code></pre>
+<p>And yes, there's a default collection for providers already in the module, <code>providers</code>:</p>
+<pre class="prettyprint source lang-js"><code>const { provider, providers } = require('wootils/shared');
+
+const myFirstProvider = provider((app) => { /* .. */ });
+const mySecondProvider = provider((app) => { /* .. */ });
+
+const myProviders = providers({
+  myFirstProvider,
+  mySecondProvider,
+});
+</code></pre>
+<h2>ES Modules</h2>
+<p>If you are using ESM, you can import the functions from the <code>/esm</code> sub path:</p>
+<pre class="prettyprint source lang-js"><code>import {
+  resource,
+  resourceCreator,
+  resourcesCollection,
+  provider,
+  providerCreator,
+  providers,
+} from 'wootils/esm/shared/jimpleFns';
+
+// or
+
+import {
+  resource,
+  resourceCreator,
+  resourcesCollection,
+  provider,
+  providerCreator,
+  providers,
+} from 'wootils/esm/shared';
+</code></pre>
+<h2>Technical documentation</h2>
+<ul>
+<li><a href="module-shared_jimpleFns.html#~resource"><code>resource</code></a></li>
+<li><a href="module-shared_jimpleFns.html#~resourceCreator"><code>resourceCreator</code></a></li>
+<li><a href="module-shared_jimpleFns.html#~resourcesCollection"><code>resourcesCollection</code></a></li>
+<li><a href="module-shared_jimpleFns.html#~provider"><code>provider</code></a></li>
+<li><a href="module-shared_jimpleFns.html#~providerCreator"><code>providerCreator</code></a></li>
+<li><a href="module-shared_jimpleFns.html#~providers"><code>providers</code></a></li>
+</ul>
+<blockquote>
+<p>If you are reading this form the markdown document, you can go to the <a href="https://homer0.github.io/wootils">online version</a>; or you can generate the documentation site yourself by running the <code>docs</code> command:</p>
+<pre class="prettyprint source lang-bash"><code># You can either use npm or yarn, it doesn't matter
+npm run docs && open ./docs/index.html;
+</code></pre>
+</blockquote>
+  </article>
+  
+</section>
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

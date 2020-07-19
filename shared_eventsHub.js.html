@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8" />
+    <title>shared/eventsHub.js - wootils docs</title>
+    
+    
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css" />
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+    <link rel="shortcut icon" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="48x48" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/favicon-72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="icons/favicon-96.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/favicon-144.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="256x256" href="icons/favicon-256.png" />
+    <link rel="apple-touch-icon" sizes="384x384" href="icons/favicon-384.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/favicon-512.png" />
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html" class="home-link">wootils</a></h2><h2><a href="https://github.com/homer0/wootils" target="_blank" >GitHub</a></h2><h3>Modules</h3><ul><li><a href="module-browser_simpleStorage.html">browser/simpleStorage</a></li><li><a href="module-node_appConfiguration.html">node/appConfiguration</a></li><li><a href="module-node_environmentUtils.html">node/environmentUtils</a></li><li><a href="module-node_errorHandler.html">node/errorHandler</a></li><li><a href="module-node_logger.html">node/logger</a></li><li><a href="module-node_packageInfo.html">node/packageInfo</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_packageInfo.html#~packageInfo">packageInfo</a></li></ul></li><li><a href="module-node_pathUtils.html">node/pathUtils</a></li><li><a href="module-node_rootRequire.html">node/rootRequire</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_rootRequire.html#~rootRequire">rootRequire</a></li></ul></li><li><a href="module-shared_apiClient.html">shared/apiClient</a></li><li><a href="module-shared_deepAssign.html">shared/deepAssign</a></li><li><a href="module-shared_deferred.html">shared/deferred</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_deferred.html#.deferred">deferred</a></li></ul></li><li><a href="module-shared_eventsHub.html">shared/eventsHub</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_eventsHub.html#~wrapper">wrapper</a></li></ul></li><li><a href="module-shared_extendPromise.html">shared/extendPromise</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_extendPromise.html#~extendPromise">extendPromise</a></li></ul></li><li><a href="module-shared_jimpleFns.html">shared/jimpleFns</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~provider">provider</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~providerCreator">providerCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resource">resource</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourceCreator">resourceCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourcesCollection">resourcesCollection</a></li></ul></li><li><a href="module-shared_objectUtils.html">shared/objectUtils</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-browser.html">Browser utilities</a></li><li><a href="tutorial-node.html">Node utilities</a></li><li><a href="tutorial-shared.html">Shared utilities</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">shared/eventsHub.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module shared/eventsHub
+ */
+
+/**
+ * When there's a one time subscription, a wrapper function is created with a special property
+ * to identify it and remove it once it gets triggered. The wrapper and the original function
+ * are stored in case `off` is called before the wrapper gets triggered; it will receive the
+ * original function, not the wrapper, so the class needs a way to map them together.
+ *
+ * @typedef {Object} EventsHubWrapperInfo
+ * @property {Function} wrapper  The wrapper function that was created for the subscription.
+ * @property {Function} original The original listener that was sent.
+ * @ignore
+ */
+
+/**
+ * @callback EventsHubOnceWrapper
+ * @param {...*} args The parameters for the original listener.
+ * @returns {*}
+ * @property {boolean} [once=true] A flag so the class will identify the wrapper.
+ * @ignore
+ */
+
+/**
+ * A minimal implementation of an events handler service.
+ *
+ * @parent module:shared/eventsHub
+ * @tutorial eventsHub
+ */
+class EventsHub {
+  constructor() {
+    /**
+     * A dictionary of the events and their listeners.
+     *
+     * @type {Object.&lt;string,Function[]>}
+     * @access protected
+     * @ignore
+     */
+    this._events = {};
+    /**
+     * A dictionary of wrappers that were created for "one time subscriptions". This is used
+     * by the {@link EventsHub#off}: if it doesn't find the subscriber as it is, it will look
+     * for a wrapper and remove it.
+     *
+     * @type {Object.&lt;string,EventsHubWrapperInfo[]>}
+     * @access protected
+     * @ignore
+     */
+    this._onceWrappers = {};
+  }
+  /**
+   * Emits an event and call all its listeners.
+   *
+   * @param {string|string[]} event An event name or a list of them.
+   * @param {...*}            args  A list of parameters to send to the listeners.
+   */
+  emit(event, ...args) {
+    const toClean = [];
+    const events = Array.isArray(event) ? event : [event];
+    events.forEach((name) => {
+      this.subscribers(name).forEach((subscriber) => {
+        subscriber(...args);
+        if (subscriber.once) {
+          toClean.push({
+            event: name,
+            fn: subscriber,
+          });
+        }
+      });
+    });
+
+    toClean.forEach((info) => this.off(info.event, info.fn));
+  }
+  /**
+   * Removes an event listener.
+   *
+   * @param {string|string[]} event An event name or a list of them.
+   * @param {Function}        fn    The listener function.
+   * @returns {boolean|boolean[]} If `event` was a `string`, it will return whether or not the
+   *                              listener was found and removed; but if `event` was an `Array`, it
+   *                              will return a list of boolean values.
+   */
+  off(event, fn) {
+    const isArray = Array.isArray(event);
+    const events = isArray ? event : [event];
+    const result = events.map((name) => {
+      const subscribers = this.subscribers(name);
+      const onceSubscribers = this._onceWrappers[name];
+      let found = false;
+      let index = subscribers.indexOf(fn);
+      if (index > -1) {
+        found = true;
+        /**
+         * If the listener had the `once` flag, then it's a wrapper, so it needs to remove it
+         * from the wrappers list too.
+         *
+         * @ignore
+         */
+        if (fn.once &amp;&amp; onceSubscribers) {
+          const wrapperIndex = onceSubscribers.findIndex((item) => item.wrapper === fn);
+          onceSubscribers.splice(wrapperIndex, 1);
+        }
+        subscribers.splice(index, 1);
+      } else if (this._onceWrappers[name]) {
+        /**
+         * If it couldn't found the subscriber, maybe it's because it's the original listener
+         * of a wrapper.
+         *
+         * @ignore
+         */
+        index = onceSubscribers.findIndex((item) => item.original === fn);
+        if (index > -1) {
+          found = true;
+          const originalIndex = subscribers.indexOf(onceSubscribers[index].original);
+          subscribers.splice(originalIndex, 1);
+          onceSubscribers.splice(index, 1);
+        }
+      }
+
+      return found;
+    });
+
+    return isArray ? result : result[0];
+  }
+  /**
+   * Adds a new event listener.
+   *
+   * @param {string|string[]} event An event name or a list of them.
+   * @param {Function}        fn    The listener function.
+   * @returns {Function} An unsubscribe function to remove the listener or listeners.
+   */
+  on(event, fn) {
+    const events = Array.isArray(event) ? event : [event];
+    events.forEach((name) => {
+      const subscribers = this.subscribers(name);
+      if (!subscribers.includes(fn)) {
+        subscribers.push(fn);
+      }
+    });
+
+    return () => this.off(event, fn);
+  }
+  /**
+   * Adds an event listener that will only be executed once.
+   *
+   * @param {string|string[]} event An event name or a list of them.
+   * @param {Function}        fn    The listener function.
+   * @returns {Function} An unsubscribe function to remove the listener.
+   */
+  once(event, fn) {
+    const events = Array.isArray(event) ? event : [event];
+    // Try to find an existing wrapper.
+    let wrapper = events.reduce(
+      (acc, name) => {
+        let nextAcc;
+        if (acc) {
+          // A previous iteration found a wrapper, so `continue`.
+          nextAcc = acc;
+        } else if (this._onceWrappers[name]) {
+          // A list of wrappers exists for the event, so, let's try an find one for this function.
+          const existing = this._onceWrappers[name].find((item) => item.original === fn);
+          if (existing) {
+            nextAcc = existing.wrapper;
+          } else {
+            nextAcc = null;
+          }
+        } else {
+          // The list didn't even exists, let's at least create it.
+          this._onceWrappers[name] = [];
+          nextAcc = null;
+        }
+
+        return nextAcc;
+      },
+      null,
+    );
+    // No wrapper was found, so let's create one.
+    if (!wrapper) {
+      /**
+       * A simple wrapper for the original listener.
+       *
+       * @type {EventsHubOnceWrapper}
+       */
+      wrapper = (...args) => fn(...args);
+      wrapper.once = true;
+      events.forEach((name) => {
+        this._onceWrappers[name].push({
+          wrapper,
+          original: fn,
+        });
+      });
+    }
+
+    return this.on(event, wrapper);
+  }
+  /**
+   * Reduces a target using an event. It's like emit, but the events listener return
+   * a modified (or not) version of the `target`.
+   *
+   * @param {string|string[]} event  An event name or a list of them.
+   * @param {*}               target The variable to reduce with the listeners.
+   * @param {...*}            args   A list of parameters to send to the listeners.
+   * @returns {*} A version of the `target` processed by the listeners.
+   */
+  reduce(event, target, ...args) {
+    const events = Array.isArray(event) ? event : [event];
+    let result = target;
+    events.forEach((name) => {
+      const subscribers = this.subscribers(name);
+      if (subscribers.length) {
+        const toClean = [];
+        let processed;
+        if (Array.isArray(result)) {
+          processed = result.slice();
+        } else if (typeof result === 'object') {
+          processed = { ...result };
+        } else {
+          processed = result;
+        }
+
+        subscribers.forEach((subscriber) => {
+          processed = subscriber(...[processed, ...args]);
+          if (subscriber.once) {
+            toClean.push({
+              event: name,
+              fn: subscriber,
+            });
+          }
+        });
+
+        toClean.forEach((info) => this.off(info.event, info.fn));
+        result = processed;
+      }
+    });
+
+    return result;
+  }
+  /**
+   * Gets all the listeners for an event.
+   *
+   * @param {string} event The name of the event.
+   * @returns {Function[]}
+   */
+  subscribers(event) {
+    if (!this._events[event]) {
+      this._events[event] = [];
+    }
+
+    return this._events[event];
+  }
+}
+
+module.exports = EventsHub;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

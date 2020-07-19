@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8" />
+    <title>shared/deepAssign.js - wootils docs</title>
+    
+    
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css" />
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+    <link rel="shortcut icon" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="48x48" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/favicon-72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="icons/favicon-96.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/favicon-144.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="256x256" href="icons/favicon-256.png" />
+    <link rel="apple-touch-icon" sizes="384x384" href="icons/favicon-384.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/favicon-512.png" />
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html" class="home-link">wootils</a></h2><h2><a href="https://github.com/homer0/wootils" target="_blank" >GitHub</a></h2><h3>Modules</h3><ul><li><a href="module-browser_simpleStorage.html">browser/simpleStorage</a></li><li><a href="module-node_appConfiguration.html">node/appConfiguration</a></li><li><a href="module-node_environmentUtils.html">node/environmentUtils</a></li><li><a href="module-node_errorHandler.html">node/errorHandler</a></li><li><a href="module-node_logger.html">node/logger</a></li><li><a href="module-node_packageInfo.html">node/packageInfo</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_packageInfo.html#~packageInfo">packageInfo</a></li></ul></li><li><a href="module-node_pathUtils.html">node/pathUtils</a></li><li><a href="module-node_rootRequire.html">node/rootRequire</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_rootRequire.html#~rootRequire">rootRequire</a></li></ul></li><li><a href="module-shared_apiClient.html">shared/apiClient</a></li><li><a href="module-shared_deepAssign.html">shared/deepAssign</a></li><li><a href="module-shared_deferred.html">shared/deferred</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_deferred.html#.deferred">deferred</a></li></ul></li><li><a href="module-shared_eventsHub.html">shared/eventsHub</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_eventsHub.html#~wrapper">wrapper</a></li></ul></li><li><a href="module-shared_extendPromise.html">shared/extendPromise</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_extendPromise.html#~extendPromise">extendPromise</a></li></ul></li><li><a href="module-shared_jimpleFns.html">shared/jimpleFns</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~provider">provider</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~providerCreator">providerCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resource">resource</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourceCreator">resourceCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourcesCollection">resourcesCollection</a></li></ul></li><li><a href="module-shared_objectUtils.html">shared/objectUtils</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-browser.html">Browser utilities</a></li><li><a href="tutorial-node.html">Node utilities</a></li><li><a href="tutorial-shared.html">Shared utilities</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">shared/deepAssign.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module shared/deepAssign
+ */
+
+/**
+ * @typedef {'merge'|'shallowMerge'|'concat'|'overwrite'} DeepAssignArrayMode
+ * @enum {string}
+ * @parent module:shared/deepAssign
+ */
+
+/**
+ * @typedef {Object} DeepAssignOptions
+ * @property {DeepAssignArrayMode} [arrayMode='merge']
+ * Defines how array assignments should be handled.
+ * @parent module:shared/deepAssign
+ */
+
+/**
+ * A function that makes a deep merge (and copy) of a list of objects and/or arrays.
+ *
+ * @callback DeepAssignFn
+ * @param {...*} targets  The objects to merge; if one of them is not an object nor an array, it
+ *                        will be ignored.
+ * @returns {Object|Array}
+ * @parent module:shared/deepAssign
+ */
+
+/**
+ * It allows for deep merge (and copy) of objects and arrays using native spread syntax.
+ *
+ * This class exists just to scope the different functionalities and options needed for
+ * {@link DeepAssign#assign} method to work.
+ *
+ * @parent module:shared/deepAssign
+ */
+class DeepAssign {
+  /**
+   * @param {Partial&lt;DeepAssignOptions>} options Custom options for how {@link DeepAssign#assign}
+   *                                             it's going to work.
+   * @throws {Error} If `options.arrayMode` is not a valid {@link DeepAssignArrayMode}.
+   */
+  constructor(options = {}) {
+    if (
+      options.arrayMode &amp;&amp;
+      !['merge', 'concat', 'overwrite', 'shallowMerge'].includes(options.arrayMode)
+    ) {
+      throw new Error(`Invalid array mode received: \`${options.arrayMode}\``);
+    }
+    /**
+     * The options that define how {@link DeepAssign#assign} works.
+     *
+     * @type {DeepAssignOptions}
+     * @access protected
+     * @ignore
+     */
+    this._options = {
+      arrayMode: 'merge',
+      ...options,
+    };
+    /**
+     * @ignore
+     */
+    this.assign = this.assign.bind(this);
+  }
+  /**
+   * Makes a deep merge of a list of objects and/or arrays.
+   *
+   * @param {...*} targets  The objects to merge; if one of them is not an object nor an array, it
+   *                        will be ignored.
+   * @returns {Object|Array}
+   */
+  assign(...targets) {
+    let result;
+    if (targets.length) {
+      result = targets
+      .filter((target) => this._isValidItem(target))
+      .reduce(
+        (acc, target) => (
+          acc === null ?
+            this._resolveFromEmpty(target, true) :
+            this._resolve(acc, target, true)
+        ),
+        null,
+      );
+    } else {
+      result = {};
+    }
+
+    return result;
+  }
+  /**
+   * The options that define how {@link DeepAssign#assign} works.
+   *
+   * @type {Readonly&lt;DeepAssignOptions>}
+   */
+  get options() {
+    return { ...this._options };
+  }
+  /**
+   * Checks if an object is a plain `Object` and not an instance of some class.
+   *
+   * @param {*} obj The object to validate.
+   * @returns {boolean}
+   * @access protected
+   * @ignore
+   */
+  _isPlainObject(obj) {
+    return obj !== null &amp;&amp; Object.getPrototypeOf(obj).constructor.name === 'Object';
+  }
+  /**
+   * Checks if an object can be used on a merge: only arrays and plain objects are supported.
+   *
+   * @param {*} obj The object to validate.
+   * @returns {boolean}
+   * @access protected
+   * @ignore
+   */
+  _isValidItem(obj) {
+    return Array.isArray(obj) || this._isPlainObject(obj);
+  }
+  /**
+   * Merges two arrays into a new one. If the `concatArrays` option was set to `true` on the
+   * constructor, the result will just be a concatenation with new references for the items; but
+   * if the option was set to `false`, then the arrays will be merged over their indexes.
+   *
+   * @param {Array}               source The base array.
+   * @param {Array}               target The array that will be merged on top of `source`.
+   * @param {DeepAssignArrayMode} mode   The assignment strategy.
+   * @returns {Array}
+   * @access protected
+   * @ignore
+   */
+  _mergeArrays(source, target, mode) {
+    let result;
+    if (mode === 'concat') {
+      result = [...source, ...target]
+      .map((targetItem) => this._resolveFromEmpty(targetItem));
+    } else if (mode === 'overwrite') {
+      result = target.slice().map((targetItem) => this._resolveFromEmpty(targetItem));
+    } else if (mode === 'shallowMerge') {
+      result = source.slice();
+      target.forEach((targetItem, index) => {
+        const resolved = this._resolveFromEmpty(targetItem);
+        if (index &lt; result.length) {
+          result[index] = resolved;
+        } else {
+          result.push(this._resolveFromEmpty(targetItem));
+        }
+      });
+    } else {
+      result = source.slice();
+      target.forEach((targetItem, index) => {
+        if (index &lt; result.length) {
+          result[index] = this._resolve(result[index], targetItem);
+        } else {
+          result.push(this._resolveFromEmpty(targetItem));
+        }
+      });
+    }
+
+    return result;
+  }
+  /**
+   * Merges two plain objects and their children.
+   *
+   * @param {Object} source The base object.
+   * @param {Object} target The object which properties will be merged in top of `source`.
+   * @returns {Object}
+   * @access protected
+   * @ignore
+   */
+  _mergeObjects(source, target) {
+    const keys = [
+      ...Object.getOwnPropertySymbols(target),
+      ...Object.keys(target),
+    ];
+
+    const subMerge = keys.reduce(
+      (acc, key) => ({
+        ...acc,
+        [key]: this._resolve(source[key], target[key]),
+      }),
+      {},
+    );
+
+    return { ...source, ...target, ...subMerge };
+  }
+  /**
+   * This is the method the class calls when it has to merge two objects and it doesn't know
+   * which types they are; the method takes care of validating compatibility and calling
+   * either {@link DeepAssign#_mergeObjects} or {@link DeepAssign#_mergeArrays}. If the objects
+   * are not compatible, or `source` is not defined, it will return a copy of `target`.
+   *
+   * @param {*}       source                  The base object.
+   * @param {*}       target                  The object that will be merged in top of `source`.
+   * @param {boolean} [ignoreArrayMode=false] Whether or not to ignore the option that tells the
+   *                                          class how array assignments should be handled. This
+   *                                          parameter exists because, when called directly from
+   *                                          {@link DeepAssign#_assign}, it doesn't make sense to
+   *                                          use a strategy different than 'merge'.
+   * @returns {*}
+   * @access protected
+   * @ignore
+   */
+  _resolve(source, target, ignoreArrayMode = false) {
+    let result;
+    if (
+      typeof target !== 'undefined' &amp;&amp;
+      typeof source !== 'undefined'
+    ) {
+      if (Array.isArray(target) &amp;&amp; Array.isArray(source)) {
+        const { arrayMode } = this._options;
+        const useMode = ignoreArrayMode &amp;&amp; !['merge', 'shallowMerge'].includes(arrayMode) ?
+          'merge' :
+          arrayMode;
+        result = this._mergeArrays(
+          source,
+          target,
+          useMode,
+        );
+      } else if (this._isPlainObject(target) &amp;&amp; this._isPlainObject(source)) {
+        result = this._mergeObjects(source, target);
+      } else {
+        result = target;
+      }
+    } else {
+      result = this._resolveFromEmpty(target);
+    }
+
+    return result;
+  }
+  /**
+   * This method is a helper for {@link DeepAssign#_resolve}, and it's used for when the class
+   * has the `target` but not the `source`: depending on the type of the `target`, it calls
+   * resolves with an empty object of the same type; if the `target` can't be merged, it just
+   * returns it as it was received, which means that is a type that doesn't hold references.
+   *
+   * @param {*}       target                  The target to copy.
+   * @param {boolean} [ignoreArrayMode=false] Whether or not to ignore the option that tells the
+   *                                          class how array assignments should be handled. This
+   *                                          parameter exists because, when called directly from
+   *                                          {@link DeepAssign#_assign}, it doesn't make sense to
+   *                                          use a strategy different than 'merge'.
+   * @returns {*}
+   * @access protected
+   * @ignore
+   */
+  _resolveFromEmpty(target, ignoreArrayMode = false) {
+    let result;
+    if (Array.isArray(target)) {
+      result = this._resolve([], target, ignoreArrayMode);
+    } else if (this._isPlainObject(target)) {
+      result = this._resolve({}, target);
+    } else {
+      result = target;
+    }
+
+    return result;
+  }
+}
+
+/**
+ * Shortcut method for `new DeepAssign().assign(...)`.
+ *
+ * @type {DeepAssignFn}
+ * @see {@link DeepAssign#assign}
+ */
+const deepAssign = new DeepAssign().assign;
+/**
+ * Shortcut method for `new DeepAssign({ arrayMode: 'concat' }).assign(...)`.
+ *
+ * @type {DeepAssignFn}
+ * @see {@link DeepAssign#assign}
+ */
+const deepAssignWithConcat = new DeepAssign({ arrayMode: 'concat' }).assign;
+/**
+ * Shortcut method for `new DeepAssign({ arrayMode: 'overwrite' }).assign(...)`.
+ *
+ * @type {DeepAssignFn}
+ * @see {@link DeepAssign#assign}
+ */
+const deepAssignWithOverwrite = new DeepAssign({ arrayMode: 'overwrite' }).assign;
+/**
+ * Shortcut method for `new DeepAssign({ arrayMode: 'shallowMerge' }).assign(...)`.
+ *
+ * @type {DeepAssignFn}
+ * @see {@link DeepAssign#assign}
+ */
+const deepAssignWithShallowMerge = new DeepAssign({ arrayMode: 'shallowMerge' }).assign;
+
+module.exports.DeepAssign = DeepAssign;
+module.exports.deepAssign = deepAssign;
+module.exports.deepAssignWithConcat = deepAssignWithConcat;
+module.exports.deepAssignWithOverwrite = deepAssignWithOverwrite;
+module.exports.deepAssignWithShallowMerge = deepAssignWithShallowMerge;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8" />
+    <title>APIClient - wootils docs</title>
+    
+    
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css" />
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+    <link rel="shortcut icon" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="48x48" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/favicon-72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="icons/favicon-96.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/favicon-144.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="256x256" href="icons/favicon-256.png" />
+    <link rel="apple-touch-icon" sizes="384x384" href="icons/favicon-384.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/favicon-512.png" />
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html" class="home-link">wootils</a></h2><h2><a href="https://github.com/homer0/wootils" target="_blank" >GitHub</a></h2><h3>Modules</h3><ul><li><a href="module-browser_simpleStorage.html">browser/simpleStorage</a></li><li><a href="module-node_appConfiguration.html">node/appConfiguration</a></li><li><a href="module-node_environmentUtils.html">node/environmentUtils</a></li><li><a href="module-node_errorHandler.html">node/errorHandler</a></li><li><a href="module-node_logger.html">node/logger</a></li><li><a href="module-node_packageInfo.html">node/packageInfo</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_packageInfo.html#~packageInfo">packageInfo</a></li></ul></li><li><a href="module-node_pathUtils.html">node/pathUtils</a></li><li><a href="module-node_rootRequire.html">node/rootRequire</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_rootRequire.html#~rootRequire">rootRequire</a></li></ul></li><li><a href="module-shared_apiClient.html">shared/apiClient</a></li><li><a href="module-shared_deepAssign.html">shared/deepAssign</a></li><li><a href="module-shared_deferred.html">shared/deferred</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_deferred.html#.deferred">deferred</a></li></ul></li><li><a href="module-shared_eventsHub.html">shared/eventsHub</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_eventsHub.html#~wrapper">wrapper</a></li></ul></li><li><a href="module-shared_extendPromise.html">shared/extendPromise</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_extendPromise.html#~extendPromise">extendPromise</a></li></ul></li><li><a href="module-shared_jimpleFns.html">shared/jimpleFns</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~provider">provider</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~providerCreator">providerCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resource">resource</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourceCreator">resourceCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourcesCollection">resourcesCollection</a></li></ul></li><li><a href="module-shared_objectUtils.html">shared/objectUtils</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-browser.html">Browser utilities</a></li><li><a href="tutorial-node.html">Node utilities</a></li><li><a href="tutorial-shared.html">Shared utilities</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">APIClient</h1>
+    
+
+    <section>
+  <header>
+    <h2>APIClient</h2>
+  </header>
+  <article class="tutorial">
+    <h1>APIClient</h1>
+<p>A really basic client to work with an API endpoints requests.</p>
+<p>Nowadays there's almost no app that doesn't make requests to one or more external APIs, that's why I built this service.</p>
+<p>Now, the reason this is marked as <em>'shared'</em> it's because it basically organizes the API configuration and prepares the requests, but you have to give it a <code>fetch</code> client to make the request. It's <em>'shared'</em> because on a browser you can give it the native <code>fetch</code> function, and on Node, something like <code>node-fetch</code> or <code>axios</code>, but that supports the native <code>fetch</code> signature.</p>
+<h2>Examples</h2>
+<blockquote>
+<p>This example will be on Node, so I'll use <a href="https://yarnpkg.com/en/package/node-fetch"><code>node-fetch</code></a> as fetch client.</p>
+</blockquote>
+<p>First, let's start by creating the configuration:</p>
+<pre class="prettyprint source lang-js"><code>const url = 'https://my-api.com';
+const endpoints: {
+  login: 'auth/login',
+  profile: 'users/:userId',
+  users: 'users',
+};
+const fetchClient = require('node-fetch');
+</code></pre>
+<p>You need those three things to instantiate the client:</p>
+<ol>
+<li>An entry point for your API.</li>
+<li>A dictionary of endpoints (Check the <strong>features</strong> section to see all the possible ways to define an endpoint).</li>
+<li>A fetch client to make the requests.</li>
+</ol>
+<p>Now, to instantiate the client:</p>
+<pre class="prettyprint source lang-js"><code>const { APIClient } = require('wootils/shared');
+
+const client = new APIClient(url, endpoints, fetchClient);
+</code></pre>
+<p>To make a request, you first need to generate an endpoint and use it to call the method of the type of request you want to make.</p>
+<p>Let's say you want to authenticate a user, which is a <code>POST</code> request to the <code>login</code> endpoint with a body that includes <code>username</code> and <code>password</code>:</p>
+<pre class="prettyprint source lang-js"><code>client.post(client.endpoint('login'), {
+  username: 'Rosario',
+  password: 'charito',
+})
+.then((response) => {
+  // Do something...
+});
+</code></pre>
+<p>Ok, that one was easy, no extra options or parameters. Next will request some user information from the <code>profile</code> endpoint, a <code>GET</code> request that requires a <code>userId</code> parameter:</p>
+<pre class="prettyprint source lang-js"><code>client.get(client.endpoint('profile', { userId: 2509 }), {
+  username: 'Rosario',
+  password: 'charito',
+})
+.then((response) => {
+  // Do something...
+});
+</code></pre>
+<p>Easy enough, right? Well, for the last example, we'll make a request to get the users directory to the <code>users</code> endpoint, a <code>GET</code> request and we'll include a query string parameter to <em>&quot;limit the number of returned users&quot;</em>:</p>
+<pre class="prettyprint source lang-js"><code>client.get(client.endpoint('users', { count: 10 }), {
+  username: 'Rosario',
+  password: 'charito',
+})
+.then((response) => {
+  // Do something...
+});
+</code></pre>
+<p>Done! If the parameter doesn't have a placeholder on the endpoint path, it gets automatically added on the query string.</p>
+<h2>Features</h2>
+<h3>Configurable endpoints</h3>
+<p>On the example above, all the endpoints were strings, but you can define them as objects to include default query string parameters, or even as sub collections of endpoints:</p>
+<h4>Endpoint objects</h4>
+<pre class="prettyprint source lang-js"><code>const endpoints = {
+  users: {
+    path: 'users',
+    query: {
+      count: 10,
+      offset: null,
+    },
+  },
+};
+</code></pre>
+<p>In that case, if <code>count</code> is not specified on <code>endpoint(...)</code>, it will have a default value of <code>10</code>.</p>
+<p>And if <code>offset</code> is not specified, it won't be sent. The reason the configuration supports <em>&quot;nullable&quot;</em> parameters is so they can be used like some sort of documentation for the endpoint: <em>&quot;It's not used, but there's an optional parameter called ...&quot;</em>.</p>
+<h4>Sub collections of endpoints</h4>
+<pre class="prettyprint source lang-js"><code>const endpoints = {
+  login: 'auth/login',
+  users: {
+    profile: 'users/:userId',
+    directory: {
+      path: 'users',
+      query: {
+        count: 10,
+      },
+    },
+  },
+};
+</code></pre>
+<p>As you can see, both users related endpoints are now under <code>users</code>, and <code>login</code> is still on the top level. To access <em>&quot;sub endpoints&quot;</em> you use dot notation:</p>
+<pre class="prettyprint source lang-js"><code>const endpointURL = client.endpoint('users.profile', { userId: 2509 });
+</code></pre>
+<p>This allows you to organize the scopes of your endpoints and make the configuration easier to read.</p>
+<h4>Built-in request methods</h4>
+<p>On the example above we saw only <code>.get</code> and <code>.post</code>, but the client comes with these already built-in request methods:</p>
+<ul>
+<li><code>.get(url, options = {})</code></li>
+<li><code>.head(url, options = {})</code></li>
+<li><code>.post(url, body, options = {})</code></li>
+<li><code>.put(url, body, options = {})</code></li>
+<li><code>.patch(url, body, options = {})</code></li>
+<li><code>.delete(url, body = {}, options = {})</code></li>
+</ul>
+<p>If you are wondering what <code>options</code> are, well, they are extra options for the <code>fetch</code> client call. It can include headers, another method, another body, etc. Everything that could send on the <code>fetch</code> call second parameter.</p>
+<h4>Default headers</h4>
+<p>The client allows you to set a dictionary of default headers you want to include on every request.</p>
+<p>For example, let's say you are on a development environment and you want all your request to go out with the header <code>x-development</code> set to <code>true</code>:</p>
+<pre class="prettyprint source lang-js"><code>client.setDefaultHeaders({
+  'x-development': true,
+});
+</code></pre>
+<p>Now, all the outgoing requests will include that header.</p>
+<h4>Authorization token</h4>
+<p>If you are working with an API that requires authorization on every requests, and that provides you with a bearer token when you authenticate, you could set it on the client and it will automatically include the <code>Authorization</code> header on every request and send the token:</p>
+<pre class="prettyprint source lang-js"><code>client.setAuthorizationToken('some-token');
+</code></pre>
+<p>Done, all the requests will include <code>Authorization: Bearer some-token</code>.</p>
+<h2>ES Modules</h2>
+<p>If you are using ESM, you can import the class from the <code>/esm</code> sub path:</p>
+<pre class="prettyprint source lang-js"><code>import APIClient from 'wootils/esm/shared/apiClient';
+
+// or
+
+import { APIClient } from 'wootils/esm/shared';
+</code></pre>
+<h2>Technical documentation</h2>
+<ul>
+<li>Class: <a href="module-shared_apiClient.APIClient.html"><code>APIClient</code></a></li>
+</ul>
+<blockquote>
+<p>If you are reading this form the markdown document, you can go to the <a href="https://homer0.github.io/wootils">online version</a>; or you can generate the documentation site yourself by running the <code>docs</code> command:</p>
+<pre class="prettyprint source lang-bash"><code># You can either use npm or yarn, it doesn't matter
+npm run docs && open ./docs/index.html;
+</code></pre>
+</blockquote>
+  </article>
+  
+</section>
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

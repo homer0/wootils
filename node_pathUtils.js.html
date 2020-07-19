@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8" />
+    <title>node/pathUtils.js - wootils docs</title>
+    
+    
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css" />
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+    <link rel="shortcut icon" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="48x48" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/favicon-72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="icons/favicon-96.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/favicon-144.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="256x256" href="icons/favicon-256.png" />
+    <link rel="apple-touch-icon" sizes="384x384" href="icons/favicon-384.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/favicon-512.png" />
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html" class="home-link">wootils</a></h2><h2><a href="https://github.com/homer0/wootils" target="_blank" >GitHub</a></h2><h3>Modules</h3><ul><li><a href="module-browser_simpleStorage.html">browser/simpleStorage</a></li><li><a href="module-node_appConfiguration.html">node/appConfiguration</a></li><li><a href="module-node_environmentUtils.html">node/environmentUtils</a></li><li><a href="module-node_errorHandler.html">node/errorHandler</a></li><li><a href="module-node_logger.html">node/logger</a></li><li><a href="module-node_packageInfo.html">node/packageInfo</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_packageInfo.html#~packageInfo">packageInfo</a></li></ul></li><li><a href="module-node_pathUtils.html">node/pathUtils</a></li><li><a href="module-node_rootRequire.html">node/rootRequire</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_rootRequire.html#~rootRequire">rootRequire</a></li></ul></li><li><a href="module-shared_apiClient.html">shared/apiClient</a></li><li><a href="module-shared_deepAssign.html">shared/deepAssign</a></li><li><a href="module-shared_deferred.html">shared/deferred</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_deferred.html#.deferred">deferred</a></li></ul></li><li><a href="module-shared_eventsHub.html">shared/eventsHub</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_eventsHub.html#~wrapper">wrapper</a></li></ul></li><li><a href="module-shared_extendPromise.html">shared/extendPromise</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_extendPromise.html#~extendPromise">extendPromise</a></li></ul></li><li><a href="module-shared_jimpleFns.html">shared/jimpleFns</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~provider">provider</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~providerCreator">providerCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resource">resource</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourceCreator">resourceCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourcesCollection">resourcesCollection</a></li></ul></li><li><a href="module-shared_objectUtils.html">shared/objectUtils</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-browser.html">Browser utilities</a></li><li><a href="tutorial-node.html">Node utilities</a></li><li><a href="tutorial-shared.html">Shared utilities</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">node/pathUtils.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const path = require('path');
+const { providerCreator } = require('../shared/jimpleFns');
+/**
+ * @module node/pathUtils
+ */
+
+/**
+ * @typedef {import('../shared/jimpleFns').ProviderCreatorWithOptions&lt;O>}
+ * ProviderCreatorWithOptions
+ * @template O
+ */
+
+/**
+ * @typedef {Object} PathUtilsProviderOptions
+ * @property {string} serviceName The name that will be used to register an instance
+ *                                of {@link PathUtils}. Its default value is `pathUtils`.
+ * @property {string} [home]      The path to the new home location.
+ * @parent module:node/pathUtils
+ */
+
+/**
+ * A utility services to manage paths on a project. It allows for path building relatives to
+ * the project root or from where the app executable is located.
+ *
+ * @parent module:node/pathUtils
+ * @tutorial pathUtils
+ */
+class PathUtils {
+  /**
+   * @param {string} [home=''] The location of the project's `home`(root) directory. By default
+   *                           it uses `process.cwd()`.
+   */
+  constructor(home = '') {
+    /**
+     * The root path from where the app is being executed.
+     *
+     * @type {string}
+     * @access protected
+     * @ignore
+     */
+    this._path = process.cwd();
+    /**
+     * A dictionary of different path locations.
+     *
+     * @type {Object.&lt;string,string>}
+     * @access protected
+     * @ignore
+     */
+    this._locations = {};
+
+    this._addAppLocation();
+    this.addLocation('home', home || this.path);
+  }
+  /**
+   * Adds a new location.
+   *
+   * @param {string} name         The reference name.
+   * @param {string} locationPath The path of the location. It must be inside the path from the
+   *                              app is being executed.
+   */
+  addLocation(name, locationPath) {
+    let location = locationPath;
+    /**
+     * If it doesn't starts with the root location, then prefix it with it. The project should
+     * never attempt to access a location outside its directory.
+     */
+    if (location !== this.path &amp;&amp; !location.startsWith(this.path)) {
+      location = path.join(this.path, location);
+    }
+    // Fix it so all the locations will end with a separator.
+    if (!location.endsWith(path.sep)) {
+      location = `${location}${path.sep}`;
+    }
+    // Add it to the dictionary.
+    this.locations[name] = location;
+  }
+  /**
+   * Gets a location path by its name.
+   *
+   * @param {string} name The location name.
+   * @returns {string}
+   * @throws {Error} If there location hasn't been added.
+   */
+  getLocation(name) {
+    const location = this.locations[name];
+    if (!location) {
+      throw new Error(`There's no location with the following name: ${name}`);
+    }
+
+    return location;
+  }
+  /**
+   * Alias to `joinFrom` that uses the `home` location by default.
+   *
+   * @param {...string} paths The rest of the path components to join.
+   * @returns {string}
+   */
+  join(...paths) {
+    return this.joinFrom('home', ...paths);
+  }
+  /**
+   * Builds a path using a location path as base.
+   *
+   * @param {string}    location The location name.
+   * @param {...string} paths    The rest of the path components to join.
+   * @returns {string}
+   */
+  joinFrom(location, ...paths) {
+    const locationPath = this.getLocation(location);
+    return path.join(locationPath, ...paths);
+  }
+  /**
+   * The path to the directory where the app executable is located.
+   *
+   * @type {string}
+   */
+  get app() {
+    return this.getLocation('app');
+  }
+  /**
+   * The project root path.
+   *
+   * @type {string}
+   */
+  get home() {
+    return this.getLocation('home');
+  }
+  /**
+   * A dictionary of different path locations.
+   *
+   * @type {Object.&lt;string,string>}
+   * @access protected
+   * @ignore
+   */
+  get locations() {
+    return this._locations;
+  }
+  /**
+   * The root path from where the app is being executed.
+   *
+   * @type {string}
+   * @access protected
+   * @ignore
+   */
+  get path() {
+    return this._path;
+  }
+  /**
+   * Finds and register the location for the app executable directory.
+   *
+   * @access protected
+   * @ignore
+   */
+  _addAppLocation() {
+    let current = module;
+    while (
+      current.parent &amp;&amp;
+      current.parent.filename !== current.filename
+    ) {
+      current = current.parent;
+    }
+
+    this.addLocation('app', path.dirname(current.filename));
+  }
+}
+
+/**
+ * The service provider to register an instance of {@link PathUtils} on the container.
+ *
+ * @type {ProviderCreatorWithOptions&lt;PathUtilsProviderOptions>}
+ * @tutorial pathUtils
+ */
+const pathUtils = providerCreator((options = {}) => (app) => {
+  app.set(options.serviceName || 'pathUtils', () => new PathUtils(options.home));
+});
+
+module.exports.PathUtils = PathUtils;
+module.exports.pathUtils = pathUtils;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

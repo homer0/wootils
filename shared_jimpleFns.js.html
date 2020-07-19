@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8" />
+    <title>shared/jimpleFns.js - wootils docs</title>
+    
+    
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css" />
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+    <link rel="shortcut icon" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="48x48" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/favicon-72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="icons/favicon-96.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/favicon-144.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="256x256" href="icons/favicon-256.png" />
+    <link rel="apple-touch-icon" sizes="384x384" href="icons/favicon-384.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/favicon-512.png" />
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html" class="home-link">wootils</a></h2><h2><a href="https://github.com/homer0/wootils" target="_blank" >GitHub</a></h2><h3>Modules</h3><ul><li><a href="module-browser_simpleStorage.html">browser/simpleStorage</a></li><li><a href="module-node_appConfiguration.html">node/appConfiguration</a></li><li><a href="module-node_environmentUtils.html">node/environmentUtils</a></li><li><a href="module-node_errorHandler.html">node/errorHandler</a></li><li><a href="module-node_logger.html">node/logger</a></li><li><a href="module-node_packageInfo.html">node/packageInfo</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_packageInfo.html#~packageInfo">packageInfo</a></li></ul></li><li><a href="module-node_pathUtils.html">node/pathUtils</a></li><li><a href="module-node_rootRequire.html">node/rootRequire</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_rootRequire.html#~rootRequire">rootRequire</a></li></ul></li><li><a href="module-shared_apiClient.html">shared/apiClient</a></li><li><a href="module-shared_deepAssign.html">shared/deepAssign</a></li><li><a href="module-shared_deferred.html">shared/deferred</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_deferred.html#.deferred">deferred</a></li></ul></li><li><a href="module-shared_eventsHub.html">shared/eventsHub</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_eventsHub.html#~wrapper">wrapper</a></li></ul></li><li><a href="module-shared_extendPromise.html">shared/extendPromise</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_extendPromise.html#~extendPromise">extendPromise</a></li></ul></li><li><a href="module-shared_jimpleFns.html">shared/jimpleFns</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~provider">provider</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~providerCreator">providerCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resource">resource</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourceCreator">resourceCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourcesCollection">resourcesCollection</a></li></ul></li><li><a href="module-shared_objectUtils.html">shared/objectUtils</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-browser.html">Browser utilities</a></li><li><a href="tutorial-node.html">Node utilities</a></li><li><a href="tutorial-shared.html">Shared utilities</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">shared/jimpleFns.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module shared/jimpleFns
+ */
+
+/**
+ * @typedef {import('jimple')} Jimple
+ * @external Jimple
+ * @see https://yarnpkg.com/en/package/jimple
+ */
+
+/**
+ * @callback ProviderRegisterFn
+ * @param {Jimple} app A reference to the dependency injection container.
+ * @parent module:shared/jimpleFns
+ */
+
+/**
+ * @typedef {Object} Provider
+ * @property {ProviderRegisterFn} register The method that gets called when registering the
+ *                                         provider.
+ * @parent module:shared/jimpleFns
+ */
+
+/**
+ * @callback ProviderCreatorFn
+ * @returns {Provider}
+ * @parent module:shared/jimpleFns
+ */
+
+/**
+ * @callback ProviderCreatorWithOptions
+ * @param {Partial&lt;O>} [options={}] The options to create the provider.
+ * @returns {Provider}
+ * @template O
+ * @parent module:shared/jimpleFns
+ */
+
+/**
+ * @typedef {Object} Resource
+ * @property {Function} key  The function (`fn`) sent to the
+ *                           {@link module:shared/jimpleFns~resource|resource} function.
+ * @property {boolean}  name This will always be `true` and it's the `name` sent to
+ *                           the {@link module:shared/jimpleFns~resource|resource} function.
+ * @parent module:shared/jimpleFns
+ */
+
+/**
+ * @typedef {Function} ResourceCreator
+ * @property {Function} key  The result of the `creatorFn` sent to the
+ *                           {@link module:shared/jimpleFns~resourceCreator|resourceCreator}
+ *                           function.
+ * @property {boolean}  name This will always be `true` and it's the `name` sent to
+ *                           the {@link module:shared/jimpleFns~resourceCreator|resourceCreator}
+ *                           function.
+ * @parent module:shared/jimpleFns
+ */
+
+/**
+ * @callback ResourcesCollectionCreator
+ * @param {Object.&lt;string,R>} items The dictionary of items to add to the collection.
+ * @returns {Object.&lt;string,R>} In additions to the original dictionary of items, the returned
+ *                              object will have the collection flag (`name`), and the `key`
+ *                              function (`fn`) to interact with the collection.
+ * @template R
+ * @throws {Error} If one of the items key is the collection `name` or `key`.
+ * @throws {Error} If one of the items doesn't have a `key` function.
+ * @parent module:shared/jimpleFns
+ */
+
+/**
+ * @callback ResourcesCollectionFn
+ * @param {Object.&lt;string,R>} items The dictionary of items to add to the collection.
+ * @param {...*}              args  The arguments that were sent to the collection `key` function.
+ * @template R
+ * @parent module:shared/jimpleFns
+ */
+
+/**
+ * Generates a resource entity with a specific function Jimple or an abstraction of jimple can
+ * make use of.
+ *
+ * @example
+ * &lt;caption>The `provider` shorthand functino is an _entity_ with a `register` function:&lt;/caption>
+ * const someProvider = resource('provider', 'register', (app) => {
+ *   // ...
+ * });
+ *
+ * @param {string}   name The name of the resource. The generated object will have a property with
+ *                        its name and the value `true`.
+ * @param {string}   key  The name of the key that will have the function on the generated object.
+ * @param {Function} fn   The function to interact with the resource.
+ *
+ * @returns {Resource}
+ */
+const resource = (name, key, fn) => ({
+  [key]: fn,
+  [name]: true,
+});
+/**
+ * This is a helper to dynamically configure a resource before creating it. The idea here is that
+ * the returned object can be used as a function, to configure the resource, or as a resource.
+ * The difference with {@link module:shared/jimpleFns~resource|resource} is that, instead of
+ * providing the function to interact with the generated resource, the `creatorFn` parameter is a
+ * function that returns a function like the one you would use on
+ * {@link module:shared/jimpleFns~resource|resource}. What this function actually returns is a
+ * {@link Proxy}, that when used as a function, it will return a resource; but when used as a
+ * resource, it will internally call `creatorFn` (and cache it) without parameters. It's very
+ * important that all the parameters of the `creatorFn` are optional, otherwise it will cause an
+ * error if called as a resource.
+ *
+ * @example
+ * &lt;caption>Let's use `provider` again, that requires a `register` function:&lt;/caption>
+ * const someProvider = resourceCreator(
+ *   'provider',
+ *   'register',
+ *   (options = {}) => (app) => {
+ *     // ...
+ *   },
+ * );
+ *
+ * // Register it as a resource
+ * container.register(someProvider);
+ *
+ * // Register it after creating a configured resource
+ * container.register(someProvider({ enabled: false }));
+ *
+ * @param {string}   name      The name of the resource. The generated object will have a property
+ *                             with its name and the value `true`.
+ * @param {string}   key       The name of the key that will have the function on the generated
+ *                             object.
+ * @param {Function} creatorFn The function that will generate the 'resource function'.
+ *
+ * @returns {ResourceCreator}
+ */
+const resourceCreator = (name, key, creatorFn) => new Proxy(
+  (...args) => resource(name, key, creatorFn(...args)),
+  {
+    name,
+    resource: null,
+    get(target, property) {
+      let result;
+      if (property === this.name) {
+        result = true;
+      } else if (property === key) {
+        if (this.resource === null) {
+          this.resource = creatorFn();
+        }
+        result = this.resource;
+      } else {
+        result = target[property];
+      }
+
+      return result;
+    },
+  },
+);
+/**
+ * Generates a collection of resources that can be called individually or all together via the
+ * `key` function.
+ *
+ * @example
+ * &lt;caption>
+ * Following all the other examples(and the implementations), let's create a a providers collection.
+ * &lt;/caption>
+ * const firstProvider = resource('provider', 'register', (app) => {
+ *   // ...
+ * });
+ * const secondProvider = resourceCreator(
+ *   'provider',
+ *   'register',
+ *   (options = {}) => (app) => {
+ *     // ...
+ *   },
+ * );
+ *
+ * const bothProviders = resourcesCollection('providers', 'register')({
+ *   firstProvider,
+ *   secondProvider,
+ * });
+ *
+ *
+ * // Register all at once
+ * container.register(bothProviders);
+ * // Register only one
+ * container.register(bothProviders.firstProvider);
+ * // Register only one, after configuring it
+ * container.register(bothProviders.secondProvider({ enabled: false }));
+ *
+ * @param {string}                 name      The name of the collection. When a collection is
+ *                                           generated, the returned object will have a property
+ *                                           with its name and the value `true`.
+ * @param {string}                 key       The name of the key that will have the function to
+ *                                           interact with the collection on the final object.
+ * @param {?ResourcesCollectionFn} [fn=null] By default, if the `key` function of the collection
+ *                                           gets called, all the items of the collection will be
+ *                                           called with the same arguments. But you can specify a
+ *                                           function that will receive all the items and all the
+ *                                           arguments to customize the interaction.
+ * @returns {ResourcesCollectionCreator&lt;Resource>}
+ */
+const resourcesCollection = (name, key, fn = null) => (items) => {
+  const invalidKeys = [name, key];
+  const itemsKeys = Object.keys(items);
+  const invalidKey = itemsKeys.some((itemKey) => invalidKeys.includes(itemKey));
+  if (invalidKey) {
+    throw new Error(
+      `No item on the collection can have the keys \`${name}\` nor \`${key}\``,
+    );
+  }
+
+  const invalidItem = itemsKeys.find((itemKey) => typeof items[itemKey][key] !== 'function');
+  if (invalidItem) {
+    throw new Error(
+      `The item \`${invalidItem}\` is invalid: it doesn't have a \`${key}\` function`,
+    );
+  }
+
+  const useFn = fn ?
+    (...args) => fn(items, ...args) :
+    (...args) => itemsKeys.forEach((item) => {
+      items[item][key](...args);
+    });
+
+  return {
+    ...resource(
+      name,
+      key,
+      useFn,
+    ),
+    ...items,
+  };
+};
+/**
+ * Creates a provider resource.
+ *
+ * @param {ProviderRegisterFn} registerFn The function the container will call in order to
+ *                                        register the provider.
+ * @returns {Provider}
+ */
+const provider = (registerFn) => resource('provider', 'register', registerFn);
+/**
+ * Creates a configurable provider.
+ *
+ * @param {ProviderCreatorFn} creatorFn The function that will be used to create the provider.
+ * @returns {ResourceCreator}
+ */
+const providerCreator = (creatorFn) => resourceCreator('provider', 'register', creatorFn);
+/**
+ * Creates a collection of providers.
+ *
+ * @type {ResourcesCollectionCreator&lt;Provider>}
+ */
+const providers = resourcesCollection('providers', 'register');
+
+module.exports.resource = resource;
+module.exports.resourceCreator = resourceCreator;
+module.exports.resourcesCollection = resourcesCollection;
+module.exports.provider = provider;
+module.exports.providerCreator = providerCreator;
+module.exports.providers = providers;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

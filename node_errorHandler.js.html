@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8" />
+    <title>node/errorHandler.js - wootils docs</title>
+    
+    
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css" />
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+    <link rel="shortcut icon" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="48x48" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/favicon-72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="icons/favicon-96.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/favicon-144.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="256x256" href="icons/favicon-256.png" />
+    <link rel="apple-touch-icon" sizes="384x384" href="icons/favicon-384.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/favicon-512.png" />
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html" class="home-link">wootils</a></h2><h2><a href="https://github.com/homer0/wootils" target="_blank" >GitHub</a></h2><h3>Modules</h3><ul><li><a href="module-browser_simpleStorage.html">browser/simpleStorage</a></li><li><a href="module-node_appConfiguration.html">node/appConfiguration</a></li><li><a href="module-node_environmentUtils.html">node/environmentUtils</a></li><li><a href="module-node_errorHandler.html">node/errorHandler</a></li><li><a href="module-node_logger.html">node/logger</a></li><li><a href="module-node_packageInfo.html">node/packageInfo</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_packageInfo.html#~packageInfo">packageInfo</a></li></ul></li><li><a href="module-node_pathUtils.html">node/pathUtils</a></li><li><a href="module-node_rootRequire.html">node/rootRequire</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_rootRequire.html#~rootRequire">rootRequire</a></li></ul></li><li><a href="module-shared_apiClient.html">shared/apiClient</a></li><li><a href="module-shared_deepAssign.html">shared/deepAssign</a></li><li><a href="module-shared_deferred.html">shared/deferred</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_deferred.html#.deferred">deferred</a></li></ul></li><li><a href="module-shared_eventsHub.html">shared/eventsHub</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_eventsHub.html#~wrapper">wrapper</a></li></ul></li><li><a href="module-shared_extendPromise.html">shared/extendPromise</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_extendPromise.html#~extendPromise">extendPromise</a></li></ul></li><li><a href="module-shared_jimpleFns.html">shared/jimpleFns</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~provider">provider</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~providerCreator">providerCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resource">resource</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourceCreator">resourceCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourcesCollection">resourcesCollection</a></li></ul></li><li><a href="module-shared_objectUtils.html">shared/objectUtils</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-browser.html">Browser utilities</a></li><li><a href="tutorial-node.html">Node utilities</a></li><li><a href="tutorial-shared.html">Shared utilities</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">node/errorHandler.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { providerCreator } = require('../shared/jimpleFns');
+const { deepAssignWithShallowMerge } = require('../shared/deepAssign');
+/**
+ * @module node/errorHandler
+ */
+
+/**
+ * @typedef {import('./logger').Logger} Logger
+ */
+
+/**
+ * @typedef {import('../shared/jimpleFns').ProviderCreatorWithOptions&lt;O>}
+ * ProviderCreatorWithOptions
+ * @template O
+ */
+
+/**
+ * @typedef {Object} ErrorHandlerServiceMap
+ * @property {string[]|string|Logger} [logger]
+ * A list of loggers' service names from which the service will try to find the first available,
+ * a specific service name, or an instance of {@link Logger}.
+ * @parent module:node/errorHandler
+ */
+
+/**
+ * @typedef {Object} ErrorHandlerProviderOptions
+ * @property {string} serviceName
+ * The name that will be used to register an instance of {@link ErrorHandler}. Its default value
+ * is `errorHandler`.
+ * @property {boolean} exitOnError
+ * Whether or not to exit the process after receiving an error.
+ * @property {ErrorHandlerServiceMap} services
+ * A dictionary with the services that need to be injected on the class.
+ * @parent module:node/errorHandler
+ */
+
+/**
+ * An error handler that captures uncaught exceptions and unhandled rejections in order to log
+ * them with detail.
+ *
+ * @parent module:node/errorHandler
+ * @tutorial errorHandler
+ */
+class ErrorHandler {
+  /**
+   * @param {Logger}  appLogger          To log the detail of the erros.
+   * @param {boolean} [exitOnError=true] Whether or not to exit the process after receiving an
+   *                                     error.
+   */
+  constructor(appLogger, exitOnError = true) {
+    /**
+     * A local reference for the `appLogger` service.
+     *
+     * @type {Logger}
+     * @access protected
+     * @ignore
+     */
+    this._appLogger = appLogger;
+    /**
+     * Whether or not to exit the process after receiving an error.
+     *
+     * @type {boolean}
+     * @access protected
+     * @ignore
+     */
+    this._exitOnError = exitOnError;
+    /**
+     * The list of events this handler will listen for in order to catch errors.
+     *
+     * @type {string[]}
+     * @access protected
+     * @ignore
+     */
+    this._eventsNames = [
+      'uncaughtException',
+      'unhandledRejection',
+    ];
+    /**
+     * Bind the handler method so it can be used on the calls to `process`.
+     *
+     * @ignore
+     */
+    this.handler = this.handle.bind(this);
+  }
+  /**
+   * This is called by the process listeners when an uncaught exception is thrown or a rejected
+   * promise is not handled. It logs the error on detail.
+   * The process exits when after logging an error.
+   *
+   * @param {Error} error The unhandled error.
+   */
+  handle(error) {
+    // If the logger is configured to show the time...
+    if (this._appLogger.showTime) {
+      // ...just send the error.
+      this._appLogger.error(error);
+    } else {
+      // ...otherwise, get the time on a readable format.
+      const time = new Date()
+      .toISOString()
+      .replace(/T/, ' ')
+      .replace(/\..+/, '');
+      // Build the error message with the time.
+      const message = `[${time}] ${error.message}`;
+      // Log the new message with the exception.
+      this._appLogger.error(message, error);
+    }
+
+    // Check if it should exit the process.
+    if (this._exitOnError) {
+      // eslint-disable-next-line no-process-exit
+      process.exit(1);
+    }
+  }
+  /**
+   * Starts listening for unhandled errors.
+   */
+  listen() {
+    this._eventsNames.forEach((eventName) => {
+      process.on(eventName, this.handler);
+    });
+  }
+  /**
+   * Stops listening for unhandled errors.
+   */
+  stopListening() {
+    this._eventsNames.forEach((eventName) => {
+      process.removeListener(eventName, this.handler);
+    });
+  }
+  /**
+   * Whether or not the process will exit after receiving an error.
+   *
+   * @type {boolean}
+   */
+  get exitOnError() {
+    return this._exitOnError;
+  }
+}
+/**
+ * The service provider to register an instance of {@link ErrorHandler} on the container.
+ *
+ * @throws {Error} If `services.logger` specifies a service that doesn't exist or if it's a falsy
+ *                 value.
+ * @type {ProviderCreatorWithOptions&lt;ErrorHandlerProviderOptions>}
+ * @tutorial errorHandler
+ */
+const errorHandler = providerCreator((options = {}) => (app) => {
+  app.set(options.serviceName || 'errorHandler', () => {
+    /**
+     * @type {ErrorHandlerProviderOptions}
+     * @ignore
+     */
+    const useOptions = deepAssignWithShallowMerge(
+      {
+        services: {
+          logger: ['logger', 'appLogger'],
+        },
+      },
+      options,
+    );
+
+    const { logger } = useOptions.services;
+    /**
+     * @type {?Logger}
+     * @ignore
+     */
+    let useLogger;
+    if (Array.isArray(logger)) {
+      useLogger = logger.reduce(
+        (acc, name) => {
+          let nextAcc;
+          if (acc) {
+            nextAcc = acc;
+          } else {
+            try {
+              nextAcc = app.get(name);
+            } catch (ignore) {
+              nextAcc = null;
+            }
+          }
+
+          return nextAcc;
+        },
+        null,
+      );
+    } else if (typeof logger === 'string') {
+      useLogger = app.get(logger);
+    } else {
+      useLogger = logger;
+    }
+
+    if (!useLogger) {
+      throw new Error('No logger service was found');
+    }
+
+    return new ErrorHandler(useLogger, useOptions.exitOnError);
+  });
+});
+
+module.exports.ErrorHandler = ErrorHandler;
+module.exports.errorHandler = errorHandler;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

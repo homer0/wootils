@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8" />
+    <title>EventsHub - wootils docs</title>
+    
+    
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css" />
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+    <link rel="shortcut icon" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="48x48" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/favicon-72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="icons/favicon-96.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/favicon-144.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="256x256" href="icons/favicon-256.png" />
+    <link rel="apple-touch-icon" sizes="384x384" href="icons/favicon-384.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/favicon-512.png" />
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html" class="home-link">wootils</a></h2><h2><a href="https://github.com/homer0/wootils" target="_blank" >GitHub</a></h2><h3>Modules</h3><ul><li><a href="module-browser_simpleStorage.html">browser/simpleStorage</a></li><li><a href="module-node_appConfiguration.html">node/appConfiguration</a></li><li><a href="module-node_environmentUtils.html">node/environmentUtils</a></li><li><a href="module-node_errorHandler.html">node/errorHandler</a></li><li><a href="module-node_logger.html">node/logger</a></li><li><a href="module-node_packageInfo.html">node/packageInfo</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_packageInfo.html#~packageInfo">packageInfo</a></li></ul></li><li><a href="module-node_pathUtils.html">node/pathUtils</a></li><li><a href="module-node_rootRequire.html">node/rootRequire</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_rootRequire.html#~rootRequire">rootRequire</a></li></ul></li><li><a href="module-shared_apiClient.html">shared/apiClient</a></li><li><a href="module-shared_deepAssign.html">shared/deepAssign</a></li><li><a href="module-shared_deferred.html">shared/deferred</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_deferred.html#.deferred">deferred</a></li></ul></li><li><a href="module-shared_eventsHub.html">shared/eventsHub</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_eventsHub.html#~wrapper">wrapper</a></li></ul></li><li><a href="module-shared_extendPromise.html">shared/extendPromise</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_extendPromise.html#~extendPromise">extendPromise</a></li></ul></li><li><a href="module-shared_jimpleFns.html">shared/jimpleFns</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~provider">provider</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~providerCreator">providerCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resource">resource</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourceCreator">resourceCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourcesCollection">resourcesCollection</a></li></ul></li><li><a href="module-shared_objectUtils.html">shared/objectUtils</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-browser.html">Browser utilities</a></li><li><a href="tutorial-node.html">Node utilities</a></li><li><a href="tutorial-shared.html">Shared utilities</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">EventsHub</h1>
+    
+
+    <section>
+  <header>
+    <h2>EventsHub</h2>
+  </header>
+  <article class="tutorial">
+    <h1>EventsHub</h1>
+<p>A small implementation of a pubsub service for handling events on an app.</p>
+<p>It doesn't require any configuration or have customization options: You listen for an event with <code>on</code>, emit an event with <code>emit</code> and reduce a variable through an event with <code>reduce</code>.</p>
+<h2>Examples</h2>
+<p>First, let's create an instance of the hub:</p>
+<pre class="prettyprint source lang-js"><code>const { EventsHub } = require('wootils/shared');
+const events = new EventsHub();
+</code></pre>
+<h3>Listen and emit</h3>
+<pre class="prettyprint source lang-js"><code>// Add the listener
+events.on('my-event', () => {
+  console.log('The event listener was called!');
+});
+// Emit the event
+events.emit('my-event');
+</code></pre>
+<p>Quite simple, right? You can also send any number of parameters to the events:</p>
+<pre class="prettyprint source lang-js"><code>// Add the listener
+events.on('user-login', (username, password) => {
+  someAuthService.login(username, password)
+  .then((userInfo) => {
+    events.emit('user-login-successfull', userInfo);
+  })
+  .catch((error) => {
+  	 events.emit('user-login-failed', error);
+  });
+});
+
+...
+
+events.emit('user-login', 'rosario', 'p4ssword');
+</code></pre>
+<p>And you can even use the same listener for multiple events:</p>
+<pre class="prettyprint source lang-js"><code>// Add the listener
+events.on(['logout-route', 'unauthorized-request'], () => {
+  someAuthService.signout();
+});
+
+...
+
+events.emit('logout-route');
+// or
+someRequest()
+.then(() => ... )
+.catch((error) => {
+  if (error.code === 401) {
+    events.emit('unauthorized-request');
+  }
+})
+</code></pre>
+<blockquote>
+<p>All methods that support an event name also support an <code>Array</code> with a list of them.</p>
+</blockquote>
+<h3>Reduce a variable</h3>
+<p>It's basically the same as calling <code>emit</code>, but the first parameter may be modified by the listeners and it's returned after it went through all of them.</p>
+<pre class="prettyprint source lang-js"><code>events.on('filter-users-list', (list) => {
+  list.splice(1, 1);
+  return list;
+});
+
+const usersList = ['charito', 'Rosario'];
+const newUsersList = events.reduce('filter-users-list', usersList);
+console.log(newUsersList);
+// Will log ['charito']
+</code></pre>
+<blockquote>
+<p><code>reduce</code> also supports sending any number of parameters after the target variable.</p>
+</blockquote>
+<h2>ES Modules</h2>
+<p>If you are using ESM, you can import the class from the <code>/esm</code> sub path:</p>
+<pre class="prettyprint source lang-js"><code>import EventsHub from 'wootils/esm/shared/eventsHub';
+
+// or
+
+import { EventsHub } from 'wootils/esm/shared';
+</code></pre>
+<h2>Technical documentation</h2>
+<ul>
+<li>Class: <a href="module-shared_eventsHub.EventsHub.html"><code>EventsHub</code></a></li>
+</ul>
+<blockquote>
+<p>If you are reading this form the markdown document, you can go to the <a href="https://homer0.github.io/wootils">online version</a>; or you can generate the documentation site yourself by running the <code>docs</code> command:</p>
+<pre class="prettyprint source lang-bash"><code># You can either use npm or yarn, it doesn't matter
+npm run docs && open ./docs/index.html;
+</code></pre>
+</blockquote>
+  </article>
+  
+</section>
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

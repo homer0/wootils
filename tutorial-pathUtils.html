@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8" />
+    <title>PathUtils - wootils docs</title>
+    
+    
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css" />
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+    <link rel="shortcut icon" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="48x48" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/favicon-72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="icons/favicon-96.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/favicon-144.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="256x256" href="icons/favicon-256.png" />
+    <link rel="apple-touch-icon" sizes="384x384" href="icons/favicon-384.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/favicon-512.png" />
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html" class="home-link">wootils</a></h2><h2><a href="https://github.com/homer0/wootils" target="_blank" >GitHub</a></h2><h3>Modules</h3><ul><li><a href="module-browser_simpleStorage.html">browser/simpleStorage</a></li><li><a href="module-node_appConfiguration.html">node/appConfiguration</a></li><li><a href="module-node_environmentUtils.html">node/environmentUtils</a></li><li><a href="module-node_errorHandler.html">node/errorHandler</a></li><li><a href="module-node_logger.html">node/logger</a></li><li><a href="module-node_packageInfo.html">node/packageInfo</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_packageInfo.html#~packageInfo">packageInfo</a></li></ul></li><li><a href="module-node_pathUtils.html">node/pathUtils</a></li><li><a href="module-node_rootRequire.html">node/rootRequire</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_rootRequire.html#~rootRequire">rootRequire</a></li></ul></li><li><a href="module-shared_apiClient.html">shared/apiClient</a></li><li><a href="module-shared_deepAssign.html">shared/deepAssign</a></li><li><a href="module-shared_deferred.html">shared/deferred</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_deferred.html#.deferred">deferred</a></li></ul></li><li><a href="module-shared_eventsHub.html">shared/eventsHub</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_eventsHub.html#~wrapper">wrapper</a></li></ul></li><li><a href="module-shared_extendPromise.html">shared/extendPromise</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_extendPromise.html#~extendPromise">extendPromise</a></li></ul></li><li><a href="module-shared_jimpleFns.html">shared/jimpleFns</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~provider">provider</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~providerCreator">providerCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resource">resource</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourceCreator">resourceCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourcesCollection">resourcesCollection</a></li></ul></li><li><a href="module-shared_objectUtils.html">shared/objectUtils</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-browser.html">Browser utilities</a></li><li><a href="tutorial-node.html">Node utilities</a></li><li><a href="tutorial-shared.html">Shared utilities</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">PathUtils</h1>
+    
+
+    <section>
+  <header>
+    <h2>PathUtils</h2>
+  </header>
+  <article class="tutorial">
+    <h1>PathUtils</h1>
+<p>An easy way to manage locations and build paths relative to those locations on a Node app.</p>
+<p>When writing static <code>require</code> statements is easy: The file you are requiring is relative to the one where you are writing the <code>require</code>. But when you are reading files or doing <code>require</code> with dynamic paths, it can get messy pretty fast, and that's where this utility shines.</p>
+<h2>Example</h2>
+<p>Let's say your app tree looks like this:</p>
+<pre class="prettyprint source"><code>myApp/
+├── config/
+│   ├── development.js
+│   └── production.js
+└── app/
+    └── index.js
+</code></pre>
+<p>And you want to access <code>config/development.js</code>, but when you build your app, or prepare it to deployment, it becomes this:</p>
+<pre class="prettyprint source"><code>myApp/
+├── dist/
+│   └── app/
+│       └── index.min.js
+├── config/
+│   ├── development.js
+│   └── production.js
+└── app/
+    └── index.js
+</code></pre>
+<p>There's a lot of ways to check whether you need to call <code>../config</code> or <code>../../config</code>: <code>TryCatch</code>, check some environment variable, check if <code>../config</code> exists, etc. Well, with <code>PathUtils</code>, you don't need to do that, because the service knowns that if you ask for <code>config/development.js</code>, it's relative to your project root directory.</p>
+<h3>Without Jimple</h3>
+<blockquote>
+<p>If you haven't tried <a href="https://github.com/fjorgemota/jimple">Jimple</a>, give it a try, it's excellent for organizing your app dependencies and services.</p>
+</blockquote>
+<pre class="prettyprint source lang-js"><code>// Require the class.
+const { PathUtils } = require('wootils/node');
+// Instantiate it.
+const pathUtils = new PathUtils();
+</code></pre>
+<p>Now that you have the service instance, getting the path is easy as:</p>
+<pre class="prettyprint source lang-js"><code>const devConfigPath = pathUtils.join('config/development');
+</code></pre>
+<p>Done, now you can use either <code>require</code> or <code>fs</code> to get the contents of the file.</p>
+<h3>With Jimple</h3>
+<pre class="prettyprint source lang-js"><code>// Import all the required modules
+const Jimple = require('jimple');
+const { pathUtils } = require('wootils/node/providers');
+// Create a dummy app
+const app = new Jimple();
+// Register the service
+app.register(pathUtils);
+</code></pre>
+<p>Now that you have the service instance, getting the path is easy as:</p>
+<pre class="prettyprint source lang-js"><code>const devConfigPath = app.get('pathUtils').join('config/development');
+</code></pre>
+<p>Done, now you can use either <code>require</code> or <code>fs</code> to get the contents of the file.</p>
+<h2>Features</h2>
+<h3>Build paths relative to the project root directory</h3>
+<p>This was demonstrated on the example above. The <code>join</code> method works exactly like <code>path.join</code>, you can send any number of parameters and they will be merged on one single path.</p>
+<pre class="prettyprint source lang-js"><code>pathUtils.join('config', 'development.js');
+// is the same as
+pathUtils.join('config/development.js');
+</code></pre>
+<h3>Multiple locations</h3>
+<p>By default, <code>PathUtils</code> uses the <code>home</code> location, which is the project root directory, but it also has an <code>app</code> location and the ability to register new locations:</p>
+<p>The <code>app</code> location is the directory where your app executable file is located, for the project tree used on the example above, the <code>app</code> location is <code>/app</code> on development, and <code>/dist/app</code> when builded/deployed.</p>
+<p>To register new locations, you use the <code>addLocation</code> method:</p>
+<pre class="prettyprint source lang-js"><code>pathUtils.addLocation('my-location', 'some-folder/some-sub-folder');
+</code></pre>
+<p>The new location path <strong>must</strong> be relative to your project root directory.</p>
+<p>And finally, to use those locations, you use <code>joinFrom</code> instead of <code>join</code>:</p>
+<pre class="prettyprint source lang-js"><code>const pathToFile = pathUtils.joinFrom('my-location', 'some-file.js');
+</code></pre>
+<h2>ES Modules</h2>
+<p>If you are using ESM, you can import the class and the provider from the <code>/esm</code> sub path:</p>
+<pre class="prettyprint source lang-js"><code>import {
+  PathUtils,
+  pathUtils,
+} from 'wootils/esm/node/pathUtils';
+
+// just the class
+
+import { PathUtils } from 'wootils/esm/node';
+
+// just the provider
+
+import { pathUtils } from 'wootils/esm/node/providers';
+</code></pre>
+<h2>Technical documentation</h2>
+<ul>
+<li>Module: <a href="module-node_pathUtils.html"><code>node/pathUtils</code></a></li>
+<li>Class: <a href="module-node_pathUtils.PathUtils.html"><code>PathUtils</code></a></li>
+<li>Provider: <a href="module-node_pathUtils.html#~pathUtils"><code>pathUtils</code></a></li>
+</ul>
+<blockquote>
+<p>If you are reading this form the markdown document, you can go to the <a href="https://homer0.github.io/wootils">online version</a>; or you can generate the documentation site yourself by running the <code>docs</code> command:</p>
+<pre class="prettyprint source lang-bash"><code># You can either use npm or yarn, it doesn't matter
+npm run docs && open ./docs/index.html;
+</code></pre>
+</blockquote>
+  </article>
+  
+</section>
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

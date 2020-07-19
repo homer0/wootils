@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8" />
+    <title>AppConfiguration - wootils docs</title>
+    
+    
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css" />
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+    <link rel="shortcut icon" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="48x48" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/favicon-72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="icons/favicon-96.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/favicon-144.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="256x256" href="icons/favicon-256.png" />
+    <link rel="apple-touch-icon" sizes="384x384" href="icons/favicon-384.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/favicon-512.png" />
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html" class="home-link">wootils</a></h2><h2><a href="https://github.com/homer0/wootils" target="_blank" >GitHub</a></h2><h3>Modules</h3><ul><li><a href="module-browser_simpleStorage.html">browser/simpleStorage</a></li><li><a href="module-node_appConfiguration.html">node/appConfiguration</a></li><li><a href="module-node_environmentUtils.html">node/environmentUtils</a></li><li><a href="module-node_errorHandler.html">node/errorHandler</a></li><li><a href="module-node_logger.html">node/logger</a></li><li><a href="module-node_packageInfo.html">node/packageInfo</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_packageInfo.html#~packageInfo">packageInfo</a></li></ul></li><li><a href="module-node_pathUtils.html">node/pathUtils</a></li><li><a href="module-node_rootRequire.html">node/rootRequire</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_rootRequire.html#~rootRequire">rootRequire</a></li></ul></li><li><a href="module-shared_apiClient.html">shared/apiClient</a></li><li><a href="module-shared_deepAssign.html">shared/deepAssign</a></li><li><a href="module-shared_deferred.html">shared/deferred</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_deferred.html#.deferred">deferred</a></li></ul></li><li><a href="module-shared_eventsHub.html">shared/eventsHub</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_eventsHub.html#~wrapper">wrapper</a></li></ul></li><li><a href="module-shared_extendPromise.html">shared/extendPromise</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_extendPromise.html#~extendPromise">extendPromise</a></li></ul></li><li><a href="module-shared_jimpleFns.html">shared/jimpleFns</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~provider">provider</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~providerCreator">providerCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resource">resource</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourceCreator">resourceCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourcesCollection">resourcesCollection</a></li></ul></li><li><a href="module-shared_objectUtils.html">shared/objectUtils</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-browser.html">Browser utilities</a></li><li><a href="tutorial-node.html">Node utilities</a></li><li><a href="tutorial-shared.html">Shared utilities</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">AppConfiguration</h1>
+    
+
+    <section>
+  <header>
+    <h2>AppConfiguration</h2>
+  </header>
+  <article class="tutorial">
+    <h1>AppConfiguration</h1>
+<p>This is a service to manage applications configurations. It takes care of loading, activating, switching and merging configuration files.</p>
+<p>Managing configurations is always a pain on any kind of app, so the idea of this service is to just give it the minimal required information and it will take care of the rest.</p>
+<h2>Example</h2>
+<p>Let's say your app tree looks like this:</p>
+<pre class="prettyprint source"><code>myApp/
+├── config/
+│   ├── development.js
+│   └── production.js
+└── app/
+    └── index.js
+</code></pre>
+<p>And you execute your app with something like</p>
+<pre class="prettyprint source lang-bash"><code>node app
+</code></pre>
+<p>If you don't have anything managing the configurations, you would probably have something like this:</p>
+<pre class="prettyprint source lang-js"><code>const config = process.NODE_ENV === 'production' ?
+  require('../config/production') :
+  require('../config/development');
+</code></pre>
+<p>Maybe is different, but the point is that you may be checking the <code>NODE_ENV</code> to decide what to <code>require</code>.</p>
+<p>Let's implement the same scenario with <code>AppConfiguration</code>:</p>
+<blockquote>
+<p>The service depends on <code>EnvironmentUtils</code> and <code>RootRequire</code> (which requires <code>PathUtils</code>) so you need to register them first.</p>
+</blockquote>
+<h3>Without Jimple</h3>
+<blockquote>
+<p>If you haven't tried <a href="https://github.com/fjorgemota/jimple">Jimple</a>, give it a try, it's excellent for organizing your app dependencies and services.</p>
+</blockquote>
+<p>Since Jimple solves the construction of the dependencies, this will be more of a <em>manual process</em>:</p>
+<pre class="prettyprint source lang-js"><code>const {
+  AppConfiguration,
+  EnvironmentUtils,
+  PathUtils,
+  rootRequire,
+} = require('wootils/node');
+
+// Let's start with `EnvironmentUtils`, which is used to read the env variables.
+const environmentUtils = new EnvironmentUtils();
+// Now `PathUtils`, to build paths relative to the project root directory.
+const pathUtils = new PathUtils();
+// `rootRequire` for making `require`s relatives to the root directory.
+const rootReq = rootRequire(pathUtils);
+</code></pre>
+<p>With all the needed services ready, let's construct the <code>AppConfiguration</code>:</p>
+<pre class="prettyprint source lang-js"><code>const appConfiguration = new AppConfiguration(
+  environmentUtils,
+  rootReq,
+  'myApp',
+  {},
+  {
+    environmentVariable: 'CONFIG',
+    path: './config/',
+    filenameFormat: '[name].js',
+  },
+);
+</code></pre>
+<p>Done, we first sent the required services and then set the custom options we needed:</p>
+<ol>
+<li><code>myApp</code> is the name of the app, the service uses it on the default <code>path</code> and <code>filenameFormat</code> options, but in this case, we don't really need it for this scenario.</li>
+<li><code>{}</code> That's the default configuration all the others will <em>'extend'</em>, in this case is not needed.</li>
+<li>The options:</li>
+</ol>
+<ul>
+<li><code>environmentVariable</code>: The name of the variable the service will check to determine which configuration to use.</li>
+<li><code>path</code>: The location of your configuration files.</li>
+<li><code>filenameFormat</code>: The name format your files use. <code>[name]</code> will be replaced with the name of the configuration you want to use.</li>
+</ul>
+<p>Now, there's only one thing to do:</p>
+<pre class="prettyprint source lang-js"><code>appConfiguration.loadFromEnvironment();
+</code></pre>
+<p>With that, <code>AppConfiguration</code> will check the environment variable and load the configuration you require.</p>
+<pre class="prettyprint source lang-bash"><code># Load the development configuration
+CONFIG=development node app
+
+# Load the production configuration
+CONFIG=production node app
+</code></pre>
+<h3>With Jimple</h3>
+<p>Let's create a dummy app and register the dependencies:</p>
+<pre class="prettyprint source lang-js"><code>// Import all the required modules
+const Jimple = require('jimple');
+const {
+  environmentUtils,
+  rootRequire,
+  pathUtils,
+  appConfiguration,
+} = require('wootils/node/providers');
+// Create a dummy app
+const app = new Jimple();
+// Register the necessary services
+app.register(environmentUtils);
+app.register(rootRequire);
+app.register(pathUtils);
+</code></pre>
+<p>To configure the <code>appConfiguration</code> provider so the service will work with the scenario described above, we just need to use it as a function:</p>
+<pre class="prettyprint source lang-js"><code>app.register(appConfiguration({
+  appName: 'myApp',
+  defaultConfiguration: {},
+  options: {
+    environmentVariable: 'CONFIG',
+    path: './config/',
+    filenameFormat: '[name].js',
+  },
+}));
+</code></pre>
+<blockquote>
+<p>To fully understand the settings, you should read the techincal documentation for <a href="module-node_appConfiguration.html#.AppConfigurationProviderOptions"><code>AppConfigurationProviderOptions</code></a>.</p>
+</blockquote>
+<p>Done, the service is registered in the container.</p>
+<p>You can also use the provider as it is and it will use the default settings:</p>
+<pre class="prettyprint source lang-js"><code>app.register(appConfiguration);
+</code></pre>
+<blockquote>
+<p><code>appConfiguration</code> is a &quot;provider crator&quot;, so it can be used as both, a function that generates a provider, and as provider.</p>
+</blockquote>
+<p>Now, there's only one thing to do:</p>
+<pre class="prettyprint source lang-js"><code>app.get('appConfiguration').loadFromEnvironment();
+</code></pre>
+<p>With that, <code>AppConfiguration</code> will check the environment variable and load the configuration you require.</p>
+<pre class="prettyprint source lang-bash"><code># Load the development configuration
+CONFIG=development node app
+
+# Load the production configuration
+CONFIG=production node app
+</code></pre>
+<h2>Features</h2>
+<h3>Loading configurations dynamically</h3>
+<p>This was demonstrated on the example above. Instead of you having to manually check and indicate which file to <code>require</code>, <code>AppConfiguration</code> will handle the environment variable and the <code>require</code>, so once you do <code>loadFromEnvironment()</code> you get the configuration you need.</p>
+<h3>Using it without environment variables.</h3>
+<p>This is not the most common case of use, but <code>AppConfiguration</code> allows you to manually load new configurations from an object or from a file:</p>
+<pre class="prettyprint source lang-js"><code>...
+appConfiguration.load('my-new-config', { valueOne: 'one' });
+</code></pre>
+<p>or</p>
+<pre class="prettyprint source lang-js"><code>appConfiguration.loadFromFile('my-new-config');
+// And if you used the options from the example, it will load `/config/my-new-config.js`,
+// or at least try :P.
+</code></pre>
+<p>The idea of these methods is that if you don't want to relay on environment variables, you can build your own logic for loading and activating configurations.</p>
+<h3>Extending configurations</h3>
+<p>By default, all the configurations extend from the default one you sent on the constructor, but you can set an <code>extend</code> key on your configurations with the name of the one you want to extend and the service will take care of looking for that configuration and making the new one extend from there.</p>
+<p>If you are using <code>loadFromEnvironment()</code> or <code>loadFromFile()</code> and the configuration to extend is not registered in the service, it will try to load the file; but if you are using <code>load()</code>, the configuration needs to be registered or it will throw an error. It doesn't sound nice, but the point is to make clear that you are either working with files or with manual configurations.</p>
+<h3>Get and Set</h3>
+<p>Your configuration is not longer a literal object and the service provides a couple of methods to make your life easy when reading or writing settings:</p>
+<h4>Reading</h4>
+<pre class="prettyprint source lang-js"><code>// Read a single setting
+const value = appConfiguration.get('something');
+// Reading multiple settings
+const { valueOne, valueTwo } = appConfiguration.get(['valueOne', 'valueTwo']);
+</code></pre>
+<h4>Writing</h4>
+<blockquote>
+<p>The changes won't affect a configuration file, they'll only affect the configuration loaded on the service.</p>
+</blockquote>
+<pre class="prettyprint source lang-js"><code>// Writing a single setting
+appConfiguration.set('something', 'value');
+// Write multiple settings
+appConfiguration.set({
+  valueOne: 'one',
+  valueTwo: 'two',
+});
+</code></pre>
+<p>Another cool thing it does is when it writes a setting, if both the current and the new values are both Objects, it will merge them:</p>
+<pre class="prettyprint source lang-js"><code>appConfiguration.set('person', {
+  name: 'Rosario',
+  birthday: '',
+});
+appConfiguration.set('person', {
+  birthday: '25-09-2015',
+});
+console.log(appConfiguration.get('person'));
+/**
+ * Will output:
+ * {
+ *   name: 'Rosario',
+ *   birthday: '25-09-2015',
+ * }
+ */
+</code></pre>
+<h3>Switching configurations while the app is running</h3>
+<p>There's a special rule behind this feature: The default configuration and/or the first configuration loaded needs to have a key name <code>allowConfigurationSwitch</code> set to <code>true</code> in order switch configurations. The reason of this rule is <strong>security</strong>: If you deployed to production and the you didn't turn off whatever you have that makes the service switch configurations, other people can use it. This way, you can have this enabled only on specifics configuration and disabled on others.</p>
+<h2>ES Modules</h2>
+<p>If you are using ESM, you can import the class and the provider from the <code>/esm</code> sub path:</p>
+<pre class="prettyprint source lang-js"><code>import {
+  AppConfiguration,
+  appConfiguration,
+} from 'wootils/esm/node/appConfiguration';
+
+// just the class
+
+import { AppConfiguration } from 'wootils/esm/node';
+
+// just the provider
+
+import { appConfiguration } from 'wootils/esm/node/providers';
+</code></pre>
+<h2>Technical documentation</h2>
+<ul>
+<li>Module: <a href="module-node_appConfiguration.html"><code>node/appConfiguration</code></a></li>
+<li>Class: <a href="module-node_appConfiguration.AppConfiguration.html"><code>AppConfiguration</code></a></li>
+<li>Provider: <a href="module-node_appConfiguration.html#~appConfiguration"><code>appConfiguration</code></a></li>
+</ul>
+<blockquote>
+<p>If you are reading this form the markdown document, you can go to the <a href="https://homer0.github.io/wootils">online version</a>; or you can generate the documentation site yourself by running the <code>docs</code> command:</p>
+<pre class="prettyprint source lang-bash"><code># You can either use npm or yarn, it doesn't matter
+npm run docs && open ./docs/index.html;
+</code></pre>
+</blockquote>
+  </article>
+  
+</section>
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

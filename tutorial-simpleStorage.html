@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8" />
+    <title>SimpleStorage - wootils docs</title>
+    
+    
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css" />
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+    <link rel="shortcut icon" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="48x48" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/favicon-72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="icons/favicon-96.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/favicon-144.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="256x256" href="icons/favicon-256.png" />
+    <link rel="apple-touch-icon" sizes="384x384" href="icons/favicon-384.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/favicon-512.png" />
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html" class="home-link">wootils</a></h2><h2><a href="https://github.com/homer0/wootils" target="_blank" >GitHub</a></h2><h3>Modules</h3><ul><li><a href="module-browser_simpleStorage.html">browser/simpleStorage</a></li><li><a href="module-node_appConfiguration.html">node/appConfiguration</a></li><li><a href="module-node_environmentUtils.html">node/environmentUtils</a></li><li><a href="module-node_errorHandler.html">node/errorHandler</a></li><li><a href="module-node_logger.html">node/logger</a></li><li><a href="module-node_packageInfo.html">node/packageInfo</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_packageInfo.html#~packageInfo">packageInfo</a></li></ul></li><li><a href="module-node_pathUtils.html">node/pathUtils</a></li><li><a href="module-node_rootRequire.html">node/rootRequire</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_rootRequire.html#~rootRequire">rootRequire</a></li></ul></li><li><a href="module-shared_apiClient.html">shared/apiClient</a></li><li><a href="module-shared_deepAssign.html">shared/deepAssign</a></li><li><a href="module-shared_deferred.html">shared/deferred</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_deferred.html#.deferred">deferred</a></li></ul></li><li><a href="module-shared_eventsHub.html">shared/eventsHub</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_eventsHub.html#~wrapper">wrapper</a></li></ul></li><li><a href="module-shared_extendPromise.html">shared/extendPromise</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_extendPromise.html#~extendPromise">extendPromise</a></li></ul></li><li><a href="module-shared_jimpleFns.html">shared/jimpleFns</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~provider">provider</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~providerCreator">providerCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resource">resource</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourceCreator">resourceCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourcesCollection">resourcesCollection</a></li></ul></li><li><a href="module-shared_objectUtils.html">shared/objectUtils</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-browser.html">Browser utilities</a></li><li><a href="tutorial-node.html">Node utilities</a></li><li><a href="tutorial-shared.html">Shared utilities</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">SimpleStorage</h1>
+    
+
+    <section>
+  <header>
+    <h2>SimpleStorage</h2>
+  </header>
+  <article class="tutorial">
+    <h1>SimpleStorage</h1>
+<p>An <strong>abstract</strong> class allows you to build services that relay on browser storage (session/local) and simplifies the way you work it.</p>
+<p>The class doesn't have any public method, as the idea is for you to define your (let's call it) <em>&quot;service&quot;</em> and then interact with the storage internally, using the <em>protected</em> methods.</p>
+<h2>Examples</h2>
+<h3>Basic</h3>
+<p>Let's say you have an app with a form for writing blog posts (or any kind of articles), and it has two fields: title and content.</p>
+<p>The basic functionality is ready, when the user hits the <code>Save</code> button, you send the post to an API in order to publish. We can imagine a service like this:</p>
+<pre class="prettyprint source lang-js"><code>class Posts {
+  save(title, content) {
+    return fetch(...);
+  }
+}
+</code></pre>
+<p>But, what if we want to add a feature to save a draft of the post while the user is writing? in case something happens, we can prevent the user from losing what he/she wrote.</p>
+<p>We can use <code>localStorage</code>! we need to write the functions to:</p>
+<ol>
+<li>Save the draft, encoded as JSON.</li>
+<li>Load the storage, check for the draft, decode it and restore.</li>
+</ol>
+<p>And that's exactly what <code>SimpleStorage</code> can do for you:</p>
+<pre class="prettyprint source lang-js"><code>const SimpleStorage = require('wootils/browser/simpleStorage');
+
+class Posts extends SimpleStorage {
+  constructor(...) {
+    super({
+      storage: {
+        name: 'posts',
+        key: 'myApp-posts',
+      },
+    });
+  }
+
+  saveDraft(title, content) {
+    this._setData({ title, content });
+  }
+
+  getDraft() {
+    const draft = this._getData();
+    return draft.title ? draft : null;
+  }
+
+  save(title, content) {
+    this._delete();
+    return fetch(...);
+  }
+}
+</code></pre>
+<p>Let's go over all the changes:</p>
+<p>We first <code>require</code>/<code>import</code> the class and make <code>Posts</code> extend from it.</p>
+<p>Then we use the constructor options to specify the name and key for the storage. The name is just a reference the class uses and the key is the actual key that will be used on the storage to save the data.</p>
+<blockquote>
+<p>Since we wanted <code>localStorage</code>, we don't need to touch any other default option, but if you are interested on the default options, take a look at the technical documentation for the class.</p>
+</blockquote>
+<p>We add <code>saveDraft</code> and <code>getDraft</code>: As you can imagine, <code>saveDraft</code> just tells the class to save an object, and based on the storage options, the class already knows that the object should be encoded as a JSON before saving it, no need to worry about that.</p>
+<p><code>getDraft</code> will just try to obtain the data and make sure there's a draft there; the whole process where the class checks the storage and loads its contents has been already taken care of.</p>
+<p>The reason we check for <code>.title</code> is because the class will check if there's something on the storage using the key from the options, and if there's nothing, it will add an empty object in order to work with future data.</p>
+<p>And the last modification is the call to <code>_delete</code> on the <code>save</code> method: We are going to finally save the post, so it's ok to delete the draft from the storage: this is basically a <em>&quot;clean up&quot;</em>.</p>
+<p>Now... there's a problem with this implementation: we are using <code>localStorage</code>, so if the user is writing different posts on different browser tabs, they'll overwrite each other (yeah, that seems like an odd scenario, but it may happen).</p>
+<p>We should switch to <code>sessionStorage</code> and keep the draft limited to each tab. Doing that with <code>SimpleStorage</code> is quite easy:</p>
+<pre class="prettyprint source lang-js"><code>const SimpleStorage = require('wootils/browser/simpleStorage');
+
+class Posts extends SimpleStorage {
+  constructor(...) {
+    super({
+      storage: {
+        name: 'posts',
+        key: 'myApp-posts',
+        typePriority: ['session', 'local'],
+      },
+    });
+  }
+...
+</code></pre>
+<p>By adding the <code>storage.typePriority</code> option, we tell the class to use <code>sessionStorage</code> if available and switch to <code>localStorage</code> as a fallback.</p>
+<h3>Working with entries</h3>
+<p>On the example above we saw how to save, read and delete a simple object from the storage, but <code>SimpleStorage</code> allows you to also work with different objects: Entries.</p>
+<p>When working with entries, instead of just sending an object to the storage, you can have like a <em>&quot;storage inside the storage&quot;</em>, where you can assign different keys for different objects... and even and expiration time for them.</p>
+<p>Let's illustrate this with an example: You have an app that, when a user navigates to <em>&quot;its profile page&quot;</em>, it makes some requests to load some &quot;settings&quot;, like this:</p>
+<pre class="prettyprint source lang-js"><code>class Users {
+  ...
+  getUserProfileSettings(userId) {
+    const result = {};
+    this.getUserProfile(userId)
+    .then((userProfile) => {
+      result.userProfile = userProfile;
+      return this.getUserAppSettings(userId);
+    })
+    .then((appSettings) => {
+      result.appSettings = appSettings;
+      return this.getUserUISettings(userId);
+    })
+    .then((uiSettings) => {
+      result.uiSettings = uiSettings;
+      return result;
+    })
+    .catch(...)
+    .then(() => {
+      this._turnOffThatCrazyAjaxLoadIndicator(): // :P
+    });
+  }
+
+  getUserProfile(userId) {
+    return fetch(`/user-profile/${userId}`)
+    .then((resp) => resp.json());
+  }
+
+  getUserAppSettings(userId) {
+    return fetch(`/user-app-settings/${userId}`)
+    .then((resp) => resp.json());
+  }
+
+  getUserUISettings(userId) {
+    return fetch(`/user-ui-settings/${userId}`)
+    .then((resp) => resp.json());
+  }
+}
+</code></pre>
+<blockquote>
+<p>Yes, you could also use <code>async</code>/<code>await</code> or <code>Promise.all</code>, but this is just a simple example.</p>
+</blockquote>
+<p>But what if we know that it's hardly possible that those setting would change in the near future and that the app may need to do those requests for more than just the <em>&quot;profile page&quot;</em>?</p>
+<p>We can do something like on the example above and store everything on the local storage, right? well... manipulating a single object in order to put the responses of all the different request will require some extra coding and it may seem like an overkill, so, that's why <code>SimpleStorage</code> has entries.</p>
+<p>We can use the entries feature to store each request as a different <em>entry</em>, and even tell the class to just keep them for an 2 hours, after that, make the request again.</p>
+<p>Let's start by adding <code>SimpleStorage</code> and enabling the feature:</p>
+<pre class="prettyprint source lang-js"><code>const SimpleStorage = require('wootils/browser/simpleStorage');
+
+class Users extends SimpleStorage {
+  constructor(...) {
+    super({
+      storage: {
+        name: 'user-requests',
+        key: 'myApp-user-requests',
+      },
+      entries: {
+        enabled: true,
+        expiration: 7200,
+      }
+    });
+  }
+...
+</code></pre>
+<p>We first <code>require</code>/<code>import</code> the class and make <code>Users</code> extend from it.</p>
+<p>Then we use the constructor options to:</p>
+<ol>
+<li>Specify the name and key for the storage. The name is just a reference the class uses and the key is the actual key that will be used on the storage to save the data.</li>
+<li>Enable the feature <code>entries.enabled</code> and set the expiration time of each entry (2 hours, in seconds).</li>
+</ol>
+<p>Now we need to add a method to cache the requests as entries:</p>
+<pre class="prettyprint source lang-js"><code>cacheRequest(url) {
+  const entry = this._getEntry(url);
+  return entry ?
+    Promise.resolve(entry.value) :
+    this._saveEntry(fetch(url).then((resp) => resp.json()));
+}
+</code></pre>
+<p>As you can see, the method first uses <code>_getEntry</code>, to locate an entry for the received URL.</p>
+<p>If an entry was found, it uses <code>Promise.resolve</code> to return the value. The reason for returning a <code>Promise</code> is so method will always return a promise even if the request doesn't fire.</p>
+<p>But if there's no entry, it calls <code>_saveEntry</code> with the result of the <code>fetch</code> request.</p>
+<blockquote>
+<p>You can send an object or a promise to <code>_saveEntry</code> and <code>_sendData</code>, the class will wait for it to be resolved and <em>then</em> use the received value.</p>
+</blockquote>
+<p>That's all for the method; like on the other example, <code>SimpleStorage</code> will take care of writing and reading the entries and their values for the storage.</p>
+<p>Time to refactor! We need to change the <em>&quot;get methods&quot;</em> and make them use the new <code>cacheRequest</code>:</p>
+<pre class="prettyprint source lang-js"><code>...
+getUserProfile(userId) {
+  return this.cacheRequest(`/user-profile/${userId}`);
+}
+
+getUserAppSettings(userId) {
+  return this.cacheRequest(`/user-app-settings/${userId}`);
+}
+
+getUserUISettings(userId) {
+  return this.cacheRequest(`/user-ui-settings/${userId}`);
+}
+...
+</code></pre>
+<p>Done! Now the request will only trigger if there's nothing on the storage (this includes entries that were deleted because they expired.</p>
+<h2>ES Modules</h2>
+<p>If you are using ESM, you can import the class from the <code>/esm</code> sub path:</p>
+<pre class="prettyprint source lang-js"><code>import SimpleStorage from 'wootils/esm/browser/simpleStorage';
+
+// or
+
+import { SimpleStorage } from 'wootils/esm/browser';
+</code></pre>
+<h2>Technical documentation</h2>
+<ul>
+<li>Class: <a href="module-browser_simpleStorage.SimpleStorage.html"><code>SimpleStorage</code></a></li>
+</ul>
+<blockquote>
+<p>If you are reading this form the markdown document, you can go to the <a href="https://homer0.github.io/wootils">online version</a>; or you can generate the documentation site yourself by running the <code>docs</code> command:</p>
+<pre class="prettyprint source lang-bash"><code># You can either use npm or yarn, it doesn't matter
+npm run docs && open ./docs/index.html;
+</code></pre>
+</blockquote>
+  </article>
+  
+</section>
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

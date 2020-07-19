@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8" />
+    <title>ErrorHandler - wootils docs</title>
+    
+    
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css" />
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+    <link rel="shortcut icon" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="48x48" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/favicon-72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="icons/favicon-96.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/favicon-144.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="256x256" href="icons/favicon-256.png" />
+    <link rel="apple-touch-icon" sizes="384x384" href="icons/favicon-384.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/favicon-512.png" />
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html" class="home-link">wootils</a></h2><h2><a href="https://github.com/homer0/wootils" target="_blank" >GitHub</a></h2><h3>Modules</h3><ul><li><a href="module-browser_simpleStorage.html">browser/simpleStorage</a></li><li><a href="module-node_appConfiguration.html">node/appConfiguration</a></li><li><a href="module-node_environmentUtils.html">node/environmentUtils</a></li><li><a href="module-node_errorHandler.html">node/errorHandler</a></li><li><a href="module-node_logger.html">node/logger</a></li><li><a href="module-node_packageInfo.html">node/packageInfo</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_packageInfo.html#~packageInfo">packageInfo</a></li></ul></li><li><a href="module-node_pathUtils.html">node/pathUtils</a></li><li><a href="module-node_rootRequire.html">node/rootRequire</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_rootRequire.html#~rootRequire">rootRequire</a></li></ul></li><li><a href="module-shared_apiClient.html">shared/apiClient</a></li><li><a href="module-shared_deepAssign.html">shared/deepAssign</a></li><li><a href="module-shared_deferred.html">shared/deferred</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_deferred.html#.deferred">deferred</a></li></ul></li><li><a href="module-shared_eventsHub.html">shared/eventsHub</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_eventsHub.html#~wrapper">wrapper</a></li></ul></li><li><a href="module-shared_extendPromise.html">shared/extendPromise</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_extendPromise.html#~extendPromise">extendPromise</a></li></ul></li><li><a href="module-shared_jimpleFns.html">shared/jimpleFns</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~provider">provider</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~providerCreator">providerCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resource">resource</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourceCreator">resourceCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourcesCollection">resourcesCollection</a></li></ul></li><li><a href="module-shared_objectUtils.html">shared/objectUtils</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-browser.html">Browser utilities</a></li><li><a href="tutorial-node.html">Node utilities</a></li><li><a href="tutorial-shared.html">Shared utilities</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">ErrorHandler</h1>
+    
+
+    <section>
+  <header>
+    <h2>ErrorHandler</h2>
+  </header>
+  <article class="tutorial">
+    <h1>ErrorHandler</h1>
+<p>Listens for uncaught exceptions and unhandled promises rejections, and logs them out with full detail.</p>
+<p>By default, if an error is thrown, node will just output the error, but if a <code>Promise</code> is rejected and there's no <code>catch</code> to capture the exception, it will log <code>...</code>, which doesn't provide a lot of information, right?</p>
+<p>Well, <code>ErrorHandler</code> listens for these kind of exceptions, unhandled errors and rejected promises, and logs them with their stack trace information using the <code>Logger</code> utility.</p>
+<h2>Example</h2>
+<p>Let's say your code looks something like this:</p>
+<pre class="prettyprint source lang-js"><code>makeAnAPICall()
+.then((response) => console.log(response));
+</code></pre>
+<p>If the request returned a <code>401</code>, Node would output something like this:</p>
+<pre class="prettyprint source lang-bash"><code>(node:34097) UnhandledPromiseRejectionWarning: Unhandled promise rejection (rejection id: 2): 401
+</code></pre>
+<p>Now, let's see how to get more information with <code>ErrorHandler</code>:</p>
+<blockquote>
+<p>The service depends on a <code>Logger</code> service instance, so you need to register it first.</p>
+</blockquote>
+<h3>Without Jimple</h3>
+<blockquote>
+<p>If you haven't tried <a href="https://github.com/fjorgemota/jimple">Jimple</a>, give it a try, it's excellent for organizing your app dependencies and services.</p>
+</blockquote>
+<p>Let's start with the setup:</p>
+<blockquote>
+<p>All of this code should be added on top of the already existing code showed above.</p>
+</blockquote>
+<pre class="prettyprint source lang-js"><code>const { Logger, ErrorHandler } = require('wootils/node');
+// Create an instance of the logger service
+const logger = new Logger();
+// Create an instance of the handler
+const errorHandler = new ErrorHandler(logger);
+</code></pre>
+<p>Now, once you have the instance, you have to tell it to start listening for unhandled errors:</p>
+<pre class="prettyprint source lang-js"><code>errorHandler.listen();
+</code></pre>
+<p>Done! If you run the same code now, this is the kind of logged information you'll get:</p>
+<pre class="prettyprint source lang-bash"><code>[2018-01-22 04:19:12] 401
+at makeAPICall (/path-to-your-app/index.js:9:42)
+at Object.&lt;anonymous> (/path-to-your-app/index.js:11:1)
+at Module._compile (module.js:570:32)
+at Object.Module._extensions..js (module.js:579:10)
+at Module.load (module.js:487:32)
+at tryModuleLoad (module.js:446:12)
+at Function.Module._load (module.js:438:3)
+at Module.runMain (module.js:604:10)
+at run (bootstrap_node.js:383:7)
+at startup (bootstrap_node.js:149:9)
+</code></pre>
+<p>You get the date and time when it happened and the full stack trace of the error.</p>
+<h3>With Jimple</h3>
+<blockquote>
+<p>It uses <code>logger</code> by default, but if the service is not available, it will try to fallback to <code>appLogger</code>, the version of <code>logger</code> that prefixes all the messages with the package name.</p>
+</blockquote>
+<pre class="prettyprint source lang-js"><code>// Import all the required modules
+const Jimple = require('jimple');
+const {
+  logger,
+  errorHandler,
+} = require('wootils/node/providers');
+// Create a dummy app
+const app = new Jimple();
+// Register the logger
+app.register(logger);
+// Register the ErrorHandler
+app.register(errorHandler);
+</code></pre>
+<p>You could also configure it so it would exit the process when an error is caught:</p>
+<pre class="prettyprint source lang-js"><code>app.register(errorHandler({
+  exitOnError: true,
+}));
+</code></pre>
+<blockquote>
+<p><code>errorHandler</code> is a &quot;provider crator&quot;, so it can be used as both, a function that generates a provider, and as provider.</p>
+</blockquote>
+<p>Now, we should tell the service to start listening for errors:</p>
+<pre class="prettyprint source lang-js"><code>app.get('errorHandler').listen();
+</code></pre>
+<p>Done! If you run the same code now, this is the kind of logged information you'll get:</p>
+<pre class="prettyprint source lang-bash"><code>[my-app] [2018-01-22 04:29:40] 401
+[my-app] at makeAPICall (/path-to-your-app/index.js:9:42)
+[my-app] at Object.&lt;anonymous> (/path-to-your-app/index.js:11:1)
+[my-app] at Module._compile (module.js:570:32)
+[my-app] at Object.Module._extensions..js (module.js:579:10)
+[my-app] at Module.load (module.js:487:32)
+[my-app] at tryModuleLoad (module.js:446:12)
+[my-app] at Function.Module._load (module.js:438:3)
+[my-app] at Module.runMain (module.js:604:10)
+[my-app] at run (bootstrap_node.js:383:7)
+[my-app] at startup (bootstrap_node.js:149:9)
+</code></pre>
+<h2>ES Modules</h2>
+<p>If you are using ESM, you can import the class and the provider from the <code>/esm</code> sub path:</p>
+<pre class="prettyprint source lang-js"><code>import {
+  ErrorHandler,
+  errorHandler,
+} from 'wootils/esm/node/errorHandler';
+
+// just the class
+
+import { ErrorHandler } from 'wootils/esm/node';
+
+// just the provider and/or the generator
+
+import { errorHandler } from 'wootils/esm/node/providers';
+</code></pre>
+<h2>Technical documentation</h2>
+<ul>
+<li>Module: <a href="module-node_errorHandler.html"><code>node/errorHandler</code></a></li>
+<li>Class: <a href="module-node_errorHandler.ErrorHandler.html"><code>ErrorHandler</code></a></li>
+<li>Provider: <a href="module-node_errorHandler.html#~errorHandler"><code>errorHandler</code></a></li>
+</ul>
+<blockquote>
+<p>If you are reading this form the markdown document, you can go to the <a href="https://homer0.github.io/wootils">online version</a>; or you can generate the documentation site yourself by running the <code>docs</code> command:</p>
+<pre class="prettyprint source lang-bash"><code># You can either use npm or yarn, it doesn't matter
+npm run docs && open ./docs/index.html;
+</code></pre>
+</blockquote>
+  </article>
+  
+</section>
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

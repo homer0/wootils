@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8" />
+    <title>DeepAssign - wootils docs</title>
+    
+    
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css" />
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+    <link rel="shortcut icon" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="48x48" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/favicon-72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="icons/favicon-96.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/favicon-144.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="256x256" href="icons/favicon-256.png" />
+    <link rel="apple-touch-icon" sizes="384x384" href="icons/favicon-384.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/favicon-512.png" />
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html" class="home-link">wootils</a></h2><h2><a href="https://github.com/homer0/wootils" target="_blank" >GitHub</a></h2><h3>Modules</h3><ul><li><a href="module-browser_simpleStorage.html">browser/simpleStorage</a></li><li><a href="module-node_appConfiguration.html">node/appConfiguration</a></li><li><a href="module-node_environmentUtils.html">node/environmentUtils</a></li><li><a href="module-node_errorHandler.html">node/errorHandler</a></li><li><a href="module-node_logger.html">node/logger</a></li><li><a href="module-node_packageInfo.html">node/packageInfo</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_packageInfo.html#~packageInfo">packageInfo</a></li></ul></li><li><a href="module-node_pathUtils.html">node/pathUtils</a></li><li><a href="module-node_rootRequire.html">node/rootRequire</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_rootRequire.html#~rootRequire">rootRequire</a></li></ul></li><li><a href="module-shared_apiClient.html">shared/apiClient</a></li><li><a href="module-shared_deepAssign.html">shared/deepAssign</a></li><li><a href="module-shared_deferred.html">shared/deferred</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_deferred.html#.deferred">deferred</a></li></ul></li><li><a href="module-shared_eventsHub.html">shared/eventsHub</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_eventsHub.html#~wrapper">wrapper</a></li></ul></li><li><a href="module-shared_extendPromise.html">shared/extendPromise</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_extendPromise.html#~extendPromise">extendPromise</a></li></ul></li><li><a href="module-shared_jimpleFns.html">shared/jimpleFns</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~provider">provider</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~providerCreator">providerCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resource">resource</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourceCreator">resourceCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourcesCollection">resourcesCollection</a></li></ul></li><li><a href="module-shared_objectUtils.html">shared/objectUtils</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-browser.html">Browser utilities</a></li><li><a href="tutorial-node.html">Node utilities</a></li><li><a href="tutorial-shared.html">Shared utilities</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">DeepAssign</h1>
+    
+
+    <section>
+  <header>
+    <h2>DeepAssign</h2>
+  </header>
+  <article class="tutorial">
+    <h1>DeepAssign</h1>
+<p>Deep merge (and copy) of objects(<code>{}</code>) and <code>Array</code>s using native spread syntax.</p>
+<ol>
+<li>It supports <code>Symbol</code>s as keys.</li>
+<li>It even merges objects inside <code>Array</code>s.</li>
+<li>It can merge <code>Array</code>s as properties, concatenate them or even overwrite them.</li>
+</ol>
+<h2>Examples</h2>
+<h3>Simple merge</h3>
+<pre class="prettyprint source lang-js"><code>const { deepAssign } = require('wootils/shared');
+
+const generateOptions = (options = {}) => deepAssign(
+  {
+    title: 'myApp',
+    sections: [{ title: 'about', enabled: true }],
+    enabled: false,
+    features: {
+      accounts: true,
+      blog: false,
+    },
+  },
+  options,
+);
+
+console.log(generateOptions({
+  title: 'my AWESOME app',
+  sections: [{ title: 'ME', url: '/me' }, 'projects'],
+  enabled: true,
+  features: {
+    blog: true,
+    projects: true,
+  },
+  extras: null,
+}));
+/**
+ * {
+ *   title: 'my AWESOME app',
+ *   sections: [
+ *     { title: 'ME', enabled: true, url: '/me' },
+ *     'projects',
+ *   ],
+ *   enabled: true,
+ *   features: {
+ *     accounts: true,
+ *     blog: true,
+ *     projects: true,
+ *   },
+ *   extras: null,
+ * }
+</code></pre>
+<h3>Symbols as keys</h3>
+<pre class="prettyprint source lang-js"><code>const { deepAssign } = require('wootils/shared');
+
+const FEATURES_KEY = Symbol('features');
+
+const generateOptions = (options = {}) => deepAssign(
+  {
+    title: 'myApp',
+    [FEATURES_KEY]: {
+      accounts: true,
+      blog: false,
+    },
+  },
+  options,
+);
+
+console.log(generateOptions({
+  title: 'my AWESOME app',
+  [FEATURES_KEY]: {
+    blog: true,
+    projects: true,
+  },
+}));
+/**
+ * {
+ *   title: 'my AWESOME app',
+ *   [Symbol(features)]: {
+ *     accounts: true,
+ *     blog: true,
+ *     projects: true,
+ *   },
+ * }
+</code></pre>
+<h3>Arrays concatenation</h3>
+<p>This feature allows for Arrays found inside properties to be concatenated instead of merging them. To use it, you have to manually instantiate the <a href="module-shared_deepAssign.DeepAssign.html"><code>DeepAssign</code></a> class, or use the <code>deepAssignWithConcat</code> function:</p>
+<pre class="prettyprint source lang-js"><code>const { deepAssignWithConcat } = require('wootils/shared');
+
+const generateOptions = (options = {}) => deepAssignWithConcat(
+  {
+    title: 'myApp',
+    sections: [{ title: 'about', enabled: true }],
+  },
+  options,
+);
+
+console.log(generateOptions({
+  title: 'my AWESOME app',
+  sections: [{ title: 'ME', url: '/me' }, 'projects'],
+}));
+/**
+ * {
+ *   title: 'my AWESOME app',
+ *   sections: [
+ *     { title: 'about', enabled: true },
+ *     { title: 'ME', url: '/me' },
+ *     'projects',
+ *   ],
+ * }
+</code></pre>
+<h3>Arrays overwrite</h3>
+<p>This allows you to, instead of merging Arrays inside object properties, to overwrite them entirely. Just like for concatenation, to use it you have to instantiate the <a href="module-shared_deepAssign.DeepAssign.html"><code>DeepAssign</code></a> class or use the <a href="module-shared_deepAssign.html#~deepAssignWithOverwrite"><code>deepAssignWithOverwrite</code></a> function:</p>
+<pre class="prettyprint source lang-js"><code>const { deepAssignWithOverwrite } = require('wootils/shared');
+
+const generateOptions = (options = {}) => deepAssignWithOverwrite(
+  {
+    title: 'myApp',
+    sections: [{ title: 'about', enabled: true }],
+  },
+  options,
+);
+
+console.log(generateOptions({
+  title: 'my AWESOME app',
+  sections: [{ title: 'ME', url: '/me' }, 'projects'],
+}));
+/**
+ * {
+ *   title: 'my AWESOME app',
+ *   sections: [
+ *     { title: 'ME', url: '/me' },
+ *     'projects',
+ *   ],
+ * }
+</code></pre>
+<h3>Arrays shallow merge</h3>
+<p>If you want to merge the Arrays, but don't want it to go as deep as the objects inside, you can use do a &quot;shallow merge&quot;. Like all the other strategies, you can instantiate the <a href="module-shared_deepAssign.DeepAssign.html"><code>DeepAssign</code></a> class directly, or use <a href="module-shared_deepAssign.html#~deepAssignWithShallowMerge"><code>deepAssignWithShallowMerge</code></a>:</p>
+<pre class="prettyprint source lang-js"><code>const { deepAssignWithShallowMerge } = require('wootils/shared');
+
+const generateOptions = (options = {}) => deepAssignWithShallowMerge(
+  {
+    title: 'myApp',
+    sections: [{ title: 'about', enabled: true }],
+  },
+  options,
+);
+
+console.log(generateOptions({
+  title: 'my AWESOME app',
+  sections: [{ title: 'ME', url: '/me' }, 'projects'],
+}));
+/**
+ * {
+ *   title: 'my AWESOME app',
+ *   sections: [
+ *     { title: 'ME', url: '/me' },
+ *     'projects',
+ *   ],
+ * }
+</code></pre>
+<h2>ES Modules</h2>
+<p>If you are using ESM, you can import the class and the functions from the <code>/esm</code> sub path:</p>
+<pre class="prettyprint source lang-js"><code>import {
+  DeepAssign,
+  deepAssign,
+  deepAssignWithConcat,
+  deepAssignWithOverwrite,
+  deepAssignWithShallowMerge,
+} from 'wootils/esm/shared/deepAssign';
+
+// or
+
+import {
+  DeepAssign,
+  deepAssign,
+  deepAssignWithConcat,
+  deepAssignWithOverwrite,
+  deepAssignWithShallowMerge,
+} from 'wootils/esm/shared';
+</code></pre>
+<h2>Technical documentation</h2>
+<ul>
+<li>Function: <a href="module-shared_deepAssign.html#~deepAssign"><code>deepAssign</code></a></li>
+<li>Function with array concatenation: <a href="module-shared_deepAssign.html#~deepAssignWithConcat"><code>deepAssignWithConcat</code></a></li>
+<li>Function with array overwrite: <a href="module-shared_deepAssign.html#~deepAssignWithOverwrite"><code>deepAssignWithOverwrite</code></a></li>
+<li>Function with array shallow merge: <a href="module-shared_deepAssign.html#~deepAssignWithShallowMerge"><code>deepAssignWithShallowMerge</code></a></li>
+<li>Helper class: <a href="module-shared_deepAssign.DeepAssign.html"><code>DeepAssign</code></a></li>
+</ul>
+<blockquote>
+<p>If you are reading this form the markdown document, you can go to the <a href="https://homer0.github.io/wootils">online version</a>; or you can generate the documentation site yourself by running the <code>docs</code> command:</p>
+<pre class="prettyprint source lang-bash"><code># You can either use npm or yarn, it doesn't matter
+npm run docs && open ./docs/index.html;
+</code></pre>
+</blockquote>
+  </article>
+  
+</section>
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

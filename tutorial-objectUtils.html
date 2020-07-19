@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8" />
+    <title>ObjectUtils - wootils docs</title>
+    
+    
+    
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css" />
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+    <link rel="shortcut icon" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="48x48" href="icons/favicon-48.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="icons/favicon-72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="icons/favicon-96.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="icons/favicon-144.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icons/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="256x256" href="icons/favicon-256.png" />
+    <link rel="apple-touch-icon" sizes="384x384" href="icons/favicon-384.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icons/favicon-512.png" />
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html" class="home-link">wootils</a></h2><h2><a href="https://github.com/homer0/wootils" target="_blank" >GitHub</a></h2><h3>Modules</h3><ul><li><a href="module-browser_simpleStorage.html">browser/simpleStorage</a></li><li><a href="module-node_appConfiguration.html">node/appConfiguration</a></li><li><a href="module-node_environmentUtils.html">node/environmentUtils</a></li><li><a href="module-node_errorHandler.html">node/errorHandler</a></li><li><a href="module-node_logger.html">node/logger</a></li><li><a href="module-node_packageInfo.html">node/packageInfo</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_packageInfo.html#~packageInfo">packageInfo</a></li></ul></li><li><a href="module-node_pathUtils.html">node/pathUtils</a></li><li><a href="module-node_rootRequire.html">node/rootRequire</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-node_rootRequire.html#~rootRequire">rootRequire</a></li></ul></li><li><a href="module-shared_apiClient.html">shared/apiClient</a></li><li><a href="module-shared_deepAssign.html">shared/deepAssign</a></li><li><a href="module-shared_deferred.html">shared/deferred</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_deferred.html#.deferred">deferred</a></li></ul></li><li><a href="module-shared_eventsHub.html">shared/eventsHub</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_eventsHub.html#~wrapper">wrapper</a></li></ul></li><li><a href="module-shared_extendPromise.html">shared/extendPromise</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_extendPromise.html#~extendPromise">extendPromise</a></li></ul></li><li><a href="module-shared_jimpleFns.html">shared/jimpleFns</a><ul class='methods'><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~provider">provider</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~providerCreator">providerCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resource">resource</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourceCreator">resourceCreator</a></li><li data-type='method' style='display: none;'><a href="module-shared_jimpleFns.html#~resourcesCollection">resourcesCollection</a></li></ul></li><li><a href="module-shared_objectUtils.html">shared/objectUtils</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-browser.html">Browser utilities</a></li><li><a href="tutorial-node.html">Node utilities</a></li><li><a href="tutorial-shared.html">Shared utilities</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">ObjectUtils</h1>
+    
+
+    <section>
+  <header>
+    <h2>ObjectUtils</h2>
+  </header>
+  <article class="tutorial">
+    <h1>ObjectUtils</h1>
+<p>A small collection of utility methods to work with objects that relies on <a href="https://yarnpkg.com/en/package/extend"><code>extend</code></a> for deep merge and copy.</p>
+<h2>Examples</h2>
+<h3><code>merge</code></h3>
+<p>Make a deep merge of a list of objects.</p>
+<pre class="prettyprint source lang-js"><code>const objA = { a: 'first' };
+const objB = { b: 'second' };
+
+console.log(ObjectUtils.merge(objA, objB));
+// Will output { a: 'first', b: 'second' }
+</code></pre>
+<h3><code>copy</code></h3>
+<p>Make a deep copy of an object.</p>
+<pre class="prettyprint source lang-js"><code>const objA = { a: 'first' };
+const objB = ObjectUtils.copy(objA);
+objA.b = 'second';
+
+console.log(objB);
+// Will output { a: 'first' }
+</code></pre>
+<h3><code>get</code></h3>
+<p>Read a property from an object using a path:</p>
+<pre class="prettyprint source lang-js"><code>const obj = {
+  propOne: {
+    propOneSub: 'Charito!',
+  },
+  propTwo: '!!!',
+};
+
+console.log(ObjectUtils.get(
+  obj,
+  'propOne.propOneSub'
+));
+// Will output 'Charito!'
+</code></pre>
+<h3><code>set</code></h3>
+<p>Set a property on an object using a path. If the path doesn't exist, it will be created.</p>
+<pre class="prettyprint source lang-js"><code>const target = {};
+
+console.log(ObjectUtils.set(target, 'some.prop.path', 'some-value'));
+// Will output { some: { prop: { path: 'some-value' } } }
+</code></pre>
+<h3><code>extract</code></h3>
+<p>Extracts a property or properties from an object in order to create a new one.</p>
+<pre class="prettyprint source lang-js"><code>const target = {
+  name: {
+    first: 'Rosario',
+  },
+  age: 3,
+  address: {
+    planet: 'earth',
+    something: 'else',
+  },
+};
+
+console.log(ObjectUtils.set(obj, [
+  { 'name': 'name.first'},
+  'age',
+  'address.planet'
+]));
+// Will output { name: 'Rosario', age: 3, address: { planet: 'earth' } }
+</code></pre>
+<h3><code>delete</code></h3>
+<p>Delete a property of an object using a path. If by removing a property of a sub object, the object has no more keys, it also removes it.</p>
+<pre class="prettyprint source lang-js"><code>const target = {
+  propOne: {
+    propOneSub: 'Charito!',
+  },
+  propTwo: '!!!',
+};
+
+console.log(ObjectUtils.delete(
+  target,
+  'propOne.propOneSub'
+));
+// Will output { propTwo: '!!!' }
+</code></pre>
+<h3><code>flat</code></h3>
+<p>Flatterns an object properties into a single level dictionary.</p>
+<pre class="prettyprint source lang-js"><code>const target = {
+  propOne: {
+    propOneSub: 'Charito!',
+  },
+  propTwo: '!!!',
+};
+
+console.log(ObjectUtils.flat(target);
+// Will output { 'propOne.propOneSub': 'Charito!', propTwo: '!!!' }
+</code></pre>
+<h3><code>unflat</code></h3>
+<p>This method does the exact opposite from <code>flat</code>: It takes an already flattern object and restores it structure.</p>
+<pre class="prettyprint source lang-js"><code>const target = {
+  'propOne.propOneSub': 'Charito!
+  propTwo: '!!!',
+};
+
+console.log(ObjectUtils.unflat(target);
+// Will output { propOne: { propOneSub: 'Charito!' }, 'propTwo': '!!!' }
+</code></pre>
+<h3><code>formatKeys</code></h3>
+<p>Formats all the keys on an object using a way similar to <code>.replace(regexp, ...)</code> but that also works recursively and with <em>&quot;object paths&quot;</em>.</p>
+<pre class="prettyprint source lang-js"><code>const target = {
+  prop_one: 'Charito!',
+};
+console.log(ObjectUtils.formatKeys(
+  target,
+  // Find all the keys with snake case.
+  /([a-z])_([a-z])/g,
+  // Using the same .replace style callback, replace it with lower camel case.
+  (fullMatch, firstLetter, secondLetter) => {
+    const newSecondLetter = secondLetter.toUpperCase();
+    return `${firstLetter}${newSecondLetter}`;
+  }
+));
+</code></pre>
+<p><code>ObjectUtils</code> also provides a few &quot;shorthand implementations&quot; of <code>formatKeys</code>:</p>
+<ul>
+<li><code>lowerCamelToSnakeKeys(...)</code></li>
+<li><code>lowerCamelToDashKeys(...)</code></li>
+<li><code>snakeToLowerCamelKeys(...)</code></li>
+<li><code>snakeToDashKeys(...)</code></li>
+<li><code>dashToLowerCamelKeys(...)</code></li>
+<li><code>dashToSnakeKeys(...)</code></li>
+</ul>
+<h2>ES Modules</h2>
+<p>If you are using ESM, you can import the class from the <code>/esm</code> sub path:</p>
+<pre class="prettyprint source lang-js"><code>import ObjectUtils from 'wootils/esm/shared/objectUtils';
+
+// or
+
+import { ObjectUtils } from 'wootils/esm/shared';
+</code></pre>
+<h2>Technical documentation</h2>
+<ul>
+<li>Class: <a href="module-shared_objectUtils.ObjectUtils.html"><code>ObjectUtils</code></a></li>
+</ul>
+<blockquote>
+<p>If you are reading this form the markdown document, you can go to the <a href="https://homer0.github.io/wootils">online version</a>; or you can generate the documentation site yourself by running the <code>docs</code> command:</p>
+<pre class="prettyprint source lang-bash"><code># You can either use npm or yarn, it doesn't matter
+npm run docs && open ./docs/index.html;
+</code></pre>
+</blockquote>
+  </article>
+  
+</section>
+
+
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>
