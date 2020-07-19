@@ -160,12 +160,25 @@ console.log(ObjectUtils.formatKeys(
 - `dashToLowerCamelKeys(...)`
 - `dashToSnakeKeys(...)`
 
+## ES Modules
+
+If you are using ESM, you can import the class from the `/esm` sub path:
+
+```js
+import ObjectUtils from 'wootils/esm/shared/objectUtils';
+
+// or
+
+import { ObjectUtils } from 'wootils/esm/shared';
+```
+
 ## Technical documentation
 
-The code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/class/wootils/shared/objectUtils.js~ObjectUtils.html) or generate it yourself using:
+- Class: {@link ObjectUtils}
 
-```bash
-# You can either use npm or yarn, it doesn't matter
-npm run docs
-open ./docs/index.html
-```
+> If you are reading this form the markdown document, you can go to the [online version](https://homer0.github.io/wootils); or you can generate the documentation site yourself by running the `docs` command:
+>
+> ```bash
+> # You can either use npm or yarn, it doesn't matter
+> npm run docs && open ./docs/index.html;
+> ```

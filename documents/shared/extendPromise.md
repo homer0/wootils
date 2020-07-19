@@ -71,12 +71,26 @@ const req = makeTheRequest()
 setTimeout(() => req.abort(), 1000);
 ```
 
+## ES Modules
+
+If you are using ESM, you can import the function from the `/esm` sub path:
+
+```js
+import extendPromise from 'wootils/esm/shared/extendPromise';
+
+// or
+
+import { extendPromise } from 'wootils/esm/shared';
+```
+
 ## Technical documentation
 
-The code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/function/index.html#static-function-extendPromise) or generate it yourself using:
+- Function: {@link module:shared/extendPromise~extendPromise|extendPromise}
+- Helper class: {@link PromiseExtender}
 
-```bash
-# You can either use npm or yarn, it doesn't matter
-npm run docs
-open ./docs/index.html
-```
+> If you are reading this form the markdown document, you can go to the [online version](https://homer0.github.io/wootils); or you can generate the documentation site yourself by running the `docs` command:
+>
+> ```bash
+> # You can either use npm or yarn, it doesn't matter
+> npm run docs && open ./docs/index.html;
+> ```

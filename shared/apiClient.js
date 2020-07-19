@@ -2,32 +2,67 @@ const statuses = require('statuses');
 const urijs = require('urijs');
 const ObjectUtils = require('./objectUtils');
 /**
- * @typedef {Function:(string,Object):Promise<Object,Error>} FetchClient
+ * @module shared/apiClient
  */
 
 /**
- * @typedef {Object} FetchOptions
- * @property {string}  method  The request method.
- * @property {Object}  headers The request headers.
- * @property {string}  body    The request body.
- * @property {boolean} json    Whether or not the response should _"JSON decoded"_.
+ * This kind of dictionary is used for building stuff like query string parameters and headers.
+ *
+ * @typedef {Object.<string,(string|number)>} APIClientParametersDictionary
+ * @parent module:shared/apiClient
+ */
+
+/**
+ * @typedef {Object} APIClientFetchOptions
+ * @property {string}                        [method]  The request method.
+ * @property {APIClientParametersDictionary} [headers] The request headers.
+ * @property {string}                        [body]    The request body.
+ * @property {boolean}                       [json ]   Whether or not the response should _"JSON
+ *                                                     decoded"_.
+ * @parent module:shared/apiClient
+ */
+
+/**
+ * @callback APIClientFetchClient
+ * @param {string}                url       The request URL.
+ * @param {APIClientFetchOptions} [options] The request options.
+ * @returns {Promise<Response>}
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+ * @parent module:shared/apiClient
+ */
+
+/**
+ * @typedef {APIClientFetchOptions & APIClientRequestOptionsProperties} APIClientRequestOptions
+ * @parent module:shared/apiClient
+ */
+
+/**
+ * @typedef {Object} APIClientRequestOptionsProperties
+ * @property {string} url The request URL.
+ * @augments APIClientFetchOptions
+ * @parent module:shared/apiClient
  */
 
 /**
  * @typedef {Object} APIClientEndpoint
- * @property {String}  path  The path to the endpoint relative to the API entry point. It can
- *                           include placeholders with the format `:placeholder-name` that are
- *                           going to be replaced when the endpoint gets generated.
- * @property {?Object} query A dictionary of query string parameters that will be added when the
- *                           endpoint. If the value of a parameter is `null`, it won't be added.
+ * @property {string}                         path  The path to the endpoint relative to the API
+ *                                                  entry point. It can include placeholders
+ *                                                  with the format `:placeholder-name` that are
+ *                                                  going to be replaced when the endpoint gets
+ *                                                  generated.
+ * @property {?APIClientParametersDictionary} query A dictionary of query string parameters that
+ *                                                  will be added when the endpoint. If the value
+ *                                                  of a parameter is `null`, it won't be added.
+ * @parent module:shared/apiClient
  */
 
 /**
- * @typedef {Object} APIClientEndpoints
- * @property {string|APIClientEndpoints|APIClientEndpoint} [endpointName] A name for the endpoint
- *                                                                        that will be used to
- *                                                                        reference it on the
- *                                                                        `endpoint(...)` method.
+ * @typedef {(string|APIClientEndpoint)} APIClientEndpointValue
+ * @parent module:shared/apiClient
+ */
+
+/**
+ * @typedef {Object.<string,APIClientEndpointValue>} APIClientEndpoints
  * @example
  * {
  *   // Endpoint path as a string.
@@ -50,166 +85,106 @@ const ObjectUtils = require('./objectUtils');
  *     },
  *   },
  * }
+ *
+ * @parent module:shared/apiClient
  */
 
 /**
  * An API client with configurable endpoints.
+ *
+ * @parent module:shared/apiClient
+ * @tutorial APIClient
  */
 class APIClient {
   /**
-   * Class constructor.
-   * @param {String}                  url                 The API entry point.
-   * @param {APIClientEndpoints}      endpoints           A dictionary of named endpoints relative
-   *                                                      to the API entry point.
-   * @param {FetchClient}             fetchClient         The fetch function that makes the
-   *                                                      requests.
-   * @param {Object}                  [defaultHeaders={}] A dictionary of default headers to
-   *                                                      include on every request.
+   * @param {string}                        url                 The API entry point.
+   * @param {APIClientEndpoints}            endpoints           A dictionary of named endpoints
+   *                                                             relative to the API entry point.
+   * @param {APIClientFetchClient}          fetchClient         The fetch function that makes the
+   *                                                             requests.
+   * @param {APIClientParametersDictionary} [defaultHeaders={}] A dictionary of default headers
+   *                                                             to include on every request.
    */
   constructor(url, endpoints, fetchClient, defaultHeaders = {}) {
     /**
      * The API entry point.
-     * @type {String}
+     *
+     * @type {string}
+     * @access protected
+     * @ignore
      */
-    this.url = url;
+    this._url = url;
     /**
      * A dictionary of named endpoints relative to the API entry point.
-     * @type {Object}
-     * @property {string|APIClientEndpoint} [endpointName] The name of the endpoint.
+     *
+     * @type {Object.<string,(string|APIClientEndpoint)>}
+     * @access protected
+     * @ignore
      */
-    this.endpoints = this.flattenEndpoints(endpoints);
-    /**
-     * The fetch function that makes the requests.
-     * @type {FetchClient}
-     */
-    this.fetchClient = fetchClient;
-    /**
-     * A dictionary of default headers to include on every request.
-     * @type {Object}
-     */
-    this.defaultHeaders = defaultHeaders;
-    /**
-     * An authorization token to include on the requests.
-     * @type {String}
-     */
-    this.authorizationToken = '';
-  }
-  /**
-   * Takes a dictionary of endpoints and flatten them on a single level.
-   * The method just calls {@link ObjectUtils.flat}.
-   * @param {APIClientEndpoints} endpoints A dictionary of named endpoints.
-   * @return {Object}
-   */
-  flattenEndpoints(endpoints) {
-    return ObjectUtils.flat(
+    this._endpoints = ObjectUtils.flat(
       endpoints,
       '.',
       '',
-      (ignore, value) => typeof value.path === 'undefined'
+      (ignore, value) => typeof value.path === 'undefined',
     );
-  }
-  /**
-   * Sets a bearer token for all the requests.
-   * @param {String} [token=''] The new authorization token. If the value is empty, it will remove
-   *                            any token previously saved.
-   */
-  setAuthorizationToken(token = '') {
-    this.authorizationToken = token;
-  }
-  /**
-   * Sets the default headers for the requests.
-   * @param {Object}  [headers={}]     The new default headers.
-   * @param {Boolean} [overwrite=true] If `false`, it will merge the new default headers with
-   *                                   the current ones.
-   */
-  setDefaultHeaders(headers = {}, overwrite = true) {
-    this.defaultHeaders = Object.assign(
-      {},
-      (overwrite ? {} : this.defaultHeaders),
-      headers
-    );
-  }
-  /**
-   * Makes a `GET` request.
-   * @param {String}       url          The request URL.
-   * @param {FetchOptions} [options={}] The request options.
-   * @return {Promise<Object,Error>}
-   */
-  get(url, options = {}) {
-    return this.fetch(Object.assign({ url }, options));
-  }
-  /**
-   * Makes a `HEAD` request.
-   * @param {String}       url          The request URL.
-   * @param {FetchOptions} [options={}] The request options.
-   * @return {Promise<Object,Error>}
-   */
-  head(url, options = {}) {
-    return this.get(url, Object.assign({}, options, { method: 'head' }));
-  }
-  /**
-   * Makes a `POST` request.
-   * @param {String}       url          The request URL.
-   * @param {Object}       body         The request body.
-   * @param {FetchOptions} [options={}] The request options.
-   * @return {Promise<Object,Error>}
-   */
-  post(url, body, options = {}) {
-    return this.fetch(Object.assign({
-      url,
-      body,
-      method: 'post',
-    }, options));
-  }
-  /**
-   * Makes a `PUT` request.
-   * @param {String}       url          The request URL.
-   * @param {Object}       body         The request body.
-   * @param {FetchOptions} [options={}] The request options.
-   * @return {Promise<Object,Error>}
-   */
-  put(url, body, options = {}) {
-    return this.post(url, body, Object.assign({}, options, { method: 'put' }));
-  }
-  /**
-   * Makes a `PATCH` request.
-   * @param {String}       url          The request URL.
-   * @param {Object}       body         The request body.
-   * @param {FetchOptions} [options={}] The request options.
-   * @return {Promise<Object,Error>}
-   */
-  patch(url, body, options = {}) {
-    return this.post(url, body, Object.assign({}, options, { method: 'patch' }));
+    /**
+     * The fetch function that makes the requests.
+     *
+     * @type {APIClientFetchClient}
+     * @access protected
+     * @ignore
+     */
+    this._fetchClient = fetchClient;
+    /**
+     * A dictionary of default headers to include on every request.
+     *
+     * @type {APIClientParametersDictionary}
+     * @access protected
+     * @ignore
+     */
+    this._defaultHeaders = defaultHeaders;
+    /**
+     * An authorization token to include on the requests.
+     *
+     * @type {string}
+     * @access protected
+     * @ignore
+     */
+    this._authorizationToken = '';
   }
   /**
    * Makes a `DELETE` request.
-   * @param {String}       url          The request URL.
-   * @param {Object}       body         The request body.
-   * @param {FetchOptions} [options={}] The request options.
-   * @return {Promise<Object,Error>}
+   *
+   * @param {string}                 url          The request URL.
+   * @param {Object}                 body         The request body.
+   * @param {APIClientFetchOptions} [options={}] The request options.
+   * @returns {Promise<Response>}
    */
   delete(url, body = {}, options = {}) {
-    return this.post(url, body, Object.assign({}, options, { method: 'delete' }));
+    return this.post(url, body, { method: 'delete', ...options });
   }
   /**
    * Generates an endpoint URL.
-   * @param {String} name            The name of the endpoint on the `endpoints` property.
-   * @param {Object} [parameters={}] A dictionary of values that will replace placeholders on the
-   *                                 endpoint definition.
-   * @return {String}
+   *
+   * @param {string}                         name            The name of the endpoint on the
+   *                                                         `endpoints` property.
+   * @param {APIClientParametersDictionary} [parameters={}] A dictionary of values that will
+   *                                                         replace placeholders on the endpoint
+   *                                                         definition.
    * @throws {Error} If the endpoint doesn't exist on the `endpoints` property.
+   * @returns {string}
    */
   endpoint(name, parameters = {}) {
     // Get the endpoint information.
-    const info = this.endpoints[name];
+    const info = this._endpoints[name];
     // Validate that the endpoint exists.
     if (!info) {
       throw new Error(`Trying to request unknown endpoint: ${name}`);
     }
     // Get a new reference for the parameters.
-    const params = Object.assign({}, parameters);
+    const params = { ...parameters };
     // If the endpoint is a string, format it into an object with `path`.
-    const endpoint = typeof info === 'string' ? { path: info } : info;
+    const endpoint = typeof info === 'string' ? { path: info, query: null } : info;
     // Define the object that will have the query string.
     const query = {};
     // If the endpoint has a `query` property...
@@ -241,14 +216,14 @@ class APIClient {
       // If the path has the placeholder...
       if (path.includes(placeholder)) {
         // ...replace the placeholder with the value.
-        path = path.replace(placeholder, value);
+        path = path.replace(placeholder, `${value}`);
       } else {
         // ...otherwise, add it on the query string.
         query[parameter] = value;
       }
     });
     // Convert the URL into a `urijs` object.
-    const uri = urijs(`${this.url}/${path}`);
+    const uri = urijs(`${this._url}/${path}`);
     // Loop and add all the query string parameters.
     Object.keys(query).forEach((queryName) => {
       uri.addQuery(queryName, query[queryName]);
@@ -257,34 +232,26 @@ class APIClient {
     return uri.toString();
   }
   /**
-   * Generates a dictionary of headers using the service `defaultHeaders` property as base.
-   * If a token was set using `setAuthorizationToken`, the method will add an `Authorization`
-   * header for the bearer token.
-   * @param {Object} [overwrites={}] Extra headers to add.
-   * @return {Object}
+   * Formats an error response into a proper Error object. This method should proabably be
+   * overwritten to accomodate the error messages for the API it's being used for.
+   *
+   * @param {Object}  response       A received response from a request.
+   * @param {?string} response.error An error message received on the response.
+   * @param {number}  status         The HTTP status of the response.
+   * @returns {Error}
    */
-  headers(overwrites = {}) {
-    const headers = Object.assign({}, this.defaultHeaders);
-    if (this.authorizationToken) {
-      headers.Authorization = `Bearer ${this.authorizationToken}`;
-    }
-
-    return Object.assign({}, headers, overwrites);
+  error(response, status) {
+    return new Error(`[${status}]: ${response.error}`);
   }
   /**
    * Makes a request.
-   * @param {Object}  options         The request options.
-   * @param {string}  options.url     The request URL.
-   * @param {string}  options.method  The request method. `GET` by default.
-   * @param {Object}  options.body    A request body to send.
-   * @param {Object}  options.headers The request headers.
-   * @param {boolean} options.json    Whether or not the response should _"JSON decoded"_. `true`
-   *                                  by default.
-   * @return {Promise<Object,Error>}
+   *
+   * @param {APIClientRequestOptions} options The request options.
+   * @returns {Promise<Response>}
    */
   fetch(options) {
     // Get a new reference of the request options.
-    const opts = Object.assign({}, options);
+    const opts = { ...options };
     // Format the request method and check if it should use the default.
     opts.method = opts.method ? opts.method.toUpperCase() : 'GET';
     // Get the request headers.
@@ -304,7 +271,7 @@ class APIClient {
       // Let's first check if there are headers and if a `Content-Type` has been set.
       let hasContentType = false;
       if (opts.headers) {
-        hasContentType = Object.keys(opts.headers)
+        hasContentType = !!Object.keys(opts.headers)
         .find((name) => name.toLowerCase() === 'content-type');
       } else {
         opts.headers = {};
@@ -325,7 +292,7 @@ class APIClient {
 
     let responseStatus;
     // Make the request.
-    return this.fetchClient(url, opts)
+    return this._fetchClient(url, opts)
     .then((response) => {
       // Capture the response status.
       responseStatus = response.status;
@@ -335,6 +302,8 @@ class APIClient {
         /**
          * Since some clients fail to decode an empty response, we'll try to decode it, but if it
          * fails, it will return an empty object.
+         *
+         * @ignore
          */
         nextStep = response.json().catch(() => ({}));
       } else {
@@ -355,12 +324,141 @@ class APIClient {
     ));
   }
   /**
-   * Formats an error response into a proper Error object.
-   * @param {Object} response A received response from a request.
-   * @return {Error}
+   * Makes a `GET` request.
+   *
+   * @param {string}                url          The request URL.
+   * @param {APIClientFetchOptions} [options={}] The request options.
+   * @returns {Promise<Response>}
    */
-  error(response) {
-    return new Error(response.error);
+  get(url, options = {}) {
+    return this.fetch({ url, ...options });
+  }
+  /**
+   * Makes a `HEAD` request.
+   *
+   * @param {string}                url          The request URL.
+   * @param {APIClientFetchOptions} [options={}] The request options.
+   * @returns {Promise<Response>}
+   */
+  head(url, options = {}) {
+    return this.get(url, { ...options, method: 'head' });
+  }
+  /**
+   * Generates a dictionary of headers using the service `defaultHeaders` property as base.
+   * If a token was set using `setAuthorizationToken`, the method will add an `Authorization`
+   * header for the bearer token.
+   *
+   * @param {Object.<string,(string|number)>} [overwrites={}] Extra headers to add.
+   * @returns {Object.<string,(string|number)>}
+   */
+  headers(overwrites = {}) {
+    const headers = { ...this._defaultHeaders };
+    if (this._authorizationToken) {
+      headers.Authorization = `Bearer ${this._authorizationToken}`;
+    }
+
+    return { ...headers, ...overwrites };
+  }
+  /**
+   * Makes a `PATCH` request.
+   *
+   * @param {string}                url          The request URL.
+   * @param {Object}                body         The request body.
+   * @param {APIClientFetchOptions} [options={}] The request options.
+   * @returns {Promise<Response>}
+   */
+  patch(url, body, options = {}) {
+    return this.post(url, body, { method: 'patch', ...options });
+  }
+  /**
+   * Makes a `POST` request.
+   *
+   * @param {string}                url          The request URL.
+   * @param {Object}                body         The request body.
+   * @param {APIClientFetchOptions} [options={}] The request options.
+   * @returns {Promise<Response>}
+   */
+  post(url, body, options = {}) {
+    return this.fetch({
+      url,
+      body,
+      method: 'post',
+      ...options,
+    });
+  }
+  /**
+   * Makes a `PUT` request.
+   *
+   * @param {string}                url          The request URL.
+   * @param {Object}                body         The request body.
+   * @param {APIClientFetchOptions} [options={}] The request options.
+   * @returns {Promise<Response>}
+   */
+  put(url, body, options = {}) {
+    return this.post(url, body, { method: 'put', ...options });
+  }
+  /**
+   * Sets a bearer token for all the requests.
+   *
+   * @param {string} [token=''] The new authorization token. If the value is empty, it will remove
+   *                            any token previously saved.
+   */
+  setAuthorizationToken(token = '') {
+    this._authorizationToken = token;
+  }
+  /**
+   * Sets the default headers for the requests.
+   *
+   * @param {APIClientParametersDictionary} [headers={}]     The new default headers.
+   * @param {boolean}                       [overwrite=true] If `false`, it will merge the new
+   *                                                         default headers with the current
+   *                                                         ones.
+   */
+  setDefaultHeaders(headers = {}, overwrite = true) {
+    this._defaultHeaders = {
+      ...(overwrite ? {} : this._defaultHeaders),
+      ...headers,
+    };
+  }
+  /**
+   * An authorization token to include on the requests.
+   *
+   * @type {string}
+   */
+  get authorizationToken() {
+    return this._authorizationToken;
+  }
+  /**
+   * A dictionary of default headers to include on every request.
+   *
+   * @type {APIClientParametersDictionary}
+   */
+  get defaultHeaders() {
+    return { ...this._defaultHeaders };
+  }
+  /**
+   * A dictionary of named endpoints relative to the API entry point.
+   *
+   * @type {Object.<string,(string|APIClientEndpoint)>}
+   */
+  get endpoints() {
+    return { ...this._endpoints };
+  }
+  /**
+   * The fetch function that makes the requests.
+   *
+   * @type {APIClientFetchClient}
+   */
+  get fetchClient() {
+    return this._fetchClient;
+  }
+  /**
+   * The API entry point.
+   *
+   * @type {string}
+   */
+  get url() {
+    return this._url;
   }
 }
 

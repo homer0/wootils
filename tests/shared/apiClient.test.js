@@ -1,8 +1,7 @@
-jest.unmock('/shared/objectUtils');
-jest.unmock('/shared/apiClient');
+jest.unmock('../../shared/objectUtils');
+jest.unmock('../../shared/apiClient');
 
-require('jasmine-expect');
-const APIClient = require('/shared/apiClient');
+const APIClient = require('../../shared/apiClient');
 
 describe('APIClient', () => {
   it('should be instantiated with a base URL, endpoints and a fetch client', () => {
@@ -63,7 +62,7 @@ describe('APIClient', () => {
     tokenAfterRemove = sut.authorizationToken;
     // Then
     expect(tokenAfterSet).toBe(token);
-    expect(tokenAfterRemove).toBeEmptyString();
+    expect(tokenAfterRemove).toBe('');
   });
 
   it('should be able to set and remove custom base headers', () => {
@@ -82,16 +81,16 @@ describe('APIClient', () => {
     // When
     sut = new APIClient('', {}, () => {});
     sut.setDefaultHeaders(baseHeaders);
-    headersAfterFirstSet = Object.assign({}, sut.defaultHeaders);
+    headersAfterFirstSet = { ...sut.defaultHeaders };
     sut.setDefaultHeaders(extraHeaders, false);
-    headersAfterSecondSet = Object.assign({}, sut.defaultHeaders);
+    headersAfterSecondSet = { ...sut.defaultHeaders };
     sut.setDefaultHeaders(baseHeaders);
-    headersAfterSetWithOverwrite = Object.assign({}, sut.defaultHeaders);
+    headersAfterSetWithOverwrite = { ...sut.defaultHeaders };
     sut.setDefaultHeaders();
-    headersAfterRemove = Object.assign({}, sut.defaultHeaders);
+    headersAfterRemove = { ...sut.defaultHeaders };
     // Then
     expect(headersAfterFirstSet).toEqual(baseHeaders);
-    expect(headersAfterSecondSet).toEqual(Object.assign({}, baseHeaders, extraHeaders));
+    expect(headersAfterSecondSet).toEqual({ ...baseHeaders, ...extraHeaders });
     expect(headersAfterSetWithOverwrite).toEqual(baseHeaders);
     expect(headersAfterRemove).toEqual({});
   });
@@ -219,31 +218,29 @@ describe('APIClient', () => {
     let headersAfterRemovingDefaults = null;
     // When
     sut = new APIClient('', {}, () => {});
-    headersByDefault = Object.assign({}, sut.headers());
-    headersWithOverwrites = Object.assign({}, sut.headers(extraHeaders));
+    headersByDefault = { ...sut.headers() };
+    headersWithOverwrites = { ...sut.headers(extraHeaders) };
     sut.setAuthorizationToken(token);
-    headersAfterAddingToken = Object.assign({}, sut.headers(extraHeaders));
+    headersAfterAddingToken = { ...sut.headers(extraHeaders) };
     sut.setDefaultHeaders(baseHeaders);
-    headersAfterAddingDefaults = Object.assign({}, sut.headers(extraHeaders));
+    headersAfterAddingDefaults = { ...sut.headers(extraHeaders) };
     sut.setAuthorizationToken();
-    headersAfterRemovingToken = Object.assign({}, sut.headers(extraHeaders));
+    headersAfterRemovingToken = { ...sut.headers(extraHeaders) };
     sut.setDefaultHeaders();
-    headersAfterRemovingDefaults = Object.assign({}, sut.headers(extraHeaders));
+    headersAfterRemovingDefaults = { ...sut.headers(extraHeaders) };
     // Then
     expect(headersByDefault).toEqual({});
     expect(headersWithOverwrites).toEqual(extraHeaders);
-    expect(headersAfterAddingToken).toEqual(Object.assign({}, authorizationHeader, extraHeaders));
-    expect(headersAfterAddingDefaults).toEqual(Object.assign(
-      {},
-      baseHeaders,
-      authorizationHeader,
-      extraHeaders
-    ));
-    expect(headersAfterRemovingToken).toEqual(Object.assign(
-      {},
-      baseHeaders,
-      extraHeaders
-    ));
+    expect(headersAfterAddingToken).toEqual({ ...authorizationHeader, ...extraHeaders });
+    expect(headersAfterAddingDefaults).toEqual({
+      ...baseHeaders,
+      ...authorizationHeader,
+      ...extraHeaders,
+    });
+    expect(headersAfterRemovingToken).toEqual({
+      ...baseHeaders,
+      ...extraHeaders,
+    });
     expect(headersAfterRemovingDefaults).toEqual(extraHeaders);
   });
 
@@ -253,17 +250,18 @@ describe('APIClient', () => {
     const errorResponse = {
       error: errorMessage,
     };
+    const errorResponseStatus = 404;
     let sut = null;
     let result = null;
     // When
     sut = new APIClient('', {}, () => {});
-    result = sut.error(errorResponse);
+    result = sut.error(errorResponse, errorResponseStatus);
     // Then
     expect(result).toBeInstanceOf(Error);
-    expect(result.message).toBe(errorMessage);
+    expect(result.message).toBe(`[${errorResponseStatus}]: ${errorMessage}`);
   });
 
-  it('should make a successfully GET request', () => {
+  it('should make a successful GET request', async () => {
     // Given
     const requestURL = 'http://example.com';
     const requestResponseData = {
@@ -275,24 +273,20 @@ describe('APIClient', () => {
     };
     const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
     let sut = null;
+    let response = null;
     // When
     sut = new APIClient('', '', fetchClient);
-    return sut.fetch({ url: requestURL })
-    .then((response) => {
-      // Then
-      expect(response).toEqual(requestResponseData);
-      expect(requestResponse.json).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
-        method: 'GET',
-      });
-    })
-    .catch((error) => {
-      throw error;
+    response = await sut.fetch({ url: requestURL });
+    // Then
+    expect(response).toEqual(requestResponseData);
+    expect(requestResponse.json).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+      method: 'GET',
     });
   });
 
-  it('should make a successfully GET request with a response that doesn\'t support json()', () => {
+  it('should make a GET request with a response that doesn\'t support json()', async () => {
     // Given
     const requestURL = 'http://example.com';
     const requestResponseData = {
@@ -304,19 +298,15 @@ describe('APIClient', () => {
     };
     const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
     let sut = null;
+    let response = null;
     // When
     sut = new APIClient('', '', fetchClient);
-    return sut.fetch({ url: requestURL })
-    .then((response) => {
-      // Then
-      expect(response.data).toEqual(requestResponseData);
-    })
-    .catch((error) => {
-      throw error;
-    });
+    response = await sut.fetch({ url: requestURL });
+    // Then
+    expect(response.data).toEqual(requestResponseData);
   });
 
-  it('should make a successfully GET request without decoding the response', () => {
+  it('should make a successful GET request without decoding the response', async () => {
     // Given
     const requestURL = 'http://example.com';
     const requestResponse = {
@@ -325,24 +315,20 @@ describe('APIClient', () => {
     };
     const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
     let sut = null;
+    let response = null;
     // When
     sut = new APIClient('', '', fetchClient);
-    return sut.fetch({ url: requestURL, json: false })
-    .then((response) => {
-      // Then
-      expect(response).toEqual(requestResponse);
-      expect(requestResponse.json).toHaveBeenCalledTimes(0);
-      expect(fetchClient).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
-        method: 'GET',
-      });
-    })
-    .catch((error) => {
-      throw error;
+    response = await sut.fetch({ url: requestURL, json: false });
+    // Then
+    expect(response).toEqual(requestResponse);
+    expect(requestResponse.json).toHaveBeenCalledTimes(0);
+    expect(fetchClient).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+      method: 'GET',
     });
   });
 
-  it('should make a successfully GET request and return an empty object if JSON.parse fails', () => {
+  it('should make a GET request and return an empty object if JSON.parse fails', async () => {
     // Given
     const requestURL = 'http://example.com';
     const requestResponse = {
@@ -351,21 +337,20 @@ describe('APIClient', () => {
     };
     const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
     let sut = null;
+    let response = null;
     // When
     sut = new APIClient('', '', fetchClient);
-    return sut.fetch({ url: requestURL })
-    .then((response) => {
-      // Then
-      expect(response).toEqual({});
-      expect(requestResponse.json).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
-        method: 'GET',
-      });
+    response = await sut.fetch({ url: requestURL });
+    // Then
+    expect(response).toEqual({});
+    expect(requestResponse.json).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+      method: 'GET',
     });
   });
 
-  it('should make a successfully POST request', () => {
+  it('should make a successful POST request', async () => {
     // Given
     const requestURL = 'http://example.com';
     const requestMethod = 'post';
@@ -381,32 +366,28 @@ describe('APIClient', () => {
     };
     const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
     let sut = null;
+    let response = null;
     // When
     sut = new APIClient('', '', fetchClient);
-    return sut.fetch({
+    response = await sut.fetch({
       url: requestURL,
       method: requestMethod,
       body: requestBody,
-    })
-    .then((response) => {
-      // Then
-      expect(response).toEqual(requestResponseData);
-      expect(requestResponse.json).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: requestMethod.toUpperCase(),
-        body: JSON.stringify(requestBody),
-      });
-    })
-    .catch((error) => {
-      throw error;
+    });
+    // Then
+    expect(response).toEqual(requestResponseData);
+    expect(requestResponse.json).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: requestMethod.toUpperCase(),
+      body: JSON.stringify(requestBody),
     });
   });
 
-  it('should make a successfully POST request with custom headers', () => {
+  it('should make a successful POST request with custom headers', async () => {
     // Given
     const requestURL = 'http://example.com';
     const requestMethod = 'post';
@@ -425,33 +406,26 @@ describe('APIClient', () => {
     };
     const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
     let sut = null;
+    let response = null;
     // When
     sut = new APIClient('', '', fetchClient);
-    return sut.fetch({
+    response = await sut.fetch({
       url: requestURL,
       method: requestMethod,
       body: requestBody,
       headers: requestHeaders,
-    })
-    .then((response) => {
-      // Then
-      expect(response).toEqual(requestResponseData);
-      expect(requestResponse.json).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
-        headers: Object.assign(
-          {},
-          {
-            'Content-Type': 'application/json',
-          },
-          requestHeaders
-        ),
-        method: requestMethod.toUpperCase(),
-        body: JSON.stringify(requestBody),
-      });
-    })
-    .catch((error) => {
-      throw error;
+    });
+    // Then
+    expect(response).toEqual(requestResponseData);
+    expect(requestResponse.json).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...requestHeaders,
+      },
+      method: requestMethod.toUpperCase(),
+      body: JSON.stringify(requestBody),
     });
   });
 
@@ -467,20 +441,18 @@ describe('APIClient', () => {
     };
     const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
     let sut = null;
+    expect.assertions(2);
     // When
     sut = new APIClient('', '', fetchClient);
     return sut.fetch({ url: requestURL })
-    .then(() => {
-      throw new Error('This test should resolve on the catch');
-    })
     .catch((error) => {
       // Then
       expect(error).toBeInstanceOf(Error);
-      expect(error.message).toBe(requestResponseData.error);
+      expect(error.message).toBe(`[${requestResponse.status}]: ${requestResponseData.error}`);
     });
   });
 
-  it('should make a successfully GET request using the shortcut method', () => {
+  it('should make a successful GET request using the shortcut method', async () => {
     // Given
     const requestURL = 'http://example.com';
     const requestResponseData = {
@@ -492,24 +464,20 @@ describe('APIClient', () => {
     };
     const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
     let sut = null;
+    let response = null;
     // When
     sut = new APIClient('', '', fetchClient);
-    return sut.get(requestURL)
-    .then((response) => {
-      // Then
-      expect(response).toEqual(requestResponseData);
-      expect(requestResponse.json).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
-        method: 'GET',
-      });
-    })
-    .catch((error) => {
-      throw error;
+    response = await sut.get(requestURL);
+    // Then
+    expect(response).toEqual(requestResponseData);
+    expect(requestResponse.json).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+      method: 'GET',
     });
   });
 
-  it('should make a successfully POST request using the shortcut method', () => {
+  it('should make a successful POST request using the shortcut method', async () => {
     // Given
     const requestURL = 'http://example.com';
     const requestMethod = 'post';
@@ -525,28 +493,24 @@ describe('APIClient', () => {
     };
     const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
     let sut = null;
+    let response = null;
     // When
     sut = new APIClient('', '', fetchClient);
-    return sut.post(requestURL, requestBody)
-    .then((response) => {
-      // Then
-      expect(response).toEqual(requestResponseData);
-      expect(requestResponse.json).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: requestMethod.toUpperCase(),
-        body: JSON.stringify(requestBody),
-      });
-    })
-    .catch((error) => {
-      throw error;
+    response = await sut.post(requestURL, requestBody);
+    // Then
+    expect(response).toEqual(requestResponseData);
+    expect(requestResponse.json).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: requestMethod.toUpperCase(),
+      body: JSON.stringify(requestBody),
     });
   });
 
-  it('shouldn\'t overwrite the content type if it was already set', () => {
+  it('shouldn\'t overwrite the content type if it was already set', async () => {
     // Given
     const requestURL = 'http://example.com';
     const requestMethod = 'post';
@@ -565,26 +529,22 @@ describe('APIClient', () => {
       'Content-Type': 'application/charito',
     };
     let sut = null;
+    let response = null;
     // When
     sut = new APIClient('', '', fetchClient);
-    return sut.post(requestURL, requestBody, { headers })
-    .then((response) => {
-      // Then
-      expect(response).toEqual(requestResponseData);
-      expect(requestResponse.json).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
-        headers,
-        method: requestMethod.toUpperCase(),
-        body: JSON.stringify(requestBody),
-      });
-    })
-    .catch((error) => {
-      throw error;
+    response = await sut.post(requestURL, requestBody, { headers });
+    // Then
+    expect(response).toEqual(requestResponseData);
+    expect(requestResponse.json).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+      headers,
+      method: requestMethod.toUpperCase(),
+      body: JSON.stringify(requestBody),
     });
   });
 
-  it('shouldn\'t overwrite the content type nor encode the body if is not an object', () => {
+  it('shouldn\'t overwrite the content type nor encode the body if is not an object', async () => {
     // Given
     const requestURL = 'http://example.com';
     const requestMethod = 'post';
@@ -598,29 +558,28 @@ describe('APIClient', () => {
     };
     const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
     let sut = null;
+    let response = null;
     // When
     sut = new APIClient('', '', fetchClient);
-    return sut.post(requestURL, requestBody)
-    .then((response) => {
-      // Then
-      expect(response).toEqual(requestResponseData);
-      expect(requestResponse.json).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
-        headers: {},
-        method: requestMethod.toUpperCase(),
-        body: requestBody,
-      });
-    })
-    .catch((error) => {
-      throw error;
+    response = await sut.post(requestURL, requestBody);
+    // Then
+    expect(response).toEqual(requestResponseData);
+    expect(requestResponse.json).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+      headers: {},
+      method: requestMethod.toUpperCase(),
+      body: requestBody,
     });
   });
 
-  it('shouldn\'t encode the body if is not an object literal', () => {
+  it('shouldn\'t encode the body if is not an object literal', async () => {
     // Given
     const requestURL = 'http://example.com';
     const requestMethod = 'post';
+    /**
+     * A custom format that the API won't try to encode.
+     */
     class CustomFormData {}
     const requestBody = new CustomFormData();
     const requestResponseData = {
@@ -635,23 +594,22 @@ describe('APIClient', () => {
       'Content-Type': 'application/custom-form-data',
     };
     let sut = null;
+    let response = null;
     // When
     sut = new APIClient('', '', fetchClient);
-    return sut.post(requestURL, requestBody, { headers })
-    .then((response) => {
-      // Then
-      expect(response).toEqual(requestResponseData);
-      expect(requestResponse.json).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
-        headers,
-        method: requestMethod.toUpperCase(),
-        body: requestBody,
-      });
+    response = await sut.post(requestURL, requestBody, { headers });
+    // Then
+    expect(response).toEqual(requestResponseData);
+    expect(requestResponse.json).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+      headers,
+      method: requestMethod.toUpperCase(),
+      body: requestBody,
     });
   });
 
-  it('should make a successfully PUT request using the shortcut method', () => {
+  it('should make a successful PUT request using the shortcut method', async () => {
     // Given
     const requestURL = 'http://example.com';
     const requestMethod = 'put';
@@ -667,28 +625,24 @@ describe('APIClient', () => {
     };
     const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
     let sut = null;
+    let response = null;
     // When
     sut = new APIClient('', '', fetchClient);
-    return sut.put(requestURL, requestBody)
-    .then((response) => {
-      // Then
-      expect(response).toEqual(requestResponseData);
-      expect(requestResponse.json).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: requestMethod.toUpperCase(),
-        body: JSON.stringify(requestBody),
-      });
-    })
-    .catch((error) => {
-      throw error;
+    response = await sut.put(requestURL, requestBody);
+    // Then
+    expect(response).toEqual(requestResponseData);
+    expect(requestResponse.json).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: requestMethod.toUpperCase(),
+      body: JSON.stringify(requestBody),
     });
   });
 
-  it('should make a successfully PATCH request using the shortcut method', () => {
+  it('should make a successful PATCH request using the shortcut method', async () => {
     // Given
     const requestURL = 'http://example.com';
     const requestMethod = 'patch';
@@ -704,28 +658,24 @@ describe('APIClient', () => {
     };
     const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
     let sut = null;
+    let response = null;
     // When
     sut = new APIClient('', '', fetchClient);
-    return sut.patch(requestURL, requestBody)
-    .then((response) => {
-      // Then
-      expect(response).toEqual(requestResponseData);
-      expect(requestResponse.json).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: requestMethod.toUpperCase(),
-        body: JSON.stringify(requestBody),
-      });
-    })
-    .catch((error) => {
-      throw error;
+    response = await sut.patch(requestURL, requestBody);
+    // Then
+    expect(response).toEqual(requestResponseData);
+    expect(requestResponse.json).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: requestMethod.toUpperCase(),
+      body: JSON.stringify(requestBody),
     });
   });
 
-  it('should make a successfully DELETE request using the shortcut method', () => {
+  it('should make a successful DELETE request using the shortcut method', async () => {
     // Given
     const requestURL = 'http://example.com';
     const requestMethod = 'delete';
@@ -738,28 +688,24 @@ describe('APIClient', () => {
     };
     const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
     let sut = null;
+    let response = null;
     // When
     sut = new APIClient('', '', fetchClient);
-    return sut.delete(requestURL)
-    .then((response) => {
-      // Then
-      expect(response).toEqual(requestResponseData);
-      expect(requestResponse.json).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: requestMethod.toUpperCase(),
-        body: JSON.stringify({}),
-      });
-    })
-    .catch((error) => {
-      throw error;
+    response = await sut.delete(requestURL);
+    // Then
+    expect(response).toEqual(requestResponseData);
+    expect(requestResponse.json).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: requestMethod.toUpperCase(),
+      body: JSON.stringify({}),
     });
   });
 
-  it('should make a successfully HEAD request using the shortcut method', () => {
+  it('should make a successful HEAD request using the shortcut method', async () => {
     // Given
     const requestURL = 'http://example.com';
     const requestMethod = 'head';
@@ -770,16 +716,11 @@ describe('APIClient', () => {
     let sut = null;
     // When
     sut = new APIClient('', '', fetchClient);
-    return sut.head(requestURL)
-    .then(() => {
-      // Then
-      expect(fetchClient).toHaveBeenCalledTimes(1);
-      expect(fetchClient).toHaveBeenCalledWith(requestURL, {
-        method: requestMethod.toUpperCase(),
-      });
-    })
-    .catch((error) => {
-      throw error;
+    await sut.head(requestURL);
+    // Then
+    expect(fetchClient).toHaveBeenCalledTimes(1);
+    expect(fetchClient).toHaveBeenCalledWith(requestURL, {
+      method: requestMethod.toUpperCase(),
     });
   });
 });

@@ -1,6 +1,4 @@
 /* eslint-disable no-console */
-jest.unmock('/node/logger');
-jest.mock('jimple', () => ({ provider: jest.fn(() => 'provider') }));
 jest.mock('colors/safe', () => new Proxy({}, {
   mocks: {},
   clear() {
@@ -23,15 +21,16 @@ jest.mock('colors/safe', () => new Proxy({}, {
     return result;
   },
 }));
+jest.unmock('../../node/logger');
+jest.unmock('../../shared/deepAssign');
+jest.unmock('../../shared/jimpleFns');
 
-require('jasmine-expect');
+const colors = require('colors/safe');
 const {
   Logger,
   logger,
   appLogger,
-} = require('/node/logger');
-const colors = require('colors/safe');
-const { provider } = require('jimple');
+} = require('../../node/logger');
 
 const originalConsoleLog = console.log;
 
@@ -62,7 +61,7 @@ describe('Logger', () => {
     // When
     sut = new Logger(prefix, true);
     // Then
-    expect(sut.showTime).toBeTrue();
+    expect(sut.showTime).toBe(true);
     expect(sut.prefix(message)).toMatch(/\[\w+\] \[\d+-\d+-\d+ \d+:\d+:\d+] \w+/);
   });
 
@@ -73,8 +72,8 @@ describe('Logger', () => {
     // When
     sut = new Logger();
     // Then
-    expect(sut.messagesPrefix).toBeEmptyString();
-    expect(sut.prefix()).toBeEmptyString();
+    expect(sut.messagesPrefix).toBe('');
+    expect(sut.prefix()).toBe('');
     expect(sut.prefix(message)).toBe(message);
   });
 
@@ -175,6 +174,23 @@ describe('Logger', () => {
     // When
     sut = new Logger();
     sut.warning(message);
+    // Then
+    expect(log).toHaveBeenCalledTimes(1);
+    expect(log).toHaveBeenCalledWith(message);
+    expect(colors[color]).toHaveBeenCalledTimes(1);
+    expect(colors[color]).toHaveBeenCalledWith(message);
+  });
+
+  it('should log a warning message (yellow) using the `warn` alias', () => {
+    // Given
+    const message = 'Something is not working';
+    const color = 'yellow';
+    const log = jest.fn();
+    spyOn(console, 'log').and.callFake(log);
+    let sut = null;
+    // When
+    sut = new Logger();
+    sut.warn(message);
     // Then
     expect(log).toHaveBeenCalledTimes(1);
     expect(log).toHaveBeenCalledWith(message);
@@ -302,29 +318,48 @@ describe('Logger', () => {
     expect(colors[stackColor]).toHaveBeenCalledTimes(stack.length);
   });
 
-  it('should have a Jimple provider to register the service', () => {
+  it('should include a provider for the DIC', () => {
     // Given
     const container = {
       set: jest.fn(),
     };
     let sut = null;
-    let serviceProvider = null;
     let serviceName = null;
     let serviceFn = null;
     // When
-    [[serviceProvider]] = provider.mock.calls;
-    serviceProvider(container);
+    logger.register(container);
     [[serviceName, serviceFn]] = container.set.mock.calls;
     sut = serviceFn();
     // Then
-    expect(logger).toBe('provider');
-    expect(provider).toHaveBeenCalledTimes(['logger', 'appLogger'].length);
     expect(serviceName).toBe('logger');
-    expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(Logger);
   });
 
-  it('should have a Jimple provider to register app logger using the package name', () => {
+  it('should allow custom options on its service provider', () => {
+    // Given
+    const container = {
+      set: jest.fn(),
+    };
+    const options = {
+      serviceName: 'myLogger',
+      messagesPrefix: 'myPrefix',
+      showTime: true,
+    };
+    let sut = null;
+    let serviceName = null;
+    let serviceFn = null;
+    // When
+    logger(options).register(container);
+    [[serviceName, serviceFn]] = container.set.mock.calls;
+    sut = serviceFn();
+    // Then
+    expect(serviceName).toBe(options.serviceName);
+    expect(sut).toBeInstanceOf(Logger);
+    expect(sut.messagesPrefix).toBe(options.messagesPrefix);
+    expect(sut.showTime).toBe(options.showTime);
+  });
+
+  it('should include a provider for the DIC that uses the package name as prefix', () => {
     // Given
     const appName = 'MyApp';
     const container = {
@@ -332,45 +367,66 @@ describe('Logger', () => {
       get: jest.fn(() => ({ name: appName })),
     };
     let sut = null;
-    let serviceProvider = null;
     let serviceName = null;
     let serviceFn = null;
     // When
-    [, [serviceProvider]] = provider.mock.calls;
-    serviceProvider(container);
+    appLogger.register(container);
     [[serviceName, serviceFn]] = container.set.mock.calls;
     sut = serviceFn();
     // Then
-    expect(appLogger).toBe('provider');
-    expect(provider).toHaveBeenCalledTimes(['logger', 'appLogger'].length);
     expect(serviceName).toBe('appLogger');
-    expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(Logger);
     expect(sut.messagesPrefix).toBe(appName);
   });
 
-  it('should have a Jimple provider to register app logger using a custom prefix', () => {
+  it('should detect the nameForCLI when reading the package for the prefix', () => {
     // Given
-    const nameForCLI = 'MyApp';
+    const appName = 'MyAppCLI';
     const container = {
       set: jest.fn(),
-      get: jest.fn(() => ({ name: 'appName', nameForCLI })),
+      get: jest.fn(() => ({ nameForCLI: appName })),
     };
     let sut = null;
-    let serviceProvider = null;
     let serviceName = null;
     let serviceFn = null;
     // When
-    [, [serviceProvider]] = provider.mock.calls;
-    serviceProvider(container);
+    appLogger.register(container);
     [[serviceName, serviceFn]] = container.set.mock.calls;
     sut = serviceFn();
     // Then
-    expect(appLogger).toBe('provider');
-    expect(provider).toHaveBeenCalledTimes(['logger', 'appLogger'].length);
     expect(serviceName).toBe('appLogger');
-    expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(Logger);
-    expect(sut.messagesPrefix).toBe(nameForCLI);
+    expect(sut.messagesPrefix).toBe(appName);
+  });
+
+  it('should support custom options on the appLogger provider', () => {
+    // Given
+    const packageInfo = {
+      name: 'myApp!',
+    };
+    const options = {
+      serviceName: 'MyAppLogger!',
+      services: {
+        packageInfo,
+      },
+      showTime: true,
+    };
+    const container = {
+      set: jest.fn(),
+      get: jest.fn(),
+    };
+    let sut = null;
+    let serviceName = null;
+    let serviceFn = null;
+    // When
+    appLogger(options).register(container);
+    [[serviceName, serviceFn]] = container.set.mock.calls;
+    sut = serviceFn();
+    // Then
+    expect(serviceName).toBe(options.serviceName);
+    expect(sut).toBeInstanceOf(Logger);
+    expect(sut.messagesPrefix).toBe(packageInfo.name);
+    expect(sut.showTime).toBe(options.showTime);
+    expect(container.get).toHaveBeenCalledTimes(0);
   });
 });

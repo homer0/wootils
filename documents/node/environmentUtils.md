@@ -59,7 +59,7 @@ const app = new Jimple();
 app.register(environmentUtils);
 ```
 Now, to update the code:
- 
+
 ```js
 // The imported provider has the same name, that's why I called it `envUtils`.
 const envUtils = app.get('environmentUtils');
@@ -120,7 +120,7 @@ const app = new Jimple();
 app.register(environmentUtils);
 ```
 Now, to update the code:
- 
+
 ```js
 // The imported provider has the same name, that's why I called it `envUtils`.
 const envUtils = app.get('environmentUtils');
@@ -149,12 +149,34 @@ You can call `.exists()` with the name of the variable and the service will tell
 
 No more `if (process.env.NODE_ENV ...`, `EnvironmentUtils` does it once when you instantiate it and then gives you `production()` and `development()` for you to use.
 
+## ES Modules
+
+If you are using ESM, you can import the class and the provider from the `/esm` sub path:
+
+```js
+import {
+  EnvironmentUtils,
+  environmentUtils,
+} from 'wootils/esm/node/environmentUtils';
+
+// just the class
+
+import { EnvironmentUtils } from 'wootils/esm/node';
+
+// just the provider
+
+import { environmentUtils } from 'wootils/esm/node/providers';
+```
+
 ## Technical documentation
 
-The code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/class/wootils/node/environmentUtils.js~EnvironmentUtils.html) or generate it yourself using:
+- Module: {@link module:node/environmentUtils|node/environmentUtils}
+- Class: {@link EnvironmentUtils}
+- Provider: {@link module:node/environmentUtils~environmentUtils|environmentUtils}
 
-```bash
-# You can either use npm or yarn, it doesn't matter
-npm run docs
-open ./docs/index.html
-```
+> If you are reading this form the markdown document, you can go to the [online version](https://homer0.github.io/wootils); or you can generate the documentation site yourself by running the `docs` command:
+>
+> ```bash
+> # You can either use npm or yarn, it doesn't matter
+> npm run docs && open ./docs/index.html;
+> ```

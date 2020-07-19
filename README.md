@@ -1,6 +1,6 @@
 # Wootils
 
-[![Travis](https://img.shields.io/travis/homer0/wootils.svg?style=flat-square)](https://travis-ci.org/homer0/wootils)
+[![GitHub Workflow Status (master)](https://img.shields.io/github/workflow/status/homer0/wootils/Test/master?style=flat-square)](https://github.com/homer0/wootils/actions?query=workflow%3ATest)
 [![Coveralls github](https://img.shields.io/coveralls/github/homer0/wootils.svg?style=flat-square)](https://coveralls.io/github/homer0/wootils?branch=master)
 [![David](https://img.shields.io/david/homer0/wootils.svg?style=flat-square)](https://david-dm.org/homer0/wootils)
 [![David](https://img.shields.io/david/dev/homer0/wootils.svg?style=flat-square)](https://david-dm.org/homer0/wootils)
@@ -9,20 +9,12 @@ A set of Javascript utilities for building Node and browser apps.
 
 ## Motivation/Introduction
 
-The idea was to take all those small thing I'm always rewriting on every project and move them to a single package so I can not only stop copying & pasting them all over the place but also maintain them all together.
+The idea was to take all those small thing I'm always rewriting on every project and move them to a single package so I can, not only stop copying & pasting them all over the place, but also maintain them all together.
 
 There are two rules I followed when I had to decide what to put and what to keep somewhere else:
 
 1. The utility needs to fit on a single file.
 2. It shouldn't include any specific business logic from any other project.
-
-## Information
-
-| -            | -                                                                  |
-|--------------|--------------------------------------------------------------------|
-| Package      | wootils                                                            |
-| Description  | A set of Javascript utilities for building Node and browser apps.  |
-| Node Version | >= v10.0.0                                                         |
 
 ## Usage
 
@@ -89,6 +81,12 @@ A really basic client to work with an API endpoints requests.
 
 [Read more about APIClient](./documents/shared/APIClient.md)
 
+#### DeepAssign
+
+Deep merge (and copy) of objects(`{}`) and `Array`s using native spread syntax.
+
+[Read more about DeepAssign](./documents/shared/deepAssign.md)
+
 #### deferred
 
 Create a deferred promise using the native `Promise` object.
@@ -107,6 +105,12 @@ A way to extend promise chains by _injecting_ custom properties.
 
 [Read more about extendPromise](./documents/shared/extendPromise.md)
 
+#### Jimple Functions
+
+A set of utility functions to generate resources that can be used on Jimple or abstractions created from it (like [Jimpex](https://yarnpkg.com/package/jimpex)).
+
+[Read more about the Jimple Functions](./documents/shared/jimpleFns.md)
+
 #### ObjectUtils
 
 A small collection of utility methods to work with objects.
@@ -121,37 +125,70 @@ An **abstract** class allows you to build services that relay on browser storage
 
 [Read more about SimpleStorage](./documents/shared/simpleStorage.md)
 
-## Development
+## ES Modules
 
-Before doing anything, install the repository hooks:
+All files are written using commonjs, as I targeted the oldest Node LTS and it doesn't support modules (without a flag) yet, but you can use it with ESM.
 
-```bash
-# You can either use npm or yarn, it doesn't matter
-yarn run hooks
+When the package gets published, an ESM version is generated on the path `/esm`. If you are using the latest version of Node, or a module bundler (like [projext](https://projextjs.com) :D), instead of requiring from the package's root path, you should do it from the `/esm` sub path:
+
+```js
+// commonjs
+const ObjectUtils = require('wootils/shared/objectUtils');
+
+// ESM
+import ObjectUtils from 'wootils/esm/shared/objectUtils';
 ```
+
+Since the next LTS to become "the oldest" is 12, which still uses the flag, I still have no plans on going with ESM by default.
+
+## Development
 
 ### NPM/Yarn Tasks
 
-| Task                     | Description                         |
-|--------------------------|-------------------------------------|
-| `yarn run hooks`         | Install the GIT repository hooks.   |
-| `yarn test`              | Run the project unit tests.         |
-| `yarn run lint`          | Lint the modified files.            |
-| `yarn run lint:full`     | Lint the project code.              |
-| `yarn run docs`          | Generate the project documentation. |
-| `yarn run todo`          | List all the pending to-do's.       |
+| Task       | Description                          |
+|------------|--------------------------------------|
+| `docs`     | Generates the project documentation. |
+| `lint`     | Lints the staged files.              |
+| `lint:all` | Lints the entire project code.       |
+| `prepare`  | Generates the project ESM version.   |
+| `test`     | Runs the project unit tests.         |
+| `todo`     | Lists all the pending to-do's.       |
+
+### Repository hooks
+
+I use [`husky`](https://yarnpkg.com/package/husky) to automatically install the repository hooks so the code will be tested and linted before any commit and the dependencies updated after every merge.
+
+The configuration is on the `husky` property of the `package.json` and the hooks' files are on `./utils/hooks`.
+
+#### Commits convention
+
+I use [conventional commits](https://www.conventionalcommits.org) with [`commitizen`](https://yarnpkg.com/package/commitizen) in order to support semantic releases. The one that sets it up is actually husky, that installs a script that runs commitizen on the `git commit` command.
+
+The hook for this is on `./utils/hooks/prepare-commit-msg` and the configuration for comitizen is on the `config.commitizen` property of the `package.json`.
+
+### Releases
+
+I use [`semantic-release`](https://yarnpkg.com/package/semantic-release) and a GitHub action to automatically release on NPM everything that gets merged to master.
+
+The configuration for `semantic-release` is on `./releaserc` and the workflow for the release is on `./.github/workflow/release.yml`.
 
 ### Testing
 
-I use [Jest](https://facebook.github.io/jest/) with [Jest-Ex](https://yarnpkg.com/en/package/jest-ex) to test the project. The configuration file is on `./.jestrc`, the tests and mocks are on `./tests` and the script that runs it is on `./utils/scripts/test`.
+I use [Jest](https://facebook.github.io/jest/) to test the project.
+
+The configuration file is on `./.jestrc.json`, the tests are on `./tests` and the script that runs it is on `./utils/scripts/test`.
 
 ### Linting
 
-I use [ESlint](http://eslint.org) to validate all our JS code. The configuration file for the project code is on `./.eslintrc` and for the tests on `./tests/.eslintrc` (which inherits from the one on the root), there's also an `./.eslintignore` to ignore some files on the process, and the script that runs it is on `./utils/scripts/lint`.
+I use [ESlint](https://eslint.org) with [my own custom configuration](https://yarnpkg.com/package/eslint-plugin-homer0) to validate all the JS code and the JSDoc comments.
+
+The configuration file for the project code is on `./.eslintrc` and the one for the tests is on `./tests/.eslintrc`, and there's also an `./.eslintignore` to exclude some files on the process. The script that runs it is on `./utils/scripts/lint`.
 
 ### Documentation
 
-I use [ESDoc](http://esdoc.org) to generate HTML documentation for the project. The configuration file is on `./.esdocrc` and the script that runs it is on `./utils/scripts/docs`.
+I use [JSDoc](https://jsdoc.app) to generate an HTML documentation site for the project.
+
+The configuration file is on `./.jsdoc.js` and the script that runs it is on `./utils/scripts/docs`.
 
 ### To-Dos
 
@@ -159,6 +196,4 @@ I use `@todo` comments to write all the pending improvements and fixes, and [Lea
 
 ### Windows
 
-You can work with this project on Windows, but it only works if you use [Yarn](https://yarnpkg.com/en/docs/install). The reason is that NPM on Windows doesn't allow you to use paths like `./scripts/something` on the `package.json` scripts, while Yarn does.
-
-Another alternative if you are using Windows is to use [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+This project uses bash scripts for development, so if you want to develop on Windows, you need to do it with [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10).

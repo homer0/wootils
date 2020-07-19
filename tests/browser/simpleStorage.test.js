@@ -1,18 +1,34 @@
-jest.unmock('/browser/simpleStorage');
+jest.unmock('../../browser/simpleStorage');
+jest.unmock('../../shared/deepAssign');
 
-require('jasmine-expect');
-const SimpleStorage = require('/browser/simpleStorage');
+const SimpleStorage = require('../../browser/simpleStorage');
 
 const originalDate = global.Date;
 
 describe('SimpleStorage', () => {
+  /**
+   * Generates a proxied version of {@link SimpleStorage} for testing purposes.
+   *
+   * @param {SimpleStorageOptions} options             The options for {@link SimpleStorage}.
+   * @param {?Object}              [initialData=null]  The data for when the storage gets
+   *                                                   initialized.
+   * @returns {Proxy<SimpleStorage>}
+   */
   const getSutProxy = (options, initialData = null) => {
+    /**
+     * A subclass to avoid the abstract error.
+     */
     class Sut extends SimpleStorage {}
     const sut = new Sut(options);
     return new Proxy(sut, {
       get(target, name) {
         let result;
         if (name === '_getInitialData' && initialData !== null) {
+          /**
+           * A fake {@link SimpleStorage#_getInitialData} that would return our object.
+           *
+           * @returns {Object}
+           */
           result = () => initialData;
         } else if (target[name]) {
           result = target[name];
@@ -29,9 +45,15 @@ describe('SimpleStorage', () => {
       },
     });
   };
-
+  /**
+   * Generates an object with the same signature as LocalStorage and SessionStorage that the
+   * test cases can use.
+   *
+   * @param {Object} initialData  The data "currently" on the storage.
+   * @returns {Object}
+   */
   const getStorageProxy = (initialData = {}) => {
-    const data = Object.assign({}, initialData);
+    const data = { ...initialData };
     return new Proxy({}, {
       mocks: {
         get: jest.fn((name) => data[name]),
@@ -275,7 +297,7 @@ describe('SimpleStorage', () => {
       expect(mStorage.mocks.set).toHaveBeenCalledWith(storageKey, '{}');
     });
 
-    it('should overwrite the data from a promise on the service and save it', () => {
+    it('should overwrite the data from a promise on the service and save it', async () => {
       // Given
       const storageKey = 'myStorage';
       const mStorage = getStorageProxy();
@@ -297,20 +319,15 @@ describe('SimpleStorage', () => {
       let result = null;
       // When
       sut = getSutProxy(options);
-      return sut.setData(dataPromise)
-      .then(() => {
-        result = sut.getData();
-        // Then
-        expect(result).toEqual(newData);
-        expect(mStorage.mocks.get).toHaveBeenCalledTimes(1);
-        expect(mStorage.mocks.get).toHaveBeenCalledWith(options.storage.key);
-        expect(mStorage.mocks.set).toHaveBeenCalledTimes(2);
-        expect(mStorage.mocks.set).toHaveBeenCalledWith(storageKey, '{}');
-        expect(mStorage.mocks.set).toHaveBeenCalledWith(storageKey, JSON.stringify(newData));
-      })
-      .catch((error) => {
-        throw error;
-      });
+      await sut.setData(dataPromise);
+      result = sut.getData();
+      // Then
+      expect(result).toEqual(newData);
+      expect(mStorage.mocks.get).toHaveBeenCalledTimes(1);
+      expect(mStorage.mocks.get).toHaveBeenCalledWith(options.storage.key);
+      expect(mStorage.mocks.set).toHaveBeenCalledTimes(2);
+      expect(mStorage.mocks.set).toHaveBeenCalledWith(storageKey, '{}');
+      expect(mStorage.mocks.set).toHaveBeenCalledWith(storageKey, JSON.stringify(newData));
     });
 
     it('should initialize as a fallback for another storage', () => {
@@ -460,7 +477,7 @@ describe('SimpleStorage', () => {
       expect(mStorage.mocks.set).toHaveBeenCalledTimes(1);
       expect(mStorage.mocks.set).toHaveBeenCalledWith(
         options.storage.key,
-        JSON.stringify(initialData)
+        JSON.stringify(initialData),
       );
     });
 
@@ -751,7 +768,7 @@ describe('SimpleStorage', () => {
             time: currentTime,
             value: entryValue,
           },
-        })
+        }),
       );
     });
 
@@ -802,7 +819,7 @@ describe('SimpleStorage', () => {
             time: currentTime,
             value: entryValue,
           },
-        })
+        }),
       );
     });
 
@@ -850,7 +867,7 @@ describe('SimpleStorage', () => {
       expect(mStorage.mocks.set).toHaveBeenCalledWith(options.storage.key, '{}');
     });
 
-    it('should add and save a new entry from a promise', () => {
+    it('should add and save a new entry from a promise', async () => {
       // Given
       const currentTime = 0;
       global.Date = {
@@ -879,33 +896,29 @@ describe('SimpleStorage', () => {
       let sut = null;
       let resultBeforeAdding = null;
       let resultAfterAdding = null;
+      let resultFromAdding = null;
       // When
       sut = getSutProxy(options);
       resultBeforeAdding = sut.getEntryValue(entryKey);
-      return sut.addEntry(entryKey, entryPromise)
-      .then((resultFromAdding) => {
-        resultAfterAdding = sut.getEntryValue(entryKey);
-        // Then
-        expect(resultBeforeAdding).toBeNull();
-        expect(resultFromAdding).toEqual(entryValue);
-        expect(resultAfterAdding).toEqual(entryValue);
-        expect(mStorage.mocks.get).toHaveBeenCalledTimes(1);
-        expect(mStorage.mocks.get).toHaveBeenCalledWith(options.storage.key);
-        expect(mStorage.mocks.set).toHaveBeenCalledTimes(2);
-        expect(mStorage.mocks.set).toHaveBeenCalledWith(options.storage.key, '{}');
-        expect(mStorage.mocks.set).toHaveBeenCalledWith(
-          options.storage.key,
-          JSON.stringify({
-            [entryKey]: {
-              time: currentTime,
-              value: entryValue,
-            },
-          })
-        );
-      })
-      .catch((error) => {
-        throw error;
-      });
+      resultFromAdding = await sut.addEntry(entryKey, entryPromise);
+      resultAfterAdding = sut.getEntryValue(entryKey);
+      // Then
+      expect(resultBeforeAdding).toBeNull();
+      expect(resultFromAdding).toEqual(entryValue);
+      expect(resultAfterAdding).toEqual(entryValue);
+      expect(mStorage.mocks.get).toHaveBeenCalledTimes(1);
+      expect(mStorage.mocks.get).toHaveBeenCalledWith(options.storage.key);
+      expect(mStorage.mocks.set).toHaveBeenCalledTimes(2);
+      expect(mStorage.mocks.set).toHaveBeenCalledWith(options.storage.key, '{}');
+      expect(mStorage.mocks.set).toHaveBeenCalledWith(
+        options.storage.key,
+        JSON.stringify({
+          [entryKey]: {
+            time: currentTime,
+            value: entryValue,
+          },
+        }),
+      );
     });
 
     it('should delete an entry and save the storage', () => {
@@ -945,7 +958,7 @@ describe('SimpleStorage', () => {
       resultAfterDeleting = sut.getEntryValue(entryKey);
       // Then
       expect(resultBeforeDeleting).toEqual(entryValue);
-      expect(resultFromDeleting).toBeTrue();
+      expect(resultFromDeleting).toBe(true);
       expect(resultAfterDeleting).toBeNull();
       expect(mStorage.mocks.get).toHaveBeenCalledTimes(1);
       expect(mStorage.mocks.get).toHaveBeenCalledWith(options.storage.key);
@@ -958,7 +971,7 @@ describe('SimpleStorage', () => {
             time: currentTime,
             value: entryValue,
           },
-        })
+        }),
       );
       expect(mStorage.mocks.set).toHaveBeenCalledWith(options.storage.key, '{}');
     });
@@ -1000,7 +1013,7 @@ describe('SimpleStorage', () => {
       resultAfterDeleting = sut.getEntryValue(entryKey);
       // Then
       expect(resultBeforeDeleting).toEqual(entryValue);
-      expect(resultFromDeleting).toBeTrue();
+      expect(resultFromDeleting).toBe(true);
       expect(resultAfterDeleting).toBeNull();
       expect(mStorage.mocks.get).toHaveBeenCalledTimes(1);
       expect(mStorage.mocks.get).toHaveBeenCalledWith(options.storage.key);
@@ -1013,7 +1026,7 @@ describe('SimpleStorage', () => {
             time: currentTime,
             value: entryValue,
           },
-        })
+        }),
       );
     });
 
@@ -1039,7 +1052,7 @@ describe('SimpleStorage', () => {
       sut = getSutProxy(options);
       result = sut.deleteEntry('randomKey');
       // Then
-      expect(result).toBeFalse();
+      expect(result).toBe(false);
     });
   });
 

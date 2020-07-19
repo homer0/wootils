@@ -1,7 +1,6 @@
-jest.unmock('/shared/extendPromise');
+jest.unmock('../../shared/extendPromise');
 
-require('jasmine-expect');
-const extendPromise = require('/shared/extendPromise');
+const extendPromise = require('../../shared/extendPromise');
 
 describe('ExtendPromise', () => {
   it('should throw an error when called with anything but a promise', () => {
@@ -21,7 +20,7 @@ describe('ExtendPromise', () => {
     .toThrow(/'properties' must be an object with at least one key/i);
   });
 
-  it('should extend a promise chain', () => {
+  it('should extend a promise chain', async () => {
     // Given
     const promise = Promise.resolve();
     const properties = {
@@ -41,20 +40,18 @@ describe('ExtendPromise', () => {
     valueAfterSecondThen = sut.custom;
     sut = sut.catch((error) => Promise.reject(error));
     valueAfterCatch = sut.custom;
-    return sut
-    .then(() => {
-      // Then
-      expect(sut).toBeInstanceOf(Promise);
-      expect(sut.domain).toEqual(promise.domain);
-      expect(sut.custom).toBe(properties.custom);
-      expect(valueAfterCreation).toBe(properties.custom);
-      expect(valueAfterFirstThen).toBe(properties.custom);
-      expect(valueAfterSecondThen).toBe(properties.custom);
-      expect(valueAfterCatch).toBe(properties.custom);
-    });
+    await sut;
+    // Then
+    expect(sut).toBeInstanceOf(Promise);
+    expect(sut.domain).toEqual(promise.domain);
+    expect(sut.custom).toBe(properties.custom);
+    expect(valueAfterCreation).toBe(properties.custom);
+    expect(valueAfterFirstThen).toBe(properties.custom);
+    expect(valueAfterSecondThen).toBe(properties.custom);
+    expect(valueAfterCatch).toBe(properties.custom);
   });
 
-  it('should use a native method even if a property tries to overwrite it', () => {
+  it('should use a native method even if a property tries to overwrite it', async () => {
     // Given
     const promise = Promise.resolve();
     const properties = {
@@ -65,11 +62,9 @@ describe('ExtendPromise', () => {
     // When
     sut = extendPromise(promise, properties);
     result = sut.toString();
-    return sut
-    .then(() => {
-      // Then
-      expect(result).toEqual(promise.toString());
-      expect(properties.toString).toHaveBeenCalledTimes(0);
-    });
+    await sut;
+    // Then
+    expect(result).toEqual(promise.toString());
+    expect(properties.toString).toHaveBeenCalledTimes(0);
   });
 });

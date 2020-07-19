@@ -1,7 +1,6 @@
-jest.unmock('/shared/objectUtils');
+jest.unmock('../../shared/objectUtils');
 
-require('jasmine-expect');
-const ObjectUtils = require('/shared/objectUtils');
+const ObjectUtils = require('../../shared/objectUtils');
 
 describe('ObjectUtils', () => {
   it('should throw an error when instantiated', () => {
@@ -306,7 +305,7 @@ describe('ObjectUtils', () => {
       expect(() => ObjectUtils.set(target, objPath, value, '.', true))
       .toThrow(new RegExp(
         `There's already an element of type 'string' on '${topElement}.${childElement}'`,
-        'i'
+        'i',
       ));
     });
   });
@@ -316,19 +315,14 @@ describe('ObjectUtils', () => {
       // Given
       const properties = ['name', 'address'];
       const propertiesObject = properties.reduce(
-        (acc, name) => Object.assign(acc, {
-          [name]: `${name}-value`,
-        }),
-        {}
-      );
-      const target = Object.assign(
+        (acc, name) => ({ ...acc, [name]: `${name}-value` }),
         {},
-        propertiesObject,
-        {
-          random: 'value',
-          planet: 'earth',
-        }
       );
+      const target = {
+        ...propertiesObject,
+        random: 'value',
+        planet: 'earth',
+      };
       const copy = ObjectUtils.copy(target);
       let result = null;
       // When
@@ -381,7 +375,7 @@ describe('ObjectUtils', () => {
         {
           [childElement]: `${topElement}${delimiter}${childElement}`,
         },
-        '/'
+        '/',
       );
       // Then
       expect(result).toEqual({
@@ -428,7 +422,7 @@ describe('ObjectUtils', () => {
         [
           { [topElement]: `${topElement}.${childElement}` },
           { [`${topElement}.${childElement}`]: `${topElement}.${childElement}` },
-        ]
+        ],
       );
       // Then
       expect(result).toBeUndefined();
@@ -454,11 +448,11 @@ describe('ObjectUtils', () => {
           { [`${topElement}.${childElement}`]: `${topElement}.${childElement}` },
         ],
         '.',
-        true
+        true,
       ))
       .toThrow(new RegExp(
         `There's already an element of type 'string' on '${topElement}'`,
-        'i'
+        'i',
       ));
     });
   });
@@ -516,7 +510,7 @@ describe('ObjectUtils', () => {
       result = ObjectUtils.delete(
         target,
         `${topElement}${delimiter}${childElement}`,
-        delimiter
+        delimiter,
       );
       // Then
       expect(result).toEqual({
@@ -574,21 +568,17 @@ describe('ObjectUtils', () => {
         },
       };
       let result = null;
-      const expected = Object.assign(
-        {
-          total,
-          'person.age': age,
-          'person.names.name': name,
-          'person.names.nickname': nickname,
-          'person.names.alias': alias,
-        },
-        numbers.reduce(
-          (acc, item, index) => Object.assign({}, acc, {
-            [`person.numbers.${index}`]: item,
-          }),
-          {}
-        )
-      );
+      const expected = {
+        total,
+        'person.age': age,
+        'person.names.name': name,
+        'person.names.nickname': nickname,
+        'person.names.alias': alias,
+        ...numbers.reduce(
+          (acc, item, index) => ({ ...acc, [`person.numbers.${index}`]: item }),
+          {},
+        ),
+      };
       // When
       result = ObjectUtils.flat(target);
       // Then
@@ -619,20 +609,19 @@ describe('ObjectUtils', () => {
       };
       const separator = '/';
       let result = null;
-      const expected = Object.assign(
-        {
-          total,
-          [`person${separator}age`]: age,
-          [`person${separator}names${separator}name`]: name,
-          [`person${separator}names${separator}nickname`]: nickname,
-        },
-        numbers.reduce(
-          (acc, item, index) => Object.assign({}, acc, {
+      const expected = {
+        total,
+        [`person${separator}age`]: age,
+        [`person${separator}names${separator}name`]: name,
+        [`person${separator}names${separator}nickname`]: nickname,
+        ...numbers.reduce(
+          (acc, item, index) => ({
+            ...acc,
             [`person${separator}numbers${separator}${index}`]: item,
           }),
-          {}
-        )
-      );
+          {},
+        ),
+      };
       // When
       result = ObjectUtils.flat(target, separator);
       // Then
@@ -764,7 +753,7 @@ describe('ObjectUtils', () => {
       result = ObjectUtils.formatKeys(
         target,
         /^\w/,
-        (letter) => letter.toUpperCase()
+        (letter) => letter.toUpperCase(),
       );
       // Then
       expect(result).toEqual({
@@ -793,7 +782,7 @@ describe('ObjectUtils', () => {
       result = ObjectUtils.formatKeys(
         target,
         /^\w/,
-        (letter) => letter.toUpperCase()
+        (letter) => letter.toUpperCase(),
       );
       // Then
       expect(result).toEqual({
@@ -825,7 +814,7 @@ describe('ObjectUtils', () => {
         target,
         /^\w/,
         (letter) => letter.toUpperCase(),
-        ['name.first', 'likes']
+        ['name.first', 'likes'],
       );
       // Then
       expect(result).toEqual({
@@ -858,7 +847,7 @@ describe('ObjectUtils', () => {
         target,
         /^\w/,
         (letter) => letter.toUpperCase(),
-        ['name.first.', '.name.nickname.', 'likes']
+        ['name.first.', '.name.nickname.', 'likes'],
       );
       // Then
       expect(result).toEqual({
@@ -892,7 +881,7 @@ describe('ObjectUtils', () => {
         /^\w/,
         (letter) => letter.toUpperCase(),
         [],
-        ['name.first', 'likes']
+        ['name.first', 'likes'],
       );
       // Then
       expect(result).toEqual({
@@ -926,7 +915,7 @@ describe('ObjectUtils', () => {
         /^\w/,
         (letter) => letter.toUpperCase(),
         [],
-        ['name.first.', '.name.nickname.', '.likes']
+        ['name.first.', '.name.nickname.', '.likes'],
       );
       // Then
       expect(result).toEqual({

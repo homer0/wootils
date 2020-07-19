@@ -162,12 +162,25 @@ client.setAuthorizationToken('some-token');
 
 Done, all the requests will include `Authorization: Bearer some-token`.
 
+## ES Modules
+
+If you are using ESM, you can import the class from the `/esm` sub path:
+
+```js
+import APIClient from 'wootils/esm/shared/apiClient';
+
+// or
+
+import { APIClient } from 'wootils/esm/shared';
+```
+
 ## Technical documentation
 
-The code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/class/wootils/shared/apiClient.js~APIClient.html) or generate it yourself using:
+- Class: {@link APIClient}
 
-```bash
-# You can either use npm or yarn, it doesn't matter
-npm run docs
-open ./docs/index.html
-```
+> If you are reading this form the markdown document, you can go to the [online version](https://homer0.github.io/wootils); or you can generate the documentation site yourself by running the `docs` command:
+>
+> ```bash
+> # You can either use npm or yarn, it doesn't matter
+> npm run docs && open ./docs/index.html;
+> ```

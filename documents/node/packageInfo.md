@@ -47,12 +47,34 @@ const packageJson = app.get('packageInfo');
 
 Done, `packageJson` now has all the contents of your `package.json`, as an Object; and the file won't be read more than once.
 
+## ES Modules
+
+If you are using ESM, you can import the function and the provider from the `/esm` sub path:
+
+```js
+import {
+  packageInfo,
+  packageInfoProvider,
+} from 'wootils/esm/node/packageInfo';
+
+// just the function
+
+import { packageInfo } from 'wootils/esm/node';
+
+// just the provider
+
+import { packageInfoProvider } from 'wootils/esm/node/providers';
+```
+
 ## Technical documentation
 
-The code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/function/index.html#static-function-packageInfo) or generate it yourself using:
+- Module: {@link module:node/packageInfo|node/packageInfo}
+- Function: {@link module:node/packageInfo~packageInfo|packageInfo}
+- Provider: {@link module:node/packageInfo~packageInfoProvider|packageInfoProvider}
 
-```bash
-# You can either use npm or yarn, it doesn't matter
-npm run docs
-open ./docs/index.html
-```
+> If you are reading this form the markdown document, you can go to the [online version](https://homer0.github.io/wootils); or you can generate the documentation site yourself by running the `docs` command:
+>
+> ```bash
+> # You can either use npm or yarn, it doesn't matter
+> npm run docs && open ./docs/index.html;
+> ```

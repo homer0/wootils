@@ -1,0 +1,62 @@
+{
+  "browser": {
+    "title": "Browser utilities",
+    "children": {
+      "simpleStorage": {
+        "title": "SimpleStorage"
+      }
+    }
+  },
+  "node": {
+    "title": "Node utilities",
+    "children": {
+      "appConfiguration": {
+        "title": "AppConfiguration"
+      },
+      "environmentUtils": {
+        "title": "EnvironmentUtils"
+      },
+      "errorHandler": {
+        "title": "ErrorHandler"
+      },
+      "logger": {
+        "title": "Logger"
+      },
+      "packageInfo": {
+        "title": "PackageInfo"
+      },
+      "pathUtils": {
+        "title": "PathUtils"
+      },
+      "rootRequire": {
+        "title": "rootRequire"
+      }
+    }
+  },
+  "shared": {
+    "title": "Shared utilities",
+    "children": {
+      "APIClient": {
+        "title": "APIClient"
+      },
+      "deepAssign": {
+        "title": "DeepAssign"
+      },
+      "deferred": {
+        "title": "deferred"
+      },
+      "eventsHub": {
+        "title": "EventsHub"
+      },
+      "extendPromise": {
+        "title": "extendPromise"
+      },
+      "jimpleFns": {
+        "title": "Jimple Functions"
+      },
+      "objectUtils": {
+        "title": "ObjectUtils"
+      }
+    }
+  }
+}

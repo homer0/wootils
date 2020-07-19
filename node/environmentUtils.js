@@ -1,31 +1,67 @@
-const { provider } = require('jimple');
+const { providerCreator } = require('../shared/jimpleFns');
+/**
+ * @module node/environmentUtils
+ */
+
+/**
+ * @typedef {import('../shared/jimpleFns').ProviderCreatorWithOptions<O>}
+ * ProviderCreatorWithOptions
+ * @template O
+ */
+
+/**
+ * @typedef {Object} EnvironmentUtilsProviderOptions
+ * @property {string} serviceName
+ * The name that will be used to register an instance of {@link EnvironmentUtils}. Its default
+ * value is `environmentUtils`.
+ *
+ * @parent module:node/environmentUtils
+ */
+
 /**
  * A simple service to avoid calling `process.env` on multiples places of an app.
+ *
+ * @parent module:node/environmentUtils
+ * @tutorial environmentUtils
  */
 class EnvironmentUtils {
-  /**
-   * Class constructor.
-   */
   constructor() {
     /**
      * The current `NODE_ENV`. If the variable is empty, the value will be `development`.
+     *
      * @type {string}
+     * @access protected
+     * @ignore
      */
-    this.env = this.get('NODE_ENV', 'development');
+    this._env = this.get('NODE_ENV', 'development');
     /**
      * Whether or not the environment is production.
+     *
      * @type {boolean}
+     * @access protected
+     * @ignore
      */
-    this.production = this.env === 'production';
+    this._production = this.env === 'production';
+  }
+  /**
+   * Checks whether an environment variable exists or not.
+   *
+   * @param {string} name The name of the variable.
+   * @returns {boolean}
+   */
+  exists(name) {
+    // eslint-disable-next-line no-process-env
+    return typeof process.env[name] !== 'undefined';
   }
   /**
    * Gets the value of an environment variable.
+   *
    * @param {string}  name              The name of the variable.
-   * @param {string}  [defaultValue=''] A fallback value in case the variable is `undefined`
+   * @param {string}  [defaultValue=''] A fallback value in case the variable is `undefined`.
    * @param {boolean} [required=false]  If the variable is required and `undefined`, it will throw
    *                                    an error.
-   * @return {string}
-   * @throws {Error} if `required` is set to `true` and the variable is `undefined`.
+   * @returns {string}
+   * @throws {Error} If `required` is set to `true` and the variable is `undefined`.
    */
   get(name, defaultValue = '', required = false) {
     let value;
@@ -44,11 +80,12 @@ class EnvironmentUtils {
   }
   /**
    * Sets the value of an environment variable.
-   * @param {string} name              The name of the variable
+   *
+   * @param {string} name              The name of the variable.
    * @param {string} value             The value of the variable.
    * @param {string} [overwrite=false] If the variable already exists, the method won't overwrite
    *                                   it, unless you set this parameter to `true`.
-   * @return {boolean} Whether or not the variable was set.
+   * @returns {boolean} Whether or not the variable was set.
    */
   set(name, value, overwrite = false) {
     let result;
@@ -63,37 +100,43 @@ class EnvironmentUtils {
     return result;
   }
   /**
-   * Checks whether an environment variable exists or not.
-   * @param {string} name The name of the variable.
-   * @return {boolean}
-   */
-  exists(name) {
-    // eslint-disable-next-line no-process-env
-    return typeof process.env[name] !== 'undefined';
-  }
-  /**
-   * Check whether or not the environment is for development.
-   * @return {boolean}
+   * Whether or not the environment is for development.
+   *
+   * @type {boolean}
    */
   get development() {
-    return !this.production;
+    return !this._production;
+  }
+  /**
+   * The current `NODE_ENV`. If the variable is empty, the value will be `development`.
+   *
+   * @type {string}
+   * @access protected
+   * @ignore
+   */
+  get env() {
+    return this._env;
+  }
+  /**
+   * Whether or not the environment is production.
+   *
+   * @type {boolean}
+   * @access protected
+   * @ignore
+   */
+  get production() {
+    return this._production;
   }
 }
 /**
- * The service provider that once registered on the app container will set an instance of
- * `EnvironmentUtils` as the `environmentUtils` service.
- * @example
- * // Register it on the container
- * container.register(environmentUtils);
- * // Getting access to the service instance
- * const environmentUtils = container.get('environmentUtils');
- * @type {Provider}
+ * The service provider to register an instance of {@link EnvironmentUtils} on the container.
+ *
+ * @type {ProviderCreatorWithOptions<EnvironmentUtilsProviderOptions>}
+ * @tutorial environmentUtils
  */
-const environmentUtils = provider((app) => {
-  app.set('environmentUtils', () => new EnvironmentUtils());
+const environmentUtils = providerCreator((options = {}) => (app) => {
+  app.set(options.serviceName || 'environmentUtils', () => new EnvironmentUtils());
 });
 
-module.exports = {
-  EnvironmentUtils,
-  environmentUtils,
-};
+module.exports.EnvironmentUtils = EnvironmentUtils;
+module.exports.environmentUtils = environmentUtils;

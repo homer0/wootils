@@ -56,12 +56,25 @@ Ok, there's a lot going on this example, let's break it:
 
 I wanted to keep the example small, but on a real app, `getFileContents` is probably called by other service that has no idea the instance was just created or that `loadTheFile` hasn't been called yet.
 
+## ES Modules
+
+If you are using ESM, you can import the function from the `/esm` sub path:
+
+```js
+import deferred from 'wootils/esm/shared/deferred';
+
+// or
+
+import { deferred } from 'wootils/esm/shared';
+```
+
 ## Technical documentation
 
-The code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/function/index.html#static-function-deferred) or generate it yourself using:
+- Function: {@link module:shared/deferred.deferred|deferred}
 
-```bash
-# You can either use npm or yarn, it doesn't matter
-npm run docs
-open ./docs/index.html
-```
+> If you are reading this form the markdown document, you can go to the [online version](https://homer0.github.io/wootils); or you can generate the documentation site yourself by running the `docs` command:
+>
+> ```bash
+> # You can either use npm or yarn, it doesn't matter
+> npm run docs && open ./docs/index.html;
+> ```

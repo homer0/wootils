@@ -120,29 +120,32 @@ app.register(environmentUtils);
 app.register(rootRequire);
 app.register(pathUtils);
 ```
-Now, to generate the `appConfiguration` service with the required settings to work with the scenario described above:
+
+To configure the `appConfiguration` provider so the service will work with the scenario described above, we just need to use it as a function:
 
 ```js
-const myConfiguration = appConfiguration(
-  'myApp',
-  {},
-  {
+app.register(appConfiguration({
+  appName: 'myApp',
+  defaultConfiguration: {},
+  options: {
     environmentVariable: 'CONFIG',
     path: './config/',
     filenameFormat: '[name].js',
   },
-);
-app.register(myConfiguration);
+}));
 ```
 
-Done, the service is registered in the container. Let's explain a little bit why _'those'_ parameters:
+> To fully understand the settings, you should read the techincal documentation for {@link AppConfigurationProviderOptions}.
 
-1. `myApp` is the name of the app, the service uses it on the default `path` and `filenameFormat` options, but in this case, we don't really need it for this scenario.
-2. `{}` That's the default configuration all the others will _'extend'_, in this case is not needed.
-3. The options:
- - `environmentVariable`: The name of the variable the service will check to determine which configuration to use.
- - `path`: The location of your configuration files.
- - `filenameFormat`: The name format your files use. `[name]` will be replaced with the name of the configuration you want to use.
+Done, the service is registered in the container.
+
+You can also use the provider as it is and it will use the default settings:
+
+```js
+app.register(appConfiguration);
+```
+
+> `appConfiguration` is a "provider crator", so it can be used as both, a function that generates a provider, and as provider.
 
 Now, there's only one thing to do:
 
@@ -212,7 +215,7 @@ const { valueOne, valueTwo } = appConfiguration.get(['valueOne', 'valueTwo']);
 // Writing a single setting
 appConfiguration.set('something', 'value');
 // Write multiple settings
-appConfiguration.write({
+appConfiguration.set({
   valueOne: 'one',
   valueTwo: 'two',
 });
@@ -242,13 +245,34 @@ console.log(appConfiguration.get('person'));
 
 There's a special rule behind this feature: The default configuration and/or the first configuration loaded needs to have a key name `allowConfigurationSwitch` set to `true` in order switch configurations. The reason of this rule is **security**: If you deployed to production and the you didn't turn off whatever you have that makes the service switch configurations, other people can use it. This way, you can have this enabled only on specifics configuration and disabled on others.
 
+## ES Modules
+
+If you are using ESM, you can import the class and the provider from the `/esm` sub path:
+
+```js
+import {
+  AppConfiguration,
+  appConfiguration,
+} from 'wootils/esm/node/appConfiguration';
+
+// just the class
+
+import { AppConfiguration } from 'wootils/esm/node';
+
+// just the provider
+
+import { appConfiguration } from 'wootils/esm/node/providers';
+```
 
 ## Technical documentation
 
-The code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/class/wootils/node/appConfiguration.js~AppConfiguration.html) or generate it yourself using:
+- Module: {@link module:node/appConfiguration|node/appConfiguration}
+- Class: {@link AppConfiguration}
+- Provider: {@link module:node/appConfiguration~appConfiguration|appConfiguration}
 
-```bash
-# You can either use npm or yarn, it doesn't matter
-npm run docs
-open ./docs/index.html
-```
+> If you are reading this form the markdown document, you can go to the [online version](https://homer0.github.io/wootils); or you can generate the documentation site yourself by running the `docs` command:
+>
+> ```bash
+> # You can either use npm or yarn, it doesn't matter
+> npm run docs && open ./docs/index.html;
+> ```

@@ -1,20 +1,27 @@
 /**
- * Helper class to create a proxy for a promise in order to add custom properties.
+ * @module shared/extendPromise
+ */
+
+/**
+ * Helper class that creates a proxy for a {@link Promise} in order to add custom properties.
  *
- * The only reason this class exists is so it can "scope" the necessary methods to extend promise
- * and avoid workarounds in order to declare them, as both methods need to call themselves
- * recursively.
- * @ignore
+ * The only reason this class exists is so it can "scope" the necessary methods to extend
+ * {@link Promise} and avoid workarounds in order to declare them, as they need to call
+ * themselves recursively.
+ *
+ * @parent module:shared/extendPromise
+ * @tutorial extendPromise
  */
 class PromiseExtender {
   /**
-   * @param {Promise} promise    The promise to extend.
-   * @param {Object}  properties A dictionary of custom properties to _inject_ in the promise
-   *                             chain.
+   * @param {Promise}           promise    The promise to extend.
+   * @param {Object.<string,*>} properties A dictionary of custom properties to _inject_ in the
+   *                                       promise chain.
    */
   constructor(promise, properties) {
     /**
      * The proxied promise.
+     *
      * @type {Proxy<Promise>}
      * @access private
      * @ignore
@@ -23,6 +30,7 @@ class PromiseExtender {
   }
   /**
    * The extended promise.
+   *
    * @type {Proxy<Promise>}
    */
   get promise() {
@@ -34,12 +42,13 @@ class PromiseExtender {
    * proxies when `then`, `catch` and `finally` are called; the reason new proxies are created
    * is because those methods return new promises, and without being proxied, the custom
    * properties would be lost.
+   *
    * @param {Promise} promise    The promise to proxy.
    * @param {Object}  properties A dictionary of custom properties to _inject_ in the promise
    *                             chain.
-   * @return {Proxy<Promise>}
-   * @throws {Error} if `promise` is not a valid instance of {@link Promise}.
-   * @throws {Error} if `properties` is not an object or if it doesn't have any properties.
+   * @returns {Proxy<Promise>}
+   * @throws {Error} If `promise` is not a valid instance of {@link Promise}.
+   * @throws {Error} If `properties` is not an object or if it doesn't have any properties.
    * @access private
    * @ignore
    */
@@ -70,10 +79,11 @@ class PromiseExtender {
   /**
    * Creates a proxy for a promise function (`then`/`catch`/`finally`) so the returned promise
    * can also be extended.
+   *
    * @param {Function} fn         The promise function to proxy.
    * @param {Object}   properties A dictionary of custom properties to _inject_ in the promise
    *                              chain.
-   * @return {Proxy<Function>}
+   * @returns {Proxy<Function>}
    * @access private
    * @ignore
    */
@@ -91,16 +101,18 @@ class PromiseExtender {
  * Extends a {@link Promise} by injecting custom properties using a {@link Proxy}. The custom
  * properties will be available on the promise chain no matter how many `then`s, `catch`s or
  * `finally`s are added.
+ *
  * @param {Promise} promise    The promise to extend.
  * @param {Object}  properties A dictionary of custom properties to _inject_ in the promise
  *                             chain.
- * @throws {Error} if `promise` is not a valid instance of {@link Promise}.
- * @throws {Error} if `properties` is not an object or if it doesn't have any properties.
- * @return {Proxy<Promise>}
+ * @throws {Error} If `promise` is not a valid instance of {@link Promise}.
+ * @throws {Error} If `properties` is not an object or if it doesn't have any properties.
+ * @returns {Proxy<Promise>}
+ * @tutorial extendPromise
  */
 const extendPromise = (
   promise,
-  properties
+  properties,
 ) => (new PromiseExtender(promise, properties)).promise;
 
 module.exports = extendPromise;

@@ -1,26 +1,77 @@
 const fs = require('fs-extra');
-const { provider } = require('jimple');
+const { providerCreator } = require('../shared/jimpleFns');
+const { deepAssign } = require('../shared/deepAssign');
 /**
- * Returns the contents of the project `package.json`.
+ * @module node/packageInfo
+ */
+
+/**
+ * @typedef {import('./pathUtils').PathUtils} PathUtils
+ */
+
+/**
+ * @typedef {import('../shared/jimpleFns').ProviderCreatorWithOptions<O>}
+ * ProviderCreatorWithOptions
+ * @template O
+ */
+
+/**
+ * @typedef {Object} PackageInfoServiceMap
+ * @property {string|PathUtils} [pathUtils]
+ * The name of the service for {@link PathUtils} or an instance of it. `pathUtils` by default.
+ * @parent module:node/packageInfo
+ */
+
+/**
+ * @typedef {Object} PackageInfoProviderOptions
+ * @property {string} serviceName
+ * The name that will be used to register the result of
+ * {@link module:node/packageInfo~packageInfo|packageInfo}. Its default value is `packageInfo`.
+ * @property {PackageInfoServiceMap} services
+ * A dictionary with the services that need to be injected on the function.
+ * @parent module:node/packageInfo
+ */
+
+/**
+ * Gets the contents of the implementation's `package.json`.
+ *
  * @param {PathUtils} pathUtils To build the path to the `package.json`.
- * @return {Object}
+ * @returns {Object.<string,*>}
+ * @tutorial packageInfo
+ * @todo This should be `async`, or at least have an async alternative.
  */
 const packageInfo = (pathUtils) => fs.readJsonSync(pathUtils.join('package.json'));
+
 /**
  * The service provider that once registered on the app container will set the result of
- * `packageInfo()` as the `packageInfo` service.
- * @example
- * // Register it on the container
- * container.register(packageInfoProvider);
- * // Getting access to the service value
- * const packageInfo = container.get('packageInfo');
- * @type {Provider}
+ * {@link module:node/packageInfo~packageInfo|packageInfo} as a service.
+ *
+ * @type {ProviderCreatorWithOptions<PackageInfoProviderOptions>}
+ * @tutorial packageInfo
  */
-const packageInfoProvider = provider((app) => {
-  app.set('packageInfo', () => packageInfo(app.get('pathUtils')));
+const packageInfoProvider = providerCreator((options = {}) => (app) => {
+  app.set(options.serviceName || 'packageInfo', () => {
+    /**
+     * @type {PackageInfoProviderOptions}
+     * @ignore
+     */
+    const useOptions = deepAssign(
+      {
+        services: {
+          pathUtils: 'pathUtils',
+        },
+      },
+      options,
+    );
+
+    const { pathUtils } = useOptions.services;
+    const usePathUtils = typeof pathUtils === 'string' ?
+      app.get(pathUtils) :
+      pathUtils;
+
+    return packageInfo(usePathUtils);
+  });
 });
 
-module.exports = {
-  packageInfo,
-  packageInfoProvider,
-};
+module.exports.packageInfo = packageInfo;
+module.exports.packageInfoProvider = packageInfoProvider;

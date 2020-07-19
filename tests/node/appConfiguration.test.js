@@ -1,16 +1,21 @@
-jest.unmock('/shared/objectUtils');
-jest.unmock('/node/appConfiguration');
-jest.mock('jimple', () => ({ provider: jest.fn(() => 'provider') }));
+jest.unmock('../../shared/objectUtils');
+jest.unmock('../../shared/deepAssign');
+jest.unmock('../../shared/jimpleFns');
+jest.unmock('../../node/appConfiguration');
 
-require('jasmine-expect');
 const path = require('path');
 const {
   AppConfiguration,
   appConfiguration,
-} = require('/node/appConfiguration');
-const { provider } = require('jimple');
+} = require('../../node/appConfiguration');
 
 describe('AppConfiguration', () => {
+  /**
+   * Generates a dictinoary of all the expected properties of a {@link AppConfiguartion} class
+   * when the defaults are not customized.
+   *
+   * @returns {Object}
+   */
   const getExpectedDefaults = () => ({
     options: {
       defaultConfigurationName: 'default',
@@ -24,7 +29,13 @@ describe('AppConfiguration', () => {
     activeConfiguration: 'default',
     allowConfigurationSwitch: false,
   });
-
+  /**
+   * Generates the information of the default configuration file based on the value of the
+   * `name` option that will be sent to {@link AppConfiguration}.
+   *
+   * @param {string} name  The name of the configuration.
+   * @returns {Object}
+   */
   const getDefaultFileInfo = (name) => ({
     path: path.join('config', 'app', `app.${name}.config.js`),
     name: `app.${name}.config.js`,
@@ -40,12 +51,10 @@ describe('AppConfiguration', () => {
     sut = new AppConfiguration(environmentUtils, rootRequire);
     // Then
     expect(sut).toBeInstanceOf(AppConfiguration);
-    expect(sut.environmentUtils).toBe(environmentUtils);
-    expect(sut.rootRequire).toBe(rootRequire);
     expect(sut.options).toEqual(expectedDefaults.options);
     expect(sut.configurations).toEqual(expectedDefaults.configurations);
     expect(sut.activeConfiguration).toBe(expectedDefaults.activeConfiguration);
-    expect(sut.allowConfigurationSwitch).toBe(expectedDefaults.allowConfigurationSwitch);
+    expect(sut.canSwitch).toBe(expectedDefaults.allowConfigurationSwitch);
   });
 
   it('should load a new configuration', () => {
@@ -66,7 +75,7 @@ describe('AppConfiguration', () => {
     expect(result).toEqual(newConfigSettings);
     expect(sut.configurations[newConfigName]).toEqual(newConfigSettings);
     expect(sut.activeConfiguration).toBe(newConfigName);
-    expect(sut.allowConfigurationSwitch).toBeTrue();
+    expect(sut.canSwitch).toBe(true);
   });
 
   it('should load a new configuration without switch to it', () => {
@@ -107,11 +116,10 @@ describe('AppConfiguration', () => {
     };
     let sut = null;
     let result = null;
-    const expectedConfig = Object.assign(
-      {},
-      newConfigOneSettings,
-      newConfigTwoSettings
-    );
+    const expectedConfig = {
+      ...newConfigOneSettings,
+      ...newConfigTwoSettings,
+    };
     delete expectedConfig.extends;
     // When
     sut = new AppConfiguration(environmentUtils, rootRequire);
@@ -122,7 +130,7 @@ describe('AppConfiguration', () => {
     expect(sut.configurations[newConfigOneName]).toEqual(newConfigOneSettings);
     expect(sut.configurations[newConfigTwoName]).toEqual(expectedConfig);
     expect(sut.activeConfiguration).toBe(newConfigTwoName);
-    expect(sut.allowConfigurationSwitch).toBeFalse();
+    expect(sut.canSwitch).toBe(false);
   });
 
   it('should throw an error when trying to extend an unknown configuration', () => {
@@ -162,7 +170,7 @@ describe('AppConfiguration', () => {
     expect(result).toEqual(newConfigSettings);
     expect(sut.configurations[newConfigName]).toEqual(newConfigSettings);
     expect(sut.activeConfiguration).toBe(newConfigName);
-    expect(sut.allowConfigurationSwitch).toBeTrue();
+    expect(sut.canSwitch).toBe(true);
     expect(rootRequire).toHaveBeenCalledTimes(1);
     expect(rootRequire).toHaveBeenCalledWith(expectedFileInfo.path);
   });
@@ -210,11 +218,10 @@ describe('AppConfiguration', () => {
     rootRequire.mockImplementationOnce(() => newConfigOneSettings);
     let sut = null;
     let result = null;
-    const expectedConfig = Object.assign(
-      {},
-      newConfigOneSettings,
-      newConfigTwoSettings
-    );
+    const expectedConfig = {
+      ...newConfigOneSettings,
+      ...newConfigTwoSettings,
+    };
     delete expectedConfig.extends;
     const expectedFileInfoOne = getDefaultFileInfo(newConfigOneName);
     const expectedFileInfoTwo = getDefaultFileInfo(newConfigTwoName);
@@ -226,7 +233,7 @@ describe('AppConfiguration', () => {
     expect(sut.configurations[newConfigOneName]).toEqual(newConfigOneSettings);
     expect(sut.configurations[newConfigTwoName]).toEqual(expectedConfig);
     expect(sut.activeConfiguration).toBe(newConfigTwoName);
-    expect(sut.allowConfigurationSwitch).toBeFalse();
+    expect(sut.canSwitch).toBe(false);
     expect(rootRequire).toHaveBeenCalledTimes([
       newConfigOneName,
       newConfigTwoName,
@@ -275,7 +282,7 @@ describe('AppConfiguration', () => {
     expect(result).toEqual(newConfigSettings);
     expect(sut.configurations[newConfigName]).toEqual(newConfigSettings);
     expect(sut.activeConfiguration).toBe(newConfigName);
-    expect(sut.allowConfigurationSwitch).toBeTrue();
+    expect(sut.canSwitch).toBe(true);
     expect(rootRequire).toHaveBeenCalledTimes(1);
     expect(rootRequire).toHaveBeenCalledWith(expectedFileInfo.path);
   });
@@ -356,7 +363,7 @@ describe('AppConfiguration', () => {
     sut.load(newConfigName, newConfigSettings);
     result = sut.setConfig(updatedSettings, newConfigName);
     // Then
-    expect(result).toEqual(Object.assign({}, newConfigSettings, updatedSettings));
+    expect(result).toEqual({ ...newConfigSettings, ...updatedSettings });
   });
 
   it('should overwrite an entire configuration by its name', () => {
@@ -630,7 +637,7 @@ describe('AppConfiguration', () => {
     let sut = null;
     let resultAfterLoad = null;
     let resultAfterSet = null;
-    const expectedSettingsAfterSet = Object.assign({}, newSettingValue, newSettingExtendedValue);
+    const expectedSettingsAfterSet = { ...newSettingValue, ...newSettingExtendedValue };
     // When
     sut = new AppConfiguration(environmentUtils, rootRequire);
     sut.load(newConfigName, newConfigSettings);
@@ -700,15 +707,15 @@ describe('AppConfiguration', () => {
     sut = new AppConfiguration(environmentUtils, rootRequire);
     sut.load(newConfigOneName, newConfigOneSettings);
     resultAfterLoad = sut.getConfig();
-    canSwitchAfterLoad = sut.canSwitch();
+    canSwitchAfterLoad = sut.canSwitch;
     sut.switch(newConfigTwoName);
     resultAfterSwitch = sut.getConfig();
-    canSwitchAfterSwitch = sut.canSwitch();
+    canSwitchAfterSwitch = sut.canSwitch;
     // Then
     expect(resultAfterLoad).toEqual(newConfigOneSettings);
-    expect(canSwitchAfterLoad).toBeTrue();
+    expect(canSwitchAfterLoad).toBe(true);
     expect(resultAfterSwitch).toEqual(newConfigTwoSettings);
-    expect(canSwitchAfterSwitch).toBeTrue();
+    expect(canSwitchAfterSwitch).toBe(true);
   });
 
   it('should include a provider for the DIC', () => {
@@ -718,27 +725,62 @@ describe('AppConfiguration', () => {
       get: jest.fn((service) => service),
     };
     let sut = null;
-    let registerResult = null;
-    let serviceProvider = null;
     let serviceName = null;
     let serviceFn = null;
     const expectedDefaults = getExpectedDefaults();
     // When
-    registerResult = appConfiguration();
-    [[serviceProvider]] = provider.mock.calls;
-    serviceProvider(container);
+    appConfiguration.register(container);
     [[serviceName, serviceFn]] = container.set.mock.calls;
     sut = serviceFn();
     // Then
-    expect(registerResult).toBe('provider');
     expect(serviceName).toBe('appConfiguration');
-    expect(serviceFn).toBeFunction();
     expect(sut).toBeInstanceOf(AppConfiguration);
-    expect(sut.environmentUtils).toBe('environmentUtils');
-    expect(sut.rootRequire).toBe('rootRequire');
     expect(sut.options).toEqual(expectedDefaults.options);
     expect(sut.configurations).toEqual(expectedDefaults.configurations);
     expect(sut.activeConfiguration).toBe(expectedDefaults.activeConfiguration);
-    expect(sut.allowConfigurationSwitch).toBe(expectedDefaults.allowConfigurationSwitch);
+    expect(sut.canSwitch).toBe(expectedDefaults.allowConfigurationSwitch);
+    expect(container.get).toHaveBeenCalledTimes(2);
+    expect(container.get).toHaveBeenNthCalledWith(1, 'environmentUtils');
+    expect(container.get).toHaveBeenNthCalledWith(2, 'rootRequire');
+  });
+
+  it('should allow custom options on its service provider', () => {
+    // Given
+    const container = {
+      set: jest.fn(),
+      get: jest.fn((service) => service),
+    };
+    const options = {
+      appName: 'myApp',
+      options: {
+        environmentVariable: 'MY_CONFIG',
+      },
+      serviceName: 'myConfig',
+      services: {
+        environmentUtils: true,
+      },
+    };
+    let sut = null;
+    let serviceName = null;
+    let serviceFn = null;
+    const expectedDefaults = getExpectedDefaults();
+    // When
+    appConfiguration(options).register(container);
+    [[serviceName, serviceFn]] = container.set.mock.calls;
+    sut = serviceFn();
+    // Then
+    expect(serviceName).toBe(options.serviceName);
+    expect(sut).toBeInstanceOf(AppConfiguration);
+    expect(sut.options).toEqual({
+      defaultConfigurationName: 'default',
+      environmentVariable: options.options.environmentVariable,
+      path: `./config/${options.appName}`,
+      filenameFormat: `${options.appName}.[name].config.js`,
+    });
+    expect(sut.configurations).toEqual(expectedDefaults.configurations);
+    expect(sut.activeConfiguration).toBe(expectedDefaults.activeConfiguration);
+    expect(sut.canSwitch).toBe(expectedDefaults.allowConfigurationSwitch);
+    expect(container.get).toHaveBeenCalledTimes(1);
+    expect(container.get).toHaveBeenCalledWith('rootRequire');
   });
 });

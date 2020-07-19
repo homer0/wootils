@@ -104,12 +104,34 @@ And finally, to use those locations, you use `joinFrom` instead of `join`:
 const pathToFile = pathUtils.joinFrom('my-location', 'some-file.js');
 ```
 
+## ES Modules
+
+If you are using ESM, you can import the class and the provider from the `/esm` sub path:
+
+```js
+import {
+  PathUtils,
+  pathUtils,
+} from 'wootils/esm/node/pathUtils';
+
+// just the class
+
+import { PathUtils } from 'wootils/esm/node';
+
+// just the provider
+
+import { pathUtils } from 'wootils/esm/node/providers';
+```
+
 ## Technical documentation
 
-The code is fully documented with [ESDoc](https://esdoc.org) and you can either read the generated documentation [online](https://homer0.github.io/wootils/class/wootils/node/pathUtils.js~PathUtils.html) or generate it yourself using:
+- Module: {@link module:node/pathUtils|node/pathUtils}
+- Class: {@link PathUtils}
+- Provider: {@link module:node/pathUtils~pathUtils|pathUtils}
 
-```bash
-# You can either use npm or yarn, it doesn't matter
-npm run docs
-open ./docs/index.html
-```
+> If you are reading this form the markdown document, you can go to the [online version](https://homer0.github.io/wootils); or you can generate the documentation site yourself by running the `docs` command:
+>
+> ```bash
+> # You can either use npm or yarn, it doesn't matter
+> npm run docs && open ./docs/index.html;
+> ```
