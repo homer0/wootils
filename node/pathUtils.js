@@ -5,8 +5,7 @@ const { providerCreator } = require('../shared/jimpleFns');
  */
 
 /**
- * @typedef {import('../shared/jimpleFns').ProviderCreatorWithOptions<O>}
- * ProviderCreatorWithOptions
+ * @typedef {import('../shared/jimpleFns').ProviderCreator<O>} ProviderCreator
  * @template O
  */
 
@@ -167,7 +166,7 @@ class PathUtils {
 /**
  * The service provider to register an instance of {@link PathUtils} on the container.
  *
- * @type {ProviderCreatorWithOptions<PathUtilsProviderOptions>}
+ * @type {ProviderCreator<PathUtilsProviderOptions>}
  * @tutorial pathUtils
  */
 const pathUtils = providerCreator((options = {}) => (app) => {
