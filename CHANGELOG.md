@@ -1,3 +1,12 @@
+## [4.0.1](https://github.com/homer0/wootils/compare/4.0.0...4.0.1) (2020-08-10)
+
+
+### Bug Fixes
+
+* small fixes to the types and implement cjs2esm ([79137a4](https://github.com/homer0/wootils/commit/79137a41dc5233281cd6455ab20fe95f992d257f)), closes [#70](https://github.com/homer0/wootils/issues/70)
+* use cjs2esm for the ESM version ([d65e109](https://github.com/homer0/wootils/commit/d65e109067b8713cfcb4d82930d54aaa4eebd628))
+* use proper types for providers ([ab5691e](https://github.com/homer0/wootils/commit/ab5691e8a92da50d6ed5b6d924fc3892890c80d7))
+
 # [4.0.0](https://github.com/homer0/wootils/compare/3.0.4...4.0.0) (2020-07-19)
 
 
