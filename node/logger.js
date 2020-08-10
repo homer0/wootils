@@ -6,8 +6,7 @@ const { deepAssign } = require('../shared/deepAssign');
  */
 
 /**
- * @typedef {import('../shared/jimpleFns').ProviderCreatorWithOptions<O>}
- * ProviderCreatorWithOptions
+ * @typedef {import('../shared/jimpleFns').ProviderCreator<O>} ProviderCreator
  * @template O
  */
 
@@ -265,7 +264,7 @@ class Logger {
 /**
  * The service provider to register an instance of {@link Logger} on the container.
  *
- * @type {ProviderCreatorWithOptions<LoggerProviderOptions>}
+ * @type {ProviderCreator<LoggerProviderOptions>}
  * @tutorial logger
  */
 const logger = providerCreator((options = {}) => (app) => {
@@ -278,7 +277,7 @@ const logger = providerCreator((options = {}) => (app) => {
  * The service provider to register an instance of {@link Logger} with the package name as
  * messages prefix on the container.
  *
- * @type {ProviderCreatorWithOptions<AppLoggerProviderOptions>}
+ * @type {ProviderCreator<AppLoggerProviderOptions>}
  * @tutorial logger
  */
 const appLogger = providerCreator((options = {}) => (app) => {

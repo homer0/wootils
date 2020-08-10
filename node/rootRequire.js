@@ -9,8 +9,7 @@ const { deepAssign } = require('../shared/deepAssign');
  */
 
 /**
- * @typedef {import('../shared/jimpleFns').ProviderCreatorWithOptions<O>}
- * ProviderCreatorWithOptions
+ * @typedef {import('../shared/jimpleFns').ProviderCreator<O>} ProviderCreator
  * @template O
  */
 
@@ -56,7 +55,7 @@ const rootRequire = (pathUtils) => (path) =>
  * The service provider that once registered on the app container will set the result of
  * {@link module:node/rootRequire~rootRequire|rootRequire} as a service.
  *
- * @type {ProviderCreatorWithOptions<RootRequireProviderOptions>}
+ * @type {ProviderCreator<RootRequireProviderOptions>}
  * @tutorial rootRequire
  */
 const rootRequireProvider = providerCreator((options = {}) => (app) => {

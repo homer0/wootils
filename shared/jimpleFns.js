@@ -19,20 +19,68 @@
  * @property {ProviderRegisterFn} register The method that gets called when registering the
  *                                         provider.
  * @parent module:shared/jimpleFns
+ * @example
+ * container.register(myProvider);
  */
 
 /**
+ * A function called in order to generate a {@link Provider}. They usually have different options
+ * that will be sent to the provider creation.
+ *
  * @callback ProviderCreatorFn
  * @returns {Provider}
  * @parent module:shared/jimpleFns
  */
 
 /**
- * @callback ProviderCreatorWithOptions
+ * A special kind of {@link Provider} that can be used as a regular provider, or it can also be
+ * called as a function with custom options in order to obtain a "configured {@link Provider}".
+ *
+ * @callback ProviderCreator
  * @param {Partial<O>} [options={}] The options to create the provider.
  * @returns {Provider}
  * @template O
+ * @property {ProviderRegisterFn} register The method that gets called when registering the
+ *                                         provider.
  * @parent module:shared/jimpleFns
+ * @example
+ * // Register it with its default options.
+ * container.register(myProvider);
+ * // Register it with custom options.
+ * container.register(myProvider({ enabled: true }));
+ */
+
+/**
+ * @typedef {Object.<string,Provider>} ProvidersDictionary
+ */
+
+/**
+ * @typedef {ProvidersDictionary & ProvidersProperties} Providers
+ */
+
+/**
+ * @typedef {Object} ProvidersProperties
+ * @property {ProviderRegisterFn} register The function that will register all the providers on the
+ *                                         container.
+ * @augments ProvidersDictionary
+ */
+
+/**
+ * Generates a collection of {@link Provider} objects that can be used to register all of them
+ * at once.
+ *
+ * @example
+ * // Generate the collection
+ * const myProviders = providers({ oneProvider, otherProvider });
+ * // Register all of them
+ * container.register(myProviders);
+ * // Register only one
+ * container.register(myProviders.otherProvider);
+ *
+ * @callback ProvidersCreator
+ * @param {Object.<string,Provider>} providers The dictionary of providers to add to the
+ *                                             collection.
+ * @returns {Providers}
  */
 
 /**
@@ -80,7 +128,7 @@
  * make use of.
  *
  * @example
- * <caption>The `provider` shorthand functino is an _entity_ with a `register` function:</caption>
+ * <caption>The `provider` shorthand function is an _entity_ with a `register` function:</caption>
  * const someProvider = resource('provider', 'register', (app) => {
  *   // ...
  * });
@@ -231,7 +279,16 @@ const resourcesCollection = (name, key, fn = null) => (items) => {
   };
 };
 /**
- * Creates a provider resource.
+ * Creates a resource provider.
+ *
+ * @example
+ * // Define the provider
+ * const myService = provider((app) => {
+ *   app.set('myService', () => new MyService());
+ * });
+ *
+ * // Register it on the container
+ * container.register(myService);
  *
  * @param {ProviderRegisterFn} registerFn The function the container will call in order to
  *                                        register the provider.
@@ -239,16 +296,28 @@ const resourcesCollection = (name, key, fn = null) => (items) => {
  */
 const provider = (registerFn) => resource('provider', 'register', registerFn);
 /**
- * Creates a configurable provider.
+ * Creates a configurable provider. It's configurable because the creator, instead of just
+ * being sent to the container to register, it can also be called as a function with custom
+ * options and generate a new provider.
  *
- * @param {ProviderCreatorFn} creatorFn The function that will be used to create the provider.
- * @returns {ResourceCreator}
+ * @example
+ * // Define the provider creator
+ * const myProvider = providerCreator((options = {}) => (app) => {
+ *   app.set('myService', () => new MyService(options));
+ * });
+ * // Register it with the default options
+ * container.register(myProvider);
+ * // Register it with custom options
+ * container.register(myProvider({ enabled: true }));
+ *
+ * @param {ProviderCreatorFn} creatorFn The function that generates the provider.
+ * @returns {ProviderCreator<*>}
  */
 const providerCreator = (creatorFn) => resourceCreator('provider', 'register', creatorFn);
 /**
  * Creates a collection of providers.
  *
- * @type {ResourcesCollectionCreator<Provider>}
+ * @type {ProvidersCreator}
  */
 const providers = resourcesCollection('providers', 'register');
 

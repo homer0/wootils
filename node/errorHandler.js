@@ -9,8 +9,7 @@ const { deepAssignWithShallowMerge } = require('../shared/deepAssign');
  */
 
 /**
- * @typedef {import('../shared/jimpleFns').ProviderCreatorWithOptions<O>}
- * ProviderCreatorWithOptions
+ * @typedef {import('../shared/jimpleFns').ProviderCreator<O>} ProviderCreator
  * @template O
  */
 
@@ -142,7 +141,7 @@ class ErrorHandler {
  *
  * @throws {Error} If `services.logger` specifies a service that doesn't exist or if it's a falsy
  *                 value.
- * @type {ProviderCreatorWithOptions<ErrorHandlerProviderOptions>}
+ * @type {ProviderCreator<ErrorHandlerProviderOptions>}
  * @tutorial errorHandler
  */
 const errorHandler = providerCreator((options = {}) => (app) => {

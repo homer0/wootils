@@ -12,8 +12,7 @@ const { providerCreator } = require('../shared/jimpleFns');
  */
 
 /**
- * @typedef {import('../shared/jimpleFns').ProviderCreatorWithOptions<O>}
- * ProviderCreatorWithOptions
+ * @typedef {import('../shared/jimpleFns').ProviderCreator<O>} ProviderCreator
  * @template O
  */
 
@@ -423,7 +422,7 @@ class AppConfiguration {
 /**
  * The service provider to register an instance of {@link AppConfiguration} on the container.
  *
- * @type {ProviderCreatorWithOptions<AppConfigurationProviderOptions>}
+ * @type {ProviderCreator<AppConfigurationProviderOptions>}
  * @tutorial appConfiguration
  */
 const appConfiguration = providerCreator((options = {}) => (app) => {

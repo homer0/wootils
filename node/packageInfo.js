@@ -10,8 +10,7 @@ const { deepAssign } = require('../shared/deepAssign');
  */
 
 /**
- * @typedef {import('../shared/jimpleFns').ProviderCreatorWithOptions<O>}
- * ProviderCreatorWithOptions
+ * @typedef {import('../shared/jimpleFns').ProviderCreator<O>} ProviderCreator
  * @template O
  */
 
@@ -46,7 +45,7 @@ const packageInfo = (pathUtils) => fs.readJsonSync(pathUtils.join('package.json'
  * The service provider that once registered on the app container will set the result of
  * {@link module:node/packageInfo~packageInfo|packageInfo} as a service.
  *
- * @type {ProviderCreatorWithOptions<PackageInfoProviderOptions>}
+ * @type {ProviderCreator<PackageInfoProviderOptions>}
  * @tutorial packageInfo
  */
 const packageInfoProvider = providerCreator((options = {}) => (app) => {
