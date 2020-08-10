@@ -150,7 +150,6 @@ Since the next LTS to become "the oldest" is 12, which still uses the flag, I st
 | `docs`     | Generates the project documentation. |
 | `lint`     | Lints the staged files.              |
 | `lint:all` | Lints the entire project code.       |
-| `prepare`  | Generates the project ESM version.   |
 | `test`     | Runs the project unit tests.         |
 | `todo`     | Lists all the pending to-do's.       |
 
