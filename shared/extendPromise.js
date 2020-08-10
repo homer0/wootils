@@ -60,6 +60,18 @@ class PromiseExtender {
     }
 
     return new Proxy(promise, {
+      /**
+       * This is a trap for when something is trying to read/access a property for the promise.
+       * The function first validates if it's one of the functions (`then`/`catch`/`finally`) in
+       * order to return a proxied function; then, if it's another function (one that doesn't
+       * return another promise), it just calls the original; finally, before doing a fallback to
+       * the original promise, it checks if it's one of the custom properties that exented the
+       * promise.
+       *
+       * @param {Promise} target The original promise.
+       * @param {string}  name   The name of the property.
+       * @returns {*}
+       */
       get: (target, name) => {
         let result;
         if (['then', 'catch', 'finally'].includes(name)) {
@@ -89,6 +101,17 @@ class PromiseExtender {
    */
   _extendFunction(fn, properties) {
     return new Proxy(fn, {
+      /**
+       * This is a trap for when a function gets called (remember this gets used for `then`/
+       * `catch`/`finally`); it processes the result using the oringinal function and since promise
+       * methods return a promise, instead of returning the original result, it returns an
+       * _extended_ version of it.
+       *
+       * @param {Function} target  The original function.
+       * @param {Promise}  thisArg The promise the function belongs to.
+       * @param {Array}    args    The list of arguments sent to the trap.
+       * @returns {Promise}
+       */
       apply: (target, thisArg, args) => {
         const value = target.bind(thisArg)(...args);
         return this._extend(value, properties);
