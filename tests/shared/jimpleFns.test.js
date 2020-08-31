@@ -1,5 +1,5 @@
 jest.unmock('../../shared/jimpleFns');
-
+const Jimple = require('jimple');
 const {
   resource,
   resourceCreator,
@@ -7,6 +7,7 @@ const {
   provider,
   providerCreator,
   providers,
+  proxyContainer,
 } = require('../../shared/jimpleFns');
 
 describe('JimpleFns', () => {
@@ -237,6 +238,189 @@ describe('JimpleFns', () => {
       expect(itemTwoCreator).toHaveBeenCalledTimes(1);
       expect(itemTwo.register).toHaveBeenCalledTimes(1);
       expect(itemTwo.register).toHaveBeenCalledWith(arg);
+    });
+  });
+
+  describe('proxyContainer', () => {
+    it('should create a proxy of a container', () => {
+      // Given
+      const original = new Jimple();
+      let sut = null;
+      // When
+      sut = proxyContainer(original);
+      // Then
+      expect(sut).toBeInstanceOf(Jimple);
+      expect(sut.proxy).toBe(true);
+    });
+
+    it('should return the container items as properties', () => {
+      // Given
+      const original = new Jimple();
+      const itemKey = 'name';
+      const itemValue = 'Rosario';
+      let sut = null;
+      let result = null;
+      let resultAsProperty = null;
+      // When
+      original.set(itemKey, itemValue);
+      sut = proxyContainer(original);
+      result = sut.get(itemKey);
+      resultAsProperty = sut[itemKey];
+      // Then
+      expect(result).toBe(itemValue);
+      expect(resultAsProperty).toBe(itemValue);
+    });
+
+    it('shouldn\'t overwrite access to the private properties', () => {
+      // Given
+      const original = new Jimple();
+      let sut = null;
+      let result = null;
+      // When
+      sut = proxyContainer(original);
+      // eslint-disable-next-line no-underscore-dangle
+      result = sut._items;
+      // Then
+      expect(result).toEqual({});
+    });
+
+    it('should support using the $ prefix for a try-get access', () => {
+      /**
+       * A try-get is something implemented on Jimpex: container.try('...') will validate if the
+       * resource exist and then return it, but if it doesn't exist, it will return `null`.
+       */
+      // Given
+      const original = new Jimple();
+      const itemKey = 'name';
+      const itemValue = 'Rosario';
+      let sut = null;
+      let resultOfExistingResource = null;
+      let resultOfInvalidResource = null;
+      // When
+      original.set(itemKey, itemValue);
+      sut = proxyContainer(original);
+      resultOfExistingResource = sut[`$${itemKey}`];
+      resultOfInvalidResource = sut.$someInvalidKey;
+      // Then
+      expect(resultOfExistingResource).toBe(itemValue);
+      expect(resultOfInvalidResource).toBe(null);
+    });
+
+    it('should support keys with the $ prefix, even if they invalidate the try-get', () => {
+      /**
+       * A try-get is something implemented on Jimpex: container.try('...') will validate if the
+       * resource exist and then return it, but if it doesn't exist, it will return `null`.
+       */
+      // Given
+      const original = new Jimple();
+      const itemKey = '$name';
+      const itemValue = 'Rosario';
+      let sut = null;
+      let result = null;
+      let resultWithPrefix = null;
+      // When
+      original.set(itemKey, itemValue);
+      sut = proxyContainer(original);
+      result = sut[`${itemKey}`];
+      resultWithPrefix = sut[`$${itemKey}`];
+      // Then
+      expect(result).toBe(itemValue);
+      expect(resultWithPrefix).toBe(itemValue);
+    });
+
+    it('should have a custom register method that sends the proxy', () => {
+      // Given
+      const original = new Jimple();
+      const itemKey = 'firstDaughter';
+      const itemValue = 'Rosario';
+      const registerFn = jest.fn((c) => {
+        // eslint-disable-next-line no-param-reassign
+        c[itemKey] = itemValue;
+      });
+      const itemProvider = provider(registerFn);
+      let sut = null;
+      let result = null;
+      // When
+      sut = proxyContainer(original);
+      sut.register(itemProvider);
+      result = sut.get(itemKey);
+      // Then
+      expect(result).toBe(itemValue);
+      expect(registerFn).toHaveBeenCalledTimes(1);
+    });
+
+    it('should support registering a resource as a property', () => {
+      // Given
+      const original = new Jimple();
+      const itemOneKey = 'firstDaughter';
+      const itemOneValue = 'Rosario';
+      const itemTwoKey = 'secondDaughter';
+      const itemTwoValue = 'Pilar';
+      let sut = null;
+      let result = null;
+      let resultAsProperty = null;
+      // When
+      sut = proxyContainer(original);
+      sut.set(itemOneKey, itemOneValue);
+      sut[itemTwoKey] = itemTwoValue;
+      result = sut.get(itemTwoKey);
+      resultAsProperty = sut[itemOneKey];
+      // Then
+      expect(result).toBe(itemTwoValue);
+      expect(resultAsProperty).toBe(itemOneValue);
+    });
+
+    it('should throw an error when trying to register a class method as a resource', () => {
+      // Given
+      const original = new Jimple();
+      let sut = null;
+      // When/Then
+      sut = proxyContainer(original);
+      expect(() => {
+        sut.get = 'something';
+      }).toThrow(/The key 'get' is reserved and cannot be used/);
+    });
+
+    it('should return the resources\' keys when called with Object.keys', () => {
+      // Given
+      const original = new Jimple();
+      const itemOneKey = 'firstDaughter';
+      const itemOneValue = 'Rosario';
+      const itemTwoKey = 'secondDaughter';
+      const itemTwoValue = 'Pilar';
+      let sut = null;
+      let result = null;
+      // When
+      sut = proxyContainer(original);
+      sut[itemOneKey] = itemOneValue;
+      sut[itemTwoKey] = itemTwoValue;
+      result = Object.keys(sut).sort();
+      // Then
+      expect(result).toEqual([itemOneKey, itemTwoKey].sort());
+    });
+
+    it('should recognize the resources as its own keys', () => {
+      // Given
+      const original = new Jimple();
+      const itemOneKey = 'firstDaughter';
+      const itemOneValue = 'Rosario';
+      const itemTwoKey = 'secondDaughter';
+      const itemTwoValue = 'Pilar';
+      let sut = null;
+      let resultForKeyOne = false;
+      let resultForKeyTwo = false;
+      let resultForInvalidKey = null;
+      // When
+      sut = proxyContainer(original);
+      sut[itemOneKey] = itemOneValue;
+      sut[itemTwoKey] = itemTwoValue;
+      resultForKeyOne = itemOneKey in sut;
+      resultForKeyTwo = itemTwoKey in sut;
+      resultForInvalidKey = Object.getOwnPropertyDescriptor(sut, 'invalid');
+      // Then
+      expect(resultForKeyOne).toBe(true);
+      expect(resultForKeyTwo).toBe(true);
+      expect(resultForInvalidKey).toBeUndefined();
     });
   });
 });

@@ -169,6 +169,34 @@ const myProviders = providers({
   mySecondProvider,
 });
 ```
+
+## Proxy mode
+
+This is a utility that allows you to create a proxy version of the container that supports adding and retrieving resources as if they were regular properties:
+
+```js
+const { proxyContainer } = require('wootils/shared');
+const Jimple = require('jimple');
+
+// Instead of assigning the instance, we wrap it on the `proxyContainer` function.
+const app = proxyContainer(new Jimple());
+
+// Now we can use the resources as properties...
+
+app.someService = () => new SomeService();
+// This is the same as `.set('someService', () => new SomeService());`
+console.log(app.someService);
+// And this is the same as `.get('someService');`
+```
+
+When using the container this way, the `register` function also gets modified so the providers will also receive the proxy version:
+
+```js
+const myProvider = provider((app) => {
+  app.someService = () => new SomeService();
+});
+```
+
 ## ES Modules
 
 If you are using ESM, you can import the functions from the `/esm` sub path:
