@@ -1,3 +1,15 @@
+# [4.1.0](https://github.com/homer0/wootils/compare/4.0.1...4.1.0) (2020-08-31)
+
+
+### Bug Fixes
+
+* update dependencies ([2b411f7](https://github.com/homer0/wootils/commit/2b411f7c1643f9764649370e35056d536c6a0bf2))
+
+
+### Features
+
+* add the proxy container functionality ([fda76a6](https://github.com/homer0/wootils/commit/fda76a6e85529c6be144a6e416e7392f8357f849))
+
 ## [4.0.1](https://github.com/homer0/wootils/compare/4.0.0...4.0.1) (2020-08-10)
 
 
