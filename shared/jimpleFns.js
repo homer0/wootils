@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/require-jsdoc */
 /**
  * @module shared/jimpleFns
  */
@@ -6,6 +7,11 @@
  * @typedef {import('jimple')} Jimple
  * @external Jimple
  * @see https://yarnpkg.com/en/package/jimple
+ */
+
+/**
+ * @external PropertyDescriptor
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
  */
 
 /**
@@ -320,6 +326,175 @@ const providerCreator = (creatorFn) => resourceCreator('provider', 'register', c
  * @type {ProvidersCreator}
  */
 const providers = resourcesCollection('providers', 'register');
+/**
+ * Helper function for {@link proxyContainer} that gets all the keys of an object, going
+ * recursively over its prototype chain.
+ *
+ * @param {Object} target The target object.
+ * @returns {string[]}
+ * @ignore
+ */
+const getKeys = (target) => {
+  let obj = target;
+  const keys = [];
+  while (obj) {
+    keys.push(...Object.getOwnPropertyNames(obj));
+    obj = Object.getPrototypeOf(obj);
+  }
+
+  return keys
+  .reduce((acc, key) => (acc.includes(key) ? acc : [...acc, key]), [])
+  .sort();
+};
+/**
+ * Takes a Jimple container and creates a proxy for it so resouces can be accessed and registered
+ * like if they were its properties.
+ *
+ * @example
+ * const container = proxyContainer(new Jimple());
+ * container.service = () => new MyService();
+ * container.service.doSomething();
+ *
+ * @param {Jimple} container The Jimpex container the proxy will be created for.
+ * @returns {Jimple} The proxied version of the container.
+ */
+const proxyContainer = (container) => {
+  const keys = getKeys(container);
+  const fns = keys
+  .filter((key) => typeof container[key] === 'function')
+  .reduce(
+    (acc, key) => ({
+      ...acc,
+      [key]: container[key].bind(container),
+    }),
+    {},
+  );
+
+  let proxy;
+  /**
+   * Registers a resource provider on the container.
+   * This version exists so the providers will receive the proxied version.
+   *
+   * @param {Provider} rProvider The provider that will register one of more resources on the
+   *                             container.
+   * @ignore
+   */
+  const registerWithProxy = (rProvider) => {
+    rProvider.register(proxy);
+  };
+
+  proxy = new Proxy(container, {
+    /**
+     * This is the trap called when a property of the proxied object is being accessed. In this
+     * case, the trap will check if it's one of the bunded functions, the register function, one
+     * of the real properties, or one of the resources.
+     *
+     * @param {Jimple}        target The target object.
+     * @param {string|symbol} key    The name of the requested property.
+     * @returns {*}
+     * @ignore
+     */
+    get: (target, key) => {
+      let result;
+      if (key === 'proxy') {
+        // Add the proxy flag to indicate that properties can be accesed as properties.
+        result = true;
+      } else if (key === 'register') {
+        // If it's the `register` function, set to return the one that uses the proxy...
+        result = registerWithProxy;
+      } else if (fns[key]) {
+        // If it's one of the bounded functions...
+        result = fns[key];
+      } else if (keys.includes(key)) {
+        // If it's one of thebase properties...
+        result = container[key];
+      } else if (key.startsWith('$')) {
+        /**
+         * It it starts with `$`, it can be an actual resource, or a 'try-get': try to access a
+         * resource, and if it's not registered, return `null`.
+         */
+        if (container.has(key)) {
+          result = container.get(key);
+        } else {
+          const useKey = key.substr(1);
+          result = container.has(useKey) ? container.get(useKey) : null;
+        }
+      } else {
+        // Finally, assume it's a resource.
+        result = container.get(key);
+      }
+
+      return result;
+    },
+    /**
+     * This is the trap called when the value of a property of the proxied object is being set. In
+     * this case, the trap will check that the name is not one of the base keys of the class, to
+     * avoid functionality errors, and then call the container `set` method.
+     *
+     * @param {Jimple}        target The target object.
+     * @param {string|symbol} key    The name of the property.
+     * @param {*}             value  The new value of the property.
+     * @throws {Error} If `key` is the name of one of the base properties of the class.
+     * @ignore
+     */
+    set: (target, key, value) => {
+      if (keys.includes(key)) {
+        throw new Error(`The key '${key}' is reserved and cannot be used`);
+      }
+
+      container.set(key, value);
+    },
+    /**
+     * This is the trap called when the properties' keys of the proxied object need to be listed.
+     * In this case, the trap will list the base properties, plus the resources' keys.
+     *
+     * @returns {string[]}
+     * @ignore
+     */
+    ownKeys: () => [
+      ...keys,
+      ...container.keys(),
+    ],
+    /**
+     * This is the trap called when there's a check to see if the proxied object has a specific
+     * property (`prop in obj`). In this case, the trap will first check in the container and if
+     * it's not present, it will use the container `has` method to check the resources.
+     *
+     * @param {Jimple}        target The target object.
+     * @param {string|symbol} key    The name of the property.
+     * @returns {boolean}
+     * @ignore
+     */
+    has: (target, key) => (key in container || container.has(key)),
+    /**
+     * This is the trap called when the description of one of the properties of the proxied object
+     * is rquested. In this case, the trap will not only describe the base properties, but also
+     * the registered resources.
+     *
+     * @param {Jimple}        target The target object.
+     * @param {string|symbol} key    The name of the property.
+     * @returns {?PropertyDescriptor} It will only return the description if the container `has`
+     *                                the property.
+     * @ignore
+     */
+    getOwnPropertyDescriptor: (target, key) => {
+      let result;
+      if (keys.includes(key) || container.has(key)) {
+        const isPrivate = keys.includes(key);
+        result = {
+          configurable: true,
+          enumerable: !isPrivate,
+          value: isPrivate ? target[key] : target.get(key),
+          writable: !isPrivate,
+        };
+      }
+
+      return result;
+    },
+  });
+
+  return proxy;
+};
 
 module.exports.resource = resource;
 module.exports.resourceCreator = resourceCreator;
@@ -327,3 +502,4 @@ module.exports.resourcesCollection = resourcesCollection;
 module.exports.provider = provider;
 module.exports.providerCreator = providerCreator;
 module.exports.providers = providers;
+module.exports.proxyContainer = proxyContainer;

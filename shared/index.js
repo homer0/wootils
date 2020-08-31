@@ -23,6 +23,7 @@ const {
   provider,
   providerCreator,
   providers,
+  proxyContainer,
 } = require('./jimpleFns');
 const ObjectUtils = require('./objectUtils');
 
@@ -41,4 +42,5 @@ module.exports.resourcesCollection = resourcesCollection;
 module.exports.provider = provider;
 module.exports.providerCreator = providerCreator;
 module.exports.providers = providers;
+module.exports.proxyContainer = proxyContainer;
 module.exports.ObjectUtils = ObjectUtils;
