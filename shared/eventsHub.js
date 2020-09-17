@@ -198,43 +198,91 @@ class EventsHub {
    * Reduces a target using an event. It's like emit, but the events listener return
    * a modified (or not) version of the `target`.
    *
+   * @template T
    * @param {string|string[]} event  An event name or a list of them.
-   * @param {*}               target The variable to reduce with the listeners.
+   * @param {T}               target The variable to reduce with the listeners.
    * @param {...*}            args   A list of parameters to send to the listeners.
-   * @returns {*} A version of the `target` processed by the listeners.
+   * @returns {T} A version of the `target` processed by the listeners.
    */
   reduce(event, target, ...args) {
     const events = Array.isArray(event) ? event : [event];
-    let result = target;
-    events.forEach((name) => {
-      const subscribers = this.subscribers(name);
-      if (subscribers.length) {
-        const toClean = [];
-        let processed;
-        if (Array.isArray(result)) {
-          processed = result.slice();
-        } else if (typeof result === 'object') {
-          processed = { ...result };
-        } else {
-          processed = result;
-        }
+    const toClean = [];
+    const result = events.reduce(
+      (eventAcc, eventName) => this.subscribers(eventName).reduce(
+        (subAcc, subscriber) => {
+          let useCurrent;
+          if (Array.isArray(subAcc)) {
+            useCurrent = subAcc.slice();
+          } else if (typeof subAcc === 'object') {
+            useCurrent = { ...subAcc };
+          } else {
+            useCurrent = subAcc;
+          }
 
-        subscribers.forEach((subscriber) => {
-          processed = subscriber(...[processed, ...args]);
+          const nextStep = subscriber(...[useCurrent, ...args]);
           if (subscriber.once) {
             toClean.push({
-              event: name,
+              event: eventName,
               fn: subscriber,
             });
           }
-        });
 
-        toClean.forEach((info) => this.off(info.event, info.fn));
-        result = processed;
-      }
-    });
+          return nextStep;
+        },
+        eventAcc,
+      ),
+      target,
+    );
 
+    toClean.forEach((info) => this.off(info.event, info.fn));
     return result;
+  }
+  /**
+   * Reduces a target using an event. It's like emit, but the events listener return
+   * a modified (or not) version of the `target`. This is the version async of `reduce`.
+   *
+   * @template T
+   * @param {string|string[]} event  An event name or a list of them.
+   * @param {T}               target The variable to reduce with the listeners.
+   * @param {...*}            args   A list of parameters to send to the listeners.
+   * @returns {Promise<T>} A version of the `target` processed by the listeners.
+   */
+  reduceAsync(event, target, ...args) {
+    const events = Array.isArray(event) ? event : [event];
+    const toClean = [];
+    return events.reduce(
+      (eventAcc, eventName) => eventAcc.then((eventCurrent) => {
+        const subscribers = this.subscribers(eventName);
+        return subscribers.reduce(
+          (subAcc, subscriber) => subAcc.then((subCurrent) => {
+            let useCurrent;
+            if (Array.isArray(subCurrent)) {
+              useCurrent = subCurrent.slice();
+            } else if (typeof subCurrent === 'object') {
+              useCurrent = { ...subCurrent };
+            } else {
+              useCurrent = subCurrent;
+            }
+
+            const nextStep = subscriber(...[useCurrent, ...args]);
+            if (subscriber.once) {
+              toClean.push({
+                event: eventName,
+                fn: subscriber,
+              });
+            }
+
+            return nextStep;
+          }),
+          Promise.resolve(eventCurrent),
+        );
+      }),
+      Promise.resolve(target),
+    )
+    .then((result) => {
+      toClean.forEach((info) => this.off(info.event, info.fn));
+      return result;
+    });
   }
   /**
    * Gets all the listeners for an event.

@@ -84,6 +84,18 @@ console.log(newUsersList);
 
 > `reduce` also supports sending any number of parameters after the target variable.
 
+You can also reduce a variable on an asychroneous way with `reduceAsync`:
+
+```js
+events.on('filter-users-list', async (list) => {
+  const fromAPI = await getUsersToFilterFromSomeAPI('...', { list });
+  return list.filter((item) => !fromAPI.includes(item));
+});
+
+const usersList = ['charito', 'Rosario'];
+const newUsersList = await events.reduceAsync('filter-users-list', usersList);
+```
+
 ## ES Modules
 
 If you are using ESM, you can import the class from the `/esm` sub path:
