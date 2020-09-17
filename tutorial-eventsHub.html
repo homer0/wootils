@@ -140,6 +140,15 @@ console.log(newUsersList);
 <blockquote>
 <p><code>reduce</code> also supports sending any number of parameters after the target variable.</p>
 </blockquote>
+<p>You can also reduce a variable on an asychroneous way with <code>reduceAsync</code>:</p>
+<pre class="prettyprint source lang-js"><code>events.on('filter-users-list', async (list) => {
+  const fromAPI = await getUsersToFilterFromSomeAPI('...', { list });
+  return list.filter((item) => !fromAPI.includes(item));
+});
+
+const usersList = ['charito', 'Rosario'];
+const newUsersList = await events.reduceAsync('filter-users-list', usersList);
+</code></pre>
 <h2>ES Modules</h2>
 <p>If you are using ESM, you can import the class from the <code>/esm</code> sub path:</p>
 <pre class="prettyprint source lang-js"><code>import EventsHub from 'wootils/esm/shared/eventsHub';
