@@ -1,3 +1,10 @@
+# [4.2.0](https://github.com/homer0/wootils/compare/4.1.0...4.2.0) (2020-09-17)
+
+
+### Features
+
+* add reduceAsync to the EventsHub ([5f40019](https://github.com/homer0/wootils/commit/5f4001932c994730e32465bba4ad7f8c35722a11))
+
 # [4.1.0](https://github.com/homer0/wootils/compare/4.0.1...4.1.0) (2020-08-31)
 
 
