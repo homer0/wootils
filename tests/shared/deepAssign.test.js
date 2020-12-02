@@ -52,6 +52,60 @@ describe('DeepAssign', () => {
     expect(result).toEqual(expected);
   });
 
+  it('should merge on top of an object with an undefined property', () => {
+    // Given
+    let undefinedOnA;
+    const targetA = {
+      a: 'A',
+      b: 'B',
+      d: null,
+      undefinedOnA,
+    };
+    const targetB = {
+      b: 'X',
+      c: 'C',
+      e: null,
+    };
+    let sut = null;
+    let result = null;
+    const expected = {
+      ...targetA,
+      ...targetB,
+    };
+    // When
+    sut = new DeepAssign();
+    result = sut.assign(targetA, targetB);
+    // Then
+    expect(result).toEqual(expected);
+  });
+
+  it('should merge an object with an undefined property', () => {
+    // Given
+    const targetA = {
+      a: 'A',
+      b: 'B',
+      d: null,
+    };
+    let undefinedOnB;
+    const targetB = {
+      b: 'X',
+      c: 'C',
+      e: null,
+      undefinedOnB,
+    };
+    let sut = null;
+    let result = null;
+    const expected = {
+      ...targetA,
+      ...targetB,
+    };
+    // When
+    sut = new DeepAssign();
+    result = sut.assign(targetA, targetB);
+    // Then
+    expect(result).toEqual(expected);
+  });
+
   it('should merge two objects with symbols as keys', () => {
     // Given
     const keyOne = Symbol('key 1');
@@ -415,10 +469,12 @@ describe('DeepAssign', () => {
         { d: 'D' },
         { e: 'E', eee: 'EEE' },
         'F',
-        [{
-          g: 'G',
-          h: ['i'],
-        }],
+        [
+          {
+            g: 'G',
+            h: ['i'],
+          },
+        ],
       ],
     };
     const targetB = {

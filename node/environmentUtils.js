@@ -10,10 +10,9 @@ const { providerCreator } = require('../shared/jimpleFns');
 
 /**
  * @typedef {Object} EnvironmentUtilsProviderOptions
- * @property {string} serviceName
- * The name that will be used to register an instance of {@link EnvironmentUtils}. Its default
- * value is `environmentUtils`.
- *
+ * @property {string} serviceName  The name that will be used to register an instance of
+ *                                 {@link EnvironmentUtils}. Its default value is
+ *                                 `environmentUtils`.
  * @parent module:node/environmentUtils
  */
 
@@ -45,7 +44,7 @@ class EnvironmentUtils {
   /**
    * Checks whether an environment variable exists or not.
    *
-   * @param {string} name The name of the variable.
+   * @param {string} name  The name of the variable.
    * @returns {boolean}
    */
   exists(name) {
@@ -55,10 +54,11 @@ class EnvironmentUtils {
   /**
    * Gets the value of an environment variable.
    *
-   * @param {string}  name              The name of the variable.
-   * @param {string}  [defaultValue=''] A fallback value in case the variable is `undefined`.
-   * @param {boolean} [required=false]  If the variable is required and `undefined`, it will throw
-   *                                    an error.
+   * @param {string}  name               The name of the variable.
+   * @param {string}  [defaultValue='']  A fallback value in case the variable is
+   *                                     `undefined`.
+   * @param {boolean} [required=false]   If the variable is required and `undefined`, it
+   *                                     will throw an error.
    * @returns {string}
    * @throws {Error} If `required` is set to `true` and the variable is `undefined`.
    */
@@ -80,10 +80,11 @@ class EnvironmentUtils {
   /**
    * Sets the value of an environment variable.
    *
-   * @param {string} name              The name of the variable.
-   * @param {string} value             The value of the variable.
-   * @param {string} [overwrite=false] If the variable already exists, the method won't overwrite
-   *                                   it, unless you set this parameter to `true`.
+   * @param {string} name               The name of the variable.
+   * @param {string} value              The value of the variable.
+   * @param {string} [overwrite=false]  If the variable already exists, the method won't
+   *                                    overwrite it, unless you set this parameter to
+   *                                    `true`.
    * @returns {boolean} Whether or not the variable was set.
    */
   set(name, value, overwrite = false) {
@@ -128,7 +129,8 @@ class EnvironmentUtils {
   }
 }
 /**
- * The service provider to register an instance of {@link EnvironmentUtils} on the container.
+ * The service provider to register an instance of {@link EnvironmentUtils} on the
+ * container.
  *
  * @type {ProviderCreator<EnvironmentUtilsProviderOptions>}
  * @tutorial environmentUtils

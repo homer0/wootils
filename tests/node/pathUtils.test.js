@@ -2,10 +2,7 @@ jest.unmock('../../node/pathUtils');
 jest.unmock('../../shared/jimpleFns');
 
 const path = require('path');
-const {
-  PathUtils,
-  pathUtils,
-} = require('../../node/pathUtils');
+const { PathUtils, pathUtils } = require('../../node/pathUtils');
 
 const originalProcesssCwd = process.cwd;
 
@@ -88,7 +85,7 @@ describe('PathUtils', () => {
     expect(result).toBe(path.join(home, locationPath));
   });
 
-  it('should throw an error if a requested location doesn\'t exist', () => {
+  it("should throw an error if a requested location doesn't exist", () => {
     // Given
     let sut = null;
     // When

@@ -9,7 +9,8 @@ describe('SimpleStorage', () => {
   /**
    * Generates a proxied version of {@link SimpleStorage} for testing purposes.
    *
-   * @param {SimpleStorageOptions} options             The options for {@link SimpleStorage}.
+   * @param {SimpleStorageOptions} options             The options for
+   *                                                   {@link SimpleStorage}.
    * @param {?Object}              [initialData=null]  The data for when the storage gets
    *                                                   initialized.
    * @returns {Proxy<SimpleStorage>}
@@ -46,36 +47,39 @@ describe('SimpleStorage', () => {
     });
   };
   /**
-   * Generates an object with the same signature as LocalStorage and SessionStorage that the
-   * test cases can use.
+   * Generates an object with the same signature as LocalStorage and SessionStorage that
+   * the test cases can use.
    *
    * @param {Object} initialData  The data "currently" on the storage.
    * @returns {Object}
    */
   const getStorageProxy = (initialData = {}) => {
     const data = { ...initialData };
-    return new Proxy({}, {
-      mocks: {
-        get: jest.fn((name) => data[name]),
-        set: jest.fn((name, value) => {
-          data[name] = value;
-        }),
-        delete: jest.fn((name) => {
-          delete data[name];
-        }),
+    return new Proxy(
+      {},
+      {
+        mocks: {
+          get: jest.fn((name) => data[name]),
+          set: jest.fn((name, value) => {
+            data[name] = value;
+          }),
+          delete: jest.fn((name) => {
+            delete data[name];
+          }),
+        },
+        get(target, name) {
+          return target[name] || this[name] || this.mocks.get(name);
+        },
+        set(target, name, value) {
+          this.mocks.set(name, value);
+          return true;
+        },
+        deleteProperty(target, name) {
+          this.mocks.delete(name);
+          return true;
+        },
       },
-      get(target, name) {
-        return target[name] || this[name] || this.mocks.get(name);
-      },
-      set(target, name, value) {
-        this.mocks.set(name, value);
-        return true;
-      },
-      deleteProperty(target, name) {
-        this.mocks.delete(name);
-        return true;
-      },
-    });
+    );
   };
 
   afterEach(() => {
@@ -105,11 +109,7 @@ describe('SimpleStorage', () => {
       storage: {
         name: 'mySimpleStorage',
         key: 'mySimpleStorage',
-        typePriority: [
-          'temp',
-          'local',
-          'session',
-        ],
+        typePriority: ['temp', 'local', 'session'],
       },
       entries: {
         enabled: true,
@@ -136,8 +136,9 @@ describe('SimpleStorage', () => {
       },
     };
     // When/Then
-    expect(() => getSutProxy(customOptions))
-    .toThrow(/Missing required configuration setting: name/i);
+    expect(() => getSutProxy(customOptions)).toThrow(
+      /Missing required configuration setting: name/i,
+    );
   });
 
   it('should throw an error when storage.key is not preset on the options', () => {
@@ -148,18 +149,20 @@ describe('SimpleStorage', () => {
       },
     };
     // When/Then
-    expect(() => getSutProxy(customOptions))
-    .toThrow(/Missing required configuration setting: key/i);
+    expect(() => getSutProxy(customOptions)).toThrow(
+      /Missing required configuration setting: key/i,
+    );
   });
 
-  it('should throw an error if the logger doesn\'t have a warn or warning method', () => {
+  it("should throw an error if the logger doesn't have a warn or warning method", () => {
     // Given
     const customOptions = {
       logger: {},
     };
     // When/Then
-    expect(() => getSutProxy(customOptions))
-    .toThrow(/The logger must implement a `warn` or `warning` method/i);
+    expect(() => getSutProxy(customOptions)).toThrow(
+      /The logger must implement a `warn` or `warning` method/i,
+    );
   });
 
   it('should throw an error if no storage is available', () => {
@@ -167,14 +170,13 @@ describe('SimpleStorage', () => {
     const customOptions = {
       window: {},
       storage: {
-        typePriority: [
-          'unknown',
-        ],
+        typePriority: ['unknown'],
       },
     };
     // When/Then
-    expect(() => getSutProxy(customOptions))
-    .toThrow(/None of the specified storage types are available/i);
+    expect(() => getSutProxy(customOptions)).toThrow(
+      /None of the specified storage types are available/i,
+    );
   });
 
   describe('localStorage / Basic storage functionality', () => {
@@ -263,7 +265,10 @@ describe('SimpleStorage', () => {
       expect(mStorage.mocks.get).toHaveBeenCalledWith(options.storage.key);
       expect(mStorage.mocks.set).toHaveBeenCalledTimes(2);
       expect(mStorage.mocks.set).toHaveBeenCalledWith(storageKey, '{}');
-      expect(mStorage.mocks.set).toHaveBeenCalledWith(storageKey, JSON.stringify(newData));
+      expect(mStorage.mocks.set).toHaveBeenCalledWith(
+        storageKey,
+        JSON.stringify(newData),
+      );
     });
 
     it('should overwrite the data on the service but not save it', () => {
@@ -327,7 +332,10 @@ describe('SimpleStorage', () => {
       expect(mStorage.mocks.get).toHaveBeenCalledWith(options.storage.key);
       expect(mStorage.mocks.set).toHaveBeenCalledTimes(2);
       expect(mStorage.mocks.set).toHaveBeenCalledWith(storageKey, '{}');
-      expect(mStorage.mocks.set).toHaveBeenCalledWith(storageKey, JSON.stringify(newData));
+      expect(mStorage.mocks.set).toHaveBeenCalledWith(
+        storageKey,
+        JSON.stringify(newData),
+      );
     });
 
     it('should initialize as a fallback for another storage', () => {
@@ -345,11 +353,7 @@ describe('SimpleStorage', () => {
         window: mWindow,
         storage: {
           key: storageKey,
-          typePriority: [
-            'session',
-            'local',
-            'temp',
-          ],
+          typePriority: ['session', 'local', 'temp'],
         },
       };
       let sut = null;
@@ -542,8 +546,9 @@ describe('SimpleStorage', () => {
         },
       };
       // When/Then
-      expect(() => getSutProxy(options).getEntry('someKey'))
-      .toThrow(/Entries are not enabled for this storage/i);
+      expect(() => getSutProxy(options).getEntry('someKey')).toThrow(
+        /Entries are not enabled for this storage/i,
+      );
     });
 
     it('should return a saved entry', () => {
@@ -594,7 +599,7 @@ describe('SimpleStorage', () => {
       // Given
       const currentTime = Date.now();
       const expiration = 3600;
-      const future = currentTime + ((expiration * 1000) * 2);
+      const future = currentTime + expiration * 1000 * 2;
       const now = jest.fn();
       now.mockImplementationOnce(() => currentTime);
       now.mockImplementationOnce(() => currentTime);
@@ -1068,11 +1073,7 @@ describe('SimpleStorage', () => {
         window: mWindow,
         storage: {
           key: storageKey,
-          typePriority: [
-            'session',
-            'local',
-            'temp',
-          ],
+          typePriority: ['session', 'local', 'temp'],
         },
       };
       let sut = null;
@@ -1104,11 +1105,7 @@ describe('SimpleStorage', () => {
         window: mWindow,
         storage: {
           key: storageKey,
-          typePriority: [
-            'session',
-            'local',
-            'temp',
-          ],
+          typePriority: ['session', 'local', 'temp'],
         },
       };
       let sut = null;
@@ -1138,11 +1135,7 @@ describe('SimpleStorage', () => {
         window: mWindow,
         storage: {
           key: storageKey,
-          typePriority: [
-            'local',
-            'session',
-            'temp',
-          ],
+          typePriority: ['local', 'session', 'temp'],
         },
       };
       let sut = null;
@@ -1173,11 +1166,7 @@ describe('SimpleStorage', () => {
         window: mWindow,
         storage: {
           key: storageKey,
-          typePriority: [
-            'session',
-            'local',
-            'temp',
-          ],
+          typePriority: ['session', 'local', 'temp'],
         },
       };
       let sut = null;
@@ -1205,11 +1194,7 @@ describe('SimpleStorage', () => {
         window: {},
         storage: {
           key: storageKey,
-          typePriority: [
-            'temp',
-            'local',
-            'session',
-          ],
+          typePriority: ['temp', 'local', 'session'],
         },
         tempStorage: mStorage,
       };
@@ -1239,11 +1224,7 @@ describe('SimpleStorage', () => {
         window: {},
         storage: {
           key: storageKey,
-          typePriority: [
-            'temp',
-            'local',
-            'session',
-          ],
+          typePriority: ['temp', 'local', 'session'],
         },
         tempStorage: mStorage,
       };
@@ -1271,11 +1252,7 @@ describe('SimpleStorage', () => {
         window: {},
         storage: {
           key: storageKey,
-          typePriority: [
-            'local',
-            'temp',
-            'session',
-          ],
+          typePriority: ['local', 'temp', 'session'],
         },
         tempStorage: mStorage,
       };
@@ -1304,11 +1281,7 @@ describe('SimpleStorage', () => {
         window: {},
         storage: {
           key: storageKey,
-          typePriority: [
-            'temp',
-            'local',
-            'session',
-          ],
+          typePriority: ['temp', 'local', 'session'],
         },
         tempStorage: mStorage,
       };

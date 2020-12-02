@@ -23,8 +23,7 @@ describe('Deferred', () => {
     expect.assertions(2);
     // When
     setTimeout(() => defer.reject(value), delay);
-    return defer.promise
-    .catch((error) => {
+    return defer.promise.catch((error) => {
       // Then
       expect(error).toBeInstanceOf(Error);
       expect(error).toEqual(value);
