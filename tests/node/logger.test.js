@@ -1,36 +1,39 @@
 /* eslint-disable no-console */
-jest.mock('colors/safe', () => new Proxy({}, {
-  mocks: {},
-  clear() {
-    Object.keys(this.mocks).forEach((color) => {
-      this.mocks[color].mockClear();
-    });
-  },
-  get(target, name) {
-    let result;
-    if (this[name]) {
-      result = this[name];
-    } else {
-      if (!this.mocks[name]) {
-        this.mocks[name] = jest.fn((str) => str);
-      }
+jest.mock(
+  'colors/safe',
+  () =>
+    new Proxy(
+      {},
+      {
+        mocks: {},
+        clear() {
+          Object.keys(this.mocks).forEach((color) => {
+            this.mocks[color].mockClear();
+          });
+        },
+        get(target, name) {
+          let result;
+          if (this[name]) {
+            result = this[name];
+          } else {
+            if (!this.mocks[name]) {
+              this.mocks[name] = jest.fn((str) => str);
+            }
 
-      result = this.mocks[name];
-    }
+            result = this.mocks[name];
+          }
 
-    return result;
-  },
-}));
+          return result;
+        },
+      },
+    ),
+);
 jest.unmock('../../node/logger');
 jest.unmock('../../shared/deepAssign');
 jest.unmock('../../shared/jimpleFns');
 
 const colors = require('colors/safe');
-const {
-  Logger,
-  logger,
-  appLogger,
-} = require('../../node/logger');
+const { Logger, logger, appLogger } = require('../../node/logger');
 
 const originalConsoleLog = console.log;
 

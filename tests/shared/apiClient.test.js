@@ -147,7 +147,7 @@ describe('APIClient', () => {
     expect(result).toBe(`${url}/${endpointPath}?${placeholder}=${placeholderValue}`);
   });
 
-  it('should throw an error if a requested endpoint doesn\'t exist', () => {
+  it("should throw an error if a requested endpoint doesn't exist", () => {
     // Given
     const endpoint = 'some-endpoint';
     let sut = null;
@@ -180,10 +180,10 @@ describe('APIClient', () => {
       },
     };
 
-    const expectedQuery = `?${queryPlaceholderOne}=${queryPlaceholderOneValue}` +
+    const expectedQuery =
+      `?${queryPlaceholderOne}=${queryPlaceholderOneValue}` +
       `&${queryPlaceholderThree}=${queryPlaceholderThreeValue}`;
-    const expectedPath = endpoints.one.path
-    .replace(`:${placeholder}`, placeholderValue);
+    const expectedPath = endpoints.one.path.replace(`:${placeholder}`, placeholderValue);
     const expectedPathWithQuery = `${expectedPath}${expectedQuery}`;
     let sut = null;
     let result = null;
@@ -286,7 +286,7 @@ describe('APIClient', () => {
     });
   });
 
-  it('should make a GET request with a response that doesn\'t support json()', async () => {
+  it("should make a GET request with a response that doesn't support json()", async () => {
     // Given
     const requestURL = 'http://example.com';
     const requestResponseData = {
@@ -333,7 +333,7 @@ describe('APIClient', () => {
     const requestURL = 'http://example.com';
     const requestResponse = {
       status: 200,
-      json: jest.fn(() => Promise.reject(new Error('This can\'t be decoded'))),
+      json: jest.fn(() => Promise.reject(new Error("This can't be decoded"))),
     };
     const fetchClient = jest.fn(() => Promise.resolve(requestResponse));
     let sut = null;
@@ -444,11 +444,12 @@ describe('APIClient', () => {
     expect.assertions(2);
     // When
     sut = new APIClient('', '', fetchClient);
-    return sut.fetch({ url: requestURL })
-    .catch((error) => {
+    return sut.fetch({ url: requestURL }).catch((error) => {
       // Then
       expect(error).toBeInstanceOf(Error);
-      expect(error.message).toBe(`[${requestResponse.status}]: ${requestResponseData.error}`);
+      expect(error.message).toBe(
+        `[${requestResponse.status}]: ${requestResponseData.error}`,
+      );
     });
   });
 
@@ -510,7 +511,7 @@ describe('APIClient', () => {
     });
   });
 
-  it('shouldn\'t overwrite the content type if it was already set', async () => {
+  it("shouldn't overwrite the content type if it was already set", async () => {
     // Given
     const requestURL = 'http://example.com';
     const requestMethod = 'post';
@@ -544,7 +545,7 @@ describe('APIClient', () => {
     });
   });
 
-  it('shouldn\'t overwrite the content type nor encode the body if is not an object', async () => {
+  it("shouldn't overwrite the content type nor encode the body if is not an object", async () => {
     // Given
     const requestURL = 'http://example.com';
     const requestMethod = 'post';
@@ -573,7 +574,7 @@ describe('APIClient', () => {
     });
   });
 
-  it('shouldn\'t encode the body if is not an object literal', async () => {
+  it("shouldn't encode the body if is not an object literal", async () => {
     // Given
     const requestURL = 'http://example.com';
     const requestMethod = 'post';

@@ -3,10 +3,7 @@ jest.unmock('../../shared/deepAssign');
 jest.unmock('../../shared/jimpleFns');
 
 const path = require('path');
-const {
-  rootRequire,
-  rootRequireProvider,
-} = require('../../node/rootRequire');
+const { rootRequire, rootRequireProvider } = require('../../node/rootRequire');
 
 describe('rootRequire', () => {
   it('should give you the contents of the package.json', () => {

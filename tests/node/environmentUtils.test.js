@@ -2,10 +2,7 @@
 jest.unmock('../../node/environmentUtils.js');
 jest.unmock('../../shared/jimpleFns.js');
 
-const {
-  EnvironmentUtils,
-  environmentUtils,
-} = require('../../node/environmentUtils');
+const { EnvironmentUtils, environmentUtils } = require('../../node/environmentUtils');
 
 const originalEnv = process.env;
 
@@ -50,7 +47,7 @@ describe('EnvironmentUtils', () => {
     expect(result).toBe(varValue);
   });
 
-  it('should fallback to an empty string if a specified variable doesn\'t exist', () => {
+  it("should fallback to an empty string if a specified variable doesn't exist", () => {
     // Given
     let result = 'unknown';
     // When
@@ -60,11 +57,12 @@ describe('EnvironmentUtils', () => {
     expect(result).toBe('');
   });
 
-  it('should throw an error if a required variable doesn\'t exist', () => {
+  it("should throw an error if a required variable doesn't exist", () => {
     // Given/When/Then
     const envUtils = new EnvironmentUtils();
-    expect(() => envUtils.get('Charito', '', true))
-    .toThrow(/The following environment variable is missing/i);
+    expect(() => envUtils.get('Charito', '', true)).toThrow(
+      /The following environment variable is missing/i,
+    );
   });
 
   it('should set the value for an environment variable', () => {
@@ -83,7 +81,7 @@ describe('EnvironmentUtils', () => {
     expect(saved).toBe(varValue);
   });
 
-  it('shouldn\'t overwrite an existing environment variable', () => {
+  it("shouldn't overwrite an existing environment variable", () => {
     // Given
     const varName = 'ROBIN_IDENTITY';
     const varOriginalValue = 'Tim Drake';

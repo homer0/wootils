@@ -127,7 +127,7 @@ describe('ObjectUtils', () => {
       expect(result).toBe(name);
     });
 
-    it('shouldn\'t throw an error when trying to read a property that doesn\'t exist', () => {
+    it("shouldn't throw an error when trying to read a property that doesn't exist", () => {
       // Given
       const target = {};
       const fakePath = 'something';
@@ -138,7 +138,7 @@ describe('ObjectUtils', () => {
       expect(result).toBeUndefined();
     });
 
-    it('shouldn\'t throw an error when trying to read a path that doesn\'t exist', () => {
+    it("shouldn't throw an error when trying to read a path that doesn't exist", () => {
       // Given
       const topElement = 'person';
       const childElement = 'name';
@@ -153,16 +153,17 @@ describe('ObjectUtils', () => {
       expect(result).toBeUndefined();
     });
 
-    it('should throw an error when trying to read a property that doesn\'t exist', () => {
+    it("should throw an error when trying to read a property that doesn't exist", () => {
       // Given
       const target = {};
       const fakePath = 'something';
       // When/Then
-      expect(() => ObjectUtils.get(target, fakePath, '.', true))
-      .toThrow(new RegExp(`there's nothing on '${fakePath}'`, 'i'));
+      expect(() => ObjectUtils.get(target, fakePath, '.', true)).toThrow(
+        new RegExp(`there's nothing on '${fakePath}'`, 'i'),
+      );
     });
 
-    it('should throw an error when trying to read a path that doesn\'t exist', () => {
+    it("should throw an error when trying to read a path that doesn't exist", () => {
       // Given
       const topElement = 'person';
       const childElement = 'name';
@@ -172,8 +173,9 @@ describe('ObjectUtils', () => {
       };
       const fakePath = `${topElement}.${childElement}.${grandChildElement}`;
       // When/Then
-      expect(() => ObjectUtils.get(target, fakePath, '.', true))
-      .toThrow(new RegExp(`there's nothing on '${topElement}.${childElement}'`, 'i'));
+      expect(() => ObjectUtils.get(target, fakePath, '.', true)).toThrow(
+        new RegExp(`there's nothing on '${topElement}.${childElement}'`, 'i'),
+      );
     });
   });
 
@@ -246,10 +248,7 @@ describe('ObjectUtils', () => {
       const age = 3;
       const firstEntry = { [childElement]: 'Charito', age };
       const target = {
-        [topElement]: [
-          firstEntry,
-          { age },
-        ],
+        [topElement]: [firstEntry, { age }],
       };
       const copy = ObjectUtils.copy(target);
       const objPath = `${topElement}.1.${childElement}`;
@@ -270,7 +269,7 @@ describe('ObjectUtils', () => {
       expect(target).toEqual(copy);
     });
 
-    it('shouldn\'t throw an error when trying to set a property on an non object path', () => {
+    it("shouldn't throw an error when trying to set a property on an non object path", () => {
       // Given
       const topElement = 'people';
       const childElement = 'name';
@@ -302,11 +301,12 @@ describe('ObjectUtils', () => {
       };
       const objPath = `${topElement}.${childElement}.${grandChildElement}`;
       // When/Then
-      expect(() => ObjectUtils.set(target, objPath, value, '.', true))
-      .toThrow(new RegExp(
-        `There's already an element of type 'string' on '${topElement}.${childElement}'`,
-        'i',
-      ));
+      expect(() => ObjectUtils.set(target, objPath, value, '.', true)).toThrow(
+        new RegExp(
+          `There's already an element of type 'string' on '${topElement}.${childElement}'`,
+          'i',
+        ),
+      );
     });
   });
 
@@ -383,7 +383,7 @@ describe('ObjectUtils', () => {
       });
     });
 
-    it('shouldn\'t throw an error when trying to extract from an invalid path', () => {
+    it("shouldn't throw an error when trying to extract from an invalid path", () => {
       // Given
       const topElement = 'person';
       const target = {};
@@ -399,11 +399,12 @@ describe('ObjectUtils', () => {
       const topElement = 'person';
       const target = {};
       // When/Then
-      expect(() => ObjectUtils.extract(target, topElement, '.', true))
-      .toThrow(new RegExp(`There's nothing on '${topElement}'`, 'i'));
+      expect(() => ObjectUtils.extract(target, topElement, '.', true)).toThrow(
+        new RegExp(`There's nothing on '${topElement}'`, 'i'),
+      );
     });
 
-    it('shouldn\'t throw an error when trying to extract reusing a path', () => {
+    it("shouldn't throw an error when trying to extract reusing a path", () => {
       // Given
       const topElement = 'person';
       const childElement = 'name';
@@ -417,13 +418,10 @@ describe('ObjectUtils', () => {
       };
       let result = null;
       // When
-      result = ObjectUtils.extract(
-        target,
-        [
-          { [topElement]: `${topElement}.${childElement}` },
-          { [`${topElement}.${childElement}`]: `${topElement}.${childElement}` },
-        ],
-      );
+      result = ObjectUtils.extract(target, [
+        { [topElement]: `${topElement}.${childElement}` },
+        { [`${topElement}.${childElement}`]: `${topElement}.${childElement}` },
+      ]);
       // Then
       expect(result).toBeUndefined();
     });
@@ -441,19 +439,19 @@ describe('ObjectUtils', () => {
         },
       };
       // When/Then
-      expect(() => ObjectUtils.extract(
-        target,
-        [
-          { [topElement]: `${topElement}.${childElement}` },
-          { [`${topElement}.${childElement}`]: `${topElement}.${childElement}` },
-        ],
-        '.',
-        true,
-      ))
-      .toThrow(new RegExp(
-        `There's already an element of type 'string' on '${topElement}'`,
-        'i',
-      ));
+      expect(() =>
+        ObjectUtils.extract(
+          target,
+          [
+            { [topElement]: `${topElement}.${childElement}` },
+            { [`${topElement}.${childElement}`]: `${topElement}.${childElement}` },
+          ],
+          '.',
+          true,
+        ),
+      ).toThrow(
+        new RegExp(`There's already an element of type 'string' on '${topElement}'`, 'i'),
+      );
     });
   });
 
@@ -550,11 +548,7 @@ describe('ObjectUtils', () => {
       const alias = null;
       const age = 3;
       const total = 1;
-      const numbers = [
-        'one',
-        'two',
-        'three',
-      ];
+      const numbers = ['one', 'two', 'three'];
       const target = {
         total,
         person: {
@@ -591,11 +585,7 @@ describe('ObjectUtils', () => {
       const nickname = 'Charito';
       const age = 3;
       const total = 1;
-      const numbers = [
-        'one',
-        'two',
-        'three',
-      ];
+      const numbers = ['one', 'two', 'three'];
       const target = {
         total,
         person: {
@@ -634,11 +624,7 @@ describe('ObjectUtils', () => {
       const nickname = 'Charito';
       const age = 3;
       const total = 1;
-      const numbers = [
-        'one',
-        'two',
-        'three',
-      ];
+      const numbers = ['one', 'two', 'three'];
       const target = {
         total,
         person: {
@@ -671,11 +657,7 @@ describe('ObjectUtils', () => {
       const nickname = 'Charito';
       const age = 3;
       const total = 1;
-      const numbers = [
-        'one',
-        'two',
-        'three',
-      ];
+      const numbers = ['one', 'two', 'three'];
       const target = {
         total,
         'person.age': age,
@@ -706,11 +688,7 @@ describe('ObjectUtils', () => {
       const nickname = 'Charito';
       const age = 3;
       const total = 1;
-      const numbers = [
-        'one',
-        'two',
-        'three',
-      ];
+      const numbers = ['one', 'two', 'three'];
       const separator = '/';
       const target = {
         total,
@@ -750,11 +728,7 @@ describe('ObjectUtils', () => {
       };
       let result = null;
       // When
-      result = ObjectUtils.formatKeys(
-        target,
-        /^\w/,
-        (letter) => letter.toUpperCase(),
-      );
+      result = ObjectUtils.formatKeys(target, /^\w/, (letter) => letter.toUpperCase());
       // Then
       expect(result).toEqual({
         Name: name,
@@ -779,11 +753,7 @@ describe('ObjectUtils', () => {
       };
       let result = null;
       // When
-      result = ObjectUtils.formatKeys(
-        target,
-        /^\w/,
-        (letter) => letter.toUpperCase(),
-      );
+      result = ObjectUtils.formatKeys(target, /^\w/, (letter) => letter.toUpperCase());
       // Then
       expect(result).toEqual({
         Name: name,
@@ -810,12 +780,10 @@ describe('ObjectUtils', () => {
       };
       let result = null;
       // When
-      result = ObjectUtils.formatKeys(
-        target,
-        /^\w/,
-        (letter) => letter.toUpperCase(),
-        ['name.first', 'likes'],
-      );
+      result = ObjectUtils.formatKeys(target, /^\w/, (letter) => letter.toUpperCase(), [
+        'name.first',
+        'likes',
+      ]);
       // Then
       expect(result).toEqual({
         name: {
@@ -843,12 +811,11 @@ describe('ObjectUtils', () => {
       };
       let result = null;
       // When
-      result = ObjectUtils.formatKeys(
-        target,
-        /^\w/,
-        (letter) => letter.toUpperCase(),
-        ['name.first.', '.name.nickname.', 'likes'],
-      );
+      result = ObjectUtils.formatKeys(target, /^\w/, (letter) => letter.toUpperCase(), [
+        'name.first.',
+        '.name.nickname.',
+        'likes',
+      ]);
       // Then
       expect(result).toEqual({
         name: {

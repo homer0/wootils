@@ -4,10 +4,7 @@ jest.unmock('../../shared/deepAssign');
 jest.unmock('../../shared/jimpleFns');
 
 const fs = require('fs-extra');
-const {
-  packageInfo,
-  packageInfoProvider,
-} = require('../../node/packageInfo');
+const { packageInfo, packageInfoProvider } = require('../../node/packageInfo');
 
 describe('packageInfo', () => {
   it('should give you the contents of the package.json', () => {

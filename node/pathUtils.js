@@ -11,23 +11,23 @@ const { providerCreator } = require('../shared/jimpleFns');
 
 /**
  * @typedef {Object} PathUtilsProviderOptions
- * @property {string} serviceName The name that will be used to register an instance
- *                                of {@link PathUtils}. Its default value is `pathUtils`.
- * @property {string} [home]      The path to the new home location.
+ * @property {string} serviceName  The name that will be used to register an instance of
+ *                                 {@link PathUtils}. Its default value is `pathUtils`.
+ * @property {string} [home]       The path to the new home location.
  * @parent module:node/pathUtils
  */
 
 /**
- * A utility services to manage paths on a project. It allows for path building relatives to
- * the project root or from where the app executable is located.
+ * A utility services to manage paths on a project. It allows for path building relatives
+ * to the project root or from where the app executable is located.
  *
  * @parent module:node/pathUtils
  * @tutorial pathUtils
  */
 class PathUtils {
   /**
-   * @param {string} [home=''] The location of the project's `home`(root) directory. By default
-   *                           it uses `process.cwd()`.
+   * @param {string} [home='']  The location of the project's `home`(root) directory. By
+   *                            default it uses `process.cwd()`.
    */
   constructor(home = '') {
     /**
@@ -41,7 +41,7 @@ class PathUtils {
     /**
      * A dictionary of different path locations.
      *
-     * @type {Object.<string,string>}
+     * @type {Object.<string, string>}
      * @access protected
      * @ignore
      */
@@ -53,9 +53,9 @@ class PathUtils {
   /**
    * Adds a new location.
    *
-   * @param {string} name         The reference name.
-   * @param {string} locationPath The path of the location. It must be inside the path from the
-   *                              app is being executed.
+   * @param {string} name          The reference name.
+   * @param {string} locationPath  The path of the location. It must be inside the path
+   *                               from the app is being executed.
    */
   addLocation(name, locationPath) {
     let location = locationPath;
@@ -76,7 +76,7 @@ class PathUtils {
   /**
    * Gets a location path by its name.
    *
-   * @param {string} name The location name.
+   * @param {string} name  The location name.
    * @returns {string}
    * @throws {Error} If there location hasn't been added.
    */
@@ -91,7 +91,7 @@ class PathUtils {
   /**
    * Alias to `joinFrom` that uses the `home` location by default.
    *
-   * @param {...string} paths The rest of the path components to join.
+   * @param {...string} paths  The rest of the path components to join.
    * @returns {string}
    */
   join(...paths) {
@@ -100,8 +100,8 @@ class PathUtils {
   /**
    * Builds a path using a location path as base.
    *
-   * @param {string}    location The location name.
-   * @param {...string} paths    The rest of the path components to join.
+   * @param {string}    location  The location name.
+   * @param {...string} paths     The rest of the path components to join.
    * @returns {string}
    */
   joinFrom(location, ...paths) {
@@ -127,7 +127,7 @@ class PathUtils {
   /**
    * A dictionary of different path locations.
    *
-   * @type {Object.<string,string>}
+   * @type {Object.<string, string>}
    * @access protected
    * @ignore
    */
@@ -152,10 +152,7 @@ class PathUtils {
    */
   _addAppLocation() {
     let current = module;
-    while (
-      current.parent &&
-      current.parent.filename !== current.filename
-    ) {
+    while (current.parent && current.parent.filename !== current.filename) {
       current = current.parent;
     }
 

@@ -469,10 +469,12 @@ describe('DeepAssign', () => {
         { d: 'D' },
         { e: 'E', eee: 'EEE' },
         'F',
-        [{
-          g: 'G',
-          h: ['i'],
-        }],
+        [
+          {
+            g: 'G',
+            h: ['i'],
+          },
+        ],
       ],
     };
     const targetB = {

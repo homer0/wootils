@@ -15,18 +15,20 @@ const { deepAssign } = require('../shared/deepAssign');
 
 /**
  * @typedef {Object} RootRequireServiceMap
- * @property {string|PathUtils} [pathUtils]
- * The name of the service for {@link PathUtils} or an instance of it. `pathUtils` by default.
+ * @property {string | PathUtils} [pathUtils]  The name of the service for
+ *                                             {@link PathUtils} or an instance of it.
+ *                                             `pathUtils` by default.
  * @parent module:node/rootRequire
  */
 
 /**
  * @typedef {Object} RootRequireProviderOptions
- * @property {string} serviceName
- * The name that will be used to register the result of
- * {@link module:node/rootRequire~rootRequire|rootRequire}. Its default value is `rootRequire`.
- * @property {RootRequireServiceMap} services
- * A dictionary with the services that need to be injected on the function.
+ * @property {string}                serviceName  The name that will be used to register
+ *                                                the result of
+ *                                                {@link module:node/rootRequire~rootRequire|rootRequire}.
+ *                                                Its default value is `rootRequire`.
+ * @property {RootRequireServiceMap} services     A dictionary with the services that need
+ *                                                to be injected on the function.
  * @parent module:node/rootRequire
  */
 
@@ -34,7 +36,7 @@ const { deepAssign } = require('../shared/deepAssign');
  * Exactly like `require`, but th epath is relative to the project root directory.
  *
  * @callback RootRequireFn
- * @param {string} path The path to the file, relative to the project root directory.
+ * @param {string} path  The path to the file, relative to the project root directory.
  * @returns {Object}
  * @parent module:node/rootRequire
  * @tutorial rootRequire
@@ -43,7 +45,7 @@ const { deepAssign } = require('../shared/deepAssign');
 /**
  * Generates a function to require a file relative to the project root directory.
  *
- * @param {PathUtils} pathUtils To build the path to the files it will `require`.
+ * @param {PathUtils} pathUtils  To build the path to the files it will `require`.
  * @returns {RootRequireFn}
  * @tutorial rootRequire
  */
@@ -74,9 +76,7 @@ const rootRequireProvider = providerCreator((options = {}) => (app) => {
     );
 
     const { pathUtils } = useOptions.services;
-    const usePathUtils = typeof pathUtils === 'string' ?
-      app.get(pathUtils) :
-      pathUtils;
+    const usePathUtils = typeof pathUtils === 'string' ? app.get(pathUtils) : pathUtils;
 
     return rootRequire(usePathUtils);
   });

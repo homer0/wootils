@@ -10,14 +10,16 @@ describe('ExtendPromise', () => {
 
   it('should throw an error when called without extended properties', () => {
     // Given/When/Then
-    expect(() => extendPromise(Promise.resolve()))
-    .toThrow(/'properties' must be an object with at least one key/i);
+    expect(() => extendPromise(Promise.resolve())).toThrow(
+      /'properties' must be an object with at least one key/i,
+    );
   });
 
   it('should throw an error when called with an empty object', () => {
     // Given/When/Then
-    expect(() => extendPromise(Promise.resolve(), {}))
-    .toThrow(/'properties' must be an object with at least one key/i);
+    expect(() => extendPromise(Promise.resolve(), {})).toThrow(
+      /'properties' must be an object with at least one key/i,
+    );
   });
 
   it('should extend a promise chain', async () => {

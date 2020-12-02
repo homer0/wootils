@@ -4,15 +4,12 @@ jest.unmock('../../shared/jimpleFns');
 jest.unmock('../../node/appConfiguration');
 
 const path = require('path');
-const {
-  AppConfiguration,
-  appConfiguration,
-} = require('../../node/appConfiguration');
+const { AppConfiguration, appConfiguration } = require('../../node/appConfiguration');
 
 describe('AppConfiguration', () => {
   /**
-   * Generates a dictinoary of all the expected properties of a {@link AppConfiguartion} class
-   * when the defaults are not customized.
+   * Generates a dictinoary of all the expected properties of a {@link AppConfiguartion}
+   * class when the defaults are not customized.
    *
    * @returns {Object}
    */
@@ -147,8 +144,9 @@ describe('AppConfiguration', () => {
     // When
     sut = new AppConfiguration(environmentUtils, rootRequire);
     // Then
-    expect(() => sut.load(newConfigName, newConfigSettings))
-    .toThrow(/The base configuration for \w+ doesn't exist/i);
+    expect(() => sut.load(newConfigName, newConfigSettings)).toThrow(
+      /The base configuration for \w+ doesn't exist/i,
+    );
   });
 
   it('should load a new configuration from a file', () => {
@@ -234,10 +232,9 @@ describe('AppConfiguration', () => {
     expect(sut.configurations[newConfigTwoName]).toEqual(expectedConfig);
     expect(sut.activeConfiguration).toBe(newConfigTwoName);
     expect(sut.canSwitch).toBe(false);
-    expect(rootRequire).toHaveBeenCalledTimes([
-      newConfigOneName,
-      newConfigTwoName,
-    ].length);
+    expect(rootRequire).toHaveBeenCalledTimes(
+      [newConfigOneName, newConfigTwoName].length,
+    );
     expect(rootRequire).toHaveBeenCalledWith(expectedFileInfoTwo.path);
     expect(rootRequire).toHaveBeenCalledWith(expectedFileInfoOne.path);
   });
@@ -255,8 +252,9 @@ describe('AppConfiguration', () => {
     // When
     sut = new AppConfiguration(environmentUtils, rootRequire);
     // Then
-    expect(() => sut.loadFromFile(newConfigName))
-    .toThrow(/The configuration file couldn't be loaded/i);
+    expect(() => sut.loadFromFile(newConfigName)).toThrow(
+      /The configuration file couldn't be loaded/i,
+    );
     expect(rootRequire).toHaveBeenCalledTimes(1);
     expect(rootRequire).toHaveBeenCalledWith(expectedFileInfo.path);
   });
@@ -287,7 +285,7 @@ describe('AppConfiguration', () => {
     expect(rootRequire).toHaveBeenCalledWith(expectedFileInfo.path);
   });
 
-  it('shouldn\'t do anything if the env var is empty when checking for a configuration', () => {
+  it("shouldn't do anything if the env var is empty when checking for a configuration", () => {
     // Given
     const newConfigName = 'charitoConfig';
     const environmentUtils = {
@@ -544,10 +542,7 @@ describe('AppConfiguration', () => {
     sut.load(newConfigName, newConfigSettings);
     result = sut.get([pathOne, pathTwo], true);
     // Then
-    expect(result).toEqual([
-      newSubSettingOneValue,
-      newSubSettingTwoValue,
-    ]);
+    expect(result).toEqual([newSubSettingOneValue, newSubSettingTwoValue]);
   });
 
   it('should set the value of a setting from the active configuration', () => {
@@ -681,7 +676,9 @@ describe('AppConfiguration', () => {
     sut = new AppConfiguration(environmentUtils, rootRequire);
     sut.load(newConfigName, newConfigSettings, false);
     // Then
-    expect(() => sut.switch(newConfigName)).toThrow(/You can't switch the configuration/i);
+    expect(() => sut.switch(newConfigName)).toThrow(
+      /You can't switch the configuration/i,
+    );
   });
 
   it('should load a configuration from a file when trying to switch to it', () => {
