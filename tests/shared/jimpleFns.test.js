@@ -92,17 +92,19 @@ describe('JimpleFns', () => {
       const name = 'providers';
       const key = 'register';
       // When/Then
-      expect(() => resourcesCollection(name, key)({ [key]: 'something' }))
-      .toThrow(/No item on the collection can have the keys `\w+` nor `\w+`$/);
+      expect(() => resourcesCollection(name, key)({ [key]: 'something' })).toThrow(
+        /No item on the collection can have the keys `\w+` nor `\w+`$/,
+      );
     });
 
-    it('should throw an error if an item doesn\'t have a `key` function', () => {
+    it("should throw an error if an item doesn't have a `key` function", () => {
       // Given
       const name = 'providers';
       const key = 'register';
       // When/Then
-      expect(() => resourcesCollection(name, key)({ something: {} }))
-      .toThrow(/The item `\w+` is invalid: it doesn't have a `\w+` function/);
+      expect(() => resourcesCollection(name, key)({ something: {} })).toThrow(
+        /The item `\w+` is invalid: it doesn't have a `\w+` function/,
+      );
     });
 
     it('should create a collection', () => {
@@ -271,7 +273,7 @@ describe('JimpleFns', () => {
       expect(resultAsProperty).toBe(itemValue);
     });
 
-    it('shouldn\'t overwrite access to the private properties', () => {
+    it("shouldn't overwrite access to the private properties", () => {
       // Given
       const original = new Jimple();
       let sut = null;
@@ -381,7 +383,7 @@ describe('JimpleFns', () => {
       }).toThrow(/The key 'get' is reserved and cannot be used/);
     });
 
-    it('should return the resources\' keys when called with Object.keys', () => {
+    it("should return the resources' keys when called with Object.keys", () => {
       // Given
       const original = new Jimple();
       const itemOneKey = 'firstDaughter';

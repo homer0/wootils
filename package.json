@@ -46,7 +46,10 @@
     }
   },
   "lint-staged": {
-    "*.js": "eslint"
+    "*.js": [
+      "eslint",
+      "prettier --write"
+    ]
   },
   "scripts": {
     "prepublishOnly": "./utils/scripts/prepublishOnly",

@@ -16,26 +16,28 @@ const { deepAssign } = require('../shared/deepAssign');
 
 /**
  * @typedef {Object} PackageInfoServiceMap
- * @property {string|PathUtils} [pathUtils]
- * The name of the service for {@link PathUtils} or an instance of it. `pathUtils` by default.
+ * @property {string | PathUtils} [pathUtils]  The name of the service for
+ *                                             {@link PathUtils} or an instance of it.
+ *                                             `pathUtils` by default.
  * @parent module:node/packageInfo
  */
 
 /**
  * @typedef {Object} PackageInfoProviderOptions
- * @property {string} serviceName
- * The name that will be used to register the result of
- * {@link module:node/packageInfo~packageInfo|packageInfo}. Its default value is `packageInfo`.
- * @property {PackageInfoServiceMap} services
- * A dictionary with the services that need to be injected on the function.
+ * @property {string}                serviceName  The name that will be used to register
+ *                                                the result of
+ *                                                {@link module:node/packageInfo~packageInfo|packageInfo}.
+ *                                                Its default value is `packageInfo`.
+ * @property {PackageInfoServiceMap} services     A dictionary with the services that need
+ *                                                to be injected on the function.
  * @parent module:node/packageInfo
  */
 
 /**
  * Gets the contents of the implementation's `package.json`.
  *
- * @param {PathUtils} pathUtils To build the path to the `package.json`.
- * @returns {Object.<string,*>}
+ * @param {PathUtils} pathUtils  To build the path to the `package.json`.
+ * @returns {Object.<string, any>}
  * @tutorial packageInfo
  * @todo This should be `async`, or at least have an async alternative.
  */
@@ -64,9 +66,7 @@ const packageInfoProvider = providerCreator((options = {}) => (app) => {
     );
 
     const { pathUtils } = useOptions.services;
-    const usePathUtils = typeof pathUtils === 'string' ?
-      app.get(pathUtils) :
-      pathUtils;
+    const usePathUtils = typeof pathUtils === 'string' ? app.get(pathUtils) : pathUtils;
 
     return packageInfo(usePathUtils);
   });

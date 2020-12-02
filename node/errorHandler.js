@@ -15,36 +15,38 @@ const { deepAssignWithShallowMerge } = require('../shared/deepAssign');
 
 /**
  * @typedef {Object} ErrorHandlerServiceMap
- * @property {string[]|string|Logger} [logger]
- * A list of loggers' service names from which the service will try to find the first available,
- * a specific service name, or an instance of {@link Logger}.
+ * @property {string[] | string | Logger} [logger]  A list of loggers' service names from
+ *                                                  which the service will try to find the
+ *                                                  first available,
+ *                                                  a specific service name, or an
+ *                                                  instance of {@link Logger}.
  * @parent module:node/errorHandler
  */
 
 /**
  * @typedef {Object} ErrorHandlerProviderOptions
- * @property {string} serviceName
- * The name that will be used to register an instance of {@link ErrorHandler}. Its default value
- * is `errorHandler`.
- * @property {boolean} exitOnError
- * Whether or not to exit the process after receiving an error.
- * @property {ErrorHandlerServiceMap} services
- * A dictionary with the services that need to be injected on the class.
+ * @property {string}                 serviceName  The name that will be used to register
+ *                                                 an instance of {@link ErrorHandler}.
+ *                                                 Its default value is `errorHandler`.
+ * @property {boolean}                exitOnError  Whether or not to exit the process
+ *                                                 after receiving an error.
+ * @property {ErrorHandlerServiceMap} services     A dictionary with the services that
+ *                                                 need to be injected on the class.
  * @parent module:node/errorHandler
  */
 
 /**
- * An error handler that captures uncaught exceptions and unhandled rejections in order to log
- * them with detail.
+ * An error handler that captures uncaught exceptions and unhandled rejections in order to
+ * log them with detail.
  *
  * @parent module:node/errorHandler
  * @tutorial errorHandler
  */
 class ErrorHandler {
   /**
-   * @param {Logger}  appLogger          To log the detail of the erros.
-   * @param {boolean} [exitOnError=true] Whether or not to exit the process after receiving an
-   *                                     error.
+   * @param {Logger}  appLogger           To log the detail of the erros.
+   * @param {boolean} [exitOnError=true]  Whether or not to exit the process after
+   *                                      receiving an error.
    */
   constructor(appLogger, exitOnError = true) {
     /**
@@ -70,10 +72,7 @@ class ErrorHandler {
      * @access protected
      * @ignore
      */
-    this._eventsNames = [
-      'uncaughtException',
-      'unhandledRejection',
-    ];
+    this._eventsNames = ['uncaughtException', 'unhandledRejection'];
     /**
      * Bind the handler method so it can be used on the calls to `process`.
      *
@@ -82,11 +81,11 @@ class ErrorHandler {
     this.handler = this.handle.bind(this);
   }
   /**
-   * This is called by the process listeners when an uncaught exception is thrown or a rejected
-   * promise is not handled. It logs the error on detail.
+   * This is called by the process listeners when an uncaught exception is thrown or a
+   * rejected promise is not handled. It logs the error on detail.
    * The process exits when after logging an error.
    *
-   * @param {Error} error The unhandled error.
+   * @param {Error} error  The unhandled error.
    */
   handle(error) {
     // If the logger is configured to show the time...
@@ -95,10 +94,7 @@ class ErrorHandler {
       this._appLogger.error(error);
     } else {
       // ...otherwise, get the time on a readable format.
-      const time = new Date()
-      .toISOString()
-      .replace(/T/, ' ')
-      .replace(/\..+/, '');
+      const time = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
       // Build the error message with the time.
       const message = `[${time}] ${error.message}`;
       // Log the new message with the exception.
@@ -139,9 +135,9 @@ class ErrorHandler {
 /**
  * The service provider to register an instance of {@link ErrorHandler} on the container.
  *
- * @throws {Error} If `services.logger` specifies a service that doesn't exist or if it's a falsy
- *                 value.
  * @type {ProviderCreator<ErrorHandlerProviderOptions>}
+ * @throws {Error}
+ * If `services.logger` specifies a service that doesn't exist or if it's a falsy value.
  * @tutorial errorHandler
  */
 const errorHandler = providerCreator((options = {}) => (app) => {
@@ -166,23 +162,20 @@ const errorHandler = providerCreator((options = {}) => (app) => {
      */
     let useLogger;
     if (Array.isArray(logger)) {
-      useLogger = logger.reduce(
-        (acc, name) => {
-          let nextAcc;
-          if (acc) {
-            nextAcc = acc;
-          } else {
-            try {
-              nextAcc = app.get(name);
-            } catch (ignore) {
-              nextAcc = null;
-            }
+      useLogger = logger.reduce((acc, name) => {
+        let nextAcc;
+        if (acc) {
+          nextAcc = acc;
+        } else {
+          try {
+            nextAcc = app.get(name);
+          } catch (ignore) {
+            nextAcc = null;
           }
+        }
 
-          return nextAcc;
-        },
-        null,
-      );
+        return nextAcc;
+      }, null);
     } else if (typeof logger === 'string') {
       useLogger = app.get(logger);
     } else {

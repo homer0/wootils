@@ -2,10 +2,7 @@ jest.unmock('../../node/errorHandler.js');
 jest.unmock('../../shared/deepAssign.js');
 jest.unmock('../../shared/jimpleFns.js');
 
-const {
-  ErrorHandler,
-  errorHandler,
-} = require('../../node/errorHandler');
+const { ErrorHandler, errorHandler } = require('../../node/errorHandler');
 
 const originalProcessOn = process.on;
 const originalProcessRemoveListener = process.removeListener;
@@ -28,14 +25,8 @@ describe('ErrorHandler', () => {
     sut.listen();
     // Then
     expect(onMock).toHaveBeenCalledTimes(2);
-    expect(onMock).toHaveBeenCalledWith(
-      'uncaughtException',
-      sut.handler,
-    );
-    expect(onMock).toHaveBeenCalledWith(
-      'unhandledRejection',
-      sut.handler,
-    );
+    expect(onMock).toHaveBeenCalledWith('uncaughtException', sut.handler);
+    expect(onMock).toHaveBeenCalledWith('unhandledRejection', sut.handler);
   });
 
   it('should add and remove the listeners for uncaught and rejected exceptions', () => {
@@ -51,23 +42,11 @@ describe('ErrorHandler', () => {
     sut.stopListening();
     // Then
     expect(onMock).toHaveBeenCalledTimes(2);
-    expect(onMock).toHaveBeenCalledWith(
-      'uncaughtException',
-      sut.handler,
-    );
-    expect(onMock).toHaveBeenCalledWith(
-      'unhandledRejection',
-      sut.handler,
-    );
+    expect(onMock).toHaveBeenCalledWith('uncaughtException', sut.handler);
+    expect(onMock).toHaveBeenCalledWith('unhandledRejection', sut.handler);
     expect(removeListenerMock).toHaveBeenCalledTimes(2);
-    expect(removeListenerMock).toHaveBeenCalledWith(
-      'uncaughtException',
-      sut.handler,
-    );
-    expect(removeListenerMock).toHaveBeenCalledWith(
-      'unhandledRejection',
-      sut.handler,
-    );
+    expect(removeListenerMock).toHaveBeenCalledWith('uncaughtException', sut.handler);
+    expect(removeListenerMock).toHaveBeenCalledWith('unhandledRejection', sut.handler);
   });
 
   it('should log an uncaught exception as it is if the logger already shows time', () => {
@@ -115,7 +94,7 @@ describe('ErrorHandler', () => {
     expect(exitMock).toHaveBeenCalledWith(1);
   });
 
-  it('shouldn\'t exit the process when handling an error', () => {
+  it("shouldn't exit the process when handling an error", () => {
     // Given
     const exitMock = jest.fn();
     process.exit = exitMock;

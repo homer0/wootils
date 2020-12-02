@@ -55,7 +55,7 @@ describe('EventsHub', () => {
     expect(subscriber).toHaveBeenCalledTimes(eventNames.length);
   });
 
-  it('shouldn\'t allow the same subscriber multiple times for the same event', () => {
+  it("shouldn't allow the same subscriber multiple times for the same event", () => {
     // Given
     const eventName = 'THE EVENT';
     let unsubscribeOne = null;
@@ -72,7 +72,7 @@ describe('EventsHub', () => {
     expect(subscriber).toHaveBeenCalledTimes(1);
   });
 
-  it('shouldn\'t call the subscribers once the unsubscribe function was called', () => {
+  it("shouldn't call the subscribers once the unsubscribe function was called", () => {
     // Given
     const eventName = 'THE EVENT';
     let unsubscribe = null;
@@ -100,7 +100,7 @@ describe('EventsHub', () => {
     expect(subscriber).toHaveBeenCalledTimes(1);
   });
 
-  it('shouldn\'t allow a subscriber to subscribe \'once\' more than one time', () => {
+  it("shouldn't allow a subscriber to subscribe 'once' more than one time", () => {
     // Given
     const eventOneName = 'FIRST EVENT';
     const eventTwoName = 'SECOND EVENT';
@@ -146,7 +146,7 @@ describe('EventsHub', () => {
     expect(subscriber).toHaveBeenCalledTimes(eventNames.length);
   });
 
-  it('shouldn\'t unsubscribe a subscriber until it gets executed on all the events', () => {
+  it("shouldn't unsubscribe a subscriber until it gets executed on all the events", () => {
     // Given
     const eventOneName = 'FIRST EVENT';
     const eventTwoName = 'SECOND EVENT';
@@ -196,7 +196,7 @@ describe('EventsHub', () => {
     const target = targetInitialValue;
     let result = null;
     let unsubscribe = null;
-    const subscriber = jest.fn((toReduce) => (toReduce + 1));
+    const subscriber = jest.fn((toReduce) => toReduce + 1);
     // When
     const sut = new EventsHub();
     unsubscribe = sut.on(eventName, subscriber);
@@ -258,7 +258,7 @@ describe('EventsHub', () => {
     const target = targetInitialValue;
     let result = null;
     let unsubscribe = null;
-    const subscriber = jest.fn((toReduce) => (toReduce + 1));
+    const subscriber = jest.fn((toReduce) => toReduce + 1);
     // When
     const sut = new EventsHub();
     unsubscribe = sut.once(eventName, subscriber);
@@ -280,7 +280,7 @@ describe('EventsHub', () => {
     const target = targetInitialValue;
     let result = null;
     let unsubscribe = null;
-    const subscriber = jest.fn((toReduce) => (toReduce + 1));
+    const subscriber = jest.fn((toReduce) => toReduce + 1);
     // When
     const sut = new EventsHub();
     unsubscribe = sut.on(eventNames, subscriber);
@@ -354,7 +354,7 @@ describe('EventsHub', () => {
     const target = targetInitialValue;
     let result = null;
     let unsubscribe = null;
-    const subscriber = jest.fn((toReduce) => (toReduce + 1));
+    const subscriber = jest.fn((toReduce) => toReduce + 1);
     // When
     const sut = new EventsHub();
     unsubscribe = sut.once(eventNames, subscriber);
@@ -388,7 +388,7 @@ describe('EventsHub', () => {
     const argTwo = 2;
     let result = null;
     let unsubscribe = null;
-    const subscriber = jest.fn((toReduce, one, two) => (toReduce + one + two));
+    const subscriber = jest.fn((toReduce, one, two) => toReduce + one + two);
     // When
     const sut = new EventsHub();
     unsubscribe = sut.on(eventName, subscriber);
@@ -451,7 +451,9 @@ describe('EventsHub', () => {
     const newValue = { three: 3 };
     let result = null;
     let unsubscribe = null;
-    const subscriber = jest.fn((toReduce) => Promise.resolve({ ...toReduce, ...newValue }));
+    const subscriber = jest.fn((toReduce) =>
+      Promise.resolve({ ...toReduce, ...newValue }),
+    );
     // When
     const sut = new EventsHub();
     unsubscribe = sut.on(eventName, subscriber);
@@ -557,68 +559,61 @@ describe('EventsHub', () => {
     expect(target).toEqual(targetInitialValue);
   });
 
-  it(
-    'should allow a subscriber to unsubscribe after reducing multiple events once (async)',
-    async () => {
-      // Given
-      const eventOneName = 'FIRST EVENT';
-      const eventTwoName = 'SECOND EVENT';
-      const eventNames = [eventOneName, eventTwoName];
-      const targetInitialValue = 0;
-      const target = targetInitialValue;
-      let result = null;
-      let unsubscribe = null;
-      const subscriber = jest.fn((toReduce) => Promise.resolve(toReduce + 1));
-      // When
-      const sut = new EventsHub();
-      unsubscribe = sut.once(eventNames, subscriber);
-      result = await sut.reduceAsync(eventNames, target);
-      result = await sut.reduceAsync(eventNames, result);
-      unsubscribe();
-      // Then
-      expect(subscriber).toHaveBeenCalledTimes(eventNames.length);
-      expect(result).toBe(targetInitialValue + eventNames.length);
-      expect(target).toBe(targetInitialValue);
-    },
-  );
+  it('should allow a subscriber to unsubscribe after reducing multiple events once (async)', async () => {
+    // Given
+    const eventOneName = 'FIRST EVENT';
+    const eventTwoName = 'SECOND EVENT';
+    const eventNames = [eventOneName, eventTwoName];
+    const targetInitialValue = 0;
+    const target = targetInitialValue;
+    let result = null;
+    let unsubscribe = null;
+    const subscriber = jest.fn((toReduce) => Promise.resolve(toReduce + 1));
+    // When
+    const sut = new EventsHub();
+    unsubscribe = sut.once(eventNames, subscriber);
+    result = await sut.reduceAsync(eventNames, target);
+    result = await sut.reduceAsync(eventNames, result);
+    unsubscribe();
+    // Then
+    expect(subscriber).toHaveBeenCalledTimes(eventNames.length);
+    expect(result).toBe(targetInitialValue + eventNames.length);
+    expect(target).toBe(targetInitialValue);
+  });
 
-  it(
-    'should return the original target of a reduced event if there are no subscribers (async)',
-    async () => {
-      // Given
-      const eventName = 'THE EVENT';
-      const target = 1;
-      let result = null;
-      // When
-      const sut = new EventsHub();
-      result = await sut.reduceAsync(eventName, target);
-      // Then
-      expect(result).toBe(target);
-    },
-  );
+  it('should return the original target of a reduced event if there are no subscribers (async)', async () => {
+    // Given
+    const eventName = 'THE EVENT';
+    const target = 1;
+    let result = null;
+    // When
+    const sut = new EventsHub();
+    result = await sut.reduceAsync(eventName, target);
+    // Then
+    expect(result).toBe(target);
+  });
 
-  it(
-    'should allow subscribers to receive multiple arguments for reduced events (async)',
-    async () => {
-      // Given
-      const eventName = 'THE EVENT';
-      const targetInitialValue = 0;
-      const target = targetInitialValue;
-      const argOne = 1;
-      const argTwo = 2;
-      let result = null;
-      let unsubscribe = null;
-      const subscriber = jest.fn((toReduce, one, two) => Promise.resolve(toReduce + one + two));
-      // When
-      const sut = new EventsHub();
-      unsubscribe = sut.on(eventName, subscriber);
-      result = await sut.reduceAsync(eventName, target, argOne, argTwo);
-      unsubscribe();
-      // Then
-      expect(subscriber).toHaveBeenCalledTimes(1);
-      expect(subscriber).toHaveBeenCalledWith(targetInitialValue, argOne, argTwo);
-      expect(result).toBe(targetInitialValue + argOne + argTwo);
-      expect(target).toBe(targetInitialValue);
-    },
-  );
+  it('should allow subscribers to receive multiple arguments for reduced events (async)', async () => {
+    // Given
+    const eventName = 'THE EVENT';
+    const targetInitialValue = 0;
+    const target = targetInitialValue;
+    const argOne = 1;
+    const argTwo = 2;
+    let result = null;
+    let unsubscribe = null;
+    const subscriber = jest.fn((toReduce, one, two) =>
+      Promise.resolve(toReduce + one + two),
+    );
+    // When
+    const sut = new EventsHub();
+    unsubscribe = sut.on(eventName, subscriber);
+    result = await sut.reduceAsync(eventName, target, argOne, argTwo);
+    unsubscribe();
+    // Then
+    expect(subscriber).toHaveBeenCalledTimes(1);
+    expect(subscriber).toHaveBeenCalledWith(targetInitialValue, argOne, argTwo);
+    expect(result).toBe(targetInitialValue + argOne + argTwo);
+    expect(target).toBe(targetInitialValue);
+  });
 });
