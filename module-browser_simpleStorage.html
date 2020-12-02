@@ -130,7 +130,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line49">line 49</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line50">line 50</a>
     </li></ul></dd>
     
 
@@ -179,7 +179,7 @@
     <ul>
         <li>
             
-<span class="param-type"><a  target="_blank" href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>.&lt;<a  target="_blank" href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, *></span>
+<span class="param-type"><a  target="_blank" href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>.&lt;<a  target="_blank" href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, any></span>
 
 
         </li>
@@ -203,7 +203,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line56">line 56</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line57">line 57</a>
     </li></ul></dd>
     
 
@@ -301,10 +301,11 @@
             
 
             <td class="description last"><p>Whether or not to use the entries
-functionality. Enabling it means that all
-the <em>&quot;xxxEntry&quot;</em> methods will be available
-and that, when deleted or resetted, the
-storage will become an empty object.</p></td>
+functionality. Enabling it means
+that all the <em>&quot;xxxEntry&quot;</em> methods
+will be available and that, when
+deleted or resetted, the storage
+will become an empty object.</p></td>
         </tr>
 
     
@@ -341,9 +342,10 @@ storage will become an empty object.</p></td>
                 </td>
             
 
-            <td class="description last"><p>The amount of seconds relative to the
-current time that needs to pass in order to
-consider an entry expired.</p></td>
+            <td class="description last"><p>The amount of seconds relative to
+the current time that needs to pass
+in order to consider an entry
+expired.</p></td>
         </tr>
 
     
@@ -380,9 +382,10 @@ consider an entry expired.</p></td>
                 </td>
             
 
-            <td class="description last"><p>Whether or not to delete expired entries
-(both when loading the storage and when
-trying to access the entries).</p></td>
+            <td class="description last"><p>Whether or not to delete expired
+entries (both when loading the
+storage and when trying to access
+the entries).</p></td>
         </tr>
 
     
@@ -419,8 +422,8 @@ trying to access the entries).</p></td>
                 </td>
             
 
-            <td class="description last"><p>Whether or not to sync the storage after
-deleting an expired entry.</p></td>
+            <td class="description last"><p>Whether or not to sync the storage
+after deleting an expired entry.</p></td>
         </tr>
 
     
@@ -462,7 +465,7 @@ deleting an expired entry.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line152">line 152</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line150">line 150</a>
     </li></ul></dd>
     
 
@@ -695,8 +698,8 @@ deleting an expired entry.</p></td>
 
             
 
-            <td class="description last"><p>Prints out a warning message. Either this or
-<code>warning</code> MUST be present.</p></td>
+            <td class="description last"><p>Prints out a warning message. Either
+this or <code>warning</code> MUST be present.</p></td>
         </tr>
 
     
@@ -727,8 +730,8 @@ deleting an expired entry.</p></td>
 
             
 
-            <td class="description last"><p>Prints out a warning message. Either this or
-<code>warn</code> MUST be present.</p></td>
+            <td class="description last"><p>Prints out a warning message. Either
+this or <code>warn</code> MUST be present.</p></td>
         </tr>
 
     
@@ -902,7 +905,7 @@ deleting an expired entry.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line74">line 74</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line78">line 78</a>
     </li></ul></dd>
     
 
@@ -999,14 +1002,10 @@ deleting an expired entry.</p></td>
                 </td>
             
 
-            <td class="description last"><p>Whether or not to initialize the
-service right from the constructor.
-It means that it will validate the
-storage, check for existing data and
-sync it on the class. This can be
-disabled in case you need to do
-something between the constructor and
-the initialization.</p></td>
+            <td class="description last"><p>Whether or not to initialize the service right from the constructor.
+It means that it will validate the storage, check for existing data and sync it on the
+class. This can be disabled in case you need to do something between the constructor
+and the initialization.</p></td>
         </tr>
 
     
@@ -1041,9 +1040,8 @@ the initialization.</p></td>
                 </td>
             
 
-            <td class="description last"><p>The <code>window</code>/<code>global</code> object the
-class will use in order to access
-<code>localStorage</code> and <code>sessionStorage</code>.</p></td>
+            <td class="description last"><p>The <code>window</code>/<code>global</code> object the class will use in order to access <code>localStorage</code> and
+<code>sessionStorage</code>.</p></td>
         </tr>
 
     
@@ -1080,9 +1078,8 @@ class will use in order to access
                 </td>
             
 
-            <td class="description last"><p>A custom logger to print out the
-warnings when the class needs to do a
-fallback to a different storage type.</p></td>
+            <td class="description last"><p>A custom logger to print out the warnings when the class needs to do a fallback to a
+different storage type.</p></td>
         </tr>
 
     
@@ -1117,9 +1114,8 @@ fallback to a different storage type.</p></td>
                 </td>
             
 
-            <td class="description last"><p>These are all the options related to
-the storage itself: The type, the
-name and the key.</p></td>
+            <td class="description last"><p>These are all the options related to the storage itself: The type, the name and the
+key.</p></td>
         </tr>
 
     
@@ -1154,14 +1150,10 @@ name and the key.</p></td>
                 </td>
             
 
-            <td class="description last"><p>These are the options for customizing
-the way the service works with
-entries. By default, the class saves
-any kind of object on the storage,
-but by using entries you can access
-them by name and even define
-expiration time so they'll be removed
-after a while.</p></td>
+            <td class="description last"><p>These are the options for customizing the way the service works with entries. By
+default, the class saves any kind of object on the storage,
+but by using entries you can access them by name and even define expiration time so
+they'll be removed after a while.</p></td>
         </tr>
 
     
@@ -1198,12 +1190,9 @@ after a while.</p></td>
                 </td>
             
 
-            <td class="description last"><p>The <code>tempStorage</code> is the storage the
-class uses when none of the others
-are available. Is just a simple
-object, so when the class gets
-destroyed (browser refreshes the
-page), the data goes away.</p></td>
+            <td class="description last"><p>The <code>tempStorage</code> is the storage the class uses when none of the others are available.
+Is just a simple object, so when the class gets destroyed (browser refreshes the page),
+the data goes away.</p></td>
         </tr>
 
     
@@ -1245,7 +1234,7 @@ page), the data goes away.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line138">line 138</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line135">line 135</a>
     </li></ul></dd>
     
 
@@ -1347,8 +1336,7 @@ page), the data goes away.</p></td>
 
             
 
-            <td class="description last"><p>The method to check if the storage
-can be used or not.</p></td>
+            <td class="description last"><p>The method to check if the storage can be used or not.</p></td>
         </tr>
 
     
@@ -1371,8 +1359,7 @@ can be used or not.</p></td>
 
             
 
-            <td class="description last"><p>The method used to read from the
-storage.</p></td>
+            <td class="description last"><p>The method used to read from the storage.</p></td>
         </tr>
 
     
@@ -1395,8 +1382,7 @@ storage.</p></td>
 
             
 
-            <td class="description last"><p>The method used to write on the
-storage.</p></td>
+            <td class="description last"><p>The method used to write on the storage.</p></td>
         </tr>
 
     
@@ -1419,8 +1405,7 @@ storage.</p></td>
 
             
 
-            <td class="description last"><p>The method used to delete data from
-the storage.</p></td>
+            <td class="description last"><p>The method used to delete data from the storage.</p></td>
         </tr>
 
     
@@ -1466,7 +1451,7 @@ the storage.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line110">line 110</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line106">line 106</a>
     </li></ul></dd>
     
 
@@ -1568,8 +1553,9 @@ the storage.</p></td>
 
             
 
-            <td class="description last"><p>If the storage is being used as a fallback from another one that
-is not available, this parameter will have its name.</p></td>
+            <td class="description last"><p>If the storage is being used as a fallback from another
+one that is not available, this parameter will have its
+name.</p></td>
         </tr>
 
     
@@ -1633,7 +1619,7 @@ is not available, this parameter will have its name.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line132">line 132</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line129">line 129</a>
     </li></ul></dd>
     
 
@@ -1765,7 +1751,7 @@ is not available, this parameter will have its name.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line118">line 118</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line115">line 115</a>
     </li></ul></dd>
     
 
@@ -1915,7 +1901,7 @@ is not available, this parameter will have its name.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line38">line 38</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line39">line 39</a>
     </li></ul></dd>
     
 
@@ -2132,7 +2118,7 @@ is not available, this parameter will have its name.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line125">line 125</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line122">line 122</a>
     </li></ul></dd>
     
 
@@ -2483,7 +2469,8 @@ is not available, this parameter will have its name.</p></td>
 
             
 
-            <td class="description last"><p>The methods to work with the <em>&quot;temp storage&quot;</em>.</p></td>
+            <td class="description last"><p>The methods to work with the <em>&quot;temp
+storage&quot;</em>.</p></td>
         </tr>
 
     
@@ -2530,7 +2517,7 @@ is not available, this parameter will have its name.</p></td>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

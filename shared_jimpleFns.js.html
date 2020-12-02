@@ -92,22 +92,24 @@
 
 /**
  * @callback ProviderRegisterFn
- * @param {Jimple} app A reference to the dependency injection container.
+ * @param {Jimple} app  A reference to the dependency injection container.
  * @parent module:shared/jimpleFns
  */
 
 /**
  * @typedef {Object} Provider
- * @property {ProviderRegisterFn} register The method that gets called when registering the
- *                                         provider.
- * @parent module:shared/jimpleFns
  * @example
- * container.register(myProvider);
+ *
+ *   container.register(myProvider);
+ *
+ * @property {ProviderRegisterFn} register  The method that gets called when registering
+ *                                          the provider.
+ * @parent module:shared/jimpleFns
  */
 
 /**
- * A function called in order to generate a {@link Provider}. They usually have different options
- * that will be sent to the provider creation.
+ * A function called in order to generate a {@link Provider}. They usually have different
+ * options that will be sent to the provider creation.
  *
  * @callback ProviderCreatorFn
  * @returns {Provider}
@@ -115,25 +117,28 @@
  */
 
 /**
- * A special kind of {@link Provider} that can be used as a regular provider, or it can also be
- * called as a function with custom options in order to obtain a "configured {@link Provider}".
+ * A special kind of {@link Provider} that can be used as a regular provider, or it can
+ * also be called as a function with custom options in order to obtain a "configured
+ * {@link Provider}".
  *
  * @callback ProviderCreator
- * @param {Partial&lt;O>} [options={}] The options to create the provider.
+ * @example
+ *
+ *   // Register it with its default options.
+ *   container.register(myProvider);
+ *   // Register it with custom options.
+ *   container.register(myProvider({ enabled: true }));
+ *
+ * @param {Partial&lt;O>} [options={}]  The options to create the provider.
+ * @property {ProviderRegisterFn} register  The method that gets called when registering
+ *                                          the provider.
  * @returns {Provider}
  * @template O
- * @property {ProviderRegisterFn} register The method that gets called when registering the
- *                                         provider.
  * @parent module:shared/jimpleFns
- * @example
- * // Register it with its default options.
- * container.register(myProvider);
- * // Register it with custom options.
- * container.register(myProvider({ enabled: true }));
  */
 
 /**
- * @typedef {Object.&lt;string,Provider>} ProvidersDictionary
+ * @typedef {Object.&lt;string, Provider>} ProvidersDictionary
  */
 
 /**
@@ -142,55 +147,57 @@
 
 /**
  * @typedef {Object} ProvidersProperties
- * @property {ProviderRegisterFn} register The function that will register all the providers on the
- *                                         container.
+ * @property {ProviderRegisterFn} register  The function that will register all the
+ *                                          providers on the container.
  * @augments ProvidersDictionary
  */
 
 /**
- * Generates a collection of {@link Provider} objects that can be used to register all of them
- * at once.
- *
- * @example
- * // Generate the collection
- * const myProviders = providers({ oneProvider, otherProvider });
- * // Register all of them
- * container.register(myProviders);
- * // Register only one
- * container.register(myProviders.otherProvider);
+ * Generates a collection of {@link Provider} objects that can be used to register all of
+ * them at once.
  *
  * @callback ProvidersCreator
- * @param {Object.&lt;string,Provider>} providers The dictionary of providers to add to the
- *                                             collection.
+ * @example
+ *
+ *   // Generate the collection
+ *   const myProviders = providers({ oneProvider, otherProvider });
+ *   // Register all of them
+ *   container.register(myProviders);
+ *   // Register only one
+ *   container.register(myProviders.otherProvider);
+ *
+ * @param {Object.&lt;string, Provider>} providers  The dictionary of providers to add to the
+ *                                               collection.
  * @returns {Providers}
  */
 
 /**
  * @typedef {Object} Resource
- * @property {Function} key  The function (`fn`) sent to the
- *                           {@link module:shared/jimpleFns~resource|resource} function.
- * @property {boolean}  name This will always be `true` and it's the `name` sent to
- *                           the {@link module:shared/jimpleFns~resource|resource} function.
+ * @property {Function} key   The function (`fn`) sent to the
+ *                            {@link module:shared/jimpleFns~resource|resource} function.
+ * @property {boolean}  name  This will always be `true` and it's the `name` sent to the
+ *                            {@link module:shared/jimpleFns~resource|resource} function.
  * @parent module:shared/jimpleFns
  */
 
 /**
  * @typedef {Function} ResourceCreator
- * @property {Function} key  The result of the `creatorFn` sent to the
- *                           {@link module:shared/jimpleFns~resourceCreator|resourceCreator}
- *                           function.
- * @property {boolean}  name This will always be `true` and it's the `name` sent to
- *                           the {@link module:shared/jimpleFns~resourceCreator|resourceCreator}
- *                           function.
+ * @property {Function} key   The result of the `creatorFn` sent to the
+ *                            {@link module:shared/jimpleFns~resourceCreator|resourceCreator}
+ *                            function.
+ * @property {boolean}  name  This will always be `true` and it's the `name` sent to the
+ *                            {@link module:shared/jimpleFns~resourceCreator|resourceCreator}
+ *                            function.
  * @parent module:shared/jimpleFns
  */
 
 /**
  * @callback ResourcesCollectionCreator
- * @param {Object.&lt;string,R>} items The dictionary of items to add to the collection.
- * @returns {Object.&lt;string,R>} In additions to the original dictionary of items, the returned
- *                              object will have the collection flag (`name`), and the `key`
- *                              function (`fn`) to interact with the collection.
+ * @param {Object.&lt;string, R>} items  The dictionary of items to add to the collection.
+ * @returns {Object.&lt;string, R>} In additions to the original dictionary of items, the
+ *                               returned object will have the collection flag (`name`),
+ *                               and the `key`
+ *                               function (`fn`) to interact with the collection.
  * @template R
  * @throws {Error} If one of the items key is the collection `name` or `key`.
  * @throws {Error} If one of the items doesn't have a `key` function.
@@ -199,27 +206,32 @@
 
 /**
  * @callback ResourcesCollectionFn
- * @param {Object.&lt;string,R>} items The dictionary of items to add to the collection.
- * @param {...*}              args  The arguments that were sent to the collection `key` function.
+ * @param {Object.&lt;string, R>} items  The dictionary of items to add to the collection.
+ * @param {...*}               args   The arguments that were sent to the collection `key`
+ *                                    function.
  * @template R
  * @parent module:shared/jimpleFns
  */
 
 /**
- * Generates a resource entity with a specific function Jimple or an abstraction of jimple can
- * make use of.
+ * Generates a resource entity with a specific function Jimple or an abstraction of jimple
+ * can make use of.
  *
  * @example
- * &lt;caption>The `provider` shorthand function is an _entity_ with a `register` function:&lt;/caption>
- * const someProvider = resource('provider', 'register', (app) => {
- *   // ...
- * });
  *
- * @param {string}   name The name of the resource. The generated object will have a property with
- *                        its name and the value `true`.
- * @param {string}   key  The name of the key that will have the function on the generated object.
- * @param {Function} fn   The function to interact with the resource.
+ * &lt;caption>
+ *   The `provider` shorthand function is an _entity_ with a `register` function:
+ * &lt;/caption>
  *
+ *   const someProvider = resource('provider', 'register', (app) => {
+ *     // ...
+ *   });
+ *
+ * @param {string}   name  The name of the resource. The generated object will have a
+ *                         property with its name and the value `true`.
+ * @param {string}   key   The name of the key that will have the function on the
+ *                         generated object.
+ * @param {Function} fn    The function to interact with the resource.
  * @returns {Resource}
  */
 const resource = (name, key, fn) => ({
@@ -227,44 +239,45 @@ const resource = (name, key, fn) => ({
   [name]: true,
 });
 /**
- * This is a helper to dynamically configure a resource before creating it. The idea here is that
- * the returned object can be used as a function, to configure the resource, or as a resource.
- * The difference with {@link module:shared/jimpleFns~resource|resource} is that, instead of
- * providing the function to interact with the generated resource, the `creatorFn` parameter is a
- * function that returns a function like the one you would use on
- * {@link module:shared/jimpleFns~resource|resource}. What this function actually returns is a
- * {@link Proxy}, that when used as a function, it will return a resource; but when used as a
- * resource, it will internally call `creatorFn` (and cache it) without parameters. It's very
- * important that all the parameters of the `creatorFn` are optional, otherwise it will cause an
- * error if called as a resource.
+ * This is a helper to dynamically configure a resource before creating it. The idea here
+ * is that the returned object can be used as a function, to configure the resource, or as
+ * a resource.
+ * The difference with {@link module:shared/jimpleFns~resource|resource} is that, instead
+ * of providing the function to interact with the generated resource, the `creatorFn`
+ * parameter is a function that returns a function like the one you would use on
+ * {@link module:shared/jimpleFns~resource|resource}. What this function actually returns
+ * is a {@link Proxy}, that when used as a function, it will return a resource; but when
+ * used as a resource, it will internally call `creatorFn` (and cache it) without
+ * parameters. It's very important that all the parameters of the `creatorFn` are
+ * optional, otherwise it will cause an error if called as a resource.
  *
  * @example
+ *
  * &lt;caption>Let's use `provider` again, that requires a `register` function:&lt;/caption>
- * const someProvider = resourceCreator(
- *   'provider',
- *   'register',
- *   (options = {}) => (app) => {
- *     // ...
- *   },
- * );
  *
- * // Register it as a resource
- * container.register(someProvider);
+ *   const someProvider = resourceCreator(
+ *     'provider',
+ *     'register',
+ *     (options = {}) => (app) => {
+ *       // ...
+ *     },
+ *   );
  *
- * // Register it after creating a configured resource
- * container.register(someProvider({ enabled: false }));
+ *   // Register it as a resource
+ *   container.register(someProvider);
  *
- * @param {string}   name      The name of the resource. The generated object will have a property
- *                             with its name and the value `true`.
- * @param {string}   key       The name of the key that will have the function on the generated
- *                             object.
- * @param {Function} creatorFn The function that will generate the 'resource function'.
+ *   // Register it after creating a configured resource
+ *   container.register(someProvider({ enabled: false }));
  *
+ * @param {string}   name       The name of the resource. The generated object will have a
+ *                              property with its name and the value `true`.
+ * @param {string}   key        The name of the key that will have the function on the
+ *                              generated object.
+ * @param {Function} creatorFn  The function that will generate the 'resource function'.
  * @returns {ResourceCreator}
  */
-const resourceCreator = (name, key, creatorFn) => new Proxy(
-  (...args) => resource(name, key, creatorFn(...args)),
-  {
+const resourceCreator = (name, key, creatorFn) =>
+  new Proxy((...args) => resource(name, key, creatorFn(...args)), {
     name,
     resource: null,
     get(target, property) {
@@ -282,50 +295,57 @@ const resourceCreator = (name, key, creatorFn) => new Proxy(
 
       return result;
     },
-  },
-);
+  });
 /**
- * Generates a collection of resources that can be called individually or all together via the
- * `key` function.
+ * Generates a collection of resources that can be called individually or all together via
+ * the `key` function.
  *
  * @example
+ *
  * &lt;caption>
- * Following all the other examples(and the implementations), let's create a a providers collection.
+ *   Following all the other examples(and the implementations), let's create a a providers
+ *   collection.
  * &lt;/caption>
- * const firstProvider = resource('provider', 'register', (app) => {
- *   // ...
- * });
- * const secondProvider = resourceCreator(
- *   'provider',
- *   'register',
- *   (options = {}) => (app) => {
+ *
+ *   const firstProvider = resource('provider', 'register', (app) => {
  *     // ...
- *   },
- * );
+ *   });
+ *   const secondProvider = resourceCreator(
+ *     'provider',
+ *     'register',
+ *     (options = {}) => (app) => {
+ *       // ...
+ *     },
+ *   );
  *
- * const bothProviders = resourcesCollection('providers', 'register')({
- *   firstProvider,
- *   secondProvider,
- * });
+ *   const bothProviders = resourcesCollection(
+ *     'providers',
+ *     'register',
+ *   )({
+ *     firstProvider,
+ *     secondProvider,
+ *   });
  *
+ *   // Register all at once
+ *   container.register(bothProviders);
+ *   // Register only one
+ *   container.register(bothProviders.firstProvider);
+ *   // Register only one, after configuring it
+ *   container.register(bothProviders.secondProvider({ enabled: false }));
  *
- * // Register all at once
- * container.register(bothProviders);
- * // Register only one
- * container.register(bothProviders.firstProvider);
- * // Register only one, after configuring it
- * container.register(bothProviders.secondProvider({ enabled: false }));
- *
- * @param {string}                 name      The name of the collection. When a collection is
- *                                           generated, the returned object will have a property
- *                                           with its name and the value `true`.
- * @param {string}                 key       The name of the key that will have the function to
- *                                           interact with the collection on the final object.
- * @param {?ResourcesCollectionFn} [fn=null] By default, if the `key` function of the collection
- *                                           gets called, all the items of the collection will be
- *                                           called with the same arguments. But you can specify a
- *                                           function that will receive all the items and all the
- *                                           arguments to customize the interaction.
+ * @param {string}                 name       The name of the collection. When a
+ *                                            collection is generated, the returned object
+ *                                            will have a property with its name and the
+ *                                            value `true`.
+ * @param {string}                 key        The name of the key that will have the
+ *                                            function to interact with the collection on
+ *                                            the final object.
+ * @param {?ResourcesCollectionFn} [fn=null]  By default, if the `key` function of the
+ *                                            collection gets called, all the items of the
+ *                                            collection will be called with the same
+ *                                            arguments. But you can specify a function
+ *                                            that will receive all the items and all the
+ *                                            arguments to customize the interaction.
  * @returns {ResourcesCollectionCreator&lt;Resource>}
  */
 const resourcesCollection = (name, key, fn = null) => (items) => {
@@ -338,25 +358,24 @@ const resourcesCollection = (name, key, fn = null) => (items) => {
     );
   }
 
-  const invalidItem = itemsKeys.find((itemKey) => typeof items[itemKey][key] !== 'function');
+  const invalidItem = itemsKeys.find(
+    (itemKey) => typeof items[itemKey][key] !== 'function',
+  );
   if (invalidItem) {
     throw new Error(
       `The item \`${invalidItem}\` is invalid: it doesn't have a \`${key}\` function`,
     );
   }
 
-  const useFn = fn ?
-    (...args) => fn(items, ...args) :
-    (...args) => itemsKeys.forEach((item) => {
-      items[item][key](...args);
-    });
+  const useFn = fn
+    ? (...args) => fn(items, ...args)
+    : (...args) =>
+        itemsKeys.forEach((item) => {
+          items[item][key](...args);
+        });
 
   return {
-    ...resource(
-      name,
-      key,
-      useFn,
-    ),
+    ...resource(name, key, useFn),
     ...items,
   };
 };
@@ -364,36 +383,38 @@ const resourcesCollection = (name, key, fn = null) => (items) => {
  * Creates a resource provider.
  *
  * @example
- * // Define the provider
- * const myService = provider((app) => {
- *   app.set('myService', () => new MyService());
- * });
  *
- * // Register it on the container
- * container.register(myService);
+ *   // Define the provider
+ *   const myService = provider((app) => {
+ *     app.set('myService', () => new MyService());
+ *   });
  *
- * @param {ProviderRegisterFn} registerFn The function the container will call in order to
- *                                        register the provider.
+ *   // Register it on the container
+ *   container.register(myService);
+ *
+ * @param {ProviderRegisterFn} registerFn  The function the container will call in order
+ *                                         to register the provider.
  * @returns {Provider}
  */
 const provider = (registerFn) => resource('provider', 'register', registerFn);
 /**
  * Creates a configurable provider. It's configurable because the creator, instead of just
- * being sent to the container to register, it can also be called as a function with custom
- * options and generate a new provider.
+ * being sent to the container to register, it can also be called as a function with
+ * custom options and generate a new provider.
  *
  * @example
- * // Define the provider creator
- * const myProvider = providerCreator((options = {}) => (app) => {
- *   app.set('myService', () => new MyService(options));
- * });
- * // Register it with the default options
- * container.register(myProvider);
- * // Register it with custom options
- * container.register(myProvider({ enabled: true }));
  *
- * @param {ProviderCreatorFn} creatorFn The function that generates the provider.
- * @returns {ProviderCreator&lt;*>}
+ *   // Define the provider creator
+ *   const myProvider = providerCreator((options = {}) => (app) => {
+ *     app.set('myService', () => new MyService(options));
+ *   });
+ *   // Register it with the default options
+ *   container.register(myProvider);
+ *   // Register it with custom options
+ *   container.register(myProvider({ enabled: true }));
+ *
+ * @param {ProviderCreatorFn} creatorFn  The function that generates the provider.
+ * @returns {ProviderCreator&lt;any>}
  */
 const providerCreator = (creatorFn) => resourceCreator('provider', 'register', creatorFn);
 /**
@@ -406,7 +427,7 @@ const providers = resourcesCollection('providers', 'register');
  * Helper function for {@link proxyContainer} that gets all the keys of an object, going
  * recursively over its prototype chain.
  *
- * @param {Object} target The target object.
+ * @param {Object} target  The target object.
  * @returns {string[]}
  * @ignore
  */
@@ -418,41 +439,40 @@ const getKeys = (target) => {
     obj = Object.getPrototypeOf(obj);
   }
 
-  return keys
-  .reduce((acc, key) => (acc.includes(key) ? acc : [...acc, key]), [])
-  .sort();
+  return keys.reduce((acc, key) => (acc.includes(key) ? acc : [...acc, key]), []).sort();
 };
 /**
- * Takes a Jimple container and creates a proxy for it so resouces can be accessed and registered
- * like if they were its properties.
+ * Takes a Jimple container and creates a proxy for it so resouces can be accessed and
+ * registered like if they were its properties.
  *
  * @example
- * const container = proxyContainer(new Jimple());
- * container.service = () => new MyService();
- * container.service.doSomething();
  *
- * @param {Jimple} container The Jimpex container the proxy will be created for.
+ *   const container = proxyContainer(new Jimple());
+ *   container.service = () => new MyService();
+ *   container.service.doSomething();
+ *
+ * @param {Jimple} container  The Jimpex container the proxy will be created for.
  * @returns {Jimple} The proxied version of the container.
  */
 const proxyContainer = (container) => {
   const keys = getKeys(container);
   const fns = keys
-  .filter((key) => typeof container[key] === 'function')
-  .reduce(
-    (acc, key) => ({
-      ...acc,
-      [key]: container[key].bind(container),
-    }),
-    {},
-  );
+    .filter((key) => typeof container[key] === 'function')
+    .reduce(
+      (acc, key) => ({
+        ...acc,
+        [key]: container[key].bind(container),
+      }),
+      {},
+    );
 
   let proxy;
   /**
    * Registers a resource provider on the container.
    * This version exists so the providers will receive the proxied version.
    *
-   * @param {Provider} rProvider The provider that will register one of more resources on the
-   *                             container.
+   * @param {Provider} rProvider  The provider that will register one of more resources on
+   *                              the container.
    * @ignore
    */
   const registerWithProxy = (rProvider) => {
@@ -461,12 +481,12 @@ const proxyContainer = (container) => {
 
   proxy = new Proxy(container, {
     /**
-     * This is the trap called when a property of the proxied object is being accessed. In this
-     * case, the trap will check if it's one of the bunded functions, the register function, one
-     * of the real properties, or one of the resources.
+     * This is the trap called when a property of the proxied object is being accessed. In
+     * this case, the trap will check if it's one of the bunded functions, the register
+     * function, one of the real properties, or one of the resources.
      *
-     * @param {Jimple}        target The target object.
-     * @param {string|symbol} key    The name of the requested property.
+     * @param {Jimple}          target  The target object.
+     * @param {string | symbol} key     The name of the requested property.
      * @returns {*}
      * @ignore
      */
@@ -503,13 +523,13 @@ const proxyContainer = (container) => {
       return result;
     },
     /**
-     * This is the trap called when the value of a property of the proxied object is being set. In
-     * this case, the trap will check that the name is not one of the base keys of the class, to
-     * avoid functionality errors, and then call the container `set` method.
+     * This is the trap called when the value of a property of the proxied object is being
+     * set. In this case, the trap will check that the name is not one of the base keys of
+     * the class, to avoid functionality errors, and then call the container `set` method.
      *
-     * @param {Jimple}        target The target object.
-     * @param {string|symbol} key    The name of the property.
-     * @param {*}             value  The new value of the property.
+     * @param {Jimple}          target  The target object.
+     * @param {string | symbol} key     The name of the property.
+     * @param {*}               value   The new value of the property.
      * @throws {Error} If `key` is the name of one of the base properties of the class.
      * @ignore
      */
@@ -521,35 +541,35 @@ const proxyContainer = (container) => {
       container.set(key, value);
     },
     /**
-     * This is the trap called when the properties' keys of the proxied object need to be listed.
+     * This is the trap called when the properties' keys of the proxied object need to be
+     * listed.
      * In this case, the trap will list the base properties, plus the resources' keys.
      *
      * @returns {string[]}
      * @ignore
      */
-    ownKeys: () => [
-      ...keys,
-      ...container.keys(),
-    ],
+    ownKeys: () => [...keys, ...container.keys()],
     /**
-     * This is the trap called when there's a check to see if the proxied object has a specific
-     * property (`prop in obj`). In this case, the trap will first check in the container and if
-     * it's not present, it will use the container `has` method to check the resources.
+     * This is the trap called when there's a check to see if the proxied object has a
+     * specific property (`prop in obj`). In this case, the trap will first check in the
+     * container and if it's not present, it will use the container `has` method to check
+     * the resources.
      *
-     * @param {Jimple}        target The target object.
-     * @param {string|symbol} key    The name of the property.
+     * @param {Jimple}          target  The target object.
+     * @param {string | symbol} key     The name of the property.
      * @returns {boolean}
      * @ignore
      */
-    has: (target, key) => (key in container || container.has(key)),
+    has: (target, key) => key in container || container.has(key),
     /**
-     * This is the trap called when the description of one of the properties of the proxied object
-     * is rquested. In this case, the trap will not only describe the base properties, but also
-     * the registered resources.
+     * This is the trap called when the description of one of the properties of the
+     * proxied object is rquested. In this case, the trap will not only describe the base
+     * properties, but also the registered resources.
      *
-     * @param {Jimple}        target The target object.
-     * @param {string|symbol} key    The name of the property.
-     * @returns {?PropertyDescriptor} It will only return the description if the container `has`
+     * @param {Jimple}          target  The target object.
+     * @param {string | symbol} key     The name of the property.
+     * @returns {?PropertyDescriptor} It will only return the description if the container
+     *                                `has`
      *                                the property.
      * @ignore
      */
@@ -593,7 +613,7 @@ module.exports.proxyContainer = proxyContainer;
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

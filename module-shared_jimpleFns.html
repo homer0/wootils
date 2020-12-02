@@ -119,7 +119,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line328">line 328</a>
+        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line349">line 349</a>
     </li></ul></dd>
     
 
@@ -202,7 +202,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line303">line 303</a>
+        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line323">line 323</a>
     </li></ul></dd>
     
 
@@ -256,12 +256,12 @@
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>// Define the provider
-const myService = provider((app) => {
-  app.set('myService', () => new MyService());
-});
+  const myService = provider((app) => {
+    app.set('myService', () => new MyService());
+  });
 
-// Register it on the container
-container.register(myService);</code></pre>
+  // Register it on the container
+  container.register(myService);</code></pre>
 
 
 
@@ -307,8 +307,8 @@ container.register(myService);</code></pre>
 
             
 
-            <td class="description last"><p>The function the container will call in order to
-register the provider.</p></td>
+            <td class="description last"><p>The function the container will call in order
+to register the provider.</p></td>
         </tr>
 
     
@@ -356,7 +356,7 @@ register the provider.</p></td>
 
     
 
-    <h4 class="name" id="~providerCreator"><span class="type-signature">(inner) </span>providerCreator<span class="signature">(creatorFn)</span><span class="type-signature"> &rarr; {<a href="module-shared_jimpleFns.html#.ProviderCreator">ProviderCreator</a>.&lt;*>}</span></h4>
+    <h4 class="name" id="~providerCreator"><span class="type-signature">(inner) </span>providerCreator<span class="signature">(creatorFn)</span><span class="type-signature"> &rarr; {<a href="module-shared_jimpleFns.html#.ProviderCreator">ProviderCreator</a>.&lt;any>}</span></h4>
 
     
 
@@ -368,7 +368,7 @@ register the provider.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line322">line 322</a>
+        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line343">line 343</a>
     </li></ul></dd>
     
 
@@ -409,8 +409,8 @@ register the provider.</p></td>
 
 <div class="description usertext">
     <p>Creates a configurable provider. It's configurable because the creator, instead of just
-being sent to the container to register, it can also be called as a function with custom
-options and generate a new provider.</p>
+being sent to the container to register, it can also be called as a function with
+custom options and generate a new provider.</p>
 </div>
 
 
@@ -424,13 +424,13 @@ options and generate a new provider.</p>
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>// Define the provider creator
-const myProvider = providerCreator((options = {}) => (app) => {
-  app.set('myService', () => new MyService(options));
-});
-// Register it with the default options
-container.register(myProvider);
-// Register it with custom options
-container.register(myProvider({ enabled: true }));</code></pre>
+  const myProvider = providerCreator((options = {}) => (app) => {
+    app.set('myService', () => new MyService(options));
+  });
+  // Register it with the default options
+  container.register(myProvider);
+  // Register it with custom options
+  container.register(myProvider({ enabled: true }));</code></pre>
 
 
 
@@ -509,7 +509,7 @@ container.register(myProvider({ enabled: true }));</code></pre>
     </dt>
     <dd>
         
-<span class="param-type"><a href="module-shared_jimpleFns.html#.ProviderCreator">ProviderCreator</a>.&lt;*></span>
+<span class="param-type"><a href="module-shared_jimpleFns.html#.ProviderCreator">ProviderCreator</a>.&lt;any></span>
 
 
     </dd>
@@ -536,7 +536,7 @@ container.register(myProvider({ enabled: true }));</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line361">line 361</a>
+        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line381">line 381</a>
     </li></ul></dd>
     
 
@@ -576,8 +576,8 @@ container.register(myProvider({ enabled: true }));</code></pre>
 
 
 <div class="description usertext">
-    <p>Takes a Jimple container and creates a proxy for it so resouces can be accessed and registered
-like if they were its properties.</p>
+    <p>Takes a Jimple container and creates a proxy for it so resouces can be accessed and
+registered like if they were its properties.</p>
 </div>
 
 
@@ -591,8 +591,8 @@ like if they were its properties.</p>
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>const container = proxyContainer(new Jimple());
-container.service = () => new MyService();
-container.service.doSomething();</code></pre>
+  container.service = () => new MyService();
+  container.service.doSomething();</code></pre>
 
 
 
@@ -702,7 +702,7 @@ container.service.doSomething();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line149">line 149</a>
+        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line161">line 161</a>
     </li></ul></dd>
     
 
@@ -742,8 +742,8 @@ container.service.doSomething();</code></pre>
 
 
 <div class="description usertext">
-    <p>Generates a resource entity with a specific function Jimple or an abstraction of jimple can
-make use of.</p>
+    <p>Generates a resource entity with a specific function Jimple or an abstraction of jimple
+can make use of.</p>
 </div>
 
 
@@ -756,11 +756,13 @@ make use of.</p>
 
     <h5>Example</h5>
     
-        <p class="code-caption">The `provider` shorthand function is an _entity_ with a `register` function:</p>
+        <p class="code-caption">
+  The `provider` shorthand function is an _entity_ with a `register` function:
+</p>
     
-    <pre class="prettyprint"><code>const someProvider = resource('provider', 'register', (app) => {
-  // ...
-});</code></pre>
+    <pre class="prettyprint"><code>  const someProvider = resource('provider', 'register', (app) => {
+    // ...
+  });</code></pre>
 
 
 
@@ -806,8 +808,8 @@ make use of.</p>
 
             
 
-            <td class="description last"><p>The name of the resource. The generated object will have a property with
-its name and the value <code>true</code>.</p></td>
+            <td class="description last"><p>The name of the resource. The generated object will have a
+property with its name and the value <code>true</code>.</p></td>
         </tr>
 
     
@@ -830,7 +832,8 @@ its name and the value <code>true</code>.</p></td>
 
             
 
-            <td class="description last"><p>The name of the key that will have the function on the generated object.</p></td>
+            <td class="description last"><p>The name of the key that will have the function on the
+generated object.</p></td>
         </tr>
 
     
@@ -913,7 +916,7 @@ its name and the value <code>true</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line189">line 189</a>
+        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line203">line 203</a>
     </li></ul></dd>
     
 
@@ -953,16 +956,17 @@ its name and the value <code>true</code>.</p></td>
 
 
 <div class="description usertext">
-    <p>This is a helper to dynamically configure a resource before creating it. The idea here is that
-the returned object can be used as a function, to configure the resource, or as a resource.
-The difference with <a href="module-shared_jimpleFns.html#~resource"><code>resource</code></a> is that, instead of
-providing the function to interact with the generated resource, the <code>creatorFn</code> parameter is a
-function that returns a function like the one you would use on
-<a href="module-shared_jimpleFns.html#~resource"><code>resource</code></a>. What this function actually returns is a
-<a href="external-Proxy.html"><code>Proxy</code></a>, that when used as a function, it will return a resource; but when used as a
-resource, it will internally call <code>creatorFn</code> (and cache it) without parameters. It's very
-important that all the parameters of the <code>creatorFn</code> are optional, otherwise it will cause an
-error if called as a resource.</p>
+    <p>This is a helper to dynamically configure a resource before creating it. The idea here
+is that the returned object can be used as a function, to configure the resource, or as
+a resource.
+The difference with <a href="module-shared_jimpleFns.html#~resource"><code>resource</code></a> is that, instead
+of providing the function to interact with the generated resource, the <code>creatorFn</code>
+parameter is a function that returns a function like the one you would use on
+<a href="module-shared_jimpleFns.html#~resource"><code>resource</code></a>. What this function actually returns
+is a <a href="external-Proxy.html"><code>Proxy</code></a>, that when used as a function, it will return a resource; but when
+used as a resource, it will internally call <code>creatorFn</code> (and cache it) without
+parameters. It's very important that all the parameters of the <code>creatorFn</code> are
+optional, otherwise it will cause an error if called as a resource.</p>
 </div>
 
 
@@ -977,19 +981,19 @@ error if called as a resource.</p>
     
         <p class="code-caption">Let's use `provider` again, that requires a `register` function:</p>
     
-    <pre class="prettyprint"><code>const someProvider = resourceCreator(
-  'provider',
-  'register',
-  (options = {}) => (app) => {
-    // ...
-  },
-);
+    <pre class="prettyprint"><code>  const someProvider = resourceCreator(
+    'provider',
+    'register',
+    (options = {}) => (app) => {
+      // ...
+    },
+  );
 
-// Register it as a resource
-container.register(someProvider);
+  // Register it as a resource
+  container.register(someProvider);
 
-// Register it after creating a configured resource
-container.register(someProvider({ enabled: false }));</code></pre>
+  // Register it after creating a configured resource
+  container.register(someProvider({ enabled: false }));</code></pre>
 
 
 
@@ -1035,8 +1039,8 @@ container.register(someProvider({ enabled: false }));</code></pre>
 
             
 
-            <td class="description last"><p>The name of the resource. The generated object will have a property
-with its name and the value <code>true</code>.</p></td>
+            <td class="description last"><p>The name of the resource. The generated object will have a
+property with its name and the value <code>true</code>.</p></td>
         </tr>
 
     
@@ -1059,8 +1063,8 @@ with its name and the value <code>true</code>.</p></td>
 
             
 
-            <td class="description last"><p>The name of the key that will have the function on the generated
-object.</p></td>
+            <td class="description last"><p>The name of the key that will have the function on the
+generated object.</p></td>
         </tr>
 
     
@@ -1143,7 +1147,7 @@ object.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line255">line 255</a>
+        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line275">line 275</a>
     </li></ul></dd>
     
 
@@ -1183,8 +1187,8 @@ object.</p></td>
 
 
 <div class="description usertext">
-    <p>Generates a collection of resources that can be called individually or all together via the
-<code>key</code> function.</p>
+    <p>Generates a collection of resources that can be called individually or all together via
+the <code>key</code> function.</p>
 </div>
 
 
@@ -1198,32 +1202,35 @@ object.</p></td>
     <h5>Example</h5>
     
         <p class="code-caption">
-Following all the other examples(and the implementations), let's create a a providers collection.
+  Following all the other examples(and the implementations), let's create a a providers
+  collection.
 </p>
     
-    <pre class="prettyprint"><code>const firstProvider = resource('provider', 'register', (app) => {
-  // ...
-});
-const secondProvider = resourceCreator(
-  'provider',
-  'register',
-  (options = {}) => (app) => {
+    <pre class="prettyprint"><code>  const firstProvider = resource('provider', 'register', (app) => {
     // ...
-  },
-);
+  });
+  const secondProvider = resourceCreator(
+    'provider',
+    'register',
+    (options = {}) => (app) => {
+      // ...
+    },
+  );
 
-const bothProviders = resourcesCollection('providers', 'register')({
-  firstProvider,
-  secondProvider,
-});
+  const bothProviders = resourcesCollection(
+    'providers',
+    'register',
+  )({
+    firstProvider,
+    secondProvider,
+  });
 
-
-// Register all at once
-container.register(bothProviders);
-// Register only one
-container.register(bothProviders.firstProvider);
-// Register only one, after configuring it
-container.register(bothProviders.secondProvider({ enabled: false }));</code></pre>
+  // Register all at once
+  container.register(bothProviders);
+  // Register only one
+  container.register(bothProviders.firstProvider);
+  // Register only one, after configuring it
+  container.register(bothProviders.secondProvider({ enabled: false }));</code></pre>
 
 
 
@@ -1285,9 +1292,10 @@ container.register(bothProviders.secondProvider({ enabled: false }));</code></pr
                 </td>
             
 
-            <td class="description last"><p>The name of the collection. When a collection is
-generated, the returned object will have a property
-with its name and the value <code>true</code>.</p></td>
+            <td class="description last"><p>The name of the collection. When a
+collection is generated, the returned object
+will have a property with its name and the
+value <code>true</code>.</p></td>
         </tr>
 
     
@@ -1322,8 +1330,9 @@ with its name and the value <code>true</code>.</p></td>
                 </td>
             
 
-            <td class="description last"><p>The name of the key that will have the function to
-interact with the collection on the final object.</p></td>
+            <td class="description last"><p>The name of the key that will have the
+function to interact with the collection on
+the final object.</p></td>
         </tr>
 
     
@@ -1364,10 +1373,11 @@ interact with the collection on the final object.</p></td>
                 </td>
             
 
-            <td class="description last"><p>By default, if the <code>key</code> function of the collection
-gets called, all the items of the collection will be
-called with the same arguments. But you can specify a
-function that will receive all the items and all the
+            <td class="description last"><p>By default, if the <code>key</code> function of the
+collection gets called, all the items of the
+collection will be called with the same
+arguments. But you can specify a function
+that will receive all the items and all the
 arguments to customize the interaction.</p></td>
         </tr>
 
@@ -1509,8 +1519,8 @@ arguments to customize the interaction.</p></td>
 
             
 
-            <td class="description last"><p>The method that gets called when registering the
-provider.</p></td>
+            <td class="description last"><p>The method that gets called when registering
+the provider.</p></td>
         </tr>
 
     
@@ -1561,7 +1571,7 @@ provider.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line41">line 41</a>
+        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line43">line 43</a>
     </li></ul></dd>
     
 
@@ -1640,8 +1650,8 @@ provider.</p></td>
 
             
 
-            <td class="description last"><p>The method that gets called when registering the
-provider.</p></td>
+            <td class="description last"><p>The method that gets called when registering
+the provider.</p></td>
         </tr>
 
     
@@ -1654,8 +1664,9 @@ provider.</p></td>
 
 
 <div class="description usertext">
-    <p>A special kind of <a href="module-shared_jimpleFns.html#.Provider"><code>Provider</code></a> that can be used as a regular provider, or it can also be
-called as a function with custom options in order to obtain a &quot;configured <a href="module-shared_jimpleFns.html#.Provider"><code>Provider</code></a>&quot;.</p>
+    <p>A special kind of <a href="module-shared_jimpleFns.html#.Provider"><code>Provider</code></a> that can be used as a regular provider, or it can
+also be called as a function with custom options in order to obtain a &quot;configured
+<a href="module-shared_jimpleFns.html#.Provider"><code>Provider</code></a>&quot;.</p>
 </div>
 
 
@@ -1669,9 +1680,9 @@ called as a function with custom options in order to obtain a &quot;configured <
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>// Register it with its default options.
-container.register(myProvider);
-// Register it with custom options.
-container.register(myProvider({ enabled: true }));</code></pre>
+  container.register(myProvider);
+  // Register it with custom options.
+  container.register(myProvider({ enabled: true }));</code></pre>
 
 
 
@@ -1797,7 +1808,7 @@ container.register(myProvider({ enabled: true }));</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line32">line 32</a>
+        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line34">line 34</a>
     </li></ul></dd>
     
 
@@ -1837,8 +1848,8 @@ container.register(myProvider({ enabled: true }));</code></pre>
 
 
 <div class="description usertext">
-    <p>A function called in order to generate a <a href="module-shared_jimpleFns.html#.Provider"><code>Provider</code></a>. They usually have different options
-that will be sent to the provider creation.</p>
+    <p>A function called in order to generate a <a href="module-shared_jimpleFns.html#.Provider"><code>Provider</code></a>. They usually have different
+options that will be sent to the provider creation.</p>
 </div>
 
 
@@ -2031,7 +2042,7 @@ that will be sent to the provider creation.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line92">line 92</a>
+        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line98">line 98</a>
     </li></ul></dd>
     
 
@@ -2134,8 +2145,8 @@ that will be sent to the provider creation.</p>
 
             
 
-            <td class="description last"><p>This will always be <code>true</code> and it's the <code>name</code> sent to
-the <a href="module-shared_jimpleFns.html#~resource"><code>resource</code></a> function.</p></td>
+            <td class="description last"><p>This will always be <code>true</code> and it's the <code>name</code> sent to the
+<a href="module-shared_jimpleFns.html#~resource"><code>resource</code></a> function.</p></td>
         </tr>
 
     
@@ -2181,7 +2192,7 @@ the <a href="module-shared_jimpleFns.html#~resource"><code>resource</code></a> f
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line101">line 101</a>
+        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line107">line 107</a>
     </li></ul></dd>
     
 
@@ -2285,8 +2296,8 @@ function.</p></td>
 
             
 
-            <td class="description last"><p>This will always be <code>true</code> and it's the <code>name</code> sent to
-the <a href="module-shared_jimpleFns.html#~resourceCreator"><code>resourceCreator</code></a>
+            <td class="description last"><p>This will always be <code>true</code> and it's the <code>name</code> sent to the
+<a href="module-shared_jimpleFns.html#~resourceCreator"><code>resourceCreator</code></a>
 function.</p></td>
         </tr>
 
@@ -2343,7 +2354,7 @@ function.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line112">line 112</a>
+        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line118">line 118</a>
     </li></ul></dd>
     
 
@@ -2515,8 +2526,9 @@ function.</p></td>
 
         
 <div class="param-desc">
-    <p>In additions to the original dictionary of items, the returned
-object will have the collection flag (<code>name</code>), and the <code>key</code>
+    <p>In additions to the original dictionary of items, the
+returned object will have the collection flag (<code>name</code>),
+and the <code>key</code>
 function (<code>fn</code>) to interact with the collection.</p>
 </div>
 
@@ -2555,7 +2567,7 @@ function (<code>fn</code>) to interact with the collection.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line124">line 124</a>
+        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line131">line 131</a>
     </li></ul></dd>
     
 
@@ -2688,7 +2700,8 @@ function (<code>fn</code>) to interact with the collection.</p>
 
             
 
-            <td class="description last"><p>The arguments that were sent to the collection <code>key</code> function.</p></td>
+            <td class="description last"><p>The arguments that were sent to the collection <code>key</code>
+function.</p></td>
         </tr>
 
     
@@ -2726,7 +2739,7 @@ function (<code>fn</code>) to interact with the collection.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line63">line 63</a>
+        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line68">line 68</a>
     </li></ul></dd>
     
 
@@ -2802,7 +2815,7 @@ function (<code>fn</code>) to interact with the collection.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line74">line 74</a>
+        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line79">line 79</a>
     </li></ul></dd>
     
 
@@ -2842,8 +2855,8 @@ function (<code>fn</code>) to interact with the collection.</p>
 
 
 <div class="description usertext">
-    <p>Generates a collection of <a href="module-shared_jimpleFns.html#.Provider"><code>Provider</code></a> objects that can be used to register all of them
-at once.</p>
+    <p>Generates a collection of <a href="module-shared_jimpleFns.html#.Provider"><code>Provider</code></a> objects that can be used to register all of
+them at once.</p>
 </div>
 
 
@@ -2857,11 +2870,11 @@ at once.</p>
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>// Generate the collection
-const myProviders = providers({ oneProvider, otherProvider });
-// Register all of them
-container.register(myProviders);
-// Register only one
-container.register(myProviders.otherProvider);</code></pre>
+  const myProviders = providers({ oneProvider, otherProvider });
+  // Register all of them
+  container.register(myProviders);
+  // Register only one
+  container.register(myProviders.otherProvider);</code></pre>
 
 
 
@@ -2964,7 +2977,7 @@ collection.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line59">line 59</a>
+        <a href="shared_jimpleFns.js.html">shared/jimpleFns.js</a>, <a href="shared_jimpleFns.js.html#line64">line 64</a>
     </li></ul></dd>
     
 
@@ -3038,7 +3051,7 @@ collection.</p></td>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

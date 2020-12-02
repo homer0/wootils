@@ -77,7 +77,7 @@
 <header>
     
         <h2>
-            <span class="ancestors"><a href="module-shared_objectUtils.html">shared/objectUtils</a>~</span>
+            <span class="ancestors"><a href="module-shared_objectUtils.html">shared/objectUtils</a>.</span>
         
         ObjectUtils
         </h2>
@@ -109,7 +109,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line786">line 786</a>
+        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -184,7 +184,8 @@
 <dl>
     <dt>
         <div class="param-desc usertext">
-        <p>If instantiated. This class is meant to be have only static methods.</p>
+        <p>If instantiated. This class is meant to be have only static
+methods.</p>
         </div>
     </dt>
     <dd></dd>
@@ -403,7 +404,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line54">line 54</a>
+        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line55">line 55</a>
     </li></ul></dd>
     
 
@@ -553,9 +554,10 @@
                 </td>
             
 
-            <td class="description last"><p>A list of keys or paths where the transformation
-will be made. If not specified, the method will
-use all the keys from the object.</p></td>
+            <td class="description last"><p>A list of keys or paths where the
+transformation will be made. If not specified,
+the method will use all the keys from the
+object.</p></td>
         </tr>
 
     
@@ -594,8 +596,8 @@ use all the keys from the object.</p></td>
                 </td>
             
 
-            <td class="description last"><p>A list of keys or paths where the transformation
-won't be made.</p></td>
+            <td class="description last"><p>A list of keys or paths where the
+transformation won't be made.</p></td>
         </tr>
 
     
@@ -695,7 +697,7 @@ components for both <code>include</code> and <code>exclude</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line81">line 81</a>
+        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line83">line 83</a>
     </li></ul></dd>
     
 
@@ -845,9 +847,10 @@ components for both <code>include</code> and <code>exclude</code>.</p></td>
                 </td>
             
 
-            <td class="description last"><p>A list of keys or paths where the transformation
-will be made. If not specified, the method will
-use all the keys from the object.</p></td>
+            <td class="description last"><p>A list of keys or paths where the
+transformation will be made. If not specified,
+the method will use all the keys from the
+object.</p></td>
         </tr>
 
     
@@ -886,8 +889,8 @@ use all the keys from the object.</p></td>
                 </td>
             
 
-            <td class="description last"><p>A list of keys or paths where the transformation
-won't be made.</p></td>
+            <td class="description last"><p>A list of keys or paths where the
+transformation won't be made.</p></td>
         </tr>
 
     
@@ -987,7 +990,7 @@ components for both <code>include</code> and <code>exclude</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line121">line 121</a>
+        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line122">line 122</a>
     </li></ul></dd>
     
 
@@ -1041,16 +1044,13 @@ components for both <code>include</code> and <code>exclude</code>.</p></td>
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>const target = {
-  propOne: {
-    propOneSub: 'Charito!',
-  },
-  propTwo: '!!!',
-};
-console.log(ObjectUtils.delete(
-  target,
-  'propOne.propOneSub'
-));
-// Will output { propTwo: '!!!' }</code></pre>
+    propOne: {
+      propOneSub: 'Charito!',
+    },
+    propTwo: '!!!',
+  };
+  console.log(ObjectUtils.delete(target, 'propOne.propOneSub'));
+  // Will output { propTwo: '!!!' }</code></pre>
 
 
 
@@ -1112,8 +1112,8 @@ console.log(ObjectUtils.delete(
                 </td>
             
 
-            <td class="description last"><p>The object from where the property will be
-removed.</p></td>
+            <td class="description last"><p>The object from where the property will
+be removed.</p></td>
         </tr>
 
     
@@ -1187,8 +1187,8 @@ removed.</p></td>
                 </td>
             
 
-            <td class="description last"><p>The delimiter that will separate the path
-components.</p></td>
+            <td class="description last"><p>The delimiter that will separate the
+path components.</p></td>
         </tr>
 
     
@@ -1227,10 +1227,11 @@ components.</p></td>
                 </td>
             
 
-            <td class="description last"><p>If this flag is <code>true</code> and after removing the
-property the parent object is empty, it will
-remove it recursively until a non empty parent
-object is found.</p></td>
+            <td class="description last"><p>If this flag is <code>true</code> and after
+removing the property the parent object
+is empty, it will remove it recursively
+until a non empty parent object is
+found.</p></td>
         </tr>
 
     
@@ -1269,9 +1270,9 @@ object is found.</p></td>
                 </td>
             
 
-            <td class="description last"><p>Whether or not to throw an error when the path
-is invalid. If this is <code>false</code>, the method will
-silently fail.</p></td>
+            <td class="description last"><p>Whether or not to throw an error when
+the path is invalid. If this is
+<code>false</code>, the method will silently fail.</p></td>
         </tr>
 
     
@@ -1335,7 +1336,7 @@ silently fail.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line189">line 189</a>
+        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line184">line 184</a>
     </li></ul></dd>
     
 
@@ -1389,21 +1390,19 @@ silently fail.</p></td>
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>const target = {
-  name: {
-    first: 'Rosario',
-  },
-  age: 3,
-  address: {
-    planet: 'earth',
-    something: 'else',
-  },
-};
-console.log(ObjectUtils.set(obj, [
-  { 'name': 'name.first'},
-  'age',
-  'address.planet'
-]));
-// Will output { name: 'Rosario', age: 3, address: { planet: 'earth' } }</code></pre>
+    name: {
+      first: 'Rosario',
+    },
+    age: 3,
+    address: {
+      planet: 'earth',
+      something: 'else',
+    },
+  };
+  console.log(
+    ObjectUtils.set(obj, [{ name: 'name.first' }, 'age', 'address.planet']),
+  );
+  // Will output { name: 'Rosario', age: 3, address: { planet: 'earth' } }</code></pre>
 
 
 
@@ -1503,9 +1502,9 @@ console.log(ObjectUtils.set(obj, [
                 </td>
             
 
-            <td class="description last"><p>This can be a single path or a list of them. And for this method, the paths are not only
-strings but can also be an object with a single key, the would be the path to where to &quot;do
-the extraction&quot;, and the value the path on the target object.</p></td>
+            <td class="description last"><p>This can be a single path or a list of them. And for this method, the paths are not
+only strings but can also be an object with a single key, the would be the path to
+where to &quot;do the extraction&quot;, and the value the path on the target object.</p></td>
         </tr>
 
     
@@ -1583,8 +1582,8 @@ the extraction&quot;, and the value the path on the target object.</p></td>
                 </td>
             
 
-            <td class="description last"><p>Whether or not to throw an error when the path is invalid. If this is <code>false</code>, the method will
-silently fail an empty object.</p></td>
+            <td class="description last"><p>Whether or not to throw an error when the path is invalid. If this is <code>false</code>, the
+method will silently fail an empty object.</p></td>
         </tr>
 
     
@@ -1644,7 +1643,7 @@ silently fail an empty object.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line259">line 259</a>
+        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line256">line 256</a>
     </li></ul></dd>
     
 
@@ -1698,10 +1697,10 @@ silently fail an empty object.</p></td>
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>const target = {
-  propOne: {
-    propOneSub: 'Charito!',
-  },
-  propTwo: '!!!',
+propOne: {
+propOneSub: 'Charito!',
+},
+propTwo: '!!!',
 };
 console.log(ObjectUtils.flat(target);
 // Will output { 'propOne.propOneSub': 'Charito!', propTwo: '!!!' }</code></pre>
@@ -1805,8 +1804,7 @@ console.log(ObjectUtils.flat(target);
                 </td>
             
 
-            <td class="description last"><p>The delimiter that will separate the
-path components.</p></td>
+            <td class="description last"><p>The delimiter that will separate the path components.</p></td>
         </tr>
 
     
@@ -1845,11 +1843,9 @@ path components.</p></td>
                 </td>
             
 
-            <td class="description last"><p>A custom prefix to be added before the
-name of the properties. This can be
-used on custom cases and it's also
-used when the method calls itself in
-order to flattern a sub object.</p></td>
+            <td class="description last"><p>A custom prefix to be added before the name of the properties. This can be used on
+custom cases and it's also used when the method calls itself in order to flattern a
+sub object.</p></td>
         </tr>
 
     
@@ -1890,12 +1886,9 @@ order to flattern a sub object.</p></td>
                 </td>
             
 
-            <td class="description last"><p>A custom function that can be used in
-order to tell the method whether an
-Object or an Array property should be
-flattern or not. It will receive the
-key for the property and the
-Object/Array itself.</p></td>
+            <td class="description last"><p>A custom function that can be used in order to tell the method whether an Object or
+an Array property should be flattern or not. It will receive the key for the property
+and the Object/Array itself.</p></td>
         </tr>
 
     
@@ -1995,8 +1988,8 @@ Object/Array itself.</p></td>
 
 
 <div class="description usertext">
-    <p>Formats all the keys on an object using a way similar to <code>.replace(regexp, ...)</code> but that
-also works recursively and with <em>&quot;object paths&quot;</em>.</p>
+    <p>Formats all the keys on an object using a way similar to <code>.replace(regexp, ...)</code> but
+that also works recursively and with <em>&quot;object paths&quot;</em>.</p>
 </div>
 
 
@@ -2010,19 +2003,21 @@ also works recursively and with <em>&quot;object paths&quot;</em>.</p>
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>const target = {
-  prop_one: 'Charito!',
-};
-console.log(ObjectUtils.formatKeys(
-  target,
-  // Find all the keys with snake case.
-  /([a-z])_([a-z])/g,
-  // Using the same .replace style callback, replace it with lower camel case.
-  (fullMatch, firstLetter, secondLetter) => {
-    const newSecondLetter = secondLetter.toUpperCase();
-    return `${firstLetter}${newSecondLetter}`;
-  }
-));
-// Will output { propOne: 'Charito!}.</code></pre>
+    prop_one: 'Charito!',
+  };
+  console.log(
+    ObjectUtils.formatKeys(
+      target,
+      // Find all the keys with snake case.
+      /([a-z])_([a-z])/g,
+      // Using the same .replace style callback, replace it with lower camel case.
+      (fullMatch, firstLetter, secondLetter) => {
+        const newSecondLetter = secondLetter.toUpperCase();
+        return `${firstLetter}${newSecondLetter}`;
+      },
+    ),
+  );
+  // Will output { propOne: 'Charito!}.</code></pre>
 
 
 
@@ -2119,8 +2114,8 @@ console.log(ObjectUtils.formatKeys(
                 </td>
             
 
-            <td class="description last"><p>The regular expression the method will use &quot;match&quot; the
-keys.</p></td>
+            <td class="description last"><p>The regular expression the method will use
+&quot;match&quot; the keys.</p></td>
         </tr>
 
     
@@ -2155,9 +2150,10 @@ keys.</p></td>
                 </td>
             
 
-            <td class="description last"><p>The callback the method will call when formatting a
-replacement. Think of <code>searchExpression</code> and
-<code>replaceWith</code> as the parameters of a <code>.replace</code> call,
+            <td class="description last"><p>The callback the method will call when
+formatting a replacement. Think of
+<code>searchExpression</code> and <code>replaceWith</code> as the
+parameters of a <code>.replace</code> call,
 where the object is the key.</p></td>
         </tr>
 
@@ -2197,9 +2193,10 @@ where the object is the key.</p></td>
                 </td>
             
 
-            <td class="description last"><p>A list of keys or paths where the transformation will
-be made. If not specified, the method will use all the
-keys from the object.</p></td>
+            <td class="description last"><p>A list of keys or paths where the
+transformation will be made. If not specified,
+the method will use all the keys from the
+object.</p></td>
         </tr>
 
     
@@ -2238,8 +2235,8 @@ keys from the object.</p></td>
                 </td>
             
 
-            <td class="description last"><p>A list of keys or paths where the transformation won't
-be made.</p></td>
+            <td class="description last"><p>A list of keys or paths where the
+transformation won't be made.</p></td>
         </tr>
 
     
@@ -2278,8 +2275,8 @@ be made.</p></td>
                 </td>
             
 
-            <td class="description last"><p>The delimiter that will separate the path components
-for both <code>include</code> and <code>exclude</code>.</p></td>
+            <td class="description last"><p>The delimiter that will separate the path
+components for both <code>include</code> and <code>exclude</code>.</p></td>
         </tr>
 
     
@@ -2339,7 +2336,7 @@ for both <code>include</code> and <code>exclude</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line542">line 542</a>
+        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line546">line 546</a>
     </li></ul></dd>
     
 
@@ -2393,16 +2390,13 @@ for both <code>include</code> and <code>exclude</code>.</p></td>
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>const obj = {
-  propOne: {
-    propOneSub: 'Charito!',
-  },
-  propTwo: '!!!',
-};
-console.log(ObjectUtils.get(
-  obj,
-  'propOne.propOneSub'
-));
-// Will output 'Charito!'</code></pre>
+    propOne: {
+      propOneSub: 'Charito!',
+    },
+    propTwo: '!!!',
+  };
+  console.log(ObjectUtils.get(obj, 'propOne.propOneSub'));
+  // Will output 'Charito!'</code></pre>
 
 
 
@@ -2464,7 +2458,8 @@ console.log(ObjectUtils.get(
                 </td>
             
 
-            <td class="description last"><p>The object from where the property will be read.</p></td>
+            <td class="description last"><p>The object from where the property will be
+read.</p></td>
         </tr>
 
     
@@ -2538,7 +2533,8 @@ console.log(ObjectUtils.get(
                 </td>
             
 
-            <td class="description last"><p>The delimiter that will separate the path components.</p></td>
+            <td class="description last"><p>The delimiter that will separate the path
+components.</p></td>
         </tr>
 
     
@@ -2577,9 +2573,10 @@ console.log(ObjectUtils.get(
                 </td>
             
 
-            <td class="description last"><p>Whether or not to throw an error when the path is
-invalid. If this is <code>false</code>, the method will silently
-fail and return <code>undefined</code>.</p></td>
+            <td class="description last"><p>Whether or not to throw an error when the
+path is invalid. If this is <code>false</code>, the
+method will silently fail and return
+<code>undefined</code>.</p></td>
         </tr>
 
     
@@ -2668,7 +2665,7 @@ fail and return <code>undefined</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line584">line 584</a>
+        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line589">line 589</a>
     </li></ul></dd>
     
 
@@ -2818,9 +2815,10 @@ fail and return <code>undefined</code>.</p></td>
                 </td>
             
 
-            <td class="description last"><p>A list of keys or paths where the transformation
-will be made. If not specified, the method will
-use all the keys from the object.</p></td>
+            <td class="description last"><p>A list of keys or paths where the
+transformation will be made. If not specified,
+the method will use all the keys from the
+object.</p></td>
         </tr>
 
     
@@ -2859,8 +2857,8 @@ use all the keys from the object.</p></td>
                 </td>
             
 
-            <td class="description last"><p>A list of keys or paths where the transformation
-won't be made.</p></td>
+            <td class="description last"><p>A list of keys or paths where the
+transformation won't be made.</p></td>
         </tr>
 
     
@@ -2960,7 +2958,7 @@ components for both <code>include</code> and <code>exclude</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line611">line 611</a>
+        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line617">line 617</a>
     </li></ul></dd>
     
 
@@ -3110,9 +3108,10 @@ components for both <code>include</code> and <code>exclude</code>.</p></td>
                 </td>
             
 
-            <td class="description last"><p>A list of keys or paths where the transformation
-will be made. If not specified, the method will use
-all the keys from the object.</p></td>
+            <td class="description last"><p>A list of keys or paths where the
+transformation will be made. If not specified,
+the method will use all the keys from the
+object.</p></td>
         </tr>
 
     
@@ -3151,8 +3150,8 @@ all the keys from the object.</p></td>
                 </td>
             
 
-            <td class="description last"><p>A list of keys or paths where the transformation
-won't be made.</p></td>
+            <td class="description last"><p>A list of keys or paths where the
+transformation won't be made.</p></td>
         </tr>
 
     
@@ -3252,7 +3251,7 @@ components for both <code>include</code> and <code>exclude</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line643">line 643</a>
+        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line651">line 651</a>
     </li></ul></dd>
     
 
@@ -3292,8 +3291,8 @@ components for both <code>include</code> and <code>exclude</code>.</p></td>
 
 
 <div class="description usertext">
-    <p>This method makes a deep merge of a list of objects into a new one. The method also supports
-arrays.</p>
+    <p>This method makes a deep merge of a list of objects into a new one. The method also
+supports arrays.</p>
 </div>
 
 
@@ -3307,14 +3306,14 @@ arrays.</p>
     <h5>Examples</h5>
     
     <pre class="prettyprint"><code>const objA = { a: 'first' };
-const objB = { b: 'second' };
-console.log(ObjectUtils.merge(objA, objB));
-// Will output { a: 'first', b: 'second' }</code></pre>
+  const objB = { b: 'second' };
+  console.log(ObjectUtils.merge(objA, objB));
+  // Will output { a: 'first', b: 'second' }</code></pre>
 
     <pre class="prettyprint"><code>const arrA = [{ a: 'first' }];
-const arrB = [{ b: 'second' }];
-console.log(ObjectUtils.merge(objA, objB));
-// Will output [{ a: 'first', b: 'second' }]</code></pre>
+  const arrB = [{ b: 'second' }];
+  console.log(ObjectUtils.merge(objA, objB));
+  // Will output [{ a: 'first', b: 'second' }]</code></pre>
 
 
 
@@ -3432,7 +3431,7 @@ console.log(ObjectUtils.merge(objA, objB));
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line667">line 667</a>
+        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line679">line 679</a>
     </li></ul></dd>
     
 
@@ -3472,7 +3471,8 @@ console.log(ObjectUtils.merge(objA, objB));
 
 
 <div class="description usertext">
-    <p>Sets a property on an object using a path. If the path doesn't exist, it will be created.</p>
+    <p>Sets a property on an object using a path. If the path doesn't exist, it will be
+created.</p>
 </div>
 
 
@@ -3486,8 +3486,8 @@ console.log(ObjectUtils.merge(objA, objB));
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>const target = {};
-console.log(ObjectUtils.set(target, 'some.prop.path', 'some-value'));
-// Will output { some: { prop: { path: 'some-value' } } }</code></pre>
+  console.log(ObjectUtils.set(target, 'some.prop.path', 'some-value'));
+  // Will output { some: { prop: { path: 'some-value' } } }</code></pre>
 
 
 
@@ -3658,7 +3658,8 @@ console.log(ObjectUtils.set(target, 'some.prop.path', 'some-value'));
                 </td>
             
 
-            <td class="description last"><p>The delimiter that will separate the path components.</p></td>
+            <td class="description last"><p>The delimiter that will separate the path
+components.</p></td>
         </tr>
 
     
@@ -3697,9 +3698,10 @@ console.log(ObjectUtils.set(target, 'some.prop.path', 'some-value'));
                 </td>
             
 
-            <td class="description last"><p>Whether or not to throw an error when the path is
-invalid. If this is <code>false</code>, the method will silently
-fail and return <code>undefined</code>.</p></td>
+            <td class="description last"><p>Whether or not to throw an error when the
+path is invalid. If this is <code>false</code>, the
+method will silently fail and return
+<code>undefined</code>.</p></td>
         </tr>
 
     
@@ -3793,7 +3795,7 @@ fail and return <code>undefined</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line724">line 724</a>
+        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line731">line 731</a>
     </li></ul></dd>
     
 
@@ -3943,9 +3945,10 @@ fail and return <code>undefined</code>.</p></td>
                 </td>
             
 
-            <td class="description last"><p>A list of keys or paths where the transformation
-will be made. If not specified, the method will
-use all the keys from the object.</p></td>
+            <td class="description last"><p>A list of keys or paths where the
+transformation will be made. If not specified,
+the method will use all the keys from the
+object.</p></td>
         </tr>
 
     
@@ -3984,8 +3987,8 @@ use all the keys from the object.</p></td>
                 </td>
             
 
-            <td class="description last"><p>A list of keys or paths where the transformation
-won't be made.</p></td>
+            <td class="description last"><p>A list of keys or paths where the
+transformation won't be made.</p></td>
         </tr>
 
     
@@ -4085,7 +4088,7 @@ components for both <code>include</code> and <code>exclude</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line748">line 748</a>
+        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line756">line 756</a>
     </li></ul></dd>
     
 
@@ -4235,9 +4238,10 @@ components for both <code>include</code> and <code>exclude</code>.</p></td>
                 </td>
             
 
-            <td class="description last"><p>A list of keys or paths where the transformation
-will be made. If not specified, the method will
-use all the keys from the object.</p></td>
+            <td class="description last"><p>A list of keys or paths where the
+transformation will be made. If not specified,
+the method will use all the keys from the
+object.</p></td>
         </tr>
 
     
@@ -4276,8 +4280,8 @@ use all the keys from the object.</p></td>
                 </td>
             
 
-            <td class="description last"><p>A list of keys or paths where the transformation
-won't be made.</p></td>
+            <td class="description last"><p>A list of keys or paths where the
+transformation won't be made.</p></td>
         </tr>
 
     
@@ -4377,7 +4381,7 @@ components for both <code>include</code> and <code>exclude</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line777">line 777</a>
+        <a href="shared_objectUtils.js.html">shared/objectUtils.js</a>, <a href="shared_objectUtils.js.html#line787">line 787</a>
     </li></ul></dd>
     
 
@@ -4417,8 +4421,8 @@ components for both <code>include</code> and <code>exclude</code>.</p></td>
 
 
 <div class="description usertext">
-    <p>This method does the exact opposite from <code>flat</code>: It takes an already flattern object and
-restores it structure.</p>
+    <p>This method does the exact opposite from <code>flat</code>: It takes an already flattern object
+and restores it structure.</p>
 </div>
 
 
@@ -4432,11 +4436,11 @@ restores it structure.</p>
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>const target = {
-  'propOne.propOneSub': 'Charito!',
-  propTwo: '!!!',
-};
-console.log(ObjectUtils.unflat(target));
-// Will output { propOne: { propOneSub: 'Charito!' }, 'propTwo': '!!!' }</code></pre>
+    'propOne.propOneSub': 'Charito!',
+    propTwo: '!!!',
+  };
+  console.log(ObjectUtils.unflat(target));
+  // Will output { propOne: { propOneSub: 'Charito!' }, 'propTwo': '!!!' }</code></pre>
 
 
 
@@ -4537,7 +4541,8 @@ console.log(ObjectUtils.unflat(target));
                 </td>
             
 
-            <td class="description last"><p>The delimiter that will separate the path components.</p></td>
+            <td class="description last"><p>The delimiter that will separate the path
+components.</p></td>
         </tr>
 
     
@@ -4600,7 +4605,7 @@ console.log(ObjectUtils.unflat(target));
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

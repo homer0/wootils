@@ -130,7 +130,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_apiClient.js.html">shared/apiClient.js</a>, <a href="shared_apiClient.js.html#line46">line 46</a>
+        <a href="shared_apiClient.js.html">shared/apiClient.js</a>, <a href="shared_apiClient.js.html#line52">line 52</a>
     </li></ul></dd>
     
 
@@ -217,10 +217,11 @@
 
             
 
-            <td class="description last"><p>The path to the endpoint relative to the API
-entry point. It can include placeholders
-with the format <code>:placeholder-name</code> that are
-going to be replaced when the endpoint gets
+            <td class="description last"><p>The path to the endpoint relative to
+the API entry point. It can include
+placeholders with the format
+<code>:placeholder-name</code> that are going to
+be replaced when the endpoint gets
 generated.</p></td>
         </tr>
 
@@ -252,9 +253,11 @@ generated.</p></td>
 
             
 
-            <td class="description last"><p>A dictionary of query string parameters that
-will be added when the endpoint. If the value
-of a parameter is <code>null</code>, it won't be added.</p></td>
+            <td class="description last"><p>A dictionary of query string
+parameters that will be added when
+the endpoint. If the value of a
+parameter is <code>null</code>, it won't be
+added.</p></td>
         </tr>
 
     
@@ -296,7 +299,7 @@ of a parameter is <code>null</code>, it won't be added.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_apiClient.js.html">shared/apiClient.js</a>, <a href="shared_apiClient.js.html#line64">line 64</a>
+        <a href="shared_apiClient.js.html">shared/apiClient.js</a>, <a href="shared_apiClient.js.html#line73">line 73</a>
     </li></ul></dd>
     
 
@@ -353,26 +356,25 @@ of a parameter is <code>null</code>, it won't be added.</p></td>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>{
-  // Endpoint path as a string.
-  endpointOne: 'endpoint-one',
-  // Endpoint as {APIClientEndpoint}.
-  endpointTwo: {
-    path: 'endpoint-two',
-    query: {
-      count: 20,
-    },
-  },
-  // Endpoint as a dictionary of endpoints ({APIClientEndpoints}).
-  endpointThree: {
-    subEndpointThreeOne: 'sub-endpoint-three-one',
-    subEndpointThreeTwo: {
-      path: 'sub-endpoint-three-two',
-      query: {
-        count: 20,
-      },
-    },
-  },
+    <pre class="prettyprint"><code>{ // Endpoint path as a string.
+endpointOne: 'endpoint-one',
+// Endpoint as {APIClientEndpoint}.
+endpointTwo: {
+path: 'endpoint-two',
+query: {
+count: 20,
+},
+},
+// Endpoint as a dictionary of endpoints ({APIClientEndpoints}).
+endpointThree: {
+subEndpointThreeOne: 'sub-endpoint-three-one',
+subEndpointThreeTwo: {
+path: 'sub-endpoint-three-two',
+query: {
+count: 20,
+},
+},
+},
 }</code></pre>
 
 
@@ -390,7 +392,7 @@ of a parameter is <code>null</code>, it won't be added.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_apiClient.js.html">shared/apiClient.js</a>, <a href="shared_apiClient.js.html#line59">line 59</a>
+        <a href="shared_apiClient.js.html">shared/apiClient.js</a>, <a href="shared_apiClient.js.html#line68">line 68</a>
     </li></ul></dd>
     
 
@@ -466,7 +468,7 @@ of a parameter is <code>null</code>, it won't be added.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_apiClient.js.html">shared/apiClient.js</a>, <a href="shared_apiClient.js.html#line25">line 25</a>
+        <a href="shared_apiClient.js.html">shared/apiClient.js</a>, <a href="shared_apiClient.js.html#line29">line 29</a>
     </li></ul></dd>
     
 
@@ -662,7 +664,7 @@ of a parameter is <code>null</code>, it won't be added.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_apiClient.js.html">shared/apiClient.js</a>, <a href="shared_apiClient.js.html#line15">line 15</a>
+        <a href="shared_apiClient.js.html">shared/apiClient.js</a>, <a href="shared_apiClient.js.html#line16">line 16</a>
     </li></ul></dd>
     
 
@@ -844,8 +846,7 @@ of a parameter is <code>null</code>, it won't be added.</p></td>
 
             
 
-            <td class="description last"><p>Whether or not the response should <em>&quot;JSON
-decoded&quot;</em>.</p></td>
+            <td class="description last"><p>Whether or not the response should <em>&quot;JSON decoded&quot;</em>.</p></td>
         </tr>
 
     
@@ -927,7 +928,8 @@ decoded&quot;</em>.</p></td>
 
 
 <div class="description usertext">
-    <p>This kind of dictionary is used for building stuff like query string parameters and headers.</p>
+    <p>This kind of dictionary is used for building stuff like query string parameters and
+headers.</p>
 </div>
 
 
@@ -960,7 +962,7 @@ decoded&quot;</em>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="shared_apiClient.js.html">shared/apiClient.js</a>, <a href="shared_apiClient.js.html#line34">line 34</a>
+        <a href="shared_apiClient.js.html">shared/apiClient.js</a>, <a href="shared_apiClient.js.html#line38">line 38</a>
     </li></ul></dd>
     
 
@@ -1037,7 +1039,7 @@ decoded&quot;</em>.</p></td>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

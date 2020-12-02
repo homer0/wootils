@@ -77,12 +77,13 @@
 <header>
     
         <h2>
-            <span class="ancestors"><a href="module-node_appConfiguration.html">node/appConfiguration</a>~</span>
+            <span class="ancestors"><a href="module-node_appConfiguration.html">node/appConfiguration</a>.</span>
         
         AppConfiguration
         </h2>
         
-            <div class="class-description usertext"><p>This is a service to manage applications configurations. It takes care of loading, activating,
+            <div class="class-description usertext"><p>This is a service to manage applications configurations. It takes care of loading,
+activating,
 switching and merging configuration files.</p></div>
         
     
@@ -110,7 +111,7 @@ switching and merging configuration files.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line87">line 87</a>
+        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line69">line 69</a>
     </li></ul></dd>
     
 
@@ -258,8 +259,8 @@ switching and merging configuration files.</p></div>
                 </td>
             
 
-            <td class="description last"><p>Necessary to be able to require the configuration files with paths relative to the app root
-directory.</p></td>
+            <td class="description last"><p>Necessary to be able to require the configuration files with paths relative to the
+app root directory.</p></td>
         </tr>
 
     
@@ -434,7 +435,7 @@ configuration files.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line368">line 368</a>
+        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line375">line 375</a>
     </li></ul></dd>
     
 
@@ -507,7 +508,7 @@ configuration files.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line376">line 376</a>
+        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line383">line 383</a>
     </li></ul></dd>
     
 
@@ -580,7 +581,7 @@ configuration files.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line385">line 385</a>
+        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line392">line 392</a>
     </li></ul></dd>
     
 
@@ -620,8 +621,8 @@ configuration files.</p></td>
 
 
 <div class="description usertext">
-    <p>A dictionary with all the loaded configurations. It uses the names of the configurations
-as keys.</p>
+    <p>A dictionary with all the loaded configurations. It uses the names of the
+configurations as keys.</p>
 </div>
 
 
@@ -654,7 +655,7 @@ as keys.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line393">line 393</a>
+        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line400">line 400</a>
     </li></ul></dd>
     
 
@@ -737,7 +738,7 @@ as keys.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line174">line 174</a>
+        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line176">line 176</a>
     </li></ul></dd>
     
 
@@ -791,16 +792,16 @@ as keys.</p>
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>// To get a single setting
-const value = appConfiguration.get('some-setting');
+  const value = appConfiguration.get('some-setting');
 
-// To get multiple values
-const {
-  settingOne,
-  settingTwo,
-} = appConfiguration.get(['settingOne', 'settingTwo']);
+  // To get multiple values
+  const { settingOne, settingTwo } = appConfiguration.get([
+    'settingOne',
+    'settingTwo',
+  ]);
 
-// Use paths
-const subValue = appConfiguration.get('settingOne.subSetting');</code></pre>
+  // Use paths
+  const subValue = appConfiguration.get('settingOne.subSetting');</code></pre>
 
 
 
@@ -904,9 +905,10 @@ const subValue = appConfiguration.get('settingOne.subSetting');</code></pre>
                 </td>
             
 
-            <td class="description last"><p>When <code>setting</code> is an Array, if this is <code>true</code>,
-instead of returning an object, it will return an
-array of settings.</p></td>
+            <td class="description last"><p>When <code>setting</code> is an Array, if this is
+<code>true</code>,
+instead of returning an object, it will
+return an array of settings.</p></td>
         </tr>
 
     
@@ -966,7 +968,7 @@ array of settings.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line198">line 198</a>
+        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line197">line 197</a>
     </li></ul></dd>
     
 
@@ -1006,8 +1008,8 @@ array of settings.</p></td>
 
 
 <div class="description usertext">
-    <p>Gets a configuration settings. If no name is specified, it will return the settings of the
-active configuration.</p>
+    <p>Gets a configuration settings. If no name is specified, it will return the settings
+of the active configuration.</p>
 </div>
 
 
@@ -1325,8 +1327,8 @@ active configuration.</p>
                 </td>
             
 
-            <td class="description last"><p>If the service should switch to the new configuration after
-adding it.</p></td>
+            <td class="description last"><p>If the service should switch to the new
+configuration after adding it.</p></td>
         </tr>
 
     
@@ -1353,7 +1355,8 @@ adding it.</p></td>
 <dl>
     <dt>
         <div class="param-desc usertext">
-        <p>If the configuration tries to extend a configuration that doesn't exist.</p>
+        <p>If the configuration tries to extend a configuration that doesn't
+exist.</p>
         </div>
     </dt>
     <dd></dd>
@@ -1419,7 +1422,7 @@ adding it.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line239">line 239</a>
+        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line240">line 240</a>
     </li></ul></dd>
     
 
@@ -1459,8 +1462,8 @@ adding it.</p></td>
 
 
 <div class="description usertext">
-    <p>Checks if there's a configuration name on the environment variable and if there is, try to load
-the configuration file for it.</p>
+    <p>Checks if there's a configuration name on the environment variable and if there is,
+try to load the configuration file for it.</p>
 </div>
 
 
@@ -1491,7 +1494,8 @@ the configuration file for it.</p>
 
         
 <div class="param-desc">
-    <p>The loaded configuration or an empty object if the variable was empty.</p>
+    <p>The loaded configuration or an empty object if the variable was
+empty.</p>
 </div>
 
 
@@ -1529,7 +1533,7 @@ the configuration file for it.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line260">line 260</a>
+        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line261">line 261</a>
     </li></ul></dd>
     
 
@@ -1678,8 +1682,8 @@ the configuration file for it.</p>
                 </td>
             
 
-            <td class="description last"><p>If the service should switch to the new configuration
-after adding it.</p></td>
+            <td class="description last"><p>If the service should switch to the new
+configuration after adding it.</p></td>
         </tr>
 
     
@@ -1718,9 +1722,9 @@ after adding it.</p></td>
                 </td>
             
 
-            <td class="description last"><p>If <code>true</code>, the service will update the value of
-<code>allowConfigurationSwitch</code> based on the loaded
-configuration setting.</p></td>
+            <td class="description last"><p>If <code>true</code>, the service will update the value
+of <code>allowConfigurationSwitch</code> based on the
+loaded configuration setting.</p></td>
         </tr>
 
     
@@ -1813,7 +1817,7 @@ configuration setting.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line308">line 308</a>
+        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line312">line 312</a>
     </li></ul></dd>
     
 
@@ -1854,8 +1858,8 @@ configuration setting.</p></td>
 
 <div class="description usertext">
     <p>Sets the value of a setting or settings from the active configuration.
-If both the current and the new value of a setting are objects, then instead of overwriting
-it, the method will merge them.</p>
+If both the current and the new value of a setting are objects, then instead of
+overwriting it, the method will merge them.</p>
 </div>
 
 
@@ -1869,12 +1873,12 @@ it, the method will merge them.</p>
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>// To set a single setting value
-appConfiguration.set('some-setting', 'some-setting-value');
-// To set the value of multiple settings
-appConfiguration.set({
-  settingOne: 'valueOne',
-  settingTwo: 'valueTwo',
-})</code></pre>
+  appConfiguration.set('some-setting', 'some-setting-value');
+  // To set the value of multiple settings
+  appConfiguration.set({
+    settingOne: 'valueOne',
+    settingTwo: 'valueTwo',
+  });</code></pre>
 
 
 
@@ -1915,7 +1919,7 @@ appConfiguration.set({
 <span class="param-type"><a  target="_blank" href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>
 |
 
-<span class="param-type"><a  target="_blank" href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>.&lt;<a  target="_blank" href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, *></span>
+<span class="param-type"><a  target="_blank" href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>.&lt;<a  target="_blank" href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, any></span>
 
 
             
@@ -1933,8 +1937,9 @@ appConfiguration.set({
 
             
 
-            <td class="description last"><p>The name of the setting to update or a dictionary of
-settings and their values.</p></td>
+            <td class="description last"><p>The name of the setting to update or
+a dictionary of settings and their
+values.</p></td>
         </tr>
 
     
@@ -1967,8 +1972,8 @@ settings and their values.</p></td>
 
             
 
-            <td class="description last"><p>The value of the setting. This is only used when
-<code>setting</code> is a string.</p></td>
+            <td class="description last"><p>The value of the setting. This is
+only used when <code>setting</code> is a string.</p></td>
         </tr>
 
     
@@ -2039,7 +2044,7 @@ settings and their values.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line335">line 335</a>
+        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line339">line 339</a>
     </li></ul></dd>
     
 
@@ -2079,8 +2084,8 @@ settings and their values.</p></td>
 
 
 <div class="description usertext">
-    <p>Overwrites all the settings for a configuration. If the name is not specified, it will
-overwrite the active configuration.</p>
+    <p>Overwrites all the settings for a configuration. If the name is not specified, it
+will overwrite the active configuration.</p>
 </div>
 
 
@@ -2228,8 +2233,8 @@ overwrite the active configuration.</p>
                 </td>
             
 
-            <td class="description last"><p>Whether or not to merge the new settings with the existing
-ones.</p></td>
+            <td class="description last"><p>Whether or not to merge the new settings with the
+existing ones.</p></td>
         </tr>
 
     
@@ -2293,7 +2298,7 @@ ones.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line352">line 352</a>
+        <a href="node_appConfiguration.js.html">node/appConfiguration.js</a>, <a href="node_appConfiguration.js.html#line357">line 357</a>
     </li></ul></dd>
     
 
@@ -2333,8 +2338,8 @@ ones.</p></td>
 
 
 <div class="description usertext">
-    <p>Switchs to a different configuration. If the configuration is not registered, it will try to
-load from a file.</p>
+    <p>Switchs to a different configuration. If the configuration is not registered, it will
+try to load from a file.</p>
 </div>
 
 
@@ -2471,7 +2476,8 @@ load from a file.</p>
 <dl>
     <dt>
         <div class="param-desc usertext">
-        <p>If <code>force</code> is <code>false</code> and the <code>allowConfigurationSwitch</code> property is <code>false</code>.</p>
+        <p>If <code>force</code> is <code>false</code> and the <code>allowConfigurationSwitch</code> property
+is <code>false</code>.</p>
         </div>
     </dt>
     <dd></dd>
@@ -2540,7 +2546,7 @@ load from a file.</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

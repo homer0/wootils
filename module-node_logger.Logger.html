@@ -77,7 +77,7 @@
 <header>
     
         <h2>
-            <span class="ancestors"><a href="module-node_logger.html">node/logger</a>~</span>
+            <span class="ancestors"><a href="module-node_logger.html">node/logger</a>.</span>
         
         Logger
         </h2>
@@ -109,7 +109,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_logger.js.html">node/logger.js</a>, <a href="node_logger.js.html#line81">line 81</a>
+        <a href="node_logger.js.html">node/logger.js</a>, <a href="node_logger.js.html#line77">line 77</a>
     </li></ul></dd>
     
 
@@ -226,7 +226,8 @@
                 </td>
             
 
-            <td class="description last"><p>A prefix to include in front of all the messages.</p></td>
+            <td class="description last"><p>A prefix to include in front of all the
+messages.</p></td>
         </tr>
 
     
@@ -265,7 +266,8 @@
                 </td>
             
 
-            <td class="description last"><p>Whether or not to show the time on each message.</p></td>
+            <td class="description last"><p>Whether or not to show the time on each
+message.</p></td>
         </tr>
 
     
@@ -322,7 +324,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_logger.js.html">node/logger.js</a>, <a href="node_logger.js.html#line239">line 239</a>
+        <a href="node_logger.js.html">node/logger.js</a>, <a href="node_logger.js.html#line245">line 245</a>
     </li></ul></dd>
     
 
@@ -395,7 +397,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_logger.js.html">node/logger.js</a>, <a href="node_logger.js.html#line247">line 247</a>
+        <a href="node_logger.js.html">node/logger.js</a>, <a href="node_logger.js.html#line253">line 253</a>
     </li></ul></dd>
     
 
@@ -468,7 +470,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_logger.js.html">node/logger.js</a>, <a href="node_logger.js.html#line104">line 104</a>
+        <a href="node_logger.js.html">node/logger.js</a>, <a href="node_logger.js.html#line107">line 107</a>
     </li></ul></dd>
     
 
@@ -502,7 +504,7 @@
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="module-node_logger.Logger.html#warning"><code>Logger#warning</code></a></li>
+            <li><a href="module-node_logger.Logger.html#warning"><code>Logger#warning</code></a> .</li>
         </ul>
     </dd>
     
@@ -558,7 +560,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_logger.js.html">node/logger.js</a>, <a href="node_logger.js.html#line118">line 118</a>
+        <a href="node_logger.js.html">node/logger.js</a>, <a href="node_logger.js.html#line124">line 124</a>
     </li></ul></dd>
     
 
@@ -671,10 +673,14 @@
                 </td>
             
 
-            <td class="description last"><p>A single message of a list of them. See the <code>log()</code> documentation to see all the supported
-properties for the <code>message</code> parameter. Different from the other log methods, you can use an
-<code>Error</code> object and the method will take care of extracting the message and the stack
-information.</p></td>
+            <td class="description last"><p>A single message of a list of them.
+See the <code>log()</code> documentation to see
+all the supported properties for the
+<code>message</code> parameter. Different from
+the other log methods, you can use
+an <code>Error</code> object and the method
+will take care of extracting the
+message and the stack information.</p></td>
         </tr>
 
     
@@ -713,8 +719,9 @@ information.</p></td>
                 </td>
             
 
-            <td class="description last"><p>If the exception has a <code>stack</code> property, the method will log each of the stack calls using
-<code>info()</code>.</p></td>
+            <td class="description last"><p>If the exception has a <code>stack</code>
+property, the method will log each
+of the stack calls using <code>info()</code>.</p></td>
         </tr>
 
     
@@ -756,7 +763,7 @@ information.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_logger.js.html">node/logger.js</a>, <a href="node_logger.js.html#line143">line 143</a>
+        <a href="node_logger.js.html">node/logger.js</a>, <a href="node_logger.js.html#line147">line 147</a>
     </li></ul></dd>
     
 
@@ -790,7 +797,7 @@ information.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="module-node_logger.Logger.html#log"><code>Logger#log</code></a></li>
+            <li><a href="module-node_logger.Logger.html#log"><code>Logger#log</code></a> .</li>
         </ul>
     </dd>
     
@@ -899,7 +906,7 @@ information.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_logger.js.html">node/logger.js</a>, <a href="node_logger.js.html#line170">line 170</a>
+        <a href="node_logger.js.html">node/logger.js</a>, <a href="node_logger.js.html#line178">line 178</a>
     </li></ul></dd>
     
 
@@ -953,18 +960,21 @@ information.</p></td>
     <h5>Example</h5>
     
     <pre class="prettyprint"><code>// Simple
-CLILogger.log('hello world');
-// Custom color
-CLILogger.log('It was the shadow who did it', 'red');
-// A list of messages all the same color
-CLILogger.log(['Ph\'nglu', 'mglw\'nafh'], 'grey');
-// A list of messages with different colors per line
-CLILogger.log([
-  'Ph\'nglu',
-  'mglw\'nafh',
-  ['Cthulhu', 'green'],
-  ['R\'lyeh wgah\'nagl fhtagn', 'red']
-], 'grey');</code></pre>
+  CLILogger.log('hello world');
+  // Custom color
+  CLILogger.log('It was the shadow who did it', 'red');
+  // A list of messages all the same color
+  CLILogger.log(["Ph'nglu", "mglw'nafh"], 'grey');
+  // A list of messages with different colors per line
+  CLILogger.log(
+    [
+      "Ph'nglu",
+      "mglw'nafh",
+      ['Cthulhu', 'green'],
+      ["R'lyeh wgah'nagl fhtagn", 'red'],
+    ],
+    'grey',
+  );</code></pre>
 
 
 
@@ -1065,10 +1075,10 @@ CLILogger.log([
                 </td>
             
 
-            <td class="description last"><p>Optional. The color of the message (the default is
-the terminal default). This can be overwritten line by
-line when the message is an array, take a look at the
-example.</p></td>
+            <td class="description last"><p>Optional. The color of the message (the default
+is the terminal default). This can be
+overwritten line by line when the message is an
+array, take a look at the example.</p></td>
         </tr>
 
     
@@ -1110,7 +1120,7 @@ example.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_logger.js.html">node/logger.js</a>, <a href="node_logger.js.html#line193">line 193</a>
+        <a href="node_logger.js.html">node/logger.js</a>, <a href="node_logger.js.html#line202">line 202</a>
     </li></ul></dd>
     
 
@@ -1150,7 +1160,8 @@ example.</p></td>
 
 
 <div class="description usertext">
-    <p>Prefixes a message with the text sent to the constructor and, if enabled, the current time.</p>
+    <p>Prefixes a message with the text sent to the constructor and, if enabled, the current
+time.</p>
 </div>
 
 
@@ -1264,7 +1275,7 @@ example.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_logger.js.html">node/logger.js</a>, <a href="node_logger.js.html#line222">line 222</a>
+        <a href="node_logger.js.html">node/logger.js</a>, <a href="node_logger.js.html#line228">line 228</a>
     </li></ul></dd>
     
 
@@ -1298,7 +1309,7 @@ example.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="module-node_logger.Logger.html#log"><code>Logger#log</code></a></li>
+            <li><a href="module-node_logger.Logger.html#log"><code>Logger#log</code></a> .</li>
         </ul>
     </dd>
     
@@ -1407,7 +1418,7 @@ example.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="node_logger.js.html">node/logger.js</a>, <a href="node_logger.js.html#line231">line 231</a>
+        <a href="node_logger.js.html">node/logger.js</a>, <a href="node_logger.js.html#line237">line 237</a>
     </li></ul></dd>
     
 
@@ -1441,7 +1452,7 @@ example.</p></td>
     <dt class="tag-see">See:</dt>
     <dd class="tag-see">
         <ul>
-            <li><a href="module-node_logger.Logger.html#log"><code>Logger#log</code></a></li>
+            <li><a href="module-node_logger.Logger.html#log"><code>Logger#log</code></a> .</li>
         </ul>
     </dd>
     
@@ -1553,7 +1564,7 @@ example.</p></td>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

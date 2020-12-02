@@ -77,15 +77,15 @@
 <header>
     
         <h2>
-            <span class="ancestors"><a href="module-browser_simpleStorage.html">browser/simpleStorage</a>~</span>
+            <span class="ancestors"><a href="module-browser_simpleStorage.html">browser/simpleStorage</a>.</span>
         
         SimpleStorage
         </h2>
         
-            <div class="class-description usertext"><p>An abstract class allows you to build services that relay on browser storage (session/local)
-and simplifies the way you work it
-You can specify the storage type you want to use, the format in which you want to handle the
-data and even expiration time for it.</p></div>
+            <div class="class-description usertext"><p>An abstract class allows you to build services that relay on browser storage
+(session/local)
+and simplifies the way you work it You can specify the storage type you want to use,
+the format in which you want to handle the data and even expiration time for it.</p></div>
         
     
 </header>
@@ -112,7 +112,7 @@ data and even expiration time for it.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line174">line 174</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line167">line 167</a>
     </li></ul></dd>
     
 
@@ -355,8 +355,9 @@ data and even expiration time for it.</p></div>
 
 
 <div class="description usertext">
-    <p>This is the object/dictionary the class will use to sync the content of the storage. That
-way you won't need to write/read/parse from the storage every time you need to do something.</p>
+    <p>This is the object/dictionary the class will use to sync the content of the
+storage. That way you won't need to write/read/parse from the storage every time
+you need to do something.</p>
 </div>
 
 
@@ -429,8 +430,8 @@ way you won't need to write/read/parse from the storage every time you need to d
 
 
 <div class="description usertext">
-    <p>These are the options/settings the class uses in order to work the with the storage and
-the data.</p>
+    <p>These are the options/settings the class uses in order to work the with the storage
+and the data.</p>
 </div>
 
 
@@ -463,7 +464,7 @@ the data.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line245">line 245</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line244">line 244</a>
     </li></ul></dd>
     
 
@@ -537,7 +538,7 @@ the data.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line215">line 215</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line214">line 214</a>
     </li></ul></dd>
     
 
@@ -768,8 +769,8 @@ the data.</p>
                 </td>
             
 
-            <td class="description last"><p>The entry value, or a <a href="external-Promise.html"><code>Promise</code></a> that resolves into
-the value.</p></td>
+            <td class="description last"><p>The entry value, or a <a href="external-Promise.html"><code>Promise</code></a> that
+resolves into the value.</p></td>
         </tr>
 
     
@@ -808,8 +809,8 @@ the value.</p></td>
                 </td>
             
 
-            <td class="description last"><p>Whether or not the class should save the data into the
-storage.</p></td>
+            <td class="description last"><p>Whether or not the class should save the data
+into the storage.</p></td>
         </tr>
 
     
@@ -835,9 +836,9 @@ storage.</p></td>
 
         
 <div class="param-desc">
-    <p>If <code>value</code> is an <a href="external-Object.html"><code>Object</code></a>, it will return the same object; but
-if <code>value</code> is a <a href="external-Promise.html"><code>Promise</code></a>, it will return the
-<em>&quot;promise chain&quot;</em>.</p>
+    <p>If <code>value</code> is an <a href="external-Object.html"><code>Object</code></a>, it will return the same
+object; but if <code>value</code> is a <a href="external-Promise.html"><code>Promise</code></a>, it will
+return the <em>&quot;promise chain&quot;</em>.</p>
 </div>
 
 
@@ -878,7 +879,7 @@ if <code>value</code> is a <a href="external-Promise.html"><code>Promise</code><
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line289">line 289</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line290">line 290</a>
     </li></ul></dd>
     
 
@@ -918,10 +919,10 @@ if <code>value</code> is a <a href="external-Promise.html"><code>Promise</code><
 
 
 <div class="description usertext">
-    <p>This is the real method behind <code>_addEntry</code>. It Adds a new entry to the class data and, if
-<code>save</code> is used, it also saves it into the storage.
-The reason that there are two methods for this is, is because <code>_addEntry</code> can receive a
-<a href="external-Promise.html"><code>Promise</code></a>, and in that case, this method gets called after it gets resolved.</p>
+    <p>This is the real method behind <code>_addEntry</code>. It Adds a new entry to the class data
+and, if <code>save</code> is used, it also saves it into the storage.
+The reason that there are two methods for this is, is because <code>_addEntry</code> can receive
+a <a href="external-Promise.html"><code>Promise</code></a>, and in that case, this method gets called after it gets resolved.</p>
 </div>
 
 
@@ -1021,7 +1022,8 @@ The reason that there are two methods for this is, is because <code>_addEntry</c
 
             
 
-            <td class="description last"><p>Whether or not the class should save the data into the storage.</p></td>
+            <td class="description last"><p>Whether or not the class should save the data into the
+storage.</p></td>
         </tr>
 
     
@@ -1085,7 +1087,7 @@ The reason that there are two methods for this is, is because <code>_addEntry</c
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line309">line 309</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line310">line 310</a>
     </li></ul></dd>
     
 
@@ -1200,8 +1202,8 @@ The reason that there are two methods for this is, is because <code>_addEntry</c
             
 
             <td class="description last"><p>Whether or not to reset the data to the initial data
-(<code>_getInitialData</code>), if entries area disabled, or to an empty
-object, if they are enabled.</p></td>
+(<code>_getInitialData</code>), if entries area disabled, or to
+an empty object, if they are enabled.</p></td>
         </tr>
 
     
@@ -1243,7 +1245,7 @@ object, if they are enabled.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line327">line 327</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line328">line 328</a>
     </li></ul></dd>
     
 
@@ -1283,8 +1285,8 @@ object, if they are enabled.</p></td>
 
 
 <div class="description usertext">
-    <p>Deletes an entry from the class data, and if <code>save</code> is used, the changes will be saved on
-the storage.</p>
+    <p>Deletes an entry from the class data, and if <code>save</code> is used, the changes will be
+saved on the storage.</p>
 </div>
 
 
@@ -1393,8 +1395,8 @@ the storage.</p>
                 </td>
             
 
-            <td class="description last"><p>Whether or not the class should save the data into the storage
-after deleting the entry.</p></td>
+            <td class="description last"><p>Whether or not the class should save the data into the
+storage after deleting the entry.</p></td>
         </tr>
 
     
@@ -1458,7 +1460,7 @@ after deleting the entry.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line348">line 348</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line349">line 349</a>
     </li></ul></dd>
     
 
@@ -1576,8 +1578,8 @@ after deleting the entry.</p></td>
 
             
 
-            <td class="description last"><p>The amount of seconds that need to have passed in order to
-consider an entry expired.</p></td>
+            <td class="description last"><p>The amount of seconds that need to have passed in order
+to consider an entry expired.</p></td>
         </tr>
 
     
@@ -1641,7 +1643,7 @@ consider an entry expired.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line366">line 366</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line367">line 367</a>
     </li></ul></dd>
     
 
@@ -1777,7 +1779,7 @@ consider an entry expired.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line375">line 375</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line376">line 376</a>
     </li></ul></dd>
     
 
@@ -1913,7 +1915,7 @@ consider an entry expired.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line384">line 384</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line385">line 385</a>
     </li></ul></dd>
     
 
@@ -2049,7 +2051,7 @@ consider an entry expired.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line393">line 393</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line394">line 394</a>
     </li></ul></dd>
     
 
@@ -2154,7 +2156,7 @@ consider an entry expired.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line404">line 404</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line405">line 405</a>
     </li></ul></dd>
     
 
@@ -2341,7 +2343,7 @@ consider an entry expired.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line431">line 431</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line432">line 432</a>
     </li></ul></dd>
     
 
@@ -2495,7 +2497,7 @@ consider an entry expired.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line442">line 442</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line443">line 443</a>
     </li></ul></dd>
     
 
@@ -2649,7 +2651,7 @@ consider an entry expired.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line453">line 453</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line454">line 454</a>
     </li></ul></dd>
     
 
@@ -2803,7 +2805,7 @@ consider an entry expired.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line464">line 464</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line465">line 465</a>
     </li></ul></dd>
     
 
@@ -2957,7 +2959,7 @@ consider an entry expired.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line474">line 474</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line477">line 477</a>
     </li></ul></dd>
     
 
@@ -2997,8 +2999,10 @@ consider an entry expired.</p></td>
 
 
 <div class="description usertext">
-    <p>This method is called when the storage is deleted or resetted and if entries are disabled.
-It can be used to define the initial value of the data the class saves on the storage.</p>
+    <p>This method is called when the storage is deleted or resetted and if entries are
+disabled.
+It can be used to define the initial value of the data the class saves on the
+storage.</p>
 </div>
 
 
@@ -3063,7 +3067,7 @@ It can be used to define the initial value of the data the class saves on the st
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line484">line 484</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line487">line 487</a>
     </li></ul></dd>
     
 
@@ -3217,7 +3221,7 @@ It can be used to define the initial value of the data the class saves on the st
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line493">line 493</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line496">line 496</a>
     </li></ul></dd>
     
 
@@ -3257,8 +3261,8 @@ It can be used to define the initial value of the data the class saves on the st
 
 
 <div class="description usertext">
-    <p>This method _&quot;initializes&quot; the class by validating custom options, loading the reference for
-the required storage and synchronizing the data with the storage.</p>
+    <p>This method _&quot;initializes&quot; the class by validating custom options, loading the
+reference for the required storage and synchronizing the data with the storage.</p>
 </div>
 
 
@@ -3305,7 +3309,7 @@ the required storage and synchronizing the data with the storage.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line506">line 506</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line509">line 509</a>
     </li></ul></dd>
     
 
@@ -3345,8 +3349,8 @@ the required storage and synchronizing the data with the storage.</p>
 
 
 <div class="description usertext">
-    <p>This method checks the list of priorities from the <code>storage.typePriority</code> option and tries
-to find the first available storage.</p>
+    <p>This method checks the list of priorities from the <code>storage.typePriority</code> option and
+tries to find the first available storage.</p>
 </div>
 
 
@@ -3440,7 +3444,7 @@ to find the first available storage.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line532">line 532</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line536">line 536</a>
     </li></ul></dd>
     
 
@@ -3480,9 +3484,10 @@ to find the first available storage.</p>
 
 
 <div class="description usertext">
-    <p>Initializes the data on the class and if needed, on the storage. It first tries to load
-existing data from the storage, if there's nothing, it just sets an initial stage; but if
-there was something on the storage, and entries are enabled, it will try (if also enabled)
+    <p>Initializes the data on the class and if needed, on the storage. It first tries to
+load existing data from the storage, if there's nothing, it just sets an initial
+stage; but if there was something on the storage, and entries are enabled, it will
+try (if also enabled)
 to delete expired entries.</p>
 </div>
 
@@ -3548,7 +3553,7 @@ to delete expired entries.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line552">line 552</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line556">line 556</a>
     </li></ul></dd>
     
 
@@ -3654,8 +3659,8 @@ to delete expired entries.</p>
 
             
 
-            <td class="description last"><p>In case it's being used as a fallback, this will be the name
-of the storage that wasn't available.</p></td>
+            <td class="description last"><p>In case it's being used as a fallback, this will be
+the name of the storage that wasn't available.</p></td>
         </tr>
 
     
@@ -3715,7 +3720,7 @@ of the storage that wasn't available.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line566">line 566</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line570">line 570</a>
     </li></ul></dd>
     
 
@@ -3869,7 +3874,7 @@ of the storage that wasn't available.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line581">line 581</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line585">line 585</a>
     </li></ul></dd>
     
 
@@ -3975,8 +3980,8 @@ of the storage that wasn't available.</p></td>
 
             
 
-            <td class="description last"><p>In case it's being used as a fallback, this will be the name
-of the storage that wasn't available.</p></td>
+            <td class="description last"><p>In case it's being used as a fallback, this will be
+the name of the storage that wasn't available.</p></td>
         </tr>
 
     
@@ -4036,7 +4041,7 @@ of the storage that wasn't available.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line597">line 597</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line601">line 601</a>
     </li></ul></dd>
     
 
@@ -4076,8 +4081,8 @@ of the storage that wasn't available.</p></td>
 
 
 <div class="description usertext">
-    <p>This method is just here to comply with the <a href="module-browser_simpleStorage.html#.SimpleStorageStorage"><code>SimpleStorageStorage</code></a> <em>&quot;interface&quot;</em> as
-the temp storage is always available.</p>
+    <p>This method is just here to comply with the <a href="module-browser_simpleStorage.html#.SimpleStorageStorage"><code>SimpleStorageStorage</code></a>
+<em>&quot;interface&quot;</em> as the temp storage is always available.</p>
 </div>
 
 
@@ -4143,8 +4148,8 @@ the temp storage is always available.</p>
 
             
 
-            <td class="description last"><p>In case it's being used as a fallback, this will be the name
-of the storage that wasn't available.</p></td>
+            <td class="description last"><p>In case it's being used as a fallback, this will be
+the name of the storage that wasn't available.</p></td>
         </tr>
 
     
@@ -4204,7 +4209,7 @@ of the storage that wasn't available.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line615">line 615</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line621">line 621</a>
     </li></ul></dd>
     
 
@@ -4244,8 +4249,10 @@ of the storage that wasn't available.</p></td>
 
 
 <div class="description usertext">
-    <p>Merges the class default options with the custom ones that can be sent to the constructor.
-The reason there's a method for this is because of a specific (edgy) use case: <code>tempStorage</code>
+    <p>Merges the class default options with the custom ones that can be sent to the
+constructor.
+The reason there's a method for this is because of a specific (edgy) use case:
+<code>tempStorage</code>
 can be a Proxy, and a Proxy without defined keys stops working after an
 <code>Object.assign</code>/spread.</p>
 </div>
@@ -4384,7 +4391,7 @@ can be a Proxy, and a Proxy without defined keys stops working after an
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line630">line 630</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line636">line 636</a>
     </li></ul></dd>
     
 
@@ -4489,7 +4496,7 @@ can be a Proxy, and a Proxy without defined keys stops working after an
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line641">line 641</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line648">line 648</a>
     </li></ul></dd>
     
 
@@ -4604,7 +4611,8 @@ can be a Proxy, and a Proxy without defined keys stops working after an
                 </td>
             
 
-            <td class="description last"><p>Whether or not the class should save the data into the storage.</p></td>
+            <td class="description last"><p>Whether or not the class should save the data into the
+storage.</p></td>
         </tr>
 
     
@@ -4664,7 +4672,7 @@ can be a Proxy, and a Proxy without defined keys stops working after an
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line650">line 650</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line657">line 657</a>
     </li></ul></dd>
     
 
@@ -4751,7 +4759,7 @@ can be a Proxy, and a Proxy without defined keys stops working after an
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line665">line 665</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line673">line 673</a>
     </li></ul></dd>
     
 
@@ -4791,8 +4799,8 @@ can be a Proxy, and a Proxy without defined keys stops working after an
 
 
 <div class="description usertext">
-    <p>Overwrites the data reference the class has and, if <code>save</code> is used, it also saves it into
-the storage.</p>
+    <p>Overwrites the data reference the class has and, if <code>save</code> is used, it also saves it
+into the storage.</p>
 </div>
 
 
@@ -4865,8 +4873,8 @@ the storage.</p>
                 </td>
             
 
-            <td class="description last"><p>The new data, or a <a href="external-Promise.html"><code>Promise</code></a> that resolves into the
-new data.</p></td>
+            <td class="description last"><p>The new data, or a <a href="external-Promise.html"><code>Promise</code></a> that
+resolves into the new data.</p></td>
         </tr>
 
     
@@ -4905,8 +4913,8 @@ new data.</p></td>
                 </td>
             
 
-            <td class="description last"><p>Whether or not the class should save the data into the
-storage.</p></td>
+            <td class="description last"><p>Whether or not the class should save the data
+into the storage.</p></td>
         </tr>
 
     
@@ -4932,8 +4940,9 @@ storage.</p></td>
 
         
 <div class="param-desc">
-    <p>If <code>data</code> is an <code>object</code>, it will return the same object; but
-if <code>data</code> is a <a href="external-Promise.html"><code>Promise</code></a>, it will return the <em>&quot;promise chain&quot;</em>.</p>
+    <p>If <code>data</code> is an <code>object</code>, it will return the same
+object; but if <code>data</code> is a <a href="external-Promise.html"><code>Promise</code></a>, it will
+return the <em>&quot;promise chain&quot;</em>.</p>
 </div>
 
 
@@ -4974,7 +4983,7 @@ if <code>data</code> is a <a href="external-Promise.html"><code>Promise</code></
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line677">line 677</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line685">line 685</a>
     </li></ul></dd>
     
 
@@ -5133,7 +5142,7 @@ if <code>data</code> is a <a href="external-Promise.html"><code>Promise</code></
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line687">line 687</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line695">line 695</a>
     </li></ul></dd>
     
 
@@ -5292,7 +5301,7 @@ if <code>data</code> is a <a href="external-Promise.html"><code>Promise</code></
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line697">line 697</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line705">line 705</a>
     </li></ul></dd>
     
 
@@ -5451,7 +5460,7 @@ if <code>data</code> is a <a href="external-Promise.html"><code>Promise</code></
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line711">line 711</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line720">line 720</a>
     </li></ul></dd>
     
 
@@ -5493,8 +5502,8 @@ if <code>data</code> is a <a href="external-Promise.html"><code>Promise</code></
 <div class="description usertext">
     <p>This is the real method behind <code>_setData</code>. It overwrites the data reference the class
 has and, if <code>save</code> is used, it also saves it into the storage.
-The reason that there are two methods for this is, is because <code>_setData</code> can receive a
-<a href="external-Promise.html"><code>Promise</code></a>, and in that case, this method gets called after it gets resolved.</p>
+The reason that there are two methods for this is, is because <code>_setData</code> can receive
+a <a href="external-Promise.html"><code>Promise</code></a>, and in that case, this method gets called after it gets resolved.</p>
 </div>
 
 
@@ -5571,7 +5580,8 @@ The reason that there are two methods for this is, is because <code>_setData</co
 
             
 
-            <td class="description last"><p>Whether or not the class should save the data into the storage.</p></td>
+            <td class="description last"><p>Whether or not the class should save the data into the
+storage.</p></td>
         </tr>
 
     
@@ -5635,7 +5645,7 @@ The reason that there are two methods for this is, is because <code>_setData</co
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line727">line 727</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line738">line 738</a>
     </li></ul></dd>
     
 
@@ -5707,7 +5717,8 @@ The reason that there are two methods for this is, is because <code>_setData</co
 <dl>
     <dt>
         <div class="param-desc usertext">
-        <p>If either <code>storage.name</code> or <code>storage.key</code> are missing from the options.</p>
+        <p>If either <code>storage.name</code> or <code>storage.key</code> are missing from the
+options.</p>
         </div>
     </dt>
     <dd></dd>
@@ -5734,7 +5745,8 @@ The reason that there are two methods for this is, is because <code>_setData</co
 <dl>
     <dt>
         <div class="param-desc usertext">
-        <p>If the options have a custom logger but it doesn't have <code>warn</code> nor <code>warning</code>
+        <p>If the options have a custom logger but it doesn't have <code>warn</code> nor
+<code>warning</code>
 methods.</p>
         </div>
     </dt>
@@ -5779,7 +5791,7 @@ methods.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line749">line 749</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line762">line 762</a>
     </li></ul></dd>
     
 
@@ -5819,8 +5831,9 @@ methods.</p>
 
 
 <div class="description usertext">
-    <p>Prints out a warning message. The method will first check if there's a custom logger (from
-the class options), otherwise, it will fallback to the <code>console</code> on the <code>window</code> option.</p>
+    <p>Prints out a warning message. The method will first check if there's a custom logger
+(from the class options), otherwise, it will fallback to the <code>console</code> on the
+<code>window</code> option.</p>
 </div>
 
 
@@ -5916,7 +5929,7 @@ the class options), otherwise, it will fallback to the <code>console</code> on t
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line770">line 770</a>
+        <a href="browser_simpleStorage.js.html">browser/simpleStorage.js</a>, <a href="browser_simpleStorage.js.html#line783">line 783</a>
     </li></ul></dd>
     
 
@@ -5956,8 +5969,8 @@ the class options), otherwise, it will fallback to the <code>console</code> on t
 
 
 <div class="description usertext">
-    <p>Prints out a message saying that the class is doing a fallback from a storage to another
-one.</p>
+    <p>Prints out a message saying that the class is doing a fallback from a storage to
+another one.</p>
 </div>
 
 
@@ -6079,7 +6092,7 @@ one.</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> using a forked <a href="https://github.com/homer0/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
