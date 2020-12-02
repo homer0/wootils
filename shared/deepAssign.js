@@ -204,10 +204,9 @@ class DeepAssign {
    */
   _resolve(source, target, ignoreArrayMode = false) {
     let result;
-    if (
-      typeof target !== 'undefined' &&
-      typeof source !== 'undefined'
-    ) {
+    const targetIsUndefined = typeof target === 'undefined';
+    const sourceIsUndefined = typeof source === 'undefined';
+    if (!targetIsUndefined && !sourceIsUndefined) {
       if (Array.isArray(target) && Array.isArray(source)) {
         const { arrayMode } = this._options;
         const useMode = ignoreArrayMode && !['merge', 'shallowMerge'].includes(arrayMode) ?
@@ -223,7 +222,7 @@ class DeepAssign {
       } else {
         result = target;
       }
-    } else {
+    } else if (!targetIsUndefined) {
       result = this._resolveFromEmpty(target);
     }
 
