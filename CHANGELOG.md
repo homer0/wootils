@@ -1,3 +1,10 @@
+## [4.2.1](https://github.com/homer0/wootils/compare/4.2.0...4.2.1) (2020-12-02)
+
+
+### Bug Fixes
+
+* **shared/deepAssign:** handle undefined properties ([1e23db2](https://github.com/homer0/wootils/commit/1e23db282147c4105f0964c93d52d660386be6fd))
+
 # [4.2.0](https://github.com/homer0/wootils/compare/4.1.0...4.2.0) (2020-09-17)
 
 
