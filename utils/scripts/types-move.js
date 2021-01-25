@@ -35,6 +35,24 @@ const loadFilesToCopy = async (target, typePath) => {
 
   return { target, files };
 };
+/**
+ * Copies a types file and fixes any path to reference files it may contain.
+ *
+ * @param {string} filepath        The path to the types file.
+ * @param {string} destination     The path where the file should be copied to.
+ * @param {string} distanceToRoot  The distance from the new path to the root. This is
+ *                                 needed in order to replace paths to `@types`'
+ *                                 references.
+ * @returns {Promise<any>}
+ */
+const processFile = async (filepath, destination, distanceToRoot) => {
+  let contents = await fs.readFile(filepath, 'utf-8');
+  contents = contents.replace(
+    /(<reference path=")[\.\/]+(\/@types)/gi,
+    `$1${distanceToRoot}$2`,
+  );
+  return fs.writeFile(destination, contents);
+};
 
 (async () => {
   const { cjs2esm } = packageJson.config;
@@ -45,10 +63,26 @@ const loadFilesToCopy = async (target, typePath) => {
   const typesPath = path.join(cwd, typesDir);
   const esmPath = path.join(cwd, esmDir);
   const destinationsByTarget = targets
-    .map((target) => ({
-      target,
-      paths: [path.join(cwd, target), path.join(esmPath, target)],
-    }))
+    .map((target) => {
+      const targetSrcPath = path.join(cwd, target);
+      const targetSrcDistance = path.relative(targetSrcPath, cwd);
+      const targetEsmPath = path.join(esmPath, target);
+      const targetEsmDistance = path.relative(targetEsmPath, cwd);
+
+      return {
+        target,
+        paths: [
+          {
+            path: targetSrcPath,
+            distance: targetSrcDistance,
+          },
+          {
+            path: targetEsmPath,
+            distance: targetEsmDistance,
+          },
+        ],
+      };
+    })
     .reduce((acc, item) => ({ ...acc, [item.target]: item.paths }), {});
 
   let typesByTarget = await Promise.all(
@@ -70,11 +104,13 @@ const loadFilesToCopy = async (target, typePath) => {
       return Promise.all(
         destinations.map((dest) =>
           Promise.all(
-            files.map((file) => {
-              const from = file.filepath;
-              const to = path.join(dest, file.filename);
-              return fs.copyFile(from, to);
-            }),
+            files.map((file) =>
+              processFile(
+                file.filepath,
+                path.join(dest.path, file.filename),
+                dest.distance,
+              ),
+            ),
           ),
         ),
       );
