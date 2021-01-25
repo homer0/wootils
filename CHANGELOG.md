@@ -1,3 +1,10 @@
+## [4.3.2](https://github.com/homer0/wootils/compare/4.3.1...4.3.2) (2021-01-25)
+
+
+### Bug Fixes
+
+* import Jimple type the right way ([395fb7f](https://github.com/homer0/wootils/commit/395fb7f08efca1d5545df2315c3990f9a92f29db))
+
 ## [4.3.1](https://github.com/homer0/wootils/compare/4.3.0...4.3.1) (2021-01-25)
 
 
