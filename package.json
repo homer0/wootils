@@ -14,9 +14,9 @@
     "extend": "^3.0.2"
   },
   "devDependencies": {
-    "@homer0/eslint-plugin": "^6.0.1",
+    "@homer0/eslint-plugin": "^6.0.2",
     "@homer0/prettier-config": "^1.1.1",
-    "@homer0/prettier-plugin-jsdoc": "^1.1.2",
+    "@homer0/prettier-plugin-jsdoc": "^2.0.0",
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/git": "^9.0.0",
     "cjs2esm": "^1.1.0",
@@ -32,7 +32,8 @@
     "leasot": "^11.5.0",
     "lint-staged": "^10.5.3",
     "prettier": "^2.2.1",
-    "semantic-release": "^17.3.7"
+    "semantic-release": "^17.3.7",
+    "typescript": "^4.1.3"
   },
   "engine-strict": true,
   "engines": {
