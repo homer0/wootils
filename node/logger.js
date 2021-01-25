@@ -150,6 +150,11 @@ class Logger {
   /**
    * Logs a message with an specific color on the console.
    *
+   * @param {LoggerMessage} message        A text message to log or a list of them.
+   * @param {string}        [color='raw']  Optional. The color of the message (the default
+   *                                       is the terminal default). This can be
+   *                                       overwritten line by line when the message is an
+   *                                       array, take a look at the example.
    * @example
    *
    *   // Simple
@@ -169,11 +174,6 @@ class Logger {
    *     'grey',
    *   );
    *
-   * @param {LoggerMessage} message        A text message to log or a list of them.
-   * @param {string}        [color='raw']  Optional. The color of the message (the default
-   *                                       is the terminal default). This can be
-   *                                       overwritten line by line when the message is an
-   *                                       array, take a look at the example.
    */
   log(message, color = 'raw') {
     const lines = [];
