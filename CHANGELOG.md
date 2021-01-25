@@ -1,3 +1,10 @@
+## [4.3.1](https://github.com/homer0/wootils/compare/4.3.0...4.3.1) (2021-01-25)
+
+
+### Bug Fixes
+
+* update paths to reference files ([619fe35](https://github.com/homer0/wootils/commit/619fe35279f08b2c4230b1052a903838fa28457a))
+
 # [4.3.0](https://github.com/homer0/wootils/compare/4.2.1...4.3.0) (2021-01-25)
 
 
