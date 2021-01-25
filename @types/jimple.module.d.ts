@@ -25,7 +25,7 @@ declare module 'jimple' {
        * @return {*} The object related to the service or the value of the parameter associated with the key informed
        * @throws If the key does not exist
        */
-      get(key: string): any;
+      get<T=any>(key: string): T;
       /**
        * Defines a new parameter or service.
        * @param {string} key - The key of the parameter or service to be defined
