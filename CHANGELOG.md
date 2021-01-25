@@ -1,3 +1,10 @@
+# [4.3.0](https://github.com/homer0/wootils/compare/4.2.1...4.3.0) (2021-01-25)
+
+
+### Features
+
+* add type definitions ([9dd05d5](https://github.com/homer0/wootils/commit/9dd05d5bb747580b00b7332b71287090acbd27d2))
+
 ## [4.2.1](https://github.com/homer0/wootils/compare/4.2.0...4.2.1) (2020-12-02)
 
 
