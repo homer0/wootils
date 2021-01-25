@@ -4,7 +4,7 @@
  */
 
 /**
- * @typedef {import('jimple')} Jimple
+ * @typedef {import('jimple').default} Jimple
  * @external Jimple
  * @see https://yarnpkg.com/en/package/jimple
  */
@@ -17,6 +17,7 @@
 /**
  * @callback ProviderRegisterFn
  * @param {Jimple} app  A reference to the dependency injection container.
+ * @returns {Void}
  * @parent module:shared/jimpleFns
  */
 
