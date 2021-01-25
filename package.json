@@ -33,7 +33,8 @@
     "lint-staged": "^10.5.3",
     "prettier": "^2.2.1",
     "semantic-release": "^17.3.7",
-    "typescript": "^4.1.3"
+    "typescript": "^4.1.3",
+    "yarn-or-npm": "^3.0.1"
   },
   "engine-strict": true,
   "engines": {
@@ -59,7 +60,9 @@
     "lint:all": "./utils/scripts/lint-all",
     "docs": "./utils/scripts/docs",
     "todo": "./utils/scripts/todo",
-    "types": "./utils/scripts/types"
+    "types": "./utils/scripts/types",
+    "pretypes:move": "yon run types",
+    "types:move": "node ./utils/scripts/types-move.js"
   },
   "config": {
     "cjs2esm": {
