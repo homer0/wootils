@@ -45,7 +45,6 @@ const ObjectUtils = require('./objectUtils');
  * @typedef {Object} APIClientRequestOptionsProperties
  * @property {string} url
  * The request URL.
- * @augments APIClientFetchOptions
  * @parent module:shared/apiClient
  */
 

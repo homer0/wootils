@@ -73,7 +73,6 @@
  * @typedef {Object} ProvidersProperties
  * @property {ProviderRegisterFn} register  The function that will register all the
  *                                          providers on the container.
- * @augments ProvidersDictionary
  */
 
 /**
