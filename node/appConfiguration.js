@@ -152,6 +152,12 @@ class AppConfiguration {
   /**
    * Gets a setting or settings from the active configuration.
    *
+   * @param {string | string[]} setting          A setting path or a list of them.
+   * @param {boolean}           [asArray=false]  When `setting` is an Array, if this is
+   *                                             `true`,
+   *                                             instead of returning an object, it will
+   *                                             return an array of settings.
+   * @returns {*}
    * @example
    *
    *   // To get a single setting
@@ -166,12 +172,6 @@ class AppConfiguration {
    *   // Use paths
    *   const subValue = appConfiguration.get('settingOne.subSetting');
    *
-   * @param {string | string[]} setting          A setting path or a list of them.
-   * @param {boolean}           [asArray=false]  When `setting` is an Array, if this is
-   *                                             `true`,
-   *                                             instead of returning an object, it will
-   *                                             return an array of settings.
-   * @returns {*}
    */
   get(setting, asArray = false) {
     let result;
@@ -292,6 +292,12 @@ class AppConfiguration {
    * If both the current and the new value of a setting are objects, then instead of
    * overwriting it, the method will merge them.
    *
+   * @param {string | Object.<string, any>} setting  The name of the setting to update or
+   *                                                 a dictionary of settings and their
+   *                                                 values.
+   * @param {*}                             [value]  The value of the setting. This is
+   *                                                 only used when `setting` is a string.
+   * @throws {Error} If `setting` is not a dictionary and `value` is undefined.
    * @example
    *
    *   // To set a single setting value
@@ -302,12 +308,6 @@ class AppConfiguration {
    *     settingTwo: 'valueTwo',
    *   });
    *
-   * @param {string | Object.<string, any>} setting  The name of the setting to update or
-   *                                                 a dictionary of settings and their
-   *                                                 values.
-   * @param {*}                             [value]  The value of the setting. This is
-   *                                                 only used when `setting` is a string.
-   * @throws {Error} If `setting` is not a dictionary and `value` is undefined.
    */
   set(setting, value) {
     if (typeof setting === 'object') {

@@ -22,12 +22,12 @@
 
 /**
  * @typedef {Object} Provider
+ * @property {ProviderRegisterFn} register  The method that gets called when registering
+ *                                          the provider.
  * @example
  *
  *   container.register(myProvider);
  *
- * @property {ProviderRegisterFn} register  The method that gets called when registering
- *                                          the provider.
  * @parent module:shared/jimpleFns
  */
 
@@ -46,6 +46,9 @@
  * {@link Provider}".
  *
  * @callback ProviderCreator
+ * @param {Partial<O>} [options={}]  The options to create the provider.
+ * @returns {Provider}
+ * @template O
  * @example
  *
  *   // Register it with its default options.
@@ -53,11 +56,6 @@
  *   // Register it with custom options.
  *   container.register(myProvider({ enabled: true }));
  *
- * @param {Partial<O>} [options={}]  The options to create the provider.
- * @property {ProviderRegisterFn} register  The method that gets called when registering
- *                                          the provider.
- * @returns {Provider}
- * @template O
  * @parent module:shared/jimpleFns
  */
 
@@ -73,7 +71,6 @@
  * @typedef {Object} ProvidersProperties
  * @property {ProviderRegisterFn} register  The function that will register all the
  *                                          providers on the container.
- * @augments ProvidersDictionary
  */
 
 /**
@@ -81,6 +78,9 @@
  * them at once.
  *
  * @callback ProvidersCreator
+ * @param {Object.<string, Provider>} providers  The dictionary of providers to add to the
+ *                                               collection.
+ * @returns {Providers}
  * @example
  *
  *   // Generate the collection
@@ -90,9 +90,6 @@
  *   // Register only one
  *   container.register(myProviders.otherProvider);
  *
- * @param {Object.<string, Provider>} providers  The dictionary of providers to add to the
- *                                               collection.
- * @returns {Providers}
  */
 
 /**
@@ -141,6 +138,12 @@
  * Generates a resource entity with a specific function Jimple or an abstraction of jimple
  * can make use of.
  *
+ * @param {string}   name  The name of the resource. The generated object will have a
+ *                         property with its name and the value `true`.
+ * @param {string}   key   The name of the key that will have the function on the
+ *                         generated object.
+ * @param {Function} fn    The function to interact with the resource.
+ * @returns {Resource}
  * @example
  *
  * <caption>
@@ -151,12 +154,6 @@
  *     // ...
  *   });
  *
- * @param {string}   name  The name of the resource. The generated object will have a
- *                         property with its name and the value `true`.
- * @param {string}   key   The name of the key that will have the function on the
- *                         generated object.
- * @param {Function} fn    The function to interact with the resource.
- * @returns {Resource}
  */
 const resource = (name, key, fn) => ({
   [key]: fn,
@@ -175,6 +172,12 @@ const resource = (name, key, fn) => ({
  * parameters. It's very important that all the parameters of the `creatorFn` are
  * optional, otherwise it will cause an error if called as a resource.
  *
+ * @param {string}   name       The name of the resource. The generated object will have a
+ *                              property with its name and the value `true`.
+ * @param {string}   key        The name of the key that will have the function on the
+ *                              generated object.
+ * @param {Function} creatorFn  The function that will generate the 'resource function'.
+ * @returns {ResourceCreator}
  * @example
  *
  * <caption>Let's use `provider` again, that requires a `register` function:</caption>
@@ -193,12 +196,6 @@ const resource = (name, key, fn) => ({
  *   // Register it after creating a configured resource
  *   container.register(someProvider({ enabled: false }));
  *
- * @param {string}   name       The name of the resource. The generated object will have a
- *                              property with its name and the value `true`.
- * @param {string}   key        The name of the key that will have the function on the
- *                              generated object.
- * @param {Function} creatorFn  The function that will generate the 'resource function'.
- * @returns {ResourceCreator}
  */
 const resourceCreator = (name, key, creatorFn) =>
   new Proxy((...args) => resource(name, key, creatorFn(...args)), {
@@ -224,6 +221,20 @@ const resourceCreator = (name, key, creatorFn) =>
  * Generates a collection of resources that can be called individually or all together via
  * the `key` function.
  *
+ * @param {string}                 name       The name of the collection. When a
+ *                                            collection is generated, the returned object
+ *                                            will have a property with its name and the
+ *                                            value `true`.
+ * @param {string}                 key        The name of the key that will have the
+ *                                            function to interact with the collection on
+ *                                            the final object.
+ * @param {?ResourcesCollectionFn} [fn=null]  By default, if the `key` function of the
+ *                                            collection gets called, all the items of the
+ *                                            collection will be called with the same
+ *                                            arguments. But you can specify a function
+ *                                            that will receive all the items and all the
+ *                                            arguments to customize the interaction.
+ * @returns {ResourcesCollectionCreator<Resource>}
  * @example
  *
  * <caption>
@@ -257,20 +268,6 @@ const resourceCreator = (name, key, creatorFn) =>
  *   // Register only one, after configuring it
  *   container.register(bothProviders.secondProvider({ enabled: false }));
  *
- * @param {string}                 name       The name of the collection. When a
- *                                            collection is generated, the returned object
- *                                            will have a property with its name and the
- *                                            value `true`.
- * @param {string}                 key        The name of the key that will have the
- *                                            function to interact with the collection on
- *                                            the final object.
- * @param {?ResourcesCollectionFn} [fn=null]  By default, if the `key` function of the
- *                                            collection gets called, all the items of the
- *                                            collection will be called with the same
- *                                            arguments. But you can specify a function
- *                                            that will receive all the items and all the
- *                                            arguments to customize the interaction.
- * @returns {ResourcesCollectionCreator<Resource>}
  */
 const resourcesCollection = (name, key, fn = null) => (items) => {
   const invalidKeys = [name, key];
@@ -306,6 +303,9 @@ const resourcesCollection = (name, key, fn = null) => (items) => {
 /**
  * Creates a resource provider.
  *
+ * @param {ProviderRegisterFn} registerFn  The function the container will call in order
+ *                                         to register the provider.
+ * @returns {Provider}
  * @example
  *
  *   // Define the provider
@@ -316,9 +316,6 @@ const resourcesCollection = (name, key, fn = null) => (items) => {
  *   // Register it on the container
  *   container.register(myService);
  *
- * @param {ProviderRegisterFn} registerFn  The function the container will call in order
- *                                         to register the provider.
- * @returns {Provider}
  */
 const provider = (registerFn) => resource('provider', 'register', registerFn);
 /**
@@ -326,6 +323,8 @@ const provider = (registerFn) => resource('provider', 'register', registerFn);
  * being sent to the container to register, it can also be called as a function with
  * custom options and generate a new provider.
  *
+ * @param {ProviderCreatorFn} creatorFn  The function that generates the provider.
+ * @returns {ProviderCreator<any>}
  * @example
  *
  *   // Define the provider creator
@@ -337,8 +336,6 @@ const provider = (registerFn) => resource('provider', 'register', registerFn);
  *   // Register it with custom options
  *   container.register(myProvider({ enabled: true }));
  *
- * @param {ProviderCreatorFn} creatorFn  The function that generates the provider.
- * @returns {ProviderCreator<any>}
  */
 const providerCreator = (creatorFn) => resourceCreator('provider', 'register', creatorFn);
 /**
@@ -369,14 +366,14 @@ const getKeys = (target) => {
  * Takes a Jimple container and creates a proxy for it so resouces can be accessed and
  * registered like if they were its properties.
  *
+ * @param {Jimple} container  The Jimpex container the proxy will be created for.
+ * @returns {Jimple} The proxied version of the container.
  * @example
  *
  *   const container = proxyContainer(new Jimple());
  *   container.service = () => new MyService();
  *   container.service.doSomething();
  *
- * @param {Jimple} container  The Jimpex container the proxy will be created for.
- * @returns {Jimple} The proxied version of the container.
  */
 const proxyContainer = (container) => {
   const keys = getKeys(container);

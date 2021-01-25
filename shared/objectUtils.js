@@ -93,17 +93,6 @@ class ObjectUtils {
   /**
    * Deletes a property of an object using a path.
    *
-   * @example
-   *
-   *   const target = {
-   *     propOne: {
-   *       propOneSub: 'Charito!',
-   *     },
-   *     propTwo: '!!!',
-   *   };
-   *   console.log(ObjectUtils.delete(target, 'propOne.propOneSub'));
-   *   // Will output { propTwo: '!!!' }
-   *
    * @param {Object}  target                       The object from where the property will
    *                                               be removed.
    * @param {string}  objPath                      The path to the property.
@@ -118,6 +107,17 @@ class ObjectUtils {
    *                                               the path is invalid. If this is
    *                                               `false`, the method will silently fail.
    * @returns {Object} A copy of the original object with the removed property/properties.
+   * @example
+   *
+   *   const target = {
+   *     propOne: {
+   *       propOneSub: 'Charito!',
+   *     },
+   *     propTwo: '!!!',
+   *   };
+   *   console.log(ObjectUtils.delete(target, 'propOne.propOneSub'));
+   *   // Will output { propTwo: '!!!' }
+   *
    */
   static delete(
     target,
@@ -151,6 +151,18 @@ class ObjectUtils {
   /**
    * Extracts a property or properties from an object in order to create a new one.
    *
+   * @param {Object} target
+   * The object from where the property/properties will be extracted.
+   * @param {ObjectUtilsExtractPath | ObjectUtilsExtractPath[]} objPaths
+   * This can be a single path or a list of them. And for this method, the paths are not
+   * only strings but can also be an object with a single key, the would be the path to
+   * where to "do the extraction", and the value the path on the target object.
+   * @param {string} [pathDelimiter='.']
+   * The delimiter that will separate the path components.
+   * @param {boolean} [failWithError=false]
+   * Whether or not to throw an error when the path is invalid. If this is `false`, the
+   * method will silently fail an empty object.
+   * @returns {Object}
    * @example
    *
    *   const target = {
@@ -168,18 +180,6 @@ class ObjectUtils {
    *   );
    *   // Will output { name: 'Rosario', age: 3, address: { planet: 'earth' } }
    *
-   * @param {Object} target
-   * The object from where the property/properties will be extracted.
-   * @param {ObjectUtilsExtractPath | ObjectUtilsExtractPath[]} objPaths
-   * This can be a single path or a list of them. And for this method, the paths are not
-   * only strings but can also be an object with a single key, the would be the path to
-   * where to "do the extraction", and the value the path on the target object.
-   * @param {string} [pathDelimiter='.']
-   * The delimiter that will separate the path components.
-   * @param {boolean} [failWithError=false]
-   * Whether or not to throw an error when the path is invalid. If this is `false`, the
-   * method will silently fail an empty object.
-   * @returns {Object}
    */
   static extract(target, objPaths, pathDelimiter = '.', failWithError = false) {
     const copied = this.copy(target);
@@ -228,17 +228,6 @@ class ObjectUtils {
   /**
    * Flatterns an object properties into a single level dictionary.
    *
-   * @example
-   *
-   * const target = {
-   * propOne: {
-   * propOneSub: 'Charito!',
-   * },
-   * propTwo: '!!!',
-   * };
-   * console.log(ObjectUtils.flat(target);
-   * // Will output { 'propOne.propOneSub': 'Charito!', propTwo: '!!!' }
-   *
    * @param {Object} target
    * The object to transform.
    * @param {string} [pathDelimiter='.']
@@ -252,6 +241,17 @@ class ObjectUtils {
    * an Array property should be flattern or not. It will receive the key for the property
    * and the Object/Array itself.
    * @returns {Object}
+   * @example
+   *
+   * const target = {
+   * propOne: {
+   * propOneSub: 'Charito!',
+   * },
+   * propTwo: '!!!',
+   * };
+   * console.log(ObjectUtils.flat(target);
+   * // Will output { 'propOne.propOneSub': 'Charito!', propTwo: '!!!' }
+   *
    */
   static flat(target, pathDelimiter = '.', prefix = '', shouldFlattern = null) {
     let result = {};
@@ -277,6 +277,23 @@ class ObjectUtils {
    * Formats all the keys on an object using a way similar to `.replace(regexp, ...)` but
    * that also works recursively and with _"object paths"_.
    *
+   * @param {Object}   target               The object for format.
+   * @param {RegExp}   searchExpression     The regular expression the method will use
+   *                                        "match" the keys.
+   * @param {Function} replaceWith          The callback the method will call when
+   *                                        formatting a replacement. Think of
+   *                                        `searchExpression` and `replaceWith` as the
+   *                                        parameters of a `.replace` call,
+   *                                        where the object is the key.
+   * @param {string[]} [include=[]]         A list of keys or paths where the
+   *                                        transformation will be made. If not specified,
+   *                                        the method will use all the keys from the
+   *                                        object.
+   * @param {string[]} [exclude=[]]         A list of keys or paths where the
+   *                                        transformation won't be made.
+   * @param {string}   [pathDelimiter='.']  The delimiter that will separate the path
+   *                                        components for both `include` and `exclude`.
+   * @returns {Object}
    * @example
    *
    *   const target = {
@@ -296,23 +313,6 @@ class ObjectUtils {
    *   );
    *   // Will output { propOne: 'Charito!}.
    *
-   * @param {Object}   target               The object for format.
-   * @param {RegExp}   searchExpression     The regular expression the method will use
-   *                                        "match" the keys.
-   * @param {Function} replaceWith          The callback the method will call when
-   *                                        formatting a replacement. Think of
-   *                                        `searchExpression` and `replaceWith` as the
-   *                                        parameters of a `.replace` call,
-   *                                        where the object is the key.
-   * @param {string[]} [include=[]]         A list of keys or paths where the
-   *                                        transformation will be made. If not specified,
-   *                                        the method will use all the keys from the
-   *                                        object.
-   * @param {string[]} [exclude=[]]         A list of keys or paths where the
-   *                                        transformation won't be made.
-   * @param {string}   [pathDelimiter='.']  The delimiter that will separate the path
-   *                                        components for both `include` and `exclude`.
-   * @returns {Object}
    */
   static formatKeys(
     target,
@@ -520,17 +520,6 @@ class ObjectUtils {
   /**
    * Returns the value of an object property using a path.
    *
-   * @example
-   *
-   *   const obj = {
-   *     propOne: {
-   *       propOneSub: 'Charito!',
-   *     },
-   *     propTwo: '!!!',
-   *   };
-   *   console.log(ObjectUtils.get(obj, 'propOne.propOneSub'));
-   *   // Will output 'Charito!'
-   *
    * @param {Object}  target                 The object from where the property will be
    *                                         read.
    * @param {string}  objPath                The path to the property.
@@ -542,6 +531,17 @@ class ObjectUtils {
    *                                         `undefined`.
    * @returns {*}
    * @throws {Error} If the path is invalid and `failWithError` is set to `true`.
+   * @example
+   *
+   *   const obj = {
+   *     propOne: {
+   *       propOneSub: 'Charito!',
+   *     },
+   *     propTwo: '!!!',
+   *   };
+   *   console.log(ObjectUtils.get(obj, 'propOne.propOneSub'));
+   *   // Will output 'Charito!'
+   *
    */
   static get(target, objPath, pathDelimiter = '.', failWithError = false) {
     const parts = objPath.split(pathDelimiter);
@@ -631,6 +631,8 @@ class ObjectUtils {
    * This method makes a deep merge of a list of objects into a new one. The method also
    * supports arrays.
    *
+   * @param {...Object} targets  The objects to merge.
+   * @returns {Object}
    * @example
    *
    *   const objA = { a: 'first' };
@@ -645,8 +647,6 @@ class ObjectUtils {
    *   console.log(ObjectUtils.merge(objA, objB));
    *   // Will output [{ a: 'first', b: 'second' }]
    *
-   * @param {...Object} targets  The objects to merge.
-   * @returns {Object}
    */
   static merge(...targets) {
     const [firstTarget] = targets;
@@ -656,12 +656,6 @@ class ObjectUtils {
   /**
    * Sets a property on an object using a path. If the path doesn't exist, it will be
    * created.
-   *
-   * @example
-   *
-   *   const target = {};
-   *   console.log(ObjectUtils.set(target, 'some.prop.path', 'some-value'));
-   *   // Will output { some: { prop: { path: 'some-value' } } }
    *
    * @param {Object}  target                 The object where the property will be set.
    * @param {string}  objPath                The path for the property.
@@ -675,6 +669,12 @@ class ObjectUtils {
    * @returns {Object} A copy of the original object with the added property/properties.
    * @throws {Error} If one of the path components is for a non-object property and
    *                 `failWithError` is set to `true`.
+   * @example
+   *
+   *   const target = {};
+   *   console.log(ObjectUtils.set(target, 'some.prop.path', 'some-value'));
+   *   // Will output { some: { prop: { path: 'some-value' } } }
+   *
    */
   static set(target, objPath, value, pathDelimiter = '.', failWithError = false) {
     let result = this.copy(target);
@@ -770,6 +770,10 @@ class ObjectUtils {
    * This method does the exact opposite from `flat`: It takes an already flattern object
    * and restores it structure.
    *
+   * @param {Object} target               The object to transform.
+   * @param {string} [pathDelimiter='.']  The delimiter that will separate the path
+   *                                      components.
+   * @returns {Object}
    * @example
    *
    *   const target = {
@@ -779,10 +783,6 @@ class ObjectUtils {
    *   console.log(ObjectUtils.unflat(target));
    *   // Will output { propOne: { propOneSub: 'Charito!' }, 'propTwo': '!!!' }
    *
-   * @param {Object} target               The object to transform.
-   * @param {string} [pathDelimiter='.']  The delimiter that will separate the path
-   *                                      components.
-   * @returns {Object}
    */
   static unflat(target, pathDelimiter = '.') {
     return Object.keys(target).reduce(
