@@ -58,7 +58,8 @@
     "lint": "./utils/scripts/lint",
     "lint:all": "./utils/scripts/lint-all",
     "docs": "./utils/scripts/docs",
-    "todo": "./utils/scripts/todo"
+    "todo": "./utils/scripts/todo",
+    "types": "./utils/scripts/types"
   },
   "config": {
     "cjs2esm": {
