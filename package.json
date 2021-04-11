@@ -14,14 +14,14 @@
     "extend": "^3.0.2"
   },
   "devDependencies": {
+    "@commitlint/cli": "^12.1.1",
+    "@commitlint/config-conventional": "^12.1.1",
     "@homer0/eslint-plugin": "^7.0.0",
     "@homer0/prettier-config": "^1.1.1",
     "@homer0/prettier-plugin-jsdoc": "^4.0.0",
     "@semantic-release/changelog": "^5.0.1",
     "@semantic-release/git": "^9.0.0",
     "cjs2esm": "^2.0.0",
-    "commitizen": "^4.2.3",
-    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.24.0",
     "husky": "^6.0.0",
     "is-ci": "^3.0.0",
@@ -40,6 +40,11 @@
   "engine-strict": true,
   "engines": {
     "node": ">=12"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "lint-staged": {
     "*.js": [
@@ -66,9 +71,6 @@
         "node",
         "shared"
       ]
-    },
-    "commitizen": {
-      "path": "cz-conventional-changelog"
     }
   }
 }
