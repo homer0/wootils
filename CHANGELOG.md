@@ -1,3 +1,15 @@
+# [5.0.0](https://github.com/homer0/wootils/compare/4.3.2...5.0.0) (2021-04-11)
+
+
+### Bug Fixes
+
+* drop support for Node 10 ([a08315c](https://github.com/homer0/wootils/commit/a08315ca5844adede51f29abb8d8ff2c93a8ed77))
+
+
+### BREAKING CHANGES
+
+* This package no longer supports Node 10.
+
 ## [4.3.2](https://github.com/homer0/wootils/compare/4.3.1...4.3.2) (2021-01-25)
 
 
