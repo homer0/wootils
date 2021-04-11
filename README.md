@@ -1,7 +1,7 @@
 # Wootils
 
-[![GitHub Workflow Status (master)](https://img.shields.io/github/workflow/status/homer0/wootils/Test/master?style=flat-square)](https://github.com/homer0/wootils/actions?query=workflow%3ATest)
-[![Coveralls GitHub](https://img.shields.io/coveralls/github/homer0/wootils.svg?style=flat-square)](https://coveralls.io/github/homer0/wootils?branch=master)
+[![GitHub Workflow Status (main)](https://img.shields.io/github/workflow/status/homer0/wootils/Test/main?style=flat-square)](https://github.com/homer0/wootils/actions?query=workflow%3ATest)
+[![Coveralls GitHub](https://img.shields.io/coveralls/github/homer0/wootils.svg?style=flat-square)](https://coveralls.io/github/homer0/wootils?branch=main)
 [![David](https://img.shields.io/david/homer0/wootils.svg?style=flat-square)](https://david-dm.org/homer0/wootils)
 [![David](https://img.shields.io/david/dev/homer0/wootils.svg?style=flat-square)](https://david-dm.org/homer0/wootils)
 
@@ -169,7 +169,7 @@ The configuration is on the `commitlint` property of the `package.json`.
 
 ### Releases
 
-I use [`semantic-release`](https://yarnpkg.com/package/semantic-release) and a GitHub action to automatically release on NPM everything that gets merged to master.
+I use [`semantic-release`](https://yarnpkg.com/package/semantic-release) and a GitHub action to automatically release on NPM everything that gets merged to main.
 
 The configuration for `semantic-release` is on `./releaserc` and the workflow for the release is on `./.github/workflow/release.yml`.
 
