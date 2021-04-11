@@ -23,7 +23,8 @@
     "commitizen": "^4.2.3",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.24.0",
-    "husky": "^4.3.8",
+    "husky": "^6.0.0",
+    "is-ci": "^3.0.0",
     "jest": "^26.6.3",
     "jimple": "^1.5.0",
     "jsdoc": "^3.6.6",
@@ -40,13 +41,6 @@
   "engines": {
     "node": ">=12"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "./utils/hooks/pre-commit",
-      "post-merge": "./utils/hooks/post-merge",
-      "prepare-commit-msg": "./utils/hooks/prepare-commit-msg"
-    }
-  },
   "lint-staged": {
     "*.js": [
       "eslint",
@@ -54,6 +48,7 @@
     ]
   },
   "scripts": {
+    "prepare": "./utils/scripts/prepare",
     "prepublishOnly": "./utils/scripts/prepublishOnly",
     "test": "./utils/scripts/test",
     "lint": "./utils/scripts/lint",
