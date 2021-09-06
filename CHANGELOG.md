@@ -1,3 +1,10 @@
+## [5.0.1](https://github.com/homer0/wootils/compare/5.0.0...5.0.1) (2021-09-06)
+
+
+### Bug Fixes
+
+* update dependencies ([4f66ee2](https://github.com/homer0/wootils/commit/4f66ee27a9c93391aca9f9d5965f6e324194c2cf))
+
 # [5.0.0](https://github.com/homer0/wootils/compare/4.3.2...5.0.0) (2021-04-11)
 
 
