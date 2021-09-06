@@ -84,7 +84,7 @@ describe('Logger', () => {
     // Given
     const message = 'hello world';
     const log = jest.fn();
-    spyOn(console, 'log').and.callFake(log);
+    jest.spyOn(console, 'log').mockImplementation(log);
     let sut = null;
     // When
     sut = new Logger();
@@ -99,7 +99,7 @@ describe('Logger', () => {
     const message = 'hello world';
     const color = 'red';
     const log = jest.fn();
-    spyOn(console, 'log').and.callFake(log);
+    jest.spyOn(console, 'log').mockImplementation(log);
     let sut = null;
     // When
     sut = new Logger();
@@ -115,7 +115,7 @@ describe('Logger', () => {
     // Given
     const messages = ['hello world', 'goodbye world'];
     const log = jest.fn();
-    spyOn(console, 'log').and.callFake(log);
+    jest.spyOn(console, 'log').mockImplementation(log);
     let sut = null;
     // When
     sut = new Logger();
@@ -132,7 +132,7 @@ describe('Logger', () => {
     const messages = ['hello world', 'goodbye world'];
     const color = 'blue';
     const log = jest.fn();
-    spyOn(console, 'log').and.callFake(log);
+    jest.spyOn(console, 'log').mockImplementation(log);
     let sut = null;
     // When
     sut = new Logger();
@@ -153,7 +153,7 @@ describe('Logger', () => {
       ['goodbye world', 'yellow'],
     ];
     const log = jest.fn();
-    spyOn(console, 'log').and.callFake(log);
+    jest.spyOn(console, 'log').mockImplementation(log);
     let sut = null;
     // When
     sut = new Logger();
@@ -172,7 +172,7 @@ describe('Logger', () => {
     const message = 'Something is not working';
     const color = 'yellow';
     const log = jest.fn();
-    spyOn(console, 'log').and.callFake(log);
+    jest.spyOn(console, 'log').mockImplementation(log);
     let sut = null;
     // When
     sut = new Logger();
@@ -189,7 +189,7 @@ describe('Logger', () => {
     const message = 'Something is not working';
     const color = 'yellow';
     const log = jest.fn();
-    spyOn(console, 'log').and.callFake(log);
+    jest.spyOn(console, 'log').mockImplementation(log);
     let sut = null;
     // When
     sut = new Logger();
@@ -206,7 +206,7 @@ describe('Logger', () => {
     const message = 'Everything works!';
     const color = 'green';
     const log = jest.fn();
-    spyOn(console, 'log').and.callFake(log);
+    jest.spyOn(console, 'log').mockImplementation(log);
     let sut = null;
     // When
     sut = new Logger();
@@ -223,7 +223,7 @@ describe('Logger', () => {
     const message = 'Be aware of the Batman';
     const color = 'grey';
     const log = jest.fn();
-    spyOn(console, 'log').and.callFake(log);
+    jest.spyOn(console, 'log').mockImplementation(log);
     let sut = null;
     // When
     sut = new Logger();
@@ -240,7 +240,7 @@ describe('Logger', () => {
     const message = 'Something went terribly wrong';
     const color = 'red';
     const log = jest.fn();
-    spyOn(console, 'log').and.callFake(log);
+    jest.spyOn(console, 'log').mockImplementation(log);
     let sut = null;
     // When
     sut = new Logger();
@@ -258,7 +258,7 @@ describe('Logger', () => {
     const exception = 'ORDER 66';
     const color = 'red';
     const log = jest.fn();
-    spyOn(console, 'log').and.callFake(log);
+    jest.spyOn(console, 'log').mockImplementation(log);
     let sut = null;
     // When
     sut = new Logger();
@@ -281,7 +281,7 @@ describe('Logger', () => {
     const errorColor = 'red';
     const stackColor = 'grey';
     const log = jest.fn();
-    spyOn(console, 'log').and.callFake(log);
+    jest.spyOn(console, 'log').mockImplementation(log);
     let sut = null;
     // When
     sut = new Logger();
@@ -305,7 +305,7 @@ describe('Logger', () => {
     const errorColor = 'red';
     const stackColor = 'grey';
     const log = jest.fn();
-    spyOn(console, 'log').and.callFake(log);
+    jest.spyOn(console, 'log').mockImplementation(log);
     let sut = null;
     // When
     sut = new Logger();
